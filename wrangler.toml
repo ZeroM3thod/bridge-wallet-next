@@ -8,4 +8,7 @@ database_name = "bridge-wallet-db"
 database_id = "876fdde8-1857-477a-94d0-218f9fb1862e"
 
 [vars]
-RESEND_API_KEY = ""  # Add in Cloudflare dashboard
+# Add RESEND_API_KEY in Cloudflare Pages dashboard
+# Pages > bridge-wallet > Settings > Environment Variables > Production
+# Variable name: RESEND_API_KEY
+# Value: re_xxxxxxxxxxxxx (get from https://resend.com)
