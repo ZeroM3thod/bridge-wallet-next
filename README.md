@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+PS C:\Users\KHAN GADGET\Desktop\bridge-wallet-next> npx wrangler pages deploy
 
-## Getting Started
+ ⛅️ wrangler 4.157.0
+────────────────────
 
-First, run the development server:
+X [ERROR] Must specify a directory of assets to deploy. Please specify the [<directory>] argument in the `pages deploy` command, or configure `pages_build_output_dir` in your Wrangler configuration file.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🪵  Logs were written to "C:\Users\KHAN GADGET\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-11-05_10-16-27_737.log"
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76
+PS C:\Users\KHAN GADGET\Desktop\bridge-wallet-next> npm run build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> bridge-wallet-next@0.1.0 build
+> next build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ▲ Next.js 15.3.5
 
-## Learn More
+   Creating an optimized production build ...
+Failed to compile.
 
-To learn more about Next.js, take a look at the following resources:
+./components/app/AppState.tsx
+Module not found: Can't resolve '@tanstack/react-router'
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+https://nextjs.org/docs/messages/module-not-found
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Import trace for requested module:
+./components/pages/ProfilePage.tsx
+./app/profile/page.tsx
 
-## Deploy on Vercel
+./components/ui/button.tsx
+Module not found: Can't resolve 'class-variance-authority'
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+https://nextjs.org/docs/messages/module-not-found
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Import trace for requested module:
+./components/pages/ProfilePage.tsx
+./app/profile/page.tsx
+
+./components/ui/dialog.tsx
+Module not found: Can't resolve 'lucide-react'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/pages/WithdrawPage.tsx
+./app/withdraw/page.tsx
+
+./lib/api.server.ts
+Module not found: Can't resolve '@tanstack/react-start'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/pages/AuthPages.tsx
+./app/signup/page.tsx
+
+./lib/api.server.ts
+Module not found: Can't resolve '../worker-lib/db'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/pages/AuthPages.tsx
+./app/signup/page.tsx
+
+
+> Build failed because of webpack errors
+PS C:\Users\KHAN GADGET\Desktop\bridge-wallet-next> 

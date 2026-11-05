@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react"
-import { useNavigate } from "@tanstack/react-router"
+import { useRouter } from "next/navigation"
 import { pagePaths, type Page } from "@/lib/app-navigation"
 import type { DashboardTransaction, FixedDeposit, SavedWallet, WithdrawalRecord, ActiveInvestment } from "@/lib/app-types"
 import type { VipPackage } from "@/lib/app-data"
@@ -16,7 +16,7 @@ type AppState = {
 const AppContext = createContext<AppState | null>(null)
 export function useAppState() { const state = useContext(AppContext); if (!state) throw new Error("AppStateProvider missing"); return state }
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [toast, setToast] = useState("")
   const [balance, setBalance] = useState(2500)
   const [investment, setInvestment] = useState<ActiveInvestment | null>(null)
@@ -70,7 +70,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
   const changePage = (next: Page) => {
-    void navigate({ to: pagePaths[next] })
+    router.push(pagePaths[next])
   }
 
   const addTransaction = (

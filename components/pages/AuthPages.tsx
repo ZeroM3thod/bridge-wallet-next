@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { AppLink } from "@/components/app/AppLink"
-import { $sendCode } from "@/lib/api.server"
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phoneRe = /^0?1\d{9}$/
@@ -67,7 +66,13 @@ export function SignupPage() {
     setMsg({ text: "", ok: false })
     
     try {
-      await $sendCode({ email: f.email.trim() })
+      const res = await fetch('/api/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: f.email.trim() })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
       setSentTo(f.email.trim())
       setTimer(60)
     } catch (err) {

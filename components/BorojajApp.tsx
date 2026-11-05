@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "@tanstack/react-router"
+import { usePathname } from "next/navigation"
 import Icon from "@/components/app/Icon"
 import { AppLink } from "@/components/app/AppLink"
 import { useAppState } from "@/components/app/AppState"
@@ -67,14 +67,14 @@ const navItems: { id: Page; icon: string; label: string }[] = [
   { id: "profile", icon: "user", label: "আমার পরিসর" },
 ]
 
-export default function BorojajApp() {
- const { pathname } = useLocation()
+export default function BorojajApp({ children }: { children: React.ReactNode }) {
+ const pathname = usePathname()
  const { showToast, changePage } = useAppState()
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
  return <div className="app blue-header">
   <AppHeader page={page} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} />
-  <Outlet />
+  {children}
   <nav className="bottom-nav" aria-label="প্রধান নেভিগেশন">{navItems.map(item => <AppLink key={item.id} page={item.id} plain className={activePage === item.id ? "active" : ""}><Icon name={item.icon} size={27} /><span>{item.label}</span></AppLink>)}</nav>
  </div>
 }
