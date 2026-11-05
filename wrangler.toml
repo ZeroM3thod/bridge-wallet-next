@@ -1,0 +1,11 @@
+name = "bridge-wallet"
+compatibility_date = "2026-11-05"
+pages_build_output_dir = "out"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bridge-wallet-db"
+database_id = "876fdde8-1857-477a-94d0-218f9fb1862e"
+
+[vars]
+RESEND_API_KEY = ""  # Add in Cloudflare dashboard
