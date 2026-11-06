@@ -39,10 +39,14 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       phone: string
       email: string
       code: string
+      otp?: string
       password: string
       referralCode?: string
+      invite?: string
     }
-    const { name, phone, email, code, password, referralCode } = body
+    const { name, phone, email, password } = body
+    const code = String(body.code ?? body.otp ?? '').replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit)))
+    const referralCode = body.referralCode ?? body.invite
 
     // Validate inputs
     if (!name || name.length < 2) {
@@ -66,7 +70,7 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       })
     }
 
-    if (!code || code.length !== 6) {
+    if (!/^\d{6}$/.test(code)) {
       return new Response(JSON.stringify({ error: 'সঠিক ৬ সংখ্যার কোড দিন' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }

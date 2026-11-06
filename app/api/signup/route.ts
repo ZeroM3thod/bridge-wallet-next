@@ -11,7 +11,8 @@ export const runtime = 'edge'
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, phone, email, code, password, referralCode } = await req.json()
+    const { name, phone, email, code: rawCode, otp, password, referralCode, invite } = await req.json()
+    const code = String(rawCode ?? otp ?? "").replace(/[০-৯]/g, digit => String("০১২৩৪৫৬৭৮৯".indexOf(digit)))
 
     // Validate inputs
     if (!name || name.length < 2) {
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'সঠিক ইমেইল ঠিকানা দিন' }, { status: 400 })
     }
 
-    if (!code || code.length !== 6) {
+    if (!/^\d{6}$/.test(code)) {
       return NextResponse.json({ error: 'সঠিক ৬ সংখ্যার কোড দিন' }, { status: 400 })
     }
 
@@ -68,10 +69,11 @@ export async function POST(req: NextRequest) {
 
     // Verify referral code if provided
     let referrerId = null
-    if (referralCode && referralCode.trim()) {
+    const referral = referralCode ?? invite ?? ""
+    if (referral.trim()) {
       const referrer = await env.DB.prepare(
         'SELECT id FROM users WHERE referral_code = ?'
-      ).bind(referralCode.trim()).first()
+      ).bind(referral.trim()).first()
       
       if (!referrer) {
         return NextResponse.json({ error: 'রেফারেল কোড পাওয়া যায়নি' }, { status: 400 })
