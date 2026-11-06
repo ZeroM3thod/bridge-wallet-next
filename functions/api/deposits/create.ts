@@ -33,12 +33,19 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       .bind(crypto.randomUUID(), session.user_id, outTradeNo, body.method, body.amount, Date.now()).run()
     const gatewayResponse = await fetch(`${host}/v1/Collect`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(fields) })
     const result = await gatewayResponse.json() as { code?: number; msg?: string; data?: { url?: string; transaction_Id?: string } }
-    if (!gatewayResponse.ok || result.code !== 0 || !result.data?.url || new URL(result.data.url).protocol !== 'https:') {
+    if (!gatewayResponse.ok || result.code !== 0 || !result.data?.url) {
       await env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(outTradeNo).run()
       return json({ error: result.msg || 'পেমেন্ট অর্ডার তৈরি ব্যর্থ' }, 502)
     }
+    const paymentUrl = new URL(result.data.url)
+    if (paymentUrl.protocol !== 'https:' || !['sandbox.okexpay.dev', 'sandbox.wpay.one'].includes(paymentUrl.hostname)) {
+      await env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(outTradeNo).run()
+      return json({ error: 'গেটওয়ের পেমেন্ট URL গ্রহণযোগ্য নয়' }, 502)
+    }
+    // Provider's sample response uses sandbox.wpay.one for cashier pages, though API host is sandbox.okexpay.dev.
+    if (host.includes('sandbox.okexpay.dev')) paymentUrl.hostname = 'sandbox.wpay.one'
     await env.DB.prepare('UPDATE deposits SET gateway_transaction_id=? WHERE out_trade_no=?').bind(result.data.transaction_Id || null, outTradeNo).run()
-    return json({ success: true, paymentUrl: result.data.url })
+    return json({ success: true, paymentUrl: paymentUrl.toString() })
   } catch (error) {
     console.error('Create deposit error:', error)
     return json({ error: 'সার্ভার সমস্যা হয়েছে' }, 500)
