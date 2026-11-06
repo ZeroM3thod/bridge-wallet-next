@@ -98,7 +98,7 @@ export function SignupPage() {
     setMsg({ text: "", ok: false })
     
     try {
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

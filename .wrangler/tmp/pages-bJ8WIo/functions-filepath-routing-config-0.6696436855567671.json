@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/send-code",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/send-code.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/signup",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/signup.ts:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

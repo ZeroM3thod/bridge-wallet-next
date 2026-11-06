@@ -28,42 +28,6 @@ async function hashOTP(code: string, secret: string): Promise<string> {
     .join('')
 }
 
-// Rate limiting
-async function checkRateLimit(
-  db: D1Database,
-  key: string,
-  limit: number,
-  windowMs: number
-): Promise<{ allowed: boolean; error?: string }> {
-  const now = Date.now()
-  const result = await db.prepare(
-    'SELECT count, reset_at FROM rate_limits WHERE key = ?'
-  ).bind(key).first<{ count: number; reset_at: number }>()
-
-  if (!result) {
-    await db.prepare(
-      'INSERT INTO rate_limits (key, count, reset_at) VALUES (?, 1, ?)'
-    ).bind(key, now + windowMs).run()
-    return { allowed: true }
-  }
-
-  if (now > result.reset_at) {
-    await db.prepare(
-      'UPDATE rate_limits SET count = 1, reset_at = ? WHERE key = ?'
-    ).bind(now + windowMs, key).run()
-    return { allowed: true }
-  }
-
-  if (result.count >= limit) {
-    return { allowed: false, error: 'অনেক বেশি অনুরোধ। একটু পরে চেষ্টা করুন।' }
-  }
-
-  await db.prepare(
-    'UPDATE rate_limits SET count = count + 1 WHERE key = ?'
-  ).bind(key).run()
-  return { allowed: true }
-}
-
 async function checkCooldown(
   db: D1Database,
   email: string
@@ -92,7 +56,7 @@ async function sendOTPEmail(apiKey: string, email: string, code: string): Promis
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Bridge Wallet <onboarding@resend.dev>',
+      from: 'Bridge Wallet <no-reply@rakibulhasan.live>',
       to: email,
       subject: 'আপনার যাচাইকরণ কোড - বরজাজ',
       html: `
@@ -148,15 +112,6 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
     const cooldown = await checkCooldown(env.DB, emailLower)
     if (!cooldown.allowed) {
       return new Response(JSON.stringify({ error: cooldown.error }), {
-        status: 429,
-        headers: { 'Content-Type': 'application/json' }
-      })
-    }
-
-    // Check rate limit
-    const rateCheck = await checkRateLimit(env.DB, `email:${emailLower}`, 5, 3600000)
-    if (!rateCheck.allowed) {
-      return new Response(JSON.stringify({ error: rateCheck.error }), {
         status: 429,
         headers: { 'Content-Type': 'application/json' }
       })
