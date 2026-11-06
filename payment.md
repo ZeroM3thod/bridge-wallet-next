@@ -46,55 +46,18 @@ sign
 sign
 Example Request
 Bangladesh PayIn
-View More
-nodejs
+curl
 
-var https = require('follow-redirects').https;
-var fs = require('fs');
-
-var qs = require('querystring');
-
-var options = {
-  'method': 'POST',
-  'hostname': '{{host}}',
-  'path': '/v1/Collect',
-  'headers': {
-  },
-  'maxRedirects': 20
-};
-
-var req = https.request(options, function (res) {
-  var chunks = [];
-
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on("end", function (chunk) {
-    var body = Buffer.concat(chunks);
-    console.log(body.toString());
-  });
-
-  res.on("error", function (error) {
-    console.error(error);
-  });
-});
-
-var postData = qs.stringify({
-  'mchId': '1000',
-  'currency': 'BDT',
-  'out_trade_no': '20211012151100001',
-  'pay_type': 'BKASH',
-  'money': '100',
-  'attach': '',
-  'notify_url': 'https://www.sandbox.wpay.one/callback/payin',
-  'returnUrl': 'https://www.google.com',
-  'sign': '254462b461f2ddb35f0d62947c236543'
-});
-
-req.write(postData);
-
-req.end();
+curl --location -g 'https://{{host}}/v1/Collect' \
+--data-urlencode 'mchId=1000' \
+--data-urlencode 'currency=BDT' \
+--data-urlencode 'out_trade_no=20211012151100001' \
+--data-urlencode 'pay_type=BKASH' \
+--data-urlencode 'money=100' \
+--data-urlencode 'attach=' \
+--data-urlencode 'notify_url=https://www.sandbox.wpay.one/callback/payin' \
+--data-urlencode 'returnUrl=https://www.google.com' \
+--data-urlencode 'sign=254462b461f2ddb35f0d62947c236543'
 
 200 OK
 Example Response
