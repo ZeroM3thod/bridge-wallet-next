@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useAppState } from "@/components/app/AppState"
 import { toBengaliDigits, parseBengaliNumber, money } from "@/lib/app-format"
 
@@ -10,27 +10,44 @@ export default function DepositPage() {
   const [amount, setAmount] = useState(100)
   const [busy, setBusy] = useState(false)
 
+  const toastRef = useRef(showToast)
+  toastRef.current = showToast
+
   useEffect(() => {
     const order = new URLSearchParams(window.location.search).get("order")
     if (!order) return
-    let timer: ReturnType<typeof setTimeout>
+    let cancelled = false
+    let timer: ReturnType<typeof setTimeout> | undefined
     let attempts = 0
     const checkStatus = async () => {
+      if (cancelled) return
       try {
         const response = await fetch(`/api/deposits/status?order=${encodeURIComponent(order)}`, { credentials: "include" })
         const result = await response.json()
-        if (result.status === "paid") { showToast("পেমেন্ট সফল; ব্যালেন্সে যোগ হয়েছে"); window.history.replaceState({}, "", "/deposit"); return }
-        if (result.status === "failed") { showToast("পেমেন্ট ব্যর্থ হয়েছে"); window.history.replaceState({}, "", "/deposit"); return }
+        if (result.status === "paid") {
+          toastRef.current("পেমেন্ট সফল; ব্যালেন্সে যোগ হয়েছে")
+          window.history.replaceState({}, "", "/deposit")
+          return
+        }
+        if (result.status === "failed") {
+          toastRef.current("পেমেন্ট ব্যর্থ হয়েছে")
+          window.history.replaceState({}, "", "/deposit")
+          return
+        }
       } catch { /* retry while the gateway callback is pending */ }
+      if (cancelled) return
       if (++attempts < 30) timer = setTimeout(checkStatus, 2000)
-      else showToast("পেমেন্ট যাচাই চলছে; পরে ব্যালেন্স দেখুন")
+      else toastRef.current("পেমেন্ট যাচাই চলছে; পরে ব্যালেন্স দেখুন")
     }
     void checkStatus()
-    return () => clearTimeout(timer)
-  }, [showToast])
+    return () => {
+      cancelled = true
+      if (timer) clearTimeout(timer)
+    }
+  }, [])
 
   const startPayment = async () => {
-    if (!Number.isSafeInteger(amount) || amount < 1) return showToast("সঠিক জমার পরিমাণ লিখুন")
+    if (!Number.isSafeInteger(amount) || amount < 100) return showToast("ন্যূনতম ৳১০০ জমা দিন")
     setBusy(true)
     try {
       const response = await fetch("/api/deposits/create", {

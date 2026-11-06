@@ -1,78 +1,11 @@
-POSTBangladesh PayIn
-https://{{host}}/v1/Collect
-Bodyurlencoded
-mchId
+Documentation Settings
 
-1000
 
-merchant Id
-currency
-
-BDT
-
-currency code
-out_trade_no
-
-20211012151100001
-
-merchant order number
-pay_type
-
-BKASH
-
-payment type（BKASH,NAGAD,ROCKET,BKASH-C , NAGAD-C）
-money
-
-100
-
-order amount，integer
-attach
-
-Additional data, callback as is
-notify_url
-
-callback_payin_url
-
-callback url
-returnUrl
-
-https://www.google.com
-
-jump to url after successful payment
-sign
-
-254462b461f2ddb35f0d62947c236543
-
-sign
-Example Request
-Bangladesh PayIn
-curl
-
-curl --location -g 'https://{{host}}/v1/Collect' \
---data-urlencode 'mchId=1000' \
---data-urlencode 'currency=BDT' \
---data-urlencode 'out_trade_no=20211012151100001' \
---data-urlencode 'pay_type=BKASH' \
---data-urlencode 'money=100' \
---data-urlencode 'attach=' \
---data-urlencode 'notify_url=https://www.sandbox.wpay.one/callback/payin' \
---data-urlencode 'returnUrl=https://www.google.com' \
---data-urlencode 'sign=254462b461f2ddb35f0d62947c236543'
-
-200 OK
-Example Response
-
-    Body
-    Headers (16)
-
-View More
-json
-
-{
-    "code": 0,//0 success
-    "msg": "success",
-    "data": {
-        "url": "https://sandbox.wpay.one/Cashier/Index/cad77bda65404ee0b7d2f9f2b9abb197",//payment url
-        "transaction_Id": "cad77bda65404ee0b7d2f9f2b9abb197"//platform order number
-    }
-}
+OKExPay_enIntroduction (https://documenter.getpostman.com/view/28092670/2sB3WwpcgV#intro)IndiaPakistanPhilippineBangladeshPOSTBangladesh PayInPOSTBangladesh PayOutPeruIndonesiaNigeriaEmiratesVietnamAustralianAmericanJapanKoreaThailandTurkeyMalaysiaPOSTPayOut Bank ListPOSTBalance QueryPOSTPayIn QueryPOSTPayOut QueryPOSTPayIn CallbackPOSTPayOut CallbackOKExPay_en一、Protocol RulesThe interface uses HTTP protocol, and POST requests are used between merchants and platforms, and between platforms and merchants.Between platforms and merchants: Content-Type: application/x-www-form-urlencodedThe platform uniformly uses UTF-8 encoding format二、Signature AlgorithmFor the data to be signed that is sent or received, set M is used. The parameters of the set are sorted from small to large according to the ASCII code of the parameter name (lexicographic order), and concatenated into a string stringA using the format of URL key-value pairs (i.e. key1=value1&key2=value2…).
+Pay special attention to the following important rules:Parameter name ASCII codes are sorted from small to large (lexicographic order)Empty values ​​do not participate in the signatureParameter names are case sensitiveWhen the verification call returns or the platform actively notifies the signature, the passed sign parameter does not participate in the signature, and the generated signature is verified with the sign value.Concatenate key (i.e. stringA+“&key=“+private key) to the end of stringA to obtain the stringSignTemp, perform MD5 operation on stringSignTemp, and then convert the resulting string to lowercase to obtain the value of sign.The signature verification algorithm used in callbacks is identical to the signing algorithm. The transmitted "sign" parameter is not involved in signature generation; the generated signature shall be verified against this "sign" value.EndFragment三、The "code" description returned by the requestView Morevaluedescription0success1failed2mchId error3account does not exists4account abnormal5sign error6order already exists7order does not exists8no permission9Insufficient balance10Wrong amount11Channel maintenance12Currency does not exist13Channel does not exist15Channel failed16ip error17bank does not existotherthe status is unknown. please use the query interface or the robot to query.四、order "status" description（callback status）valuedescription0pending1payment success2payment failed五、Things to noteCallback status mark:
+When the merchant receives our callback, please return: success (indicates success, not the string "success"), we will mark the success and no longer call back; others will be considered failures, we may call back again, please pay attention to logical judgment.Order number cannot be repeated
+The collection order number or payment order number should be kept unique, we have not judged whether it is repeated.Collection and collection
+The collection and collection data includes the order amount and the payment amount. Please refer to the payment amount for business processing.Data cleaning
+We will regularly clean up the unpaid order data, that is, clean up the unpaid order data 20 days ago at dawn every day.六、Test informationmchId：1000key：4035fcd2d720e1b06ea455bdde411012host：https://sandbox.okexpay.dev (https://sandbox.okexpay.dev/)payin callback
+After the order is successfully created, the callback payment will be successful.payout callback
+After the order is successfully created, based on the last digit of the merchant's order number, if it is an odd number, the callback payment will fail, if it is an even number, the callback payment will be successful, if there is no number, the callback payment will be successful.PhilippinePOSTPhilippine PayInhttps://{{host}}/v1/CollectBodyurlencodedmchId1000merchant IdcurrencyPHPcurrency codeout_trade_no20211012151100001merchant order numberpay_typeGCASHpayment type ， GCASH，MAYA，QRmoney100order amount，integerattachAdditional data, callback as isnotify_urlcallback_payin_urlcallback urlreturnUrlhttps://www.google.comjump to url after successful paymentsign14499428edda8fbc318fe41d46c1f66dsignExample RequestPhilippine PayInView Morecurlcurl --location -g

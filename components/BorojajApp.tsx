@@ -1,4 +1,5 @@
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import Icon from "@/components/app/Icon"
 import { AppLink } from "@/components/app/AppLink"
 import { useAppState } from "@/components/app/AppState"
@@ -69,7 +70,22 @@ const navItems: { id: Page; icon: string; label: string }[] = [
 
 export default function BorojajApp({ children }: { children: React.ReactNode }) {
  const pathname = usePathname()
+ const router = useRouter()
  const { showToast, changePage } = useAppState()
+ const isPublic = pathname === "/signin" || pathname === "/signup"
+ const [authorized, setAuthorized] = useState(false)
+ useEffect(() => {
+  setAuthorized(false)
+  if (isPublic) return
+  let active = true
+  fetch("/api/auth/session", { credentials: "include" }).then(response => {
+   if (!active) return
+   if (response.ok) setAuthorized(true)
+   else router.replace("/signin")
+  }).catch(() => router.replace("/signin"))
+  return () => { active = false }
+ }, [pathname, isPublic, router])
+ if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
  return <div className="app blue-header">
