@@ -153,20 +153,7 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       passwordHash,
       userReferralCode,
       referrerId,
-      250000, // Initial 2500.00 BDT balance (stored in paisa)
-      Date.now()
-    ).run()
-
-    // Create initial transaction
-    await env.DB.prepare(`
-      INSERT INTO transactions (id, user_id, type, amount, label, created_at)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).bind(
-      crypto.randomUUID(),
-      userId,
-      'credit',
-      250000,
-      'প্রারম্ভিক সঞ্চয়',
+      0,
       Date.now()
     ).run()
 

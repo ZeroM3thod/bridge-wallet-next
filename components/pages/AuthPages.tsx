@@ -3,6 +3,8 @@ import { AppLink } from "@/components/app/AppLink"
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phoneRe = /^0?1\d{9}$/
+const toEnglishDigits = (value: string) => value.replace(/[০-৯]/g, digit => String("০১২৩৪৫৬৭৮৯".indexOf(digit)))
+const toBanglaDigits = (value: string) => value.replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[Number(digit)])
 const sv = { width: 21, height: 21, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const }
 const icons: Record<string, ReactNode> = {
   user: <svg {...sv}><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>,
@@ -86,8 +88,9 @@ export function SignupPage() {
     e.preventDefault()
     if (loading) return
     
-    if (!f.name.trim()) return fail("name", "পূর্ণ নাম দিন")
-    if (!phoneRe.test(f.phone.trim())) return fail("phone", "সঠিক ফোন নম্বর দিন")
+    if (!f.name.trim() || !/^[\u0980-\u09FF\s]+$/.test(f.name.trim())) return fail("name", "বাংলায় পূর্ণ নাম লিখুন")
+    const phone = toEnglishDigits(f.phone.trim())
+    if (!phoneRe.test(phone)) return fail("phone", "সঠিক ফোন নম্বর দিন")
     if (!emailRe.test(f.email.trim())) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
     if (!/^\d{6}$/.test(f.otp.trim())) return fail("otp", "ইমেইলে পাঠানো ৬ সংখ্যার কোড দিন")
     if (f.pw.length < 6) return fail("pw", "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে")
@@ -104,7 +107,7 @@ export function SignupPage() {
         credentials: "include",
         body: JSON.stringify({
           name: f.name.trim(),
-          phone: f.phone.trim(),
+          phone,
           email: f.email.trim(),
           otp: f.otp.trim(),
           password: f.pw,
@@ -128,8 +131,8 @@ export function SignupPage() {
   return (
     <Shell title="নিবন্ধন" sub="নতুন অ্যাকাউন্ট তৈরি করুন">
       <form onSubmit={submit} noValidate>
-        <Field icon="user" invalid={bad === "name"}><input value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম" maxLength={100} autoComplete="name" /></Field>
-        <Field icon="phone" invalid={bad === "phone"}><span className="auth-prefix">+880</span><input type="tel" inputMode="numeric" value={f.phone} onChange={(e) => set("phone")(e.target.value)} placeholder="ফোন নম্বর" maxLength={11} /></Field>
+        <Field icon="user" invalid={bad === "name"}><input lang="bn" value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম (বাংলায়)" maxLength={100} autoComplete="name" /></Field>
+        <Field icon="phone" invalid={bad === "phone"}><span className="auth-prefix">+৮৮০</span><input type="tel" inputMode="numeric" value={toBanglaDigits(f.phone)} onChange={(e) => set("phone")(toBanglaDigits(toEnglishDigits(e.target.value).replace(/\D/g, "")))} placeholder="ফোন নম্বর" maxLength={11} /></Field>
         <Field icon="mail" invalid={bad === "email"}><input type="email" value={f.email} onChange={(e) => set("email")(e.target.value)} placeholder="ইমেইল ঠিকানা" maxLength={255} /></Field>
         <Field icon="shield" invalid={bad === "otp"}>
           <input inputMode="numeric" value={f.otp} onChange={(e) => set("otp")(e.target.value)} placeholder="ইমেইল যাচাই কোড (OTP)" maxLength={6} autoComplete="one-time-code" />
