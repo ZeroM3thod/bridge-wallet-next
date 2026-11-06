@@ -9,6 +9,7 @@ CREATE TABLE users (
   balance INTEGER DEFAULT 0,
   referral_code TEXT UNIQUE,
   referred_by TEXT,
+  role INTEGER DEFAULT 1,
   created_at INTEGER NOT NULL,
   FOREIGN KEY (referred_by) REFERENCES users(id)
 );
