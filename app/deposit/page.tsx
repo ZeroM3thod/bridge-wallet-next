@@ -1,0 +1,61 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useAppState } from "@/components/app/AppState"
+import { toBengaliDigits, parseBengaliNumber, money } from "@/lib/app-format"
+
+export default function DepositPage() {
+  const { showToast, changePage } = useAppState()
+  const [method, setMethod] = useState<"BKASH" | "NAGAD">("BKASH")
+  const [amount, setAmount] = useState(100)
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    const order = new URLSearchParams(window.location.search).get("order")
+    if (!order) return
+    let timer: ReturnType<typeof setTimeout>
+    let attempts = 0
+    const checkStatus = async () => {
+      try {
+        const response = await fetch(`/api/deposits/status?order=${encodeURIComponent(order)}`, { credentials: "include" })
+        const result = await response.json()
+        if (result.status === "paid") { showToast("পেমেন্ট সফল; ব্যালেন্সে যোগ হয়েছে"); window.history.replaceState({}, "", "/deposit"); return }
+        if (result.status === "failed") { showToast("পেমেন্ট ব্যর্থ হয়েছে"); window.history.replaceState({}, "", "/deposit"); return }
+      } catch { /* retry while the gateway callback is pending */ }
+      if (++attempts < 30) timer = setTimeout(checkStatus, 2000)
+      else showToast("পেমেন্ট যাচাই চলছে; পরে ব্যালেন্স দেখুন")
+    }
+    void checkStatus()
+    return () => clearTimeout(timer)
+  }, [showToast])
+
+  const startPayment = async () => {
+    if (!Number.isSafeInteger(amount) || amount < 1) return showToast("সঠিক জমার পরিমাণ লিখুন")
+    setBusy(true)
+    try {
+      const response = await fetch("/api/deposits/create", {
+        method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include",
+        body: JSON.stringify({ amount: amount * 100, method }),
+      })
+      const result = await response.json()
+      if (!response.ok || !result.success || !result.paymentUrl) throw new Error(result.error || "পেমেন্ট শুরু ব্যর্থ")
+      window.location.assign(result.paymentUrl)
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "পেমেন্ট ব্যর্থ")
+      setBusy(false)
+    }
+  }
+
+  return <main className="home-page page-content" style={{ maxWidth: 560, margin: "0 auto", padding: 20 }}>
+    <h1 style={{ fontSize: 24, marginBottom: 8 }}>টাকা জমা</h1>
+    <p style={{ marginBottom: 20 }}>পরীক্ষামূলক পেমেন্ট — bKash বা Nagad</p>
+    <section className="ps-card" style={{ padding: 20, display: "grid", gap: 16 }}>
+      <label className="ps-field"><span>পেমেন্ট পদ্ধতি</span><select value={method} onChange={e => setMethod(e.target.value as typeof method)}><option value="BKASH">bKash</option><option value="NAGAD">Nagad</option></select></label>
+      <label className="ps-field"><span>পরিমাণ (BDT)</span><input type="text" inputMode="numeric" value={toBengaliDigits(amount)} onChange={e => setAmount(parseBengaliNumber(e.target.value))} /></label>
+      <p>জমার পরিমাণ: {money(amount)} · পদ্ধতি: {method}</p>
+      <button className="ps-save" disabled={busy} onClick={startPayment}>{busy ? "পেমেন্ট শুরু হচ্ছে…" : "পেমেন্ট করুন"}</button>
+      <p role="note">টেস্ট গেটওয়ে। পেমেন্ট সফল হলে যাচাইকৃত webhook-এ ব্যালেন্স যোগ হবে।</p>
+    </section>
+      <button style={{ marginTop: 16 }} onClick={() => changePage("home")}>ফিরে যান</button>
+  </main>
+}

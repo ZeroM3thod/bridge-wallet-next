@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint",
+    "build": "next build --no-lint && node -e \"require('node:fs').cpSync('functions','out/functions',{recursive:true})\"",
     "start": "next start",
     "lint": "eslint"
   },

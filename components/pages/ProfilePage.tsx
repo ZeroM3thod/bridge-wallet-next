@@ -61,7 +61,7 @@ export default function ProfilePage() {
       </section>
 
       <section className="quick-grid">
-        <Button variant="ghost" onClick={() => action("জমা করুন নির্বাচিত হয়েছে")}><span><Icon name="deposit" size={34} /></span><b>জমা করুন</b></Button>
+        <AppLink page="deposit"><span><Icon name="deposit" size={34} /></span><b>জমা করুন</b></AppLink>
         <AppLink page="withdraw"><span><Icon name="withdraw" size={34} /></span><b>উত্তোলন</b></AppLink>
         <Button variant="ghost" onClick={() => action("সঙ্গীগণ নির্বাচিত হয়েছে")}><span><Icon name="users" size={34} /></span><b>সঙ্গীগণ</b></Button>
         <AppLink page="work"><span><Icon name="work" size={34} /></span><b>কর্মক্ষেত্র</b></AppLink>

@@ -68,7 +68,7 @@ export default function HomePage() {
         </section>
 
         <section className="office-actions" aria-label="দ্রুত কার্যক্রম">
-          <Button variant="ghost" onClick={() => setMoneyAction("deposit")}><span><Icon name="deposit" size={26} /></span><b>সঞ্চয় জমা</b></Button>
+          <Button variant="ghost" onClick={() => onNavigate("deposit")}><span><Icon name="deposit" size={26} /></span><b>সঞ্চয় জমা</b></Button>
           <AppLink page="withdraw"><span><Icon name="withdraw" size={26} /></span><b>অর্থ উত্তোলন</b></AppLink>
           <AppLink page="earn"><span><Icon name="chart" size={26} /></span><b>প্যাকেজ কিনুন</b></AppLink>
           <AppLink page="work"><span><Icon name="work" size={26} /></span><b>কর্মক্ষেত্র</b></AppLink>
