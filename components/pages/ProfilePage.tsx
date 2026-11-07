@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import Icon from "@/components/app/Icon"
 import { useAppState } from "@/components/app/AppState"
 import { AppLink } from "@/components/app/AppLink"
-import { toBanglaAmount } from "@/lib/bangla-utils"
+import { toBanglaDigit } from "@/lib/bangla-utils"
 import type { Page } from "@/lib/app-navigation"
 
 type ProfileData = {
@@ -21,6 +21,7 @@ type ProfileData = {
     total_withdraw: number
   }
 }
+const takaAmount = (amount: number) => "৳ " + toBanglaDigit(Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
 
 export default function ProfilePage() {
   const { showToast: action, changePage: onNavigate } = useAppState()
@@ -63,12 +64,12 @@ export default function ProfilePage() {
   }
 
   const stats = [
-    ["coins", "কর্মক্ষেত্রের আয়", toBanglaAmount(data.stats.work_earnings)],
-    ["gift", "দলীয় প্রাপ্ত", toBanglaAmount(data.stats.team_received)],
-    ["users", "দলীয় লভ্যাংশ", toBanglaAmount(data.stats.team_dividend)],
-    ["chart", "আজকের অর্জন", toBanglaAmount(data.stats.today_earnings)],
-    ["gift", "মোট জমা", toBanglaAmount(data.stats.total_deposit)],
-    ["wallet", "মোট উত্তোলন", toBanglaAmount(data.stats.total_withdraw)],
+    ["coins", "কর্মক্ষেত্রের আয়", takaAmount(data.stats.work_earnings)],
+    ["gift", "দলীয় প্রাপ্ত", takaAmount(data.stats.team_received)],
+    ["users", "দলীয় লভ্যাংশ", takaAmount(data.stats.team_dividend)],
+    ["chart", "আজকের অর্জন", takaAmount(data.stats.today_earnings)],
+    ["gift", "মোট জমা", takaAmount(data.stats.total_deposit)],
+    ["wallet", "মোট উত্তোলন", takaAmount(data.stats.total_withdraw)],
   ]
 
   const menu = [
@@ -99,7 +100,7 @@ export default function ProfilePage() {
         </div>
         <div>
           <span>মোট সঞ্চয়</span>
-          <strong>{toBanglaAmount(data.user.balance)}</strong>
+          <strong>{takaAmount(data.user.balance)}</strong>
         </div>
       </section>
 

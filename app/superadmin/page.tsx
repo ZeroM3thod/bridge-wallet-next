@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { AdminSidebar } from "./AdminSidebar";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 /* ------------------------------------------------------------------ */
 /*  Types + data                                                       */
@@ -61,8 +60,6 @@ export default function AdminDashboard({
   stats?: DashboardStats;
   recent?: Activity[];
 }) {
-  const [open, setOpen] = useState(false);
-
   const cards = [
     { label: "Total users", value: num(stats.totalUsers), note: `${num(stats.activeUsers)} active now` },
     { label: "Active users", value: num(stats.activeUsers), note: `${Math.round((stats.activeUsers / Math.max(stats.totalUsers, 1)) * 100)}% of all users` },
@@ -76,7 +73,7 @@ export default function AdminDashboard({
     <div className="ad">
       <style>{css}</style>
 
-      <AdminSidebar open={open} onToggle={() => setOpen(!open)} />
+      <AdminSidebar active="dashboard" />
 
       <main className="ad-main">
         <header className="ad-top">

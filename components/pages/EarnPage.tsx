@@ -1,13 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Icon from "@/components/app/Icon"
 import { useAppState } from "@/components/app/AppState"
-import { vipPackages, type VipPackage } from "@/lib/app-data"
 import { bengaliNumber, money, expiryDateFromToday } from "@/lib/app-format"
+type VipPackage = { id: string; name: string; price: number; dailyRate: number; durationDays: number; maxPerUser: number; stockLimit: number; minActiveReferrals: number; requiresPackageId: string; allowWhileActive: boolean; visible: boolean }
 export default function EarnPage() {
-  const { showToast: action, balance, purchase: onPurchase } = useAppState()
+  const { showToast: action } = useAppState()
+  const [vipPackages, setVipPackages] = useState<VipPackage[]>([])
+  const [balance, setBalance] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [purchasing, setPurchasing] = useState(false)
+  const [purchaseError, setPurchaseError] = useState("")
+
+  useEffect(() => {
+    Promise.all([fetch('/api/packages', { cache: 'no-store' }).then(r => r.json()), fetch('/api/profile', { credentials: 'include', cache: 'no-store' }).then(r => r.json())])
+      .then(([packages, profile]) => { setVipPackages(packages.packages ?? []); if (profile.success) setBalance(profile.user.balance) })
+      .catch(() => action('ডেটা লোড করা যায়নি')).finally(() => setLoading(false))
+  }, [action])
 
   const [selectedPackage, setSelectedPackage] = useState<
-    (typeof vipPackages)[number] | null
+    VipPackage | null
   >(null)
   const suggestedPackage = [...vipPackages]
     .reverse()
@@ -25,16 +36,21 @@ export default function EarnPage() {
     setSelectedPackage(item)
   }
 
-  const confirmPurchase = () => {
-    if (!selectedPackage) return
-    if (amountError) {
-      action(amountError)
-      return
-    }
-
-    onPurchase(selectedPackage)
-    setSelectedPackage(null)
+  const confirmPurchase = async () => {
+    if (!selectedPackage || purchasing) return
+    setPurchasing(true); setPurchaseError("")
+    try {
+      const response = await fetch('/api/packages/purchase', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ packageId: selectedPackage.id }) })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'ক্রয় ব্যর্থ')
+      setBalance(data.balance)
+      setSelectedPackage(null)
+      action('প্যাকেজ কেনা সফল হয়েছে')
+    } catch (error) { setPurchaseError(error instanceof Error ? error.message : 'ক্রয় ব্যর্থ') }
+    finally { setPurchasing(false) }
   }
+
+  if (loading) return <main className="earn-page page-content"><p style={{ textAlign: 'center', padding: '2rem' }}>লোড হচ্ছে...</p></main>
 
   return (
     <>
@@ -51,7 +67,7 @@ export default function EarnPage() {
           <div className="earn-overview">
             <div>
               <small>মোট প্যাকেজ</small>
-              <strong>৬টি</strong>
+            <strong>{bengaliNumber(vipPackages.length)}টি</strong>
             </div>
             <div>
               <small>দৈনিক সম্ভাব্য লাভ</small>
@@ -71,7 +87,7 @@ export default function EarnPage() {
                 <p>মূল্য ও লাভ</p>
               </div>
             </div>
-            <b>৬টি স্তর</b>
+            <b>{bengaliNumber(vipPackages.length)}টি স্তর</b>
           </div>
 
           {suggestedPackage && (
@@ -212,7 +228,7 @@ export default function EarnPage() {
               </div>
             </div>
 
-            {amountError && <p className="balance-warning">{amountError}</p>}
+            {(purchaseError || amountError) && <p className="balance-warning">{purchaseError || amountError}</p>}
 
             <div className="purchase-rules">
               <h3>প্যাকেজ কেনার নিয়ম</h3>
@@ -227,12 +243,12 @@ export default function EarnPage() {
             <div className="purchase-actions">
               <button
                 className="cancel"
-                onClick={() => setSelectedPackage(null)}
+                onClick={() => setSelectedPackage(null)} disabled={purchasing}
               >
                 বাতিল করুন
               </button>
-              <button className="confirm" onClick={confirmPurchase}>
-                ক্রয় নিশ্চিত করুন
+              <button className="confirm" onClick={confirmPurchase} disabled={purchasing || Boolean(amountError)}>
+                {purchasing ? 'ক্রয় হচ্ছে…' : 'ক্রয় নিশ্চিত করুন'}
               </button>
             </div>
           </section>

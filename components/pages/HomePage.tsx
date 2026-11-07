@@ -1,43 +1,47 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/app/Icon"
 import { useAppState } from "@/components/app/AppState"
 import { AppLink } from "@/components/app/AppLink"
-import { vipPackages } from "@/lib/app-data"
 import { bengaliNumber, toBengaliDigits, parseBengaliNumber, money } from "@/lib/app-format"
 export default function HomePage() {
-  const { showToast: action, balance, investment, transactions, deposit: onDeposit, withdraw: onWithdraw, changePage: onNavigate, purchase: onPurchase } = useAppState()
+  const { showToast: action } = useAppState()
+  const [dashboard, setDashboard] = useState<any>(null)
+  const [packages, setPackages] = useState<any[]>([])
+  const [loadError, setLoadError] = useState("")
+  const balance = dashboard?.user?.balance ?? 0
+  const investment = dashboard?.investment ?? null
+  const transactions = dashboard?.transactions ?? []
+  const onNavigate = (page: string) => { window.location.href = `/${page}` }
+  useEffect(() => {
+    Promise.all([fetch('/api/dashboard', { credentials: 'include', cache: 'no-store' }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error); return d }), fetch('/api/packages', { cache: 'no-store' }).then(r => r.json())])
+      .then(([d, p]) => { setDashboard(d); setPackages(p.packages ?? []) }).catch(e => setLoadError(e.message || 'ডেটা লোড করা যায়নি'))
+  }, [])
 
   const [moneyAction, setMoneyAction] = useState<"deposit" | "withdraw" | null>(
     null,
   )
   const [amount, setAmount] = useState(500)
   const dailyProfit = investment
-    ? (investment.amount * investment.package.dailyRate) / 100
+    ? (investment.amount * investment.dailyRate) / 100
     : 0
-  const totalDeposited = transactions
-    .filter((item) => item.type === "credit")
-    .reduce((total, item) => total + item.amount, 0)
-  const totalWithdrawn = transactions
-    .filter(
-      (item) => item.type === "debit" && item.label.includes("উত্তোলন"),
-    )
-    .reduce((total, item) => total + item.amount, 0)
+  const totalDeposited = dashboard?.totalDeposited ?? 0
+  const totalWithdrawn = dashboard?.totalWithdrawn ?? 0
 
   const submitMoneyAction = () => {
     if (!moneyAction || amount <= 0) {
-      action("সঠিক অঙ্ক লিখুন")
+      setLoadError("সঠিক অঙ্ক লিখুন")
       return
     }
     if (moneyAction === "withdraw" && amount > balance) {
-      action("পর্যাপ্ত সঞ্চয় নেই")
+      setLoadError("পর্যাপ্ত সঞ্চয় নেই")
       return
     }
 
     if (moneyAction === "deposit") {
-      onDeposit(amount)
+      onNavigate("deposit")
     } else {
-      onWithdraw(amount)
+      onNavigate("withdraw")
     }
     setMoneyAction(null)
     setAmount(500)
@@ -46,10 +50,11 @@ export default function HomePage() {
   return (
     <>
       <main className="home-page office-page page-content">
+        {loadError && <p role="alert">{loadError}</p>}
         <section className="office-hero">
           <div className="office-welcome">
             <span>আপনার মূল অফিস</span>
-            <h1>স্বাগতম, বরজাজ</h1>
+            <h1>স্বাগতম, {dashboard?.user?.name || "বরজাজ"}</h1>
             <p>সব হিসাব একসাথে</p>
           </div>
           <div className="office-balance">
@@ -63,7 +68,7 @@ export default function HomePage() {
           </div>
           <div className="office-vip-pill">
             <Icon name={investment ? "check" : "clock"} size={16} />
-            {investment ? investment.package.name : "প্যাকেজ সক্রিয় নয়"}
+            {investment ? investment.name : "প্যাকেজ সক্রিয় নয়"}
           </div>
         </section>
 
@@ -76,10 +81,10 @@ export default function HomePage() {
 
         {(() => {
           const pkg = investment
-            ? investment.package
-            : [...vipPackages].reverse().find((item) => balance >= item.price) ?? vipPackages[0]
+            ? investment
+            : [...packages].reverse().find((item) => balance >= item.price) ?? packages[0]
           if (!pkg) return null
-          const pkgIndex = vipPackages.findIndex((item) => item.name === pkg.name)
+          const pkgIndex = packages.findIndex((item) => item.id === pkg.packageId || item.name === pkg.name)
           return (
             <article
               className={
@@ -106,7 +111,7 @@ export default function HomePage() {
                 <div>
                   <small>{investment ? "মেয়াদ ফুরোবে" : "মেয়াদ"}</small>
                   <strong>
-                    {investment ? investment.expiresAt : `${bengaliNumber(pkg.durationDays)} দিন`}
+                    {investment ? new Date(investment.expiresAt).toLocaleDateString('bn-BD') : `${bengaliNumber(pkg.durationDays)} দিন`}
                   </strong>
                 </div>
               </div>
@@ -114,13 +119,7 @@ export default function HomePage() {
                 <AppLink page="work">বিস্তারিত</AppLink>
               ) : (
                 <button
-                  onClick={() => {
-                    if (balance < pkg.price) {
-                      action("পর্যাপ্ত সঞ্চয় নেই")
-                      return
-                    }
-                    onPurchase(pkg)
-                  }}
+                  onClick={() => onNavigate("earn")}
                 >
                   প্যাকেজ কিনুন
                 </button>

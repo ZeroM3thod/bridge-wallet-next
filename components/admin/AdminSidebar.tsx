@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
+import { useState } from "react"
 
 const items = [
   ["dashboard", "Dashboard", "M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"],
@@ -12,12 +13,13 @@ const items = [
   ["settings", "Settings", "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"],
 ] as const
 
-export function AdminSidebar() {
+export function AdminSidebar({ active: activeOverride, onNavigate }: { active?: string; onNavigate?: (key: string) => void } = {}) {
   const router = useRouter()
   const pathname = usePathname()
-  const [open, setOpen] = React.useState(false)
-  const active = pathname === "/superadmin" ? "dashboard" : pathname.split("/").pop()
+  const [open, setOpen] = useState(false)
+  const active = activeOverride ?? (pathname === "/superadmin" ? "dashboard" : pathname.split("/").pop())
   const go = (key: string) => {
+    onNavigate?.(key)
     router.push(key === "dashboard" ? "/superadmin" : `/superadmin/${key}`)
     setOpen(false)
   }
@@ -29,5 +31,3 @@ export function AdminSidebar() {
     </nav></aside>
   </>
 }
-
-import React from "react"

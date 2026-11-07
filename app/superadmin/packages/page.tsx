@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import "../admin.css";
 
@@ -158,15 +158,11 @@ function Switch({ checked, onChange, label, hint }: { checked: boolean; onChange
 /* ------------------------------------------------------------------ */
 
 export default function PackageManagement({
-  initial = DEFAULT_CONFIG,
-  onSave,
-}: {
-  initial?: PackageConfig;
-  onSave?: (config: PackageConfig) => Promise<void> | void;
-}) {
+}: {}) {
   const [active, setActive] = useState("packages");
-  const [saved, setSaved] = useState<PackageConfig>(initial);
-  const [config, setConfig] = useState<PackageConfig>(initial);
+  const [saved, setSaved] = useState<PackageConfig>({ packages: [] });
+  const [config, setConfig] = useState<PackageConfig>({ packages: [] });
+  const [loading, setLoading] = useState(true);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
@@ -180,6 +176,21 @@ export default function PackageManagement({
     setToast({ text, bad });
     setTimeout(() => setToast(null), 3000);
   };
+
+  const loadPackages = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/packages", { cache: "no-store", credentials: "include" });
+      const data = await res.json();
+      if (!res.ok || !Array.isArray(data.packages)) throw new Error(data.error || "Load failed");
+      const cfg = { packages: data.packages.map((p: Pkg) => ({ ...p, allowWhileActive: Boolean(p.allowWhileActive), visible: Boolean(p.visible) })) };
+      setSaved(cfg);
+      setConfig(cfg);
+    } catch (error) { say(error instanceof Error ? error.message : "Failed to load packages", true); }
+    finally { setLoading(false); }
+  };
+
+  useEffect(() => { void loadPackages(); }, []);
 
   const openEdit = (p: Pkg) => {
     setDraft(toDraft(p));
@@ -228,11 +239,13 @@ export default function PackageManagement({
   const save = async () => {
     setSaving(true);
     try {
-      await onSave?.(config);
-      setSaved(config);
+      const res = await fetch("/api/admin/packages", { method: "PUT", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(config) });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Save failed");
+      await loadPackages();
       say("Changes saved");
-    } catch {
-      say("Could not save changes. Try again.", true);
+    } catch (error) {
+      say(error instanceof Error ? error.message : "Could not save changes", true);
     } finally {
       setSaving(false);
     }
@@ -255,6 +268,8 @@ export default function PackageManagement({
   }, [draft]);
 
   const nameOf = (id: string) => config.packages.find((p) => p.id === id)?.name ?? "-";
+
+  if (loading) return <div className="ad"><AdminSidebar active={active} onNavigate={setActive} /><main className="ad-main">Loading packages…</main></div>;
 
   return (
     <div className="ad">

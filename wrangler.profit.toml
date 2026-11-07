@@ -1,0 +1,12 @@
+name = "bridge-wallet-profit-cron"
+main = "workers/profit-cron.ts"
+compatibility_date = "2026-11-05"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bridge-wallet-db"
+database_id = "876fdde8-1857-477a-94d0-218f9fb1862e"
+migrations_dir = ""
+
+[triggers]
+crons = ["* * * * *"]
