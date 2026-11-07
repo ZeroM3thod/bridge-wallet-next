@@ -185,7 +185,7 @@ export function SigninPage() {
       
       if (res.ok) {
         setMsg({ text: "লগইন সফল হয়েছে", ok: true })
-        const redirect = data.user?.role === 2 ? "/superadmin" : "/"
+        const redirect = data.user?.role === 'admin' ? "/superadmin" : "/"
         setTimeout(() => window.location.href = redirect, 1500)
       } else {
         fail(data.field || "", data.error || "লগইন ব্যর্থ")

@@ -19,10 +19,10 @@ export const onRequest: PagesFunction<Env> = async ({ request, env, next }) => {
   }
 
   const session = await env.DB.prepare(
-    'SELECT u.role FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > ?'
-  ).bind(sessionId, Date.now()).first<{ role: number }>()
+    'SELECT COALESCE(u.role_text, u.role, "user") as role FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > ?'
+  ).bind(sessionId, Date.now()).first<{ role: string }>()
 
-  if (!session || session.role !== 2) {
+  if (!session || session.role !== 'admin') {
     return new Response('Not Found', { status: 404 })
   }
 
