@@ -86,11 +86,16 @@ export default function ProfilePage() {
             <Button variant="ghost"
               key={item}
               className={item === "লগ আউট" ? "logout-row" : undefined}
-              onClick={() =>
-                subPages[item]
-                  ? onNavigate(subPages[item])
-                  : action(item === "লগ আউট" ? "লগ আউট সফল হয়েছে (ডেমো)" : `${item} নির্বাচিত হয়েছে`)
-              }
+              onClick={async () => {
+                if (item === "লগ আউট") {
+                  await fetch("/api/auth/logout", { method: "POST", credentials: "include" })
+                  window.location.href = "/signin"
+                } else if (subPages[item]) {
+                  onNavigate(subPages[item])
+                } else {
+                  action(`${item} নির্বাচিত হয়েছে`)
+                }
+              }}
             >
               <span>{item}</span>
               <b>›</b>

@@ -25,7 +25,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     const user = await env.DB.prepare(isEmail
       ? 'SELECT id, email, name, role FROM users WHERE email = ? AND password_hash = ?'
       : 'SELECT id, email, name, role FROM users WHERE phone = ? AND password_hash = ?'
-    ).bind(isEmail ? value.toLowerCase() : phone, hash).first<{ id: string; email: string; name: string; role: string }>()
+    ).bind(isEmail ? value.toLowerCase() : phone, hash).first<{ id: string; email: string; name: string; role: number }>()
 
     if (!user) return Response.json({ error: 'ইমেইল/ফোন বা পাসওয়ার্ড সঠিক নয়' }, { status: 401 })
 
