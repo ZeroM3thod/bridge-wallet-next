@@ -4,14 +4,19 @@ import Icon from "@/components/app/Icon"
 import { AppLink } from "@/components/app/AppLink"
 import { useAppState } from "@/components/app/AppState"
 import { pagePaths, type Page } from "@/lib/app-navigation"
+import { getFirstWord, toBanglaDigit } from "@/lib/bangla-utils"
+
+type HeaderProfile = { name: string; uid: string; vip_level: number }
 function AppHeader({
   page,
   onNotice,
   onProfile,
+  profile,
 }: {
   page: Page
   onNotice: () => void
   onProfile: () => void
+  profile: HeaderProfile | null
 }) {
   const pageLabel = navItems.find((item) => item.id === page)?.label
 
@@ -33,11 +38,11 @@ function AppHeader({
         </span>
         <span className="identity">
           <small>{pageLabel}</small>
-          <strong>বরজাজ</strong>
+          <strong>{profile ? getFirstWord(profile.name) : "বরজাজ"}</strong>
           <span>
-            <b>আইডি ৫৮৯৯৬৩৮০</b>
+            <b>আইডি {profile ? toBanglaDigit(profile.uid) : "০০০০০০০০"}</b>
             <em>
-              <Icon name="shield" size={12} /> বিশিষ্ট স্তর ০
+              <Icon name="shield" size={12} /> বিশিষ্ট স্তর {profile ? toBanglaDigit(profile.vip_level) : "০"}
             </em>
           </span>
         </span>
@@ -71,10 +76,11 @@ const navItems: { id: Page; icon: string; label: string }[] = [
 export default function BorojajApp({ children }: { children: React.ReactNode }) {
  const pathname = usePathname()
  const router = useRouter()
- const { showToast, changePage } = useAppState()
+  const { showToast, changePage } = useAppState()
+  const [profile, setProfile] = useState<HeaderProfile | null>(null)
  const isPublic = pathname === "/signin" || pathname === "/signup"
  const [authorized, setAuthorized] = useState(false)
- useEffect(() => {
+  useEffect(() => {
   setAuthorized(false)
   if (isPublic) return
   let active = true
@@ -84,12 +90,24 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
    else router.replace("/signin")
   }).catch(() => router.replace("/signin"))
   return () => { active = false }
- }, [pathname, isPublic, router])
+  }, [pathname, isPublic, router])
+  useEffect(() => {
+    if (isPublic || !authorized) return
+    let active = true
+    const load = () => fetch('/api/profile', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (active && d?.success) setProfile(d.user) })
+      .catch(() => {})
+    load()
+    const onFocus = () => { void load() }
+    window.addEventListener('focus', onFocus)
+    return () => { active = false; window.removeEventListener('focus', onFocus) }
+  }, [authorized, isPublic])
  if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
  return <div className="app blue-header">
-  <AppHeader page={page} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} />
+   <AppHeader page={page} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} />
   {children}
   <nav className="bottom-nav" aria-label="প্রধান নেভিগেশন">{navItems.map(item => <AppLink key={item.id} page={item.id} plain className={activePage === item.id ? "active" : ""}><Icon name={item.icon} size={27} /><span>{item.label}</span></AppLink>)}</nav>
  </div>

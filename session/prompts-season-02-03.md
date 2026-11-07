@@ -122,7 +122,7 @@ hey now read the @README.md file full and do it all and if need create new datat
 
 ### 7
 
-add the exact same to same pakages on databse like hardcoded
+add the exact same to same pakages on database like hardcoded
 
 ### 8
 
