@@ -8,7 +8,6 @@ const hashPassword = async (password: string) => {
 }
 
 export async function onRequestPost({ request, env }: EventContext<Env, any, any>) {
-  return Response.json({ error: 'সার্ভার লিমিট শেষ, লগইন সাময়িকভাবে বন্ধ' }, { status: 503 })
   try {
     const { identifier, password } = await request.json() as { identifier?: string; password?: string }
     if (!identifier?.trim() || !password) {
