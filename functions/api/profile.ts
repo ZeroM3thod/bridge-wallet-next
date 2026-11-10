@@ -20,16 +20,19 @@ export async function onRequestGet({ request, env }: EventContext<Env, any, any>
     }>()
     if (!user) return Response.json({ error: 'ব্যবহারকারী পাওয়া যায়নি' }, { status: 404 })
 
+    const dayStart = new Date(Date.now() + 6 * 60 * 60 * 1000)
+    dayStart.setUTCHours(0, 0, 0, 0)
+    dayStart.setTime(dayStart.getTime() - 6 * 60 * 60 * 1000)
     const [storedStats, packageStats] = await Promise.all([
-      env.DB.prepare('SELECT team_received, team_dividend, today_earnings, total_withdraw FROM user_stats WHERE user_id = ?').bind(session.user_id).first<Record<string, number>>(),
-      env.DB.prepare('SELECT COALESCE((SELECT SUM(amount) FROM daily_profits WHERE user_id=?),0) AS work_earnings, COALESCE((SELECT SUM(price_paid) FROM user_packages WHERE user_id=?),0) AS total_deposit').bind(session.user_id, session.user_id).first<{ work_earnings: number; total_deposit: number }>(),
+      env.DB.prepare('SELECT team_received, team_dividend, total_withdraw FROM user_stats WHERE user_id = ?').bind(session.user_id).first<Record<string, number>>(),
+      env.DB.prepare('SELECT COALESCE((SELECT SUM(amount) FROM daily_profits WHERE user_id=?),0) AS work_earnings, COALESCE((SELECT SUM(price_paid) FROM user_packages WHERE user_id=?),0) AS total_deposit, COALESCE((SELECT SUM(amount) FROM daily_profits WHERE user_id=? AND credited_at>=?),0) AS today_earnings').bind(session.user_id, session.user_id, session.user_id, dayStart.getTime()).first<{ work_earnings: number; total_deposit: number; today_earnings: number }>(),
     ])
     const stats = {
       work_earnings: packageStats?.work_earnings ?? 0,
       total_deposit: packageStats?.total_deposit ?? 0,
       team_received: storedStats?.team_received ?? 0,
       team_dividend: storedStats?.team_dividend ?? 0,
-      today_earnings: storedStats?.today_earnings ?? 0,
+      today_earnings: packageStats?.today_earnings ?? 0,
       total_withdraw: storedStats?.total_withdraw ?? 0,
     }
 
