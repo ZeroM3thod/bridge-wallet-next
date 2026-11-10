@@ -30,7 +30,7 @@ export default function DepositPage() {
           return
         }
         if (result.status === "failed") {
-          toastRef.current("পেমেন্ট ব্যর্থ হয়েছে")
+          toastRef.current("পেমেন্ট ব্যর্থ হয়েছে; ব্যালেন্স পরিবর্তন হয়নি")
           window.history.replaceState({}, "", "/deposit")
           return
         }

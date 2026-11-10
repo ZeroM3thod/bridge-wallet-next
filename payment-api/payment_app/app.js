@@ -83,6 +83,15 @@ router.post('/create-payment', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid amount' });
         }
 
+        let safeReturnUrl = RETURN_URL;
+        if (returnUrl) {
+            const candidate = new URL(returnUrl);
+            if (candidate.protocol !== 'https:' || candidate.hostname !== 'bridge-wallet-9ik.pages.dev') {
+                return res.status(400).json({ success: false, error: 'Invalid returnUrl' });
+            }
+            safeReturnUrl = candidate.toString();
+        }
+
         const payload = {
             mchId: MCH_ID,
             currency: 'BDT',
@@ -91,7 +100,7 @@ router.post('/create-payment', async (req, res) => {
             money: String(intMoney),
             attach: attach ? String(attach) : '',
             notify_url: NOTIFY_URL,
-            returnUrl: returnUrl || RETURN_URL
+            returnUrl: safeReturnUrl
         };
         payload.sign = makeSign(payload);
 
@@ -141,7 +150,11 @@ router.post('/payment-callback', (req, res) => {
     const proxy = https.request({ hostname: target.hostname, path: target.pathname + target.search, method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(body) } }, upstream => {
         let response = '';
         upstream.on('data', chunk => response += chunk);
-        upstream.on('end', () => upstream.statusCode === 200 && response.trim() === 'success' ? res.send('success') : res.status(502).send('fail'));
+        upstream.on('end', () => {
+            if (upstream.statusCode === 200 && response.trim() === 'success') return res.send('success');
+            console.error('Callback target rejected notification:', upstream.statusCode, response.slice(0, 500));
+            return res.status(502).send('fail');
+        });
     });
     proxy.on('error', error => { console.error('Callback forwarding failed:', error.message); res.status(502).send('fail'); });
     proxy.setTimeout(15000, () => proxy.destroy(new Error('callback timeout')));
@@ -161,6 +174,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`LIVE PayIn server running on port ${PORT} | mchId ${MCH_ID} | ${API_URL}`);
 });
-
 
 

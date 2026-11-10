@@ -29,7 +29,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     const amount = Number(data.money)
     if (!order || !signature) return new Response('fail', { status: 400 })
 
-    const expectedMch = env.OKEXPAY_MCH_ID || '1000'
+    const expectedMch = env.OKEXPAY_MCH_ID || '5393'
     if (data.mchId && data.mchId !== expectedMch) return new Response('fail', { status: 400 })
 
     const signedFields = Object.fromEntries(Object.entries(data)
@@ -43,7 +43,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     if (!deposit) return new Response('fail', { status: 404 })
     if (deposit.status === 'paid') return new Response('success')
 
-    const status = data.status || data.trade_status || ''
+    const status = String(data.status || data.trade_status || '').trim().toLowerCase()
     if (FAILED_STATUSES.includes(status)) {
       await env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(order).run()
       return new Response('success')

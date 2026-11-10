@@ -1,0 +1,1 @@
+/profile/profits on this page remove all hardcoded data and add the real data from databse and backend here show all profites record form pakage with data and the pakage name with profit amount also .
