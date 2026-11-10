@@ -56,6 +56,10 @@ export function SignupPage() {
   const [sentTo, setSentTo] = useState("")
   const [loading, setLoading] = useState(false)
   const [sendingCode, setSendingCode] = useState(false)
+  useEffect(() => {
+    const referralCode = new URLSearchParams(window.location.search).get("ref")
+    if (referralCode) setF(current => ({ ...current, invite: referralCode.slice(0, 20) }))
+  }, [])
   const set = (k: keyof typeof f) => (v: string) => { setF({ ...f, [k]: v }); if (bad === k) setBad("") }
   useEffect(() => { if (timer <= 0) return; const t = setTimeout(() => setTimer(timer - 1), 1000); return () => clearTimeout(t) }, [timer])
   const fail = (k: string, text: string) => { setBad(k); setMsg({ text, ok: false }) }

@@ -1,45 +1,24 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Icon from "@/components/app/Icon"
 import { useAppState } from "@/components/app/AppState"
 import { AppLink } from "@/components/app/AppLink"
-import { teamData, salaryTiers, levelTotals } from "@/lib/app-data"
 import { bengaliNumber, money } from "@/lib/app-format"
 export default function TeamPage() {
- const { showToast: action, changePage } = useAppState()
- const level = 1
-  const liveStats = {
-    l1: teamData[1].active,
-    l2: teamData[2].active,
-    l3: teamData[3].active,
-  }
-  const teamDepositTotal = ([1, 2, 3] as const).reduce(
-    (sum, item) => sum + teamData[item].teamDeposit,
-    0,
-  )
-  const teamMemberTotal = ([1, 2, 3] as const).reduce(
-    (sum, item) => sum + teamData[item].members,
-    0,
-  )
-  const bestTier = [...salaryTiers]
-    .reverse()
-    .find(
-      (tier) =>
-        liveStats.l1 >= tier.req.l1 &&
-        liveStats.l2 >= tier.req.l2 &&
-        liveStats.l3 >= tier.req.l3,
-    )
-  const data = teamData[level]
-  const totals = levelTotals(level)
-  const summary = ([1, 2, 3] as const).reduce(
-    (result, item) => {
-      const itemTotals = levelTotals(item)
-      result.deposit += itemTotals.deposit
-      result.profit += itemTotals.profit
-      result.members += teamData[item].members
-      result.active += teamData[item].active
-      return result
-    },
-    { deposit: 0, profit: 0, members: 0, active: 0 },
-  )
+ const { showToast: action } = useAppState()
+ const [referral, setReferral] = useState<{ referralCode: string; members: number; active: number; depositBonus: number; profitCommission: number } | null>(null)
+ const [origin, setOrigin] = useState("")
+ const [error, setError] = useState("")
+ useEffect(() => {
+   setOrigin(window.location.origin)
+   fetch("/api/referrals", { credentials: "include", cache: "no-store" }).then(async response => {
+     const data = await response.json()
+     if (!response.ok) throw new Error(data.error)
+     setReferral(data)
+   }).catch(reason => setError(reason instanceof Error ? reason.message : "ডেটা লোড করা যায়নি"))
+ }, [])
+ const referralLink = referral ? `${origin}/signup?ref=${encodeURIComponent(referral.referralCode)}` : ""
 
   const copyText = async (text: string, message: string) => {
     try {
@@ -71,26 +50,26 @@ export default function TeamPage() {
           <div>
             <small>মোট রেফার ইনকাম</small>
             <strong className="amber">
-              {money(summary.deposit + summary.profit)}
+              {money((referral?.depositBonus ?? 0) + (referral?.profitCommission ?? 0))}
             </strong>
           </div>
           <div>
             <small>মোট সদস্য</small>
-            <strong>{bengaliNumber(summary.members)} জন</strong>
+            <strong>{bengaliNumber(referral?.members ?? 0)} জন</strong>
           </div>
           <div>
             <small>সক্রিয় সদস্য</small>
             <strong className="green">
-              {bengaliNumber(summary.active)} জন
+              {bengaliNumber(referral?.active ?? 0)} জন
             </strong>
           </div>
           <div>
             <small>ডিপোজিট বোনাস</small>
-            <strong>{money(summary.deposit)}</strong>
+            <strong>{money(referral?.depositBonus ?? 0)}</strong>
           </div>
           <div>
             <small>প্রফিট কমিশন</small>
-            <strong>{money(summary.profit)}</strong>
+            <strong>{money(referral?.profitCommission ?? 0)}</strong>
           </div>
         </div>
       </section>
@@ -107,23 +86,20 @@ export default function TeamPage() {
         </div>
         <label>আমন্ত্রণ কোড</label>
         <div className="copy-field">
-          <strong>BOROJAJ8996</strong>
+          <strong>{referral?.referralCode ?? (error || "লোড হচ্ছে...")}</strong>
           <button
-            onClick={() => copyText("BOROJAJ8996", "কোড কপি হয়েছে")}
+            disabled={!referral}
+            onClick={() => referral && copyText(referral.referralCode, "কোড কপি হয়েছে")}
           >
             <Icon name="copy" size={15} /> কপি
           </button>
         </div>
         <label>আমন্ত্রণ লিংক</label>
         <div className="copy-field link-field">
-          <span>https://borojaj.app/ref/BOROJAJ8996</span>
+          <span>{referralLink || "লোড হচ্ছে..."}</span>
           <button
-            onClick={() =>
-              copyText(
-                "https://borojaj.app/ref/BOROJAJ8996",
-                "লিংক কপি হয়েছে",
-              )
-            }
+            disabled={!referral}
+            onClick={() => referral && copyText(referralLink, "লিংক কপি হয়েছে")}
           >
             <Icon name="link" size={15} /> কপি লিংক
           </button>

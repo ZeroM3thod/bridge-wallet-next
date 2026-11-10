@@ -20,7 +20,7 @@ export function AdminSidebar({ active: activeOverride, onNavigate }: { active?: 
   const active = activeOverride ?? (pathname === "/superadmin" ? "dashboard" : pathname.split("/").pop())
   const go = (key: string) => {
     onNavigate?.(key)
-    router.push(key === "dashboard" ? "/superadmin" : `/superadmin/${key}`)
+    router.push(key === "dashboard" ? "/superadmin" : `/superadmin/${key === "referrals" ? "reffer" : key}`)
     setOpen(false)
   }
   return <>
