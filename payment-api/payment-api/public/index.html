@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f9; margin: 0; }
+        .box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px; }
+        h3 { margin-top: 0; color: #333; text-align: center; }
+        label { font-size: 14px; color: #555; display: block; margin-top: 10px; }
+        input, select, button { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h3>Make Payment</h3>
+        <label>Amount (BDT):</label>
+        <input type="number" id="amount" value="100">
+        
+        <label>Select Method:</label>
+        <select id="pay_type">
+            <option value="BKASH">bKash</option>
+            <option value="NAGAD">Nagad</option>
+            <option value="ROCKET">Rocket</option>
+        </select>
+        
+        <button onclick="pay()">Pay Now</button>
+    </div>
+
+    <script>
+        async function pay() {
+            const amount = document.getElementById('amount').value;
+            const pay_type = document.getElementById('pay_type').value;
+
+            try {
+                const res = await fetch('/api/pay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount, pay_type })
+                });
+
+                const data = await res.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('Connection error!');
+            }
+        }
+    </script>
+</body>
+</html>
