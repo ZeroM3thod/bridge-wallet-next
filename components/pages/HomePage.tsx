@@ -73,10 +73,10 @@ export default function HomePage() {
         </section>
 
         <section className="office-actions" aria-label="দ্রুত কার্যক্রম">
-          <Button variant="ghost" onClick={() => onNavigate("deposit")}><span><Icon name="deposit" size={26} /></span><b>সঞ্চয় জমা</b></Button>
-          <AppLink page="withdraw"><span><Icon name="withdraw" size={26} /></span><b>অর্থ উত্তোলন</b></AppLink>
-          <AppLink page="earn"><span><Icon name="chart" size={26} /></span><b>প্যাকেজ কিনুন</b></AppLink>
-          <AppLink page="work"><span><Icon name="work" size={26} /></span><b>কর্মক্ষেত্র</b></AppLink>
+          <Button variant="ghost" onClick={() => onNavigate("deposit")}><span><Icon name="deposit" size={26} strokeWidth={2.8} /></span><b>সঞ্চয় জমা</b></Button>
+          <AppLink page="withdraw"><span><Icon name="withdraw" size={26} strokeWidth={2.8} /></span><b>অর্থ উত্তোলন</b></AppLink>
+          <AppLink page="earn"><span><Icon name="chart" size={26} strokeWidth={2.8} /></span><b>প্যাকেজ কিনুন</b></AppLink>
+          <AppLink page="work"><span><Icon name="work" size={26} strokeWidth={2.8} /></span><b>কর্মক্ষেত্র</b></AppLink>
         </section>
 
         {(() => {
@@ -99,7 +99,7 @@ export default function HomePage() {
                 </div>
                 {!investment && <b className="tier-package-tag">সেরা পছন্দ</b>}
               </div>
-              <div className="tier-package-metrics">
+              <div className={`tier-package-metrics ${investment ? "" : "package-purchase-metrics"}`}>
                 <div>
                   <small>{investment ? "রোপিত পুঁজি" : "প্যাকেজ মূল্য"}</small>
                   <strong>{money(investment ? investment.amount : pkg.price)}</strong>
@@ -114,7 +114,14 @@ export default function HomePage() {
                     {investment ? new Date(investment.expiresAt).toLocaleDateString('bn-BD') : `${bengaliNumber(pkg.durationDays)} দিন`}
                   </strong>
                 </div>
+                {!investment && <div>
+                  <small>ক্রয় সীমা</small>
+                  <strong>{pkg.maxPerUser > 0 ? `${bengaliNumber(pkg.maxPerUser)} বার` : "সীমাহীন"}</strong>
+                </div>}
               </div>
+              {!investment && <div className="package-total-return">
+                মেয়াদ শেষে মোট রিটার্ন: <strong>{money(pkg.price * Math.pow(1 + pkg.dailyRate / 100, pkg.durationDays))}</strong> (লাভ: <strong>{money(pkg.price * (Math.pow(1 + pkg.dailyRate / 100, pkg.durationDays) - 1))}</strong>)
+              </div>}
               {investment ? (
                 <AppLink page="work">বিস্তারিত</AppLink>
               ) : (

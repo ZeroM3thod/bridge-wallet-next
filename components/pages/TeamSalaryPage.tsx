@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { AppLink } from "@/components/app/AppLink"
 import { useAppState } from "@/components/app/AppState"
 import { bengaliNumber } from "@/lib/app-format"
 type Tier = { id: string; icon: string; rank: string; amount: number; reqL1: number; reqL2: number; reqL3: number; enabled: boolean }
@@ -35,25 +34,7 @@ export default function TeamSalaryPage() {
         .salary-redesign .modal-card{animation:salaryModalPop .35s cubic-bezier(.175,.885,.32,1.275) forwards}
         @keyframes salaryModalPop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
       `}</style>
-      <header className="app-header sticky top-0 z-50 px-4 py-3.5 text-white shadow-md">
-        <div className="mx-auto flex max-w-md items-center justify-between">
-          <AppLink page="team" className="flex items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20">← ফিরে যান</AppLink>
-          <h1 className="flex-1 text-center text-base font-bold">বেতন ও লেভেল সিস্টেম</h1>
-          <div className="w-8" />
-        </div>
-      </header>
-
       <main className="mx-auto max-w-md space-y-6 px-4 pt-6">
-        <div className="flex flex-col items-center justify-center space-y-3 text-center">
-          <svg className="h-20 w-20 text-[#3b1e54]" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-            <path d="M50 12 L56 22 L67 18 L62 27 L50 24 L38 27 L33 18 L44 22 Z" />
-            <circle cx="50" cy="11" r="1.5" /><circle cx="33" cy="17" r="1" /><circle cx="67" cy="17" r="1" />
-            <path d="M48 29 L52 29 L55 35 L45 35 Z" /><path d="M44 38 L56 38 L60 47 L40 47 Z" />
-            <path d="M38 50 L62 50 L66 61 L34 61 Z" /><path d="M32 64 L68 64 L72 75 L28 75 Z" />
-          </svg>
-          <h2 className="text-2xl font-bold tracking-tight text-[#2e1c3a]">বেতন ও লেভেল সিস্টেম</h2>
-        </div>
-
         <div className="space-y-4">
           {tiers.map((tier) => {
             const completed = counts[0] >= tier.reqL1 && counts[1] >= tier.reqL2 && counts[2] >= tier.reqL3

@@ -108,12 +108,10 @@ export default function TeamPage() {
 
       <section className="team-links">
         <AppLink className="team-card" page="members">
-          <Icon name="users" size={20} />
           <span>সদস্য ও কমিশন</span>
           <em>›</em>
         </AppLink>
         <AppLink className="team-card" page="salary">
-          <Icon name="wallet" size={20} />
           <span>মাসিক বেতন</span>
           <em>›</em>
         </AppLink>

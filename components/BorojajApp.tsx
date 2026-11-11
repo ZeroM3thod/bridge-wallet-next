@@ -9,20 +9,25 @@ import { getFirstWord, toBanglaDigit } from "@/lib/bangla-utils"
 type HeaderProfile = { name: string; uid: string; vip_level: number }
 function AppHeader({
   page,
+  isSubPage,
+  onBack,
   onNotice,
   onProfile,
   profile,
 }: {
   page: Page
+  isSubPage: boolean
+  onBack: () => void
   onNotice: () => void
   onProfile: () => void
   profile: HeaderProfile | null
 }) {
-  const pageLabel = navItems.find((item) => item.id === page)?.label
+  const pageLabel = navItems.find((item) => item.id === page)?.label ?? ({ members: "সদস্য ও কমিশন", salary: "মাসিক বেতন", deposit: "জমা করুন", withdraw: "অর্থ উত্তোলন", settings: "প্রোফাইল সেটিংস", ledger: "লেনদেন", password: "পাসওয়ার্ড", wpassword: "উত্তোলন পাসওয়ার্ড", profits: "লাভের বিবরণ", download: "তথ্য ডাউনলোড" } as Partial<Record<Page, string>>)[page]
 
   if (page !== "profile") {
     return (
       <header className="page-title-header">
+        {isSubPage && <button className="page-title-back" onClick={onBack}>‹ ফিরতি পথ</button>}
         <h1>{pageLabel}</h1>
       </header>
     )
@@ -106,8 +111,9 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
  if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
- return <div className="app blue-header">
-   <AppHeader page={page} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} />
+  const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits", "download"].includes(page)
+  return <div className="app blue-header">
+    <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} />
   {children}
   <nav className="bottom-nav" aria-label="প্রধান নেভিগেশন">{navItems.map(item => <AppLink key={item.id} page={item.id} plain className={activePage === item.id ? "active" : ""}><Icon name={item.icon} size={27} /><span>{item.label}</span></AppLink>)}</nav>
  </div>

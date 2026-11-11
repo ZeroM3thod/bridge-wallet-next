@@ -2386,7 +2386,7 @@ button:active {
   overflow: hidden;
   border-radius: 16px;
   color: white;
-  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+  background: linear-gradient(115deg, #0860c9 0%, #087fd4 56%, #08a9d7 100%);
   box-shadow: 0 9px 20px rgba(0, 114, 255, .18);
 }
 
@@ -3365,6 +3365,29 @@ button:active {
   margin-top: 12px;
 }
 
+.package-purchase-metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.package-total-return {
+  margin-top: 8px;
+  padding: 8px 6px;
+  color: #123e5b;
+  background: #e1f0fa;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.package-total-return strong {
+  color: #075fb4;
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .active-package-metrics {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -3443,11 +3466,12 @@ button:active {
 }
 
 @media (max-width: 420px) {
-  .tier-package-metrics {
+  .tier-package-metrics,
+  .package-purchase-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tier-package-metrics > div:last-child {
+  .tier-package-metrics:not(.package-purchase-metrics) > div:last-child {
     grid-column: 1 / -1;
   }
 
@@ -5241,10 +5265,11 @@ body,
 }
 
 .team-links { display: grid; gap: 10px; margin-top: 16px; }
-.team-links :is(button, a) { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; color: #0f2a4a; font: inherit; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; }
+.team-links :is(button, a) { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; padding: 6px 17px; color: #082e66; font: inherit; font-size: 18px; font-weight: 600; text-align: left; text-decoration: none; cursor: pointer; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.app .page-content .team-links a { font-size: 18px; }
 .team-links :is(button, a) svg { color: #0072ff; }
 .team-links :is(button, a) span { flex: 1; }
-.team-links :is(button, a) em { font-style: normal; font-size: 17px; color: #94a3b8; }
+.team-links :is(button, a) em { color: #008ad9; font-family: 'Noto Serif Bengali', serif; font-size: 34px; font-style: normal; font-weight: 400; line-height: 1; }
 .sub-back { display: block; margin: 4px 0 14px; padding: 0; border: 0; background: none; color: #0f2a4a; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
 .salary-dash { display: grid; gap: 12px; }
 .salary-hero {
@@ -5366,6 +5391,31 @@ body,
   font-size: clamp(14px, 4vw, 16px);
   font-weight: 700;
   letter-spacing: .3px;
+}
+
+.page-title-header:has(.page-title-back) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 52px;
+  text-align: center;
+}
+
+.page-title-back {
+  justify-self: start;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255, 255, 255, .16);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.page-title-header:has(.page-title-back) h1::after {
+  grid-column: 2;
 }
 
 .page-title-header h1::after {

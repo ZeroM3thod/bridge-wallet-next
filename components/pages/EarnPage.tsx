@@ -132,7 +132,7 @@ export default function EarnPage() {
                     <b className="tier-package-tag">সেরা পছন্দ</b>
                   )}
                 </div>
-                <div className="tier-package-metrics">
+                <div className="tier-package-metrics package-purchase-metrics">
                   <div>
                     <small>প্যাকেজ মূল্য</small>
                     <strong>{money(item.price)}</strong>
@@ -145,6 +145,13 @@ export default function EarnPage() {
                     <small>মেয়াদ</small>
                     <strong>{bengaliNumber(item.durationDays)} দিন</strong>
                   </div>
+                  <div>
+                    <small>ক্রয় সীমা</small>
+                    <strong>{item.maxPerUser > 0 ? `${bengaliNumber(item.maxPerUser)} বার` : "সীমাহীন"}</strong>
+                  </div>
+                </div>
+                <div className="package-total-return">
+                  মেয়াদ শেষে মোট রিটার্ন: <strong>{money(item.price * Math.pow(1 + item.dailyRate / 100, item.durationDays))}</strong> (লাভ: <strong>{money(item.price * (Math.pow(1 + item.dailyRate / 100, item.durationDays) - 1))}</strong>)
                 </div>
                 <button onClick={() => openPackage(item)}>
                   প্যাকেজ কিনুন
