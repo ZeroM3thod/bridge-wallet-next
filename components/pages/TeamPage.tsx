@@ -7,7 +7,7 @@ import { AppLink } from "@/components/app/AppLink"
 import { bengaliNumber, money } from "@/lib/app-format"
 export default function TeamPage() {
  const { showToast: action } = useAppState()
- const [referral, setReferral] = useState<{ referralCode: string; members: number; active: number; depositBonus: number; profitCommission: number } | null>(null)
+  const [referral, setReferral] = useState<{ referralCode: string; members: number; active: number; depositBonus: number; profitCommission: number } | null>(null)
  const [origin, setOrigin] = useState("")
  const [error, setError] = useState("")
  useEffect(() => {

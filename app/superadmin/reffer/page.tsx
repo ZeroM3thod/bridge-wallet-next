@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import Icon from "@/components/app/Icon";
 import "../admin.css";
 
 /* ------------------------------------------------------------------ */
@@ -265,7 +266,7 @@ export default function ReferralManagement() {
   const [tierErrors, setTierErrors] = useState<TierErrors>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const [requests, setRequests] = useState<SalaryRequest[]>(DEFAULT_REQUESTS);
+  const [requests, setRequests] = useState<SalaryRequest[]>([]);
   const [rTab, setRTab] = useState<RequestTab>("pending");
   const [rq, setRq] = useState("");
   const [rTier, setRTier] = useState("");
@@ -297,6 +298,7 @@ export default function ReferralManagement() {
         if (!response.ok) throw new Error(data.error || "Load failed");
         setConfig(data.config);
         setSaved(data.config);
+        setRequests(data.requests ?? []);
       })
       .catch((error) => say(error.message || "Load failed", true))
       .finally(() => setLoading(false));
@@ -401,6 +403,8 @@ export default function ReferralManagement() {
     setRBusy(true);
     try {
       
+      const response = await fetch("/api/admin/referrals", { method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: r.id, status: "approved" }) });
+      const data = await response.json(); if (!response.ok) throw new Error(data.error || "Approve failed");
       setRequests((list) => list.map((x) => (x.id === r.id ? { ...x, status: "approved", reviewedAt: new Date().toISOString() } : x)));
       setRSel((sel) => sel.filter((id) => id !== r.id));
       closeReview();
@@ -421,6 +425,8 @@ export default function ReferralManagement() {
     setRBusy(true);
     try {
       
+      const response = await fetch("/api/admin/referrals", { method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: r.id, status: "rejected", note: text }) });
+      const data = await response.json(); if (!response.ok) throw new Error(data.error || "Reject failed");
       setRequests((list) => list.map((x) => (x.id === r.id ? { ...x, status: "rejected", reviewedAt: new Date().toISOString(), reviewNote: text } : x)));
       setRSel((sel) => sel.filter((id) => id !== r.id));
       closeReview();
@@ -454,7 +460,10 @@ export default function ReferralManagement() {
     }
     setRBusy(true);
     try {
-      
+      for (const id of okIds) {
+        const response = await fetch("/api/admin/referrals", { method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, status: "approved" }) });
+        if (!response.ok) skipped++;
+      }
       setRequests(working);
       setRSel([]);
       say(skipped ? `Approved ${okIds.length}. Skipped ${skipped} (one tier per user per month).` : `Approved ${okIds.length} request${okIds.length > 1 ? "s" : ""}`);

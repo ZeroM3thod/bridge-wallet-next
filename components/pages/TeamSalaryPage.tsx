@@ -1,21 +1,25 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppLink } from "@/components/app/AppLink"
 import { useAppState } from "@/components/app/AppState"
-import { teamData, salaryTiers } from "@/lib/app-data"
 import { bengaliNumber } from "@/lib/app-format"
+type Tier = { id: string; icon: string; rank: string; amount: number; reqL1: number; reqL2: number; reqL3: number; enabled: boolean }
 
 export default function TeamSalaryPage() {
-  const { showToast, setBalance, claimedTier, setClaimedTier } = useAppState()
+  const { showToast } = useAppState()
+  const [tiers, setTiers] = useState<Tier[]>([])
+  const [counts, setCounts] = useState([0,0,0])
+  const [claimed, setClaimed] = useState(false)
+  const [cycleLabel, setCycleLabel] = useState('মাস')
+  useEffect(() => { fetch('/api/team',{credentials:'include',cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error);return d}).then(d=>{const c=d.counts ?? [0,0,0]; setCounts(c); setTiers(d.config?.salary?.enabled ? (d.config.salary.tiers ?? []).filter((t:Tier)=>t.enabled) : []); const weekly=d.config?.salary?.cycle==='weekly';setCycleLabel(weekly?'সপ্তাহ':'মাস');const cycle=weekly?`w${Math.floor(Date.now()/604800000)}`:new Date().toISOString().slice(0,7); setClaimed((d.requests ?? []).some((r:{status:string;cycleKey:string})=>r.cycleKey===cycle&&(r.status==='pending'||r.status==='approved')))}).catch(()=>showToast('তথ্য লোড হয়নি')) }, [])
   const [claimAmount, setClaimAmount] = useState<number | null>(null)
-  const stats = { l1: teamData[1].active, l2: teamData[2].active, l3: teamData[3].active }
-
-  const claim = (index: number, amount: number) => {
-    if (claimedTier !== null) return
-    setClaimedTier(index)
-    setBalance((balance) => balance + amount)
-    setClaimAmount(amount)
+  const claim = async (tierId: string) => {
+    const response=await fetch('/api/team',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({tierId})})
+    const data=await response.json()
+    if(!response.ok){showToast(data.error ?? 'Դիմումը ձախողվեց');return}
+    setClaimed(true)
+    setClaimAmount(tiers.find(t=>t.id===tierId)?.amount ?? null)
   }
 
   return (
@@ -51,32 +55,30 @@ export default function TeamSalaryPage() {
         </div>
 
         <div className="space-y-4">
-          {salaryTiers.map((tier, index) => {
-            const completed = stats.l1 >= tier.req.l1 && stats.l2 >= tier.req.l2 && stats.l3 >= tier.req.l3
+          {tiers.map((tier) => {
+            const completed = counts[0] >= tier.reqL1 && counts[1] >= tier.reqL2 && counts[2] >= tier.reqL3
             const requirements = [
-              tier.req.l1 > 0 ? `প্রথম জনগোষ্ঠী ${bengaliNumber(tier.req.l1)} জন` : "",
-              tier.req.l2 > 0 ? `দ্বিতীয় জনগোষ্ঠী ${bengaliNumber(tier.req.l2)} জন` : "",
-              tier.req.l3 > 0 ? `তৃতীয় জনগোষ্ঠী ${bengaliNumber(tier.req.l3)} জন` : "",
+              tier.reqL1 > 0 ? `প্রথম জনগোষ্ঠী ${bengaliNumber(tier.reqL1)} জন` : "",
+              tier.reqL2 > 0 ? `দ্বিতীয় লেভেল ${bengaliNumber(tier.reqL2)} জন` : "",
+              tier.reqL3 > 0 ? `তৃতীয় জনগোষ্ঠী ${bengaliNumber(tier.reqL3)} জন` : "",
             ].filter(Boolean).join(", ")
             return (
               <article key={tier.rank} className={`salary-card-custom space-y-3 p-4 ${completed ? "unlocked" : ""}`}>
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-[#2e1c3a]"><span>{tier.icon}</span><span>{tier.rank}</span></div>
-                  <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">{bengaliNumber(tier.amount)}৳ / মাস</span>
+                  <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">{bengaliNumber(tier.amount)}৳ / {cycleLabel}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="mt-0.5 text-lg leading-none text-emerald-600">•</span>
-                  <p className="text-xs font-bold leading-relaxed text-slate-800">{requirements} সদস্য যুক্ত করলে মাসিক বেতন {bengaliNumber(tier.amount)}৳</p>
+                  <p className="text-xs font-bold leading-relaxed text-slate-800">{requirements} সদস্য যুক্ত করলে প্রতি {cycleLabel} বেতন {bengaliNumber(tier.amount)}৳</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-2">
                   <div className="space-x-1 text-[10px] font-bold text-slate-400">
-                    <span>L1: {bengaliNumber(stats.l1)}/{bengaliNumber(tier.req.l1)}</span>
-                    {tier.req.l2 > 0 && <span>| L2: {bengaliNumber(stats.l2)}/{bengaliNumber(tier.req.l2)}</span>}
-                    {tier.req.l3 > 0 && <span>| L3: {bengaliNumber(stats.l3)}/{bengaliNumber(tier.req.l3)}</span>}
+                    <span>L1: {bengaliNumber(counts[0])}/{bengaliNumber(tier.reqL1)}</span>
+                    {tier.reqL2 > 0 && <span>| L2: {bengaliNumber(counts[1])}/{bengaliNumber(tier.reqL2)}</span>}
+                    {tier.reqL3 > 0 && <span>| L3: {bengaliNumber(counts[2])}/{bengaliNumber(tier.reqL3)}</span>}
                   </div>
-                  {completed ? (
-                    <button type="button" onClick={() => claim(index, tier.amount)} disabled={claimedTier !== null} className="btn-claim-glow rounded-xl px-4 py-2 text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-60">দাবি করুন</button>
-                  ) : <button type="button" disabled className="btn-locked-custom cursor-not-allowed rounded-xl px-3.5 py-1.5 text-xs font-bold">শর্ত পূরণ হয়নি</button>}
+                  <button type="button" onClick={() => claim(tier.id)} disabled={!completed || claimed} className={`${completed ? 'btn-claim-glow' : 'btn-locked-custom'} rounded-xl px-4 py-2 text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-70`}>{claimed ? 'এই মাসে নেওয়া হয়েছে' : completed ? 'দাবি করুন' : 'শর্ত পূরণ হয়নি'}</button>
                 </div>
               </article>
             )

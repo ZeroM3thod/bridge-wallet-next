@@ -23,6 +23,12 @@ export default function EarnPage() {
   const suggestedPackage = [...vipPackages]
     .reverse()
     .find((item) => balance >= item.price)
+  const dailyRates = vipPackages.map((item) => item.dailyRate).filter(Number.isFinite)
+  const dailyProfitRange = dailyRates.length
+    ? dailyRates.length === 1
+      ? `${bengaliNumber(dailyRates[0])}%`
+      : `${bengaliNumber(Math.min(...dailyRates))}% – ${bengaliNumber(Math.max(...dailyRates))}%`
+    : "—"
   const amountError = selectedPackage
     ? balance < selectedPackage.price
       ? "পর্যাপ্ত সঞ্চয় নেই"
@@ -71,7 +77,7 @@ export default function EarnPage() {
             </div>
             <div>
               <small>দৈনিক সম্ভাব্য লাভ</small>
-              <strong>০.৮% – ১.৮%</strong>
+              <strong>{dailyProfitRange}</strong>
             </div>
           </div>
         </section>
