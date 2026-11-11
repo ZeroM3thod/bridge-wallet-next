@@ -54,6 +54,29 @@ export type SalarySettings = {
   tiers: SalaryTier[];
 };
 
+export type RequestStatus = "pending" | "approved" | "rejected";
+
+export type SalaryRequest = {
+  id: string;
+  userId: string;
+  mobile: string;
+  memberId: string;
+  vipLevel: number;
+  tierIcon: string;
+  tierRank: string;
+  amount: number; // BDT
+  teamL1: number; // active members at the time of the request
+  teamL2: number;
+  teamL3: number;
+  reqL1: number; // what the tier needs
+  reqL2: number;
+  reqL3: number;
+  requestedAt: string; // ISO date
+  status: RequestStatus;
+  reviewedAt?: string;
+  reviewNote?: string;
+};
+
 export type ReferralConfig = {
   general: GeneralSettings;
   commissions: CommissionSettings;
@@ -92,34 +115,46 @@ const DEFAULT_CONFIG: ReferralConfig = {
     onePerCycle: true,
     needsApproval: true,
     tiers: [
-      { id: "t1", icon: "🥉", rank: "ব্রোঞ্জ লিডার", amount: 1000, reqL1: 5, reqL2: 0, reqL3: 0, enabled: true },
-      { id: "t2", icon: "🥈", rank: "সিলভার লিডার", amount: 3000, reqL1: 10, reqL2: 5, reqL3: 0, enabled: true },
-      { id: "t3", icon: "🥇", rank: "গোল্ড লিডার", amount: 8000, reqL1: 20, reqL2: 10, reqL3: 5, enabled: true },
-      { id: "t4", icon: "💎", rank: "ডায়মন্ড লিডার", amount: 20000, reqL1: 40, reqL2: 20, reqL3: 10, enabled: true },
-      { id: "t5", icon: "👑", rank: "ক্রাউন লিডার", amount: 50000, reqL1: 80, reqL2: 40, reqL3: 20, enabled: true },
+      { id: "t1", icon: "🥉", rank: "ব্রোঞ্জ লিডার", amount: 300, reqL1: 3, reqL2: 0, reqL3: 0, enabled: true },
+      { id: "t2", icon: "🥈", rank: "সিলভার লিডার", amount: 700, reqL1: 5, reqL2: 0, reqL3: 0, enabled: true },
+      { id: "t3", icon: "🥇", rank: "গোল্ড লিডার", amount: 1200, reqL1: 7, reqL2: 3, reqL3: 0, enabled: true },
+      { id: "t4", icon: "💎", rank: "প্লাটিনাম লিডার", amount: 2500, reqL1: 10, reqL2: 5, reqL3: 0, enabled: true },
+      { id: "t5", icon: "👑", rank: "ডায়মন্ড লিডার", amount: 5000, reqL1: 15, reqL2: 10, reqL3: 5, enabled: true },
+      { id: "t6", icon: "⭐", rank: "ক্রাউন ডিরেক্টর", amount: 10000, reqL1: 30, reqL2: 20, reqL3: 10, enabled: true },
+      { id: "t7", icon: "🚀", rank: "এম্বাসেডর", amount: 25000, reqL1: 60, reqL2: 40, reqL3: 20, enabled: true },
+      { id: "t8", icon: "🏛️", rank: "প্রেসিডেন্সিয়াল লিডার", amount: 50000, reqL1: 120, reqL2: 80, reqL3: 50, enabled: true },
     ],
   },
 };
 
-const NAV = [
-  { key: "dashboard", label: "Dashboard", icon: "M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z" },
-  { key: "users", label: "Users", icon: "M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM4 21a8 8 0 0 1 16 0" },
-  { key: "deposits", label: "Deposits", icon: "M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" },
-  { key: "withdraws", label: "Withdraws", icon: "M12 15V3m0 0L8 7m4-4l4 4M4 21h16" },
-  { key: "packages", label: "Packages", icon: "M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8" },
-  { key: "referrals", label: "Referral Manage", icon: "M17 8a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM7 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM19 21a5 5 0 0 0-8-4" },
-  { key: "settings", label: "Settings", icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" },
+const DEFAULT_REQUESTS: SalaryRequest[] = [
+  { id: "r1", userId: "u1", mobile: "01711-000101", memberId: "100421", vipLevel: 2, tierIcon: "🥈", tierRank: "সিলভার লিডার", amount: 700, teamL1: 8, teamL2: 1, teamL3: 0, reqL1: 5, reqL2: 0, reqL3: 0, requestedAt: "2026-11-11T09:12:00+06:00", status: "pending" },
+  { id: "r2", userId: "u2", mobile: "01822-000202", memberId: "100388", vipLevel: 3, tierIcon: "🥇", tierRank: "গোল্ড লিডার", amount: 1200, teamL1: 9, teamL2: 4, teamL3: 0, reqL1: 7, reqL2: 3, reqL3: 0, requestedAt: "2026-11-11T08:40:00+06:00", status: "pending" },
+  { id: "r3", userId: "u3", mobile: "01933-000303", memberId: "100267", vipLevel: 4, tierIcon: "💎", tierRank: "প্লাটিনাম লিডার", amount: 2500, teamL1: 12, teamL2: 6, teamL3: 1, reqL1: 10, reqL2: 5, reqL3: 0, requestedAt: "2026-11-10T21:05:00+06:00", status: "pending" },
+  { id: "r4", userId: "u3", mobile: "01933-000303", memberId: "100267", vipLevel: 4, tierIcon: "🥉", tierRank: "ব্রোঞ্জ লিডার", amount: 300, teamL1: 12, teamL2: 6, teamL3: 1, reqL1: 3, reqL2: 0, reqL3: 0, requestedAt: "2026-11-03T10:20:00+06:00", status: "approved", reviewedAt: "2026-11-03T15:00:00+06:00" },
+  { id: "r5", userId: "u4", mobile: "01644-000404", memberId: "100199", vipLevel: 5, tierIcon: "👑", tierRank: "ডায়মন্ড লিডার", amount: 5000, teamL1: 16, teamL2: 11, teamL3: 5, reqL1: 15, reqL2: 10, reqL3: 5, requestedAt: "2026-11-09T18:30:00+06:00", status: "pending" },
+  { id: "r6", userId: "u5", mobile: "01555-000505", memberId: "100150", vipLevel: 1, tierIcon: "🥉", tierRank: "ব্রোঞ্জ লিডার", amount: 300, teamL1: 4, teamL2: 0, teamL3: 0, reqL1: 3, reqL2: 0, reqL3: 0, requestedAt: "2026-11-05T12:00:00+06:00", status: "approved", reviewedAt: "2026-11-05T17:45:00+06:00" },
+  { id: "r7", userId: "u6", mobile: "01766-000606", memberId: "100098", vipLevel: 0, tierIcon: "🥈", tierRank: "সিলভার লিডার", amount: 700, teamL1: 5, teamL2: 0, teamL3: 0, reqL1: 5, reqL2: 0, reqL3: 0, requestedAt: "2026-11-04T14:10:00+06:00", status: "rejected", reviewedAt: "2026-11-04T19:00:00+06:00", reviewNote: "Suspicious / fake referrals" },
+];
+
+const REJECT_REASONS = [
+  "Requirements not met",
+  "Already claimed this month",
+  "Suspicious / fake referrals",
+  "Other",
 ] as const;
 
 const bdt = (n: number) => "৳" + n.toLocaleString("en-BD", { maximumFractionDigits: 2 });
+const when = (iso: string) =>
+  new Date(iso).toLocaleString("en-BD", { timeZone: "Asia/Dhaka", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+const monthOf = (iso: string) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "Asia/Dhaka" }).slice(0, 7);
 
-function Icon({ d, size = 18 }: { d: string; size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d={d} />
-    </svg>
-  );
-}
+/** One tier per user per month: true if this user already has an approved request in the same month. */
+const hasApprovedThatMonth = (r: SalaryRequest, all: SalaryRequest[]) =>
+  all.some((x) => x.id !== r.id && x.userId === r.userId && x.status === "approved" && monthOf(x.requestedAt) === monthOf(r.requestedAt));
+const hasOtherPendingThatMonth = (r: SalaryRequest, all: SalaryRequest[]) =>
+  all.some((x) => x.id !== r.id && x.userId === r.userId && x.status === "pending" && monthOf(x.requestedAt) === monthOf(r.requestedAt));
+
 
 /* ------------------------------------------------------------------ */
 /*  Small form pieces                                                  */
@@ -213,15 +248,15 @@ function validateTier(d: TierDraft, others: SalaryTier[]): TierErrors {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-type Tab = "general" | "commissions" | "salary";
+type Tab = "general" | "commissions" | "salary" | "requests";
+type RequestTab = RequestStatus | "all";
 
-export default function ReferralManagement({
-}: {}) {
-  const [saved, setSaved] = useState<ReferralConfig>(DEFAULT_CONFIG);
-  const [config, setConfig] = useState<ReferralConfig>(DEFAULT_CONFIG);
-  const [loading, setLoading] = useState(true);
+export default function ReferralManagement() {
+  const initial = DEFAULT_CONFIG;
+  const [saved, setSaved] = useState<ReferralConfig>(initial);
+  const [config, setConfig] = useState<ReferralConfig>(initial);
   const [tab, setTab] = useState<Tab>("general");
-  const [menu, setMenu] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ text: string; bad?: boolean } | null>(null);
 
@@ -229,6 +264,19 @@ export default function ReferralManagement({
   const [tierNew, setTierNew] = useState(false);
   const [tierErrors, setTierErrors] = useState<TierErrors>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const [requests, setRequests] = useState<SalaryRequest[]>(DEFAULT_REQUESTS);
+  const [rTab, setRTab] = useState<RequestTab>("pending");
+  const [rq, setRq] = useState("");
+  const [rTier, setRTier] = useState("");
+  const [rSel, setRSel] = useState<string[]>([]);
+  const [rBusy, setRBusy] = useState(false);
+  const [review, setReview] = useState<string | null>(null);
+  const [rejecting, setRejecting] = useState(false);
+  const [reason, setReason] = useState<(typeof REJECT_REASONS)[number]>(REJECT_REASONS[0]);
+  const [note, setNote] = useState("");
+  const [noteError, setNoteError] = useState("");
+  const [confirmBulk, setConfirmBulk] = useState(false);
 
   const [exDeposit, setExDeposit] = useState(1000);
   const [exProfit, setExProfit] = useState(20);
@@ -243,17 +291,28 @@ export default function ReferralManagement({
   };
 
   useEffect(() => {
-    fetch('/api/admin/referrals', { credentials: 'include', cache: 'no-store' }).then(async r => {
-      const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Load failed');
-      setConfig(d.config); setSaved(d.config)
-    }).catch(e => say(e.message || 'Load failed', true)).finally(() => setLoading(false));
+    fetch("/api/admin/referrals", { credentials: "include", cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Load failed");
+        setConfig(data.config);
+        setSaved(data.config);
+      })
+      .catch((error) => say(error.message || "Load failed", true))
+      .finally(() => setLoading(false));
   }, []);
 
   const save = async () => {
     setSaving(true);
     try {
-      const r = await fetch('/api/admin/referrals', { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
-      const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Save failed');
+      const response = await fetch("/api/admin/referrals", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Save failed");
       setSaved(config);
       say("Changes saved");
     } catch {
@@ -303,11 +362,125 @@ export default function ReferralManagement({
   const toggleTier = (id: string) => upd("salary", { tiers: sl.tiers.map((t) => (t.id === id ? { ...t, enabled: !t.enabled } : t)) });
 
   /* ---- previews ---- */
-  const TABS: [Tab, string][] = [["general", "General"], ["commissions", "Commissions"], ["salary", "Monthly salary"]];
+  /* ---- salary requests ---- */
+  const reqCounts = useMemo(() => {
+    const c = { pending: 0, approved: 0, rejected: 0, pendingAmount: 0 };
+    requests.forEach((r) => {
+      c[r.status] += 1;
+      if (r.status === "pending") c.pendingAmount += r.amount;
+    });
+    return c;
+  }, [requests]);
+
+  const reqTiers = useMemo(() => Array.from(new Set(requests.map((r) => r.tierRank))), [requests]);
+
+  const shownReqs = useMemo(() => {
+    const term = rq.trim().toLowerCase();
+    return requests
+      .filter((r) => (rTab === "all" ? true : r.status === rTab))
+      .filter((r) => (rTier ? r.tierRank === rTier : true))
+      .filter((r) => (term ? r.mobile.toLowerCase().includes(term) || r.memberId.toLowerCase().includes(term) : true))
+      .sort((a, b) => +new Date(b.requestedAt) - +new Date(a.requestedAt));
+  }, [requests, rTab, rq, rTier]);
+
+  const selectablePending = shownReqs.filter((r) => r.status === "pending");
+  const allSelected = selectablePending.length > 0 && selectablePending.every((r) => rSel.includes(r.id));
+  const current = review ? requests.find((r) => r.id === review) ?? null : null;
+  const selectedAmount = requests.filter((r) => rSel.includes(r.id)).reduce((sum, r) => sum + r.amount, 0);
+
+  const closeReview = () => {
+    setReview(null);
+    setRejecting(false);
+    setReason(REJECT_REASONS[0]);
+    setNote("");
+    setNoteError("");
+  };
+
+  const approveOne = async (r: SalaryRequest) => {
+    if (hasApprovedThatMonth(r, requests)) return;
+    setRBusy(true);
+    try {
+      
+      setRequests((list) => list.map((x) => (x.id === r.id ? { ...x, status: "approved", reviewedAt: new Date().toISOString() } : x)));
+      setRSel((sel) => sel.filter((id) => id !== r.id));
+      closeReview();
+      say(`Approved ${bdt(r.amount)} for ${r.mobile}`);
+    } catch {
+      say("Could not approve. Try again.", true);
+    } finally {
+      setRBusy(false);
+    }
+  };
+
+  const rejectOne = async (r: SalaryRequest) => {
+    if (reason === "Other" && !note.trim()) {
+      setNoteError("Write a short reason.");
+      return;
+    }
+    const text = reason === "Other" ? note.trim() : note.trim() ? `${reason}: ${note.trim()}` : reason;
+    setRBusy(true);
+    try {
+      
+      setRequests((list) => list.map((x) => (x.id === r.id ? { ...x, status: "rejected", reviewedAt: new Date().toISOString(), reviewNote: text } : x)));
+      setRSel((sel) => sel.filter((id) => id !== r.id));
+      closeReview();
+      say(`Rejected request from ${r.mobile}`);
+    } catch {
+      say("Could not reject. Try again.", true);
+    } finally {
+      setRBusy(false);
+    }
+  };
+
+  const approveSelected = async () => {
+    // Walk through the selection so two requests from one user in one month cannot both pass.
+    let working = [...requests];
+    const okIds: string[] = [];
+    let skipped = 0;
+    for (const id of rSel) {
+      const r = working.find((x) => x.id === id);
+      if (!r || r.status !== "pending") continue;
+      if (hasApprovedThatMonth(r, working)) {
+        skipped += 1;
+        continue;
+      }
+      working = working.map((x) => (x.id === id ? { ...x, status: "approved" as const, reviewedAt: new Date().toISOString() } : x));
+      okIds.push(id);
+    }
+    setConfirmBulk(false);
+    if (okIds.length === 0) {
+      say("Nothing to approve. Those users already have a salary this month.", true);
+      return;
+    }
+    setRBusy(true);
+    try {
+      
+      setRequests(working);
+      setRSel([]);
+      say(skipped ? `Approved ${okIds.length}. Skipped ${skipped} (one tier per user per month).` : `Approved ${okIds.length} request${okIds.length > 1 ? "s" : ""}`);
+    } catch {
+      say("Could not approve. Try again.", true);
+    } finally {
+      setRBusy(false);
+    }
+  };
+
+  const toggleRow = (id: string) => setRSel((sel) => (sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]));
+  const toggleAll = () => setRSel(allSelected ? [] : selectablePending.map((r) => r.id));
+
+  const REQ_TABS: [RequestTab, string, number][] = [
+    ["pending", "Pending", reqCounts.pending],
+    ["approved", "Approved", reqCounts.approved],
+    ["rejected", "Rejected", reqCounts.rejected],
+    ["all", "All", requests.length],
+  ];
+
+  const TABS: [Tab, string][] = [["general", "General"], ["commissions", "Commissions"], ["salary", "Monthly salary"], ["requests", "Salary requests"]];
 
   return (
     <div className="ad">
       <style>{css}</style>
+
       <AdminSidebar active="referrals" />
 
       <main className="ad-main">
@@ -316,15 +489,16 @@ export default function ReferralManagement({
             <h1>Referral management</h1>
             <p className="ad-muted">Rules, commissions and salary for the Team pages. Changes apply from the next transaction.</p>
           </div>
-          <div className="ad-top-actions">
+          {(tab !== "requests" || dirty) && <div className="ad-top-actions">
             {dirty && <button type="button" className="ad-btn ad-btn-ghost" onClick={() => setConfig(saved)} disabled={saving}>Discard</button>}
             <button type="button" className="ad-btn ad-btn-primary" onClick={save} disabled={!dirty || saving}>{saving ? "Saving…" : "Save changes"}</button>
-          </div>
+          </div>}
         </header>
 
-        {loading ? <div className="ad-panel">Loading referral settings…</div> : <><div className="ad-tabs" role="tablist">
+        {loading ? <div className="ad-panel">Loading referral settings…</div> : <>
+        <div className="ad-tabs" role="tablist">
           {TABS.map(([k, l]) => (
-            <button key={k} role="tab" aria-selected={tab === k} className={`ad-tab ${tab === k ? "is-active" : ""}`} onClick={() => setTab(k)}>{l}</button>
+            <button key={k} role="tab" aria-selected={tab === k} className={`ad-tab ${tab === k ? "is-active" : ""}`} onClick={() => setTab(k)}>{l}{k === "requests" && reqCounts.pending > 0 && <span className="ad-count">{reqCounts.pending}</span>}</button>
           ))}
         </div>
 
@@ -456,7 +630,7 @@ export default function ReferralManagement({
                   </select>
                 </Field>
               </div>
-              <Switch checked={sl.onePerCycle} onChange={(v) => upd("salary", { onePerCycle: v })} label="Only one tier claim per cycle" hint="On: after claiming one tier the member cannot claim another until the next cycle." />
+              <Switch checked={sl.onePerCycle} onChange={(v) => upd("salary", { onePerCycle: v })} label="One tier per user per cycle" hint="On: once a user claims any tier this month, every other tier stays locked until the next month." />
               <Switch checked={sl.needsApproval} onChange={(v) => upd("salary", { needsApproval: v })} label="Admin approval before payment" hint="On: claims wait for the admin, then go to the wallet." />
             </section>
 
@@ -494,7 +668,94 @@ export default function ReferralManagement({
               </div>
             </section>
           </>
-        )}</>}
+        )}
+        {tab === "requests" && (
+          <>
+        <section className="ad-stats" aria-label="Overview">
+          <article className="ad-card"><p className="ad-card-label">Pending requests</p><p className="ad-card-value">{reqCounts.pending}</p><p className="ad-card-note">{bdt(reqCounts.pendingAmount)} waiting</p></article>
+          <article className="ad-card"><p className="ad-card-label">Approved</p><p className="ad-card-value">{reqCounts.approved}</p><p className="ad-card-note">Paid out</p></article>
+          <article className="ad-card"><p className="ad-card-label">Rejected</p><p className="ad-card-value">{reqCounts.rejected}</p><p className="ad-card-note">Not paid</p></article>
+        </section>
+
+        <section className="ad-panel">
+          <div className="ad-tabs" role="tablist">
+            {REQ_TABS.map(([k, l, n]) => (
+              <button key={k} role="tab" aria-selected={rTab === k} className={`ad-tab ${rTab === k ? "is-active" : ""}`} onClick={() => { setRTab(k); setRSel([]); }}>
+                {l} <span className="ad-count">{n}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="ad-toolbar">
+            <input type="search" placeholder="Search mobile number or member ID" aria-label="Search requests" value={rq} onChange={(e) => setRq(e.target.value)} />
+            <select aria-label="Filter by tier" value={rTier} onChange={(e) => setRTier(e.target.value)}>
+              <option value="">All tiers</option>
+              {reqTiers.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
+
+          {rSel.length > 0 && (
+            <div className="ad-bulk">
+              <span><strong>{rSel.length}</strong> selected · {bdt(selectedAmount)}</span>
+              <span className="ad-spacer" />
+              <button type="button" className="ad-btn ad-btn-ghost" onClick={() => setRSel([])}>Clear</button>
+              <button type="button" className="ad-btn ad-btn-primary" onClick={() => setConfirmBulk(true)} disabled={rBusy}>Approve selected</button>
+            </div>
+          )}
+
+          <div className="ad-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th className="ad-check">
+                    {selectablePending.length > 0 && <input type="checkbox" aria-label="Select all pending" checked={allSelected} onChange={toggleAll} />}
+                  </th>
+                  <th>Member</th>
+                  <th>Tier</th>
+                  <th>Amount</th>
+                  <th>Active team</th>
+                  <th>Requested</th>
+                  <th>Status</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {shownReqs.map((r) => {
+                  const dup = r.status === "pending" && hasApprovedThatMonth(r, requests);
+                  return (
+                    <tr key={r.id}>
+                      <td className="ad-check">
+                        {r.status === "pending" && <input type="checkbox" aria-label={`Select ${r.mobile}`} checked={rSel.includes(r.id)} onChange={() => toggleRow(r.id)} />}
+                      </td>
+                      <td>
+                        <strong>{r.mobile}</strong>
+                        <div className="ad-hint">ID {r.memberId} · VIP {r.vipLevel}</div>
+                      </td>
+                      <td>{r.tierIcon} {r.tierRank}</td>
+                      <td><strong>{bdt(r.amount)}</strong></td>
+                      <td className="ad-muted">L1 {r.teamL1} · L2 {r.teamL2} · L3 {r.teamL3}</td>
+                      <td className="ad-muted">{when(r.requestedAt)}</td>
+                      <td>
+                        <span className={`ad-pill ad-${r.status}`}>{r.status[0].toUpperCase() + r.status.slice(1)}</span>
+                        {dup && <div className="ad-hint ad-warn">Already paid this month</div>}
+                        {r.status === "rejected" && r.reviewNote && <div className="ad-hint">{r.reviewNote}</div>}
+                      </td>
+                      <td className="ad-right">
+                        <button type="button" className="ad-btn ad-btn-ghost" onClick={() => setReview(r.id)}>{r.status === "pending" ? "Review" : "Details"}</button>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {shownReqs.length === 0 && (
+                  <tr><td colSpan={8} className="ad-empty">{rTab === "pending" ? "No pending requests." : "No requests match."}</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+          </>
+        )}
+        </>}
       </main>
 
       {/* ---------------- Salary tier modal ---------------- */}
@@ -534,6 +795,113 @@ export default function ReferralManagement({
               <span className="ad-spacer" />
               <button type="button" className="ad-btn ad-btn-ghost" onClick={() => setTier(null)}>Cancel</button>
               <button type="button" className="ad-btn ad-btn-primary" onClick={applyTier}>{tierNew ? "Add tier" : "Apply changes"}</button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* ---------------- Review modal ---------------- */}
+      {current && (() => {
+        const r = current;
+        const pass1 = r.teamL1 >= r.reqL1;
+        const pass2 = r.teamL2 >= r.reqL2;
+        const pass3 = r.teamL3 >= r.reqL3;
+        const meets = pass1 && pass2 && pass3;
+        const paidThisMonth = hasApprovedThatMonth(r, requests);
+        const otherPending = hasOtherPendingThatMonth(r, requests);
+        const isPending = r.status === "pending";
+        return (
+          <div className="ad-modal-back" onClick={closeReview}>
+            <section className="ad-modal" role="dialog" aria-modal="true" aria-label="Salary request" onClick={(e) => e.stopPropagation()}>
+              <div className="ad-modal-head">
+                <h2>{isPending ? "Review salary request" : "Salary request"}</h2>
+                <button type="button" className="ad-x" aria-label="Close" onClick={closeReview}><Icon d="M6 6l12 12M18 6L6 18" /></button>
+              </div>
+
+              <div className="ad-modal-body ad-col">
+                <div className="ad-pkg-head">
+                  <span className="ad-pkg-icon ad-emoji">{r.tierIcon}</span>
+                  <div><h3>{r.tierRank}</h3><small>{bdt(r.amount)} / month</small></div>
+                  <span className={`ad-pill ad-${r.status}`}>{r.status[0].toUpperCase() + r.status.slice(1)}</span>
+                </div>
+
+                <dl className="ad-dl">
+                  <div><dt>Mobile</dt><dd>{r.mobile}</dd></div>
+                  <div><dt>Member ID</dt><dd>{r.memberId}</dd></div>
+                  <div><dt>VIP level</dt><dd>VIP {r.vipLevel}</dd></div>
+                  <div><dt>Requested</dt><dd>{when(r.requestedAt)}</dd></div>
+                  {r.reviewedAt && <div><dt>Reviewed</dt><dd>{when(r.reviewedAt)}</dd></div>}
+                  {r.reviewNote && <div><dt>Reason</dt><dd>{r.reviewNote}</dd></div>}
+                </dl>
+
+                <h3>Conditions</h3>
+                <div className="ad-reqs">
+                  <span className={`ad-req ${pass1 ? "pass" : "fail"}`}>Level 1: {r.teamL1}/{r.reqL1} {pass1 ? "✓" : "✗"}</span>
+                  {r.reqL2 > 0 && <span className={`ad-req ${pass2 ? "pass" : "fail"}`}>Level 2: {r.teamL2}/{r.reqL2} {pass2 ? "✓" : "✗"}</span>}
+                  {r.reqL3 > 0 && <span className={`ad-req ${pass3 ? "pass" : "fail"}`}>Level 3: {r.teamL3}/{r.reqL3} {pass3 ? "✓" : "✗"}</span>}
+                </div>
+
+                {isPending && !meets && <p className="ad-note ad-note-warn">The member does not meet every condition right now. Check the team before approving.</p>}
+                {isPending && paidThisMonth && <p className="ad-note ad-note-bad">This member already has an approved salary this month. Only one tier per month is allowed, so this request can only be rejected.</p>}
+                {isPending && !paidThisMonth && otherPending && <p className="ad-note ad-note-warn">This member has another pending request this month. Approve only one.</p>}
+
+                {isPending && rejecting && (
+                  <div className="ad-reject">
+                    <label className="ad-field">
+                      <span className="ad-field-label">Reason for rejecting</span>
+                      <select value={reason} onChange={(e) => { setReason(e.target.value as (typeof REJECT_REASONS)[number]); setNoteError(""); }}>
+                        {REJECT_REASONS.map((x) => <option key={x}>{x}</option>)}
+                      </select>
+                    </label>
+                    <label className="ad-field">
+                      <span className="ad-field-label">Note {reason === "Other" ? "" : "(optional)"}</span>
+                      <textarea rows={2} value={note} onChange={(e) => { setNote(e.target.value); setNoteError(""); }} />
+                      {noteError && <span className="ad-field-error">{noteError}</span>}
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              <div className="ad-modal-foot">
+                {isPending ? (
+                  rejecting ? (
+                    <>
+                      <button type="button" className="ad-btn ad-btn-ghost" onClick={() => { setRejecting(false); setNoteError(""); }} disabled={rBusy}>Back</button>
+                      <span className="ad-spacer" />
+                      <button type="button" className="ad-btn ad-btn-danger" onClick={() => rejectOne(r)} disabled={rBusy}>{rBusy ? "Rejecting…" : "Confirm reject"}</button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" className="ad-btn ad-btn-danger-ghost" onClick={() => setRejecting(true)} disabled={rBusy}>Reject</button>
+                      <span className="ad-spacer" />
+                      <button type="button" className="ad-btn ad-btn-ghost" onClick={closeReview} disabled={rBusy}>Close</button>
+                      <button type="button" className="ad-btn ad-btn-primary" onClick={() => approveOne(r)} disabled={rBusy || paidThisMonth}>{rBusy ? "Approving…" : `Approve ${bdt(r.amount)}`}</button>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <span className="ad-spacer" />
+                    <button type="button" className="ad-btn ad-btn-ghost" onClick={closeReview}>Close</button>
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
+        );
+      })()}
+
+      {/* ---------------- Bulk approve confirm ---------------- */}
+      {confirmBulk && (
+        <div className="ad-modal-back" onClick={() => setConfirmBulk(false)}>
+          <section className="ad-modal ad-modal-sm" role="dialog" aria-modal="true" aria-label="Approve selected" onClick={(e) => e.stopPropagation()}>
+            <div className="ad-modal-head"><h2>Approve {rSel.length} request{rSel.length > 1 ? "s" : ""}?</h2></div>
+            <div className="ad-modal-body ad-col">
+              <p>{bdt(selectedAmount)} will be paid to the selected members’ wallets. A member who already has a salary this month is skipped.</p>
+            </div>
+            <div className="ad-modal-foot">
+              <span className="ad-spacer" />
+              <button type="button" className="ad-btn ad-btn-ghost" onClick={() => setConfirmBulk(false)}>Cancel</button>
+              <button type="button" className="ad-btn ad-btn-primary" onClick={approveSelected}>Yes, approve</button>
             </div>
           </section>
         </div>
@@ -667,6 +1035,41 @@ const css = `
 .ad-toast.is-bad{background:var(--red)}
 .ad-scrim{display:none}
 
+
+/* salary requests */
+.ad input[type=checkbox]{width:16px; height:16px; padding:0; accent-color:var(--sky-500)}
+.ad-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:16px}
+.ad-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px}
+.ad-card-label{color:var(--muted); font-size:14px}
+.ad-card-value{font-size:30px; font-weight:700; letter-spacing:-.02em; margin-top:6px; color:var(--sky-700)}
+.ad-card-note{color:var(--muted); font-size:13px; margin-top:4px}
+.ad-count{display:inline-block; min-width:22px; text-align:center; background:var(--sky-100); color:var(--sky-700); border-radius:999px; font-size:12.5px; padding:0 7px; margin-left:6px}
+.ad-toolbar{display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap}
+.ad-toolbar input{flex:1; min-width:200px}
+.ad-toolbar select{width:200px}
+.ad-bulk{display:flex; align-items:center; gap:10px; background:var(--sky-50); border:1px solid var(--sky-100); border-radius:12px; padding:10px 14px; margin-bottom:12px; flex-wrap:wrap}
+.ad-check{width:36px}
+.ad-right{text-align:right}
+.ad-hint{font-size:12.5px; color:var(--muted)}
+.ad-warn{color:var(--red)}
+.ad-pill{display:inline-block; padding:2px 10px; border-radius:999px; font-size:12.5px; font-weight:600}
+.ad-approved{background:var(--sky-100); color:var(--sky-700)}
+.ad-pending{background:#fff4d6; color:#8a5a00}
+.ad-rejected{background:#fde4e4; color:#a12525}
+.ad-col{display:flex; flex-direction:column; gap:14px; padding-top:16px}
+.ad-col h3{margin-top:0 !important}
+.ad-modal-sm{max-width:440px}
+.ad-dl{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:0}
+.ad-dl > div{border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+.ad-dl dt{color:var(--muted); font-size:12.5px}
+.ad-dl dd{font-weight:600; margin:0}
+.ad-req.pass{background:var(--sky-50); border-color:var(--sky-100); color:var(--sky-700)}
+.ad-req.fail{background:#fdf1f1; border-color:#f3d4d4; color:var(--red)}
+.ad-note{border-radius:12px; padding:10px 14px; font-size:14px}
+.ad-note-warn{background:#fff8e1; color:#8a5a00}
+.ad-note-bad{background:#fdf1f1; color:#a12525}
+.ad-reject{display:flex; flex-direction:column; gap:12px}
+
 @media (max-width:1024px){ .ad-lvl-grid{grid-template-columns:1fr} }
 @media (max-width:760px){
   .ad-side{position:fixed; left:0; top:0; z-index:30; transform:translateX(-100%); transition:transform .2s ease}
@@ -674,7 +1077,8 @@ const css = `
   .ad-scrim{display:block; position:fixed; inset:0; background:rgba(12,42,61,.35); z-index:20}
   .ad-burger{display:inline-flex}
   .ad-main{padding:20px 16px 40px}
-  .ad-form-grid,.ad-form-grid.three,.ad-pkg-grid{grid-template-columns:1fr}
+  .ad-form-grid,.ad-form-grid.three,.ad-pkg-grid,.ad-stats,.ad-dl{grid-template-columns:1fr}
+  .ad-toolbar select{width:100%}
   .ad-top-actions{width:100%}
   .ad-top-actions .ad-btn{flex:1}
   .ad-panel-head{flex-direction:column}
