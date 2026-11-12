@@ -111,8 +111,8 @@ router.post('/create-payment', async (req, res) => {
 
         const gw = response.data;
 
-        // code 0 = সফল
-        if (gw && gw.code === 0 && gw.data) {
+        // Some gateway responses serialize code as "0" instead of 0.
+        if (gw && String(gw.code) === '0' && gw.data && typeof gw.data.url === 'string' && gw.data.url) {
             return res.json({
                 success: true,
                 paymentUrl: gw.data.url,
@@ -120,10 +120,10 @@ router.post('/create-payment', async (req, res) => {
             });
         }
 
-        console.error('Gateway error:', JSON.stringify(gw));
-        return res.status(400).json({ success: false, gatewayResponse: gw });
+        console.error('Gateway rejected payment:', { httpStatus: response.status, code: gw && gw.code, message: gw && (gw.msg || gw.message), data: gw && gw.data });
+        return res.status(502).json({ success: false, message: (gw && (gw.msg || gw.message)) || 'Gateway rejected payment', gatewayResponse: gw });
     } catch (error) {
-        const detail = error.response ? error.response.data : error.message;
+        const detail = error.response ? { status: error.response.status, data: error.response.data } : error.message;
         console.error('create-payment error:', detail);
         return res.status(500).json({ success: false, error: detail });
     }
@@ -174,5 +174,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`LIVE PayIn server running on port ${PORT} | mchId ${MCH_ID} | ${API_URL}`);
 });
-
 

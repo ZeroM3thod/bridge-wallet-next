@@ -6,12 +6,12 @@ const fs = require('fs');
 const path = require('path');
 
 // cPanel-এর Environment variables থেকে কনফিগারেশন লোড হবে
-const MCH_ID = process.env.MCH_ID;
-const MCH_KEY = process.env.MCH_KEY;
-const API_HOST = process.env.API_HOST || 'mch.wpay.life';
-const NOTIFY_URL = process.env.NOTIFY_URL || 'https://imcagro.top/api/notify';
-const RETURN_URL = process.env.RETURN_URL || 'https://imcagro.top';
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
+const MCH_ID = '5393';
+const MCH_KEY = 'd8490b215ef5248d7fb693a101f9898d';
+const API_HOST = 'https://api.wpay.life';
+const NOTIFY_URL = 'https://imcagro.top/api/payment-callback';
+const RETURN_URL = 'https://bridge-wallet-9ik.pages.dev/deposit';
+const ALLOWED_ORIGIN = 'https://bridge-wallet-9ik.pages.dev';
 const PAY_TYPES = ['BKASH', 'NAGAD', 'ROCKET', 'BKASH-C', 'NAGAD-C'];
 const LOG = path.join(__dirname, 'orders.log');
 
