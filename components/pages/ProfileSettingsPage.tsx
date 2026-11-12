@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useAppState } from "@/components/app/AppState"
-import { AppLink } from "@/components/app/AppLink"
 export default function ProfileSettingsPage() {
   const { showToast: action, changePage: onNavigate } = useAppState()
 
@@ -13,7 +12,6 @@ export default function ProfileSettingsPage() {
   }
   return (
     <main className="home-page page-content profile-settings">
-      <AppLink page="profile" className="ps-back">‹ ফিরে যান</AppLink>
       <h1 className="ps-title">প্রোফাইল সেটিংস</h1>
       <section className="ps-card ps-avatar-wrap">
         <label className="ps-avatar">
