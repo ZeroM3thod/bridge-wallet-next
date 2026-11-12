@@ -4,8 +4,8 @@ import { md5 } from '../../lib/md5'
 type Env = { DB: D1Database; OKEXPAY_MCH_ID?: string; OKEXPAY_KEY?: string }
 
 // GUESSED status values. Confirm against real sandbox callbacks.
-const PAID_STATUSES = ['1', 'success', 'SUCCESS', 'paid', 'PAID']
-const FAILED_STATUSES = ['2', 'fail', 'FAIL', 'failed', 'FAILED']
+const PAID_STATUSES = ['1', 'success', 'paid']
+const FAILED_STATUSES = ['2', 'fail', 'failed']
 const byCodeUnit = ([a]: [string, string], [b]: [string, string]) => (a < b ? -1 : a > b ? 1 : 0)
 
 export async function onRequestPost({ request, env }: EventContext<Env, any, any>) {
@@ -21,16 +21,13 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       data = Object.fromEntries((await request.formData()).entries()) as Record<string, string>
     }
 
-    // Temporary: inspect real callbacks to confirm field names and status values.
-    console.log('Deposit webhook payload:', contentType, JSON.stringify(data))
-
     const order = data.out_trade_no
     const signature = (data.sign || data.Sign || '').toLowerCase()
     const amount = Number(data.money)
     if (!order || !signature) return new Response('fail', { status: 400 })
 
-    const expectedMch = env.OKEXPAY_MCH_ID || '5393'
-    if (data.mchId && data.mchId !== expectedMch) return new Response('fail', { status: 400 })
+    const expectedMch = env.OKEXPAY_MCH_ID
+    if (!expectedMch || data.mchId !== expectedMch) return new Response('fail', { status: 400 })
 
     const signedFields = Object.fromEntries(Object.entries(data)
       .filter(([key, value]) => key !== 'sign' && key !== 'Sign' && value !== '')
@@ -49,18 +46,23 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       return new Response('success')
     }
     if (!PAID_STATUSES.includes(status)) return new Response('fail', { status: 400 })
-    if (!Number.isFinite(amount) || Math.round(amount * 100) !== deposit.amount) {
+    if (!Number.isSafeInteger(amount) || amount * 100 !== deposit.amount) {
       console.error('Deposit amount mismatch', { order, got: data.money, expected: deposit.amount })
       return new Response('fail', { status: 400 })
     }
 
     const now = Date.now()
-    await env.DB.batch([
+    const batch = await env.DB.batch([
       env.DB.prepare("UPDATE deposits SET status='paid', paid_at=? WHERE out_trade_no=? AND status='pending'").bind(now, order),
-      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount, deposit.user_id),
+      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount / 100, deposit.user_id),
       env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'credit',?,'ওয়ালেটে টাকা জমা',? WHERE changes() > 0")
-        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount, now),
+        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount / 100, now),
     ])
+    if (!batch[0].meta.changes) return new Response('success')
+    if (batch[1].meta.changes !== 1 || batch[2].meta.changes !== 1) {
+      console.error('Deposit credit batch incomplete', { order, changes: batch.map((item) => item.meta.changes) })
+      return new Response('fail', { status: 500 })
+    }
     return new Response('success')
   } catch (error) {
     console.error('Deposit webhook error:', error)

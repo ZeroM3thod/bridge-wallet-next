@@ -1,7 +1,8 @@
 import type { EventContext } from '@cloudflare/workers-types'
 
-type Env = { DB: D1Database; PAYMENT_API_URL?: string }
+type Env = { DB: D1Database; PAYMENT_API_URL?: string; PAYMENT_API_SECRET?: string }
 const PAYMENT_API_URL = 'https://imcagro.top'
+const PAYMENT_API_SECRET = '9gX3wQa8Fn5rjR5uCeMVLV7uXuvN7POuJXWcEucF0gY='
 
 const json = (body: unknown, status = 200) => Response.json(body, { status })
 
@@ -24,22 +25,24 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       (body.amount as number) % 100 !== 0 ||
       !['BKASH', 'NAGAD', 'ROCKET', 'BKASH-C', 'NAGAD-C'].includes(body.method ?? '')
     ) return json({ error: 'সঠিক পেমেন্ট পদ্ধতি ও ন্যূনতম ৳৩০০ পরিমাণ দিন' }, 400)
-
     const depositId = crypto.randomUUID()
     const outTradeNo = makeOutTradeNo()
+    const base = (env.PAYMENT_API_URL || PAYMENT_API_URL).replace(/\/$/, '')
+    const endpoint = `${base}/api/create-payment`
+    const returnUrl = `${new URL('/deposit', request.url).toString()}?order=${encodeURIComponent(outTradeNo)}`
     await env.DB.prepare(
       "INSERT INTO deposits (id,user_id,out_trade_no,method,amount,status,created_at) VALUES (?,?,?,?,?,'pending',?)"
-    ).bind(depositId, session.user_id, outTradeNo, body.method!.startsWith('NAGAD') ? 'NAGAD' : 'BKASH', body.amount, Date.now()).run()
+    ).bind(depositId, session.user_id, outTradeNo, body.method, body.amount, Date.now()).run()
 
     const markFailed = () => env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'")
       .bind(outTradeNo).run()
 
     let result: { success?: boolean; paymentUrl?: string; transactionId?: string; message?: string; error?: string }
     try {
-      const gatewayResponse = await fetch(`${(env.PAYMENT_API_URL || PAYMENT_API_URL).replace(/\/$/, '')}/api/create-payment`, {
+      const gatewayResponse = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: Math.round(body.amount! / 100), orderId: outTradeNo, payType: body.method, attach: depositId, returnUrl: `${new URL('/deposit', request.url).toString()}?order=${encodeURIComponent(outTradeNo)}` }),
+        headers: { 'Content-Type': 'application/json', 'X-Proxy-Secret': PAYMENT_API_SECRET },
+        body: JSON.stringify({ amount: Math.round(body.amount! / 100), orderId: outTradeNo, payType: body.method, attach: depositId, returnUrl }),
       })
       const raw = await gatewayResponse.text()
       try {
@@ -66,7 +69,8 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       await markFailed()
       return json({ error: 'গেটওয়ের পেমেন্ট URL গ্রহণযোগ্য নয়' }, 502)
     }
-    if (paymentUrl.protocol !== 'https:') {
+      const host = paymentUrl.hostname.toLowerCase()
+      if (paymentUrl.protocol !== 'https:' || !['wpay.life', 'wpay.one', 'okexpay.dev'].some((domain) => host === domain || host.endsWith(`.${domain}`))) {
       await markFailed()
       return json({ error: 'গেটওয়ের পেমেন্ট URL গ্রহণযোগ্য নয়' }, 502)
     }

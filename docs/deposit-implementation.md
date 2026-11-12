@@ -1,6 +1,6 @@
 # Deposit implementation reference
 
-Collected from the current source. Sandbox only. The gateway docs do not specify signature canonicalization or callback payload, so the assumptions below may cause payment/callback rejection. Never credit funds based on the browser redirect.
+Historical implementation snapshot. Current code includes live/development changes; consult `app/deposit/page.tsx`, `functions/api/deposits/*`, and `payment-api/*/app.js`. Never credit funds based on the browser redirect.
 
 ## Configuration
 

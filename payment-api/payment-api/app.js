@@ -7,11 +7,12 @@ const path = require('path');
 
 // cPanel-এর Environment variables থেকে কনফিগারেশন লোড হবে
 const MCH_ID = '5393';
-const MCH_KEY = 'd8490b215ef5248d7fb693a101f9898d';
+const MCH_KEY = 'REPLACE_WITH_ROTATED_MERCHANT_KEY';
+const PROXY_SECRET = 'REPLACE_WITH_SHARED_PROXY_SECRET';
 const API_HOST = 'https://api.wpay.life';
 const NOTIFY_URL = 'https://imcagro.top/api/payment-callback';
+const CALLBACK_URL = 'https://bridge-wallet-9ik.pages.dev/api/notify';
 const RETURN_URL = 'https://bridge-wallet-9ik.pages.dev/deposit';
-const ALLOWED_ORIGIN = 'https://bridge-wallet-9ik.pages.dev';
 const PAY_TYPES = ['BKASH', 'NAGAD', 'ROCKET', 'BKASH-C', 'NAGAD-C'];
 const LOG = path.join(__dirname, 'orders.log');
 
@@ -33,9 +34,11 @@ function sign(params) {
 function postForm(pathname, params) {
   return new Promise((resolve, reject) => {
     const body = qs.stringify(params);
+    const api = new URL(API_HOST);
     const req = https.request(
       {
-        host: API_HOST,
+        hostname: api.hostname,
+        port: api.port || 443,
         path: pathname,
         method: 'POST',
         headers: {
@@ -74,35 +77,57 @@ function readBody(req) {
   });
 }
 
-async function createOrder(amount, payType) {
+async function createOrder(amount, payType, orderId, attach, returnUrl) {
+  if (!MCH_ID || !MCH_KEY) throw new Error('Payment gateway is not configured');
   const money = parseInt(amount, 10);
   if (!(money > 0)) throw new Error('invalid amount');
   if (!PAY_TYPES.includes(payType)) throw new Error('invalid pay_type');
   
-  const orderNo = String(Date.now()) + String(Math.floor(Math.random() * 900) + 100);
+  const orderNo = String(orderId || `${Date.now()}${crypto.randomInt(100, 1000)}`);
   const params = {
     mchId: MCH_ID,
     currency: 'BDT',
     out_trade_no: orderNo,
     pay_type: payType,
     money: money,
+    attach: attach || '',
     notify_url: NOTIFY_URL,
-    returnUrl: RETURN_URL,
+    returnUrl: returnUrl || RETURN_URL,
   };
   
   params.sign = sign(params);
   const r = await postForm('/v1/Collect', params);
   log({ type: 'create', orderNo, money, payType, resp: r });
   
-  if (r.code !== 0) throw new Error('gateway code ' + r.code + ': ' + r.msg);
-  return { orderNo, url: r.data.url };
+  if (String(r.code) !== '0' || !r.data?.url) throw new Error('gateway code ' + r.code + ': ' + r.msg);
+  const paymentUrl = new URL(r.data.url);
+  if (paymentUrl.protocol !== 'https:' || !['wpay.life', 'wpay.one', 'okexpay.dev'].some((domain) => paymentUrl.hostname === domain || paymentUrl.hostname.endsWith(`.${domain}`))) throw new Error('Invalid gateway payment URL');
+  return { success: true, orderNo, paymentUrl: paymentUrl.toString(), transactionId: r.data.transaction_Id };
+}
+
+function authorized(req) {
+  const supplied = Buffer.from(req.headers['x-proxy-secret'] || '');
+  const expected = Buffer.from(PROXY_SECRET || '');
+  return expected.length > 0 && supplied.length === expected.length && crypto.timingSafeEqual(supplied, expected);
+}
+
+function postCallback(raw) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(CALLBACK_URL);
+    const req = https.request({ hostname: target.hostname, path: target.pathname + target.search, method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(raw) } }, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => res.statusCode === 200 && data.trim() === 'success' ? resolve() : reject(new Error(`Callback forward rejected: ${res.statusCode}`)));
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => req.destroy(new Error('Callback timeout')));
+    req.end(raw);
+  });
 }
 
 function send(res, status, body, type) {
   res.writeHead(status, {
     'Content-Type': type || 'application/json',
-    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-    'Access-Control-Allow-Headers': 'Content-Type',
   });
   res.end(typeof body === 'string' ? body : JSON.stringify(body));
 }
@@ -126,21 +151,23 @@ const server = http.createServer(async (req, res) => {
     }
 
     // ২. ফ্রন্টএন্ড থেকে পেমেন্ট রিকোয়েস্ট পাঠানোর রুট
-    if (route === '/pay' && req.method === 'POST') {
+    if ((route === '/pay' || route === '/create-payment') && req.method === 'POST') {
+      if (!authorized(req)) return send(res, 401, { success: false, error: 'Unauthorized' });
       const b = JSON.parse((await readBody(req)) || '{}');
-      const result = await createOrder(b.amount, b.pay_type);
+      const result = await createOrder(b.amount ?? b.money, b.payType ?? b.pay_type, b.orderId, b.attach, b.returnUrl);
       return send(res, 200, result);
     }
 
     // ৩. পেমেন্ট সফল হওয়ার পর গে트ওয়ে থেকে নোটিফিকেশন পাওয়ার রুট (Webhook)
-    if (route === '/notify' && req.method === 'POST') {
+    if ((route === '/notify' || route === '/payment-callback') && req.method === 'POST') {
       const raw = await readBody(req);
       const p = qs.parse(raw);
-      const ok = p.sign && p.sign === sign(p);
+      const received = String(p.sign || '').toLowerCase();
+      const ok = received && received === sign(p);
       
       log({ type: 'notify', ok, body: p });
-      if (!ok) return send(res, 200, 'fail', 'text/plain');
-      
+      if (!ok) return send(res, 400, 'fail', 'text/plain');
+      await postCallback(raw);
       return send(res, 200, 'success', 'text/plain');
     }
 
@@ -151,4 +178,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(process.env.PORT || 3000);
+server.listen(3000);

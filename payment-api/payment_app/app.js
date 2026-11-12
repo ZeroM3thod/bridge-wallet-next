@@ -37,6 +37,7 @@ app.use((req, res, next) => {
 // ==================== LIVE কনফিগ ====================
 const MCH_ID = '5393';
 const SECRET_KEY = 'd8490b215ef5248d7fb693a101f9898d';
+const PROXY_SECRET = '9gX3wQa8Fn5rjR5uCeMVLV7uXuvN7POuJXWcEucF0gY=';
 const API_URL = 'https://api.wpay.life';
 
 const NOTIFY_URL = 'https://imcagro.top/api/payment-callback';
@@ -55,6 +56,12 @@ function makeSign(params) {
     return crypto.createHash('md5').update(`${str}&key=${SECRET_KEY}`).digest('hex').toLowerCase();
 }
 
+function isAuthorized(req) {
+    const supplied = Buffer.from(req.get('X-Proxy-Secret') || '');
+    const expected = Buffer.from(PROXY_SECRET || '');
+    return expected.length > 0 && supplied.length === expected.length && crypto.timingSafeEqual(supplied, expected);
+}
+
 const router = express.Router();
 
 // ==================== স্ট্যাটাস ====================
@@ -71,6 +78,8 @@ router.get('/create-payment', (req, res) => {
 // payType: BKASH | NAGAD | ROCKET | BKASH-C | NAGAD-C   (ডিফল্ট BKASH)
 router.post('/create-payment', async (req, res) => {
     try {
+        if (!isAuthorized(req)) return res.status(401).json({ success: false, error: 'Unauthorized' });
+        if (!MCH_ID || !SECRET_KEY) return res.status(503).json({ success: false, error: 'Payment gateway is not configured' });
         const { amount, money, orderId, payType, attach, returnUrl } = req.body;
         const value = amount !== undefined ? amount : money;
 
@@ -113,9 +122,13 @@ router.post('/create-payment', async (req, res) => {
 
         // Some gateway responses serialize code as "0" instead of 0.
         if (gw && String(gw.code) === '0' && gw.data && typeof gw.data.url === 'string' && gw.data.url) {
+            const paymentUrl = new URL(gw.data.url);
+            if (paymentUrl.protocol !== 'https:' || !['wpay.life', 'wpay.one', 'okexpay.dev'].some(domain => paymentUrl.hostname === domain || paymentUrl.hostname.endsWith(`.${domain}`))) {
+                return res.status(502).json({ success: false, error: 'Gateway returned an invalid payment URL' });
+            }
             return res.json({
                 success: true,
-                paymentUrl: gw.data.url,
+                paymentUrl: paymentUrl.toString(),
                 transactionId: gw.data.transaction_Id
             });
         }
@@ -140,7 +153,7 @@ router.post('/payment-callback', (req, res) => {
     const received = String(data.sign || '').toLowerCase();
     const expected = makeSign(data);
     if (!received || received !== expected) {
-        console.warn('Invalid callback signature. expected:', expected, 'received:', received);
+        console.warn('Invalid callback signature');
         return res.status(400).send('fail');
     }
 
@@ -170,8 +183,19 @@ app.use((req, res) => {
     res.status(404).json({ success: false, message: 'Not found' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`LIVE PayIn server running on port ${PORT} | mchId ${MCH_ID} | ${API_URL}`);
 });
 
+
+
+
+
+
+
+
+
+
+
+পেমেন্ট গেটওয়ে কনফিগার করা নেই
