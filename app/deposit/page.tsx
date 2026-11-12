@@ -18,7 +18,7 @@ const depositMethods: { id: DepositMethod; name: string; english: string; logo: 
 ]
 
 export default function DepositPage() {
-  const { showToast, changePage, balance } = useAppState()
+  const { showToast, changePage, balance, setBalance } = useAppState()
   const [method, setMethod] = useState<DepositMethod>("BKASH")
   const [amount, setAmount] = useState(300)
   const [busy, setBusy] = useState(false)
@@ -27,6 +27,18 @@ export default function DepositPage() {
   toastRef.current = showToast
 
   const selected = depositMethods.find((item) => item.id === method) ?? depositMethods[0]
+
+  useEffect(() => {
+    let active = true
+    fetch("/api/profile", { credentials: "include", cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Could not load wallet balance")
+        return response.json()
+      })
+      .then((result) => { if (active && result.success && Number.isFinite(result.user?.balance)) setBalance(result.user.balance) })
+      .catch(() => { if (active) toastRef.current("ব্যালেন্স লোড করা যায়নি; আবার চেষ্টা করুন") })
+    return () => { active = false }
+  }, [setBalance])
 
   useEffect(() => {
     const order = new URLSearchParams(window.location.search).get("order")
@@ -40,11 +52,13 @@ export default function DepositPage() {
         const response = await fetch(`/api/deposits/status?order=${encodeURIComponent(order)}`, { credentials: "include" })
         const result = await response.json()
         if (result.status === "paid") {
+          const profile = await fetch("/api/profile", { credentials: "include", cache: "no-store" }).then((response) => response.ok ? response.json() : null)
+          if (profile?.success && Number.isFinite(profile.user?.balance)) setBalance(profile.user.balance)
           toastRef.current("পেমেন্ট সফল; ব্যালেন্সে যোগ হয়েছে")
           window.history.replaceState({}, "", "/deposit")
           return
         }
-        if (result.status === "failed") {
+        if (result.status === "failed" || result.status === "cancelled") {
           toastRef.current("পেমেন্ট ব্যর্থ হয়েছে; ব্যালেন্স পরিবর্তন হয়নি")
           window.history.replaceState({}, "", "/deposit")
           return
@@ -59,7 +73,7 @@ export default function DepositPage() {
       cancelled = true
       if (timer) clearTimeout(timer)
     }
-  }, [])
+  }, [setBalance])
 
   const startPayment = async () => {
     if (!Number.isSafeInteger(amount) || amount < 300) return showToast("ন্যূনতম ৳৩০০ জমা দিন")

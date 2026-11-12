@@ -6,6 +6,7 @@ type Env = { DB: D1Database; OKEXPAY_MCH_ID?: string; OKEXPAY_KEY?: string }
 // GUESSED status values. Confirm against real sandbox callbacks.
 const PAID_STATUSES = ['1', 'success', 'SUCCESS', 'paid', 'PAID']
 const FAILED_STATUSES = ['2', 'fail', 'FAIL', 'failed', 'FAILED']
+const CANCELLED_STATUSES = ['cancel', 'cancelled', 'canceled', 'CANCELLED', 'CANCELED']
 const byCodeUnit = ([a]: [string, string], [b]: [string, string]) => (a < b ? -1 : a > b ? 1 : 0)
 
 export async function onRequestPost({ request, env }: EventContext<Env, any, any>) {
@@ -45,7 +46,19 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
 
     const status = String(data.status || data.trade_status || '').trim().toLowerCase()
     if (FAILED_STATUSES.includes(status)) {
-      await env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(order).run()
+      const now = Date.now()
+      await env.DB.batch([
+        env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(order),
+        env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,previous_status,new_status,note,created_at) SELECT ?,id,'failed','pending','failed','Gateway reported payment failure',? FROM deposits WHERE out_trade_no=? AND changes()>0").bind(crypto.randomUUID(), now, order),
+      ])
+      return new Response('success')
+    }
+    if (CANCELLED_STATUSES.includes(status)) {
+      const now = Date.now()
+      await env.DB.batch([
+        env.DB.prepare("UPDATE deposits SET status='cancelled' WHERE out_trade_no=? AND status='pending'").bind(order),
+        env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,previous_status,new_status,note,created_at) SELECT ?,id,'cancelled','pending','cancelled','Gateway reported payment cancellation',? FROM deposits WHERE out_trade_no=? AND changes()>0").bind(crypto.randomUUID(), now, order),
+      ])
       return new Response('success')
     }
     if (!PAID_STATUSES.includes(status)) return new Response('fail', { status: 400 })
@@ -57,9 +70,10 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     const now = Date.now()
     await env.DB.batch([
       env.DB.prepare("UPDATE deposits SET status='paid', paid_at=? WHERE out_trade_no=? AND status='pending'").bind(now, order),
-      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount, deposit.user_id),
+      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount / 100, deposit.user_id),
       env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'credit',?,'ওয়ালেটে টাকা জমা',? WHERE changes() > 0")
-        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount, now),
+        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount / 100, now),
+      env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,previous_status,new_status,note,created_at) SELECT ?,id,'paid','pending','paid','Payment confirmed by gateway',? FROM deposits WHERE out_trade_no=? AND changes()>0").bind(crypto.randomUUID(), now, order),
     ])
     return new Response('success')
   } catch (error) {

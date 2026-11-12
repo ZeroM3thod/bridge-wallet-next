@@ -30,9 +30,16 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     await env.DB.prepare(
       "INSERT INTO deposits (id,user_id,out_trade_no,method,amount,status,created_at) VALUES (?,?,?,?,?,'pending',?)"
     ).bind(depositId, session.user_id, outTradeNo, body.method!.startsWith('NAGAD') ? 'NAGAD' : 'BKASH', body.amount, Date.now()).run()
+    await env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,new_status,note,created_at) VALUES (?,?, 'created','pending','Deposit request created',?)")
+      .bind(crypto.randomUUID(), depositId, Date.now()).run()
 
-    const markFailed = () => env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'")
-      .bind(outTradeNo).run()
+    const markFailed = async (note: string) => {
+      const now = Date.now()
+      await env.DB.batch([
+        env.DB.prepare("UPDATE deposits SET status='failed' WHERE out_trade_no=? AND status='pending'").bind(outTradeNo),
+        env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,previous_status,new_status,note,created_at) SELECT ?,?,'failed','pending','failed',?,? WHERE changes()>0").bind(crypto.randomUUID(), depositId, note, now),
+      ])
+    }
 
     let result: { success?: boolean; paymentUrl?: string; transactionId?: string; message?: string; error?: string }
     try {
@@ -50,12 +57,12 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       if (!gatewayResponse.ok) throw new Error(`Payment API HTTP ${gatewayResponse.status}: ${result.error || result.message || JSON.stringify(result).slice(0, 500)}`)
     } catch (err) {
       console.error('Gateway request/parse failed:', err)
-      await markFailed()
+      await markFailed('Payment gateway request failed')
       return json({ error: err instanceof Error ? err.message : String(err) }, 502)
     }
 
     if (!result.success || !result.paymentUrl) {
-      await markFailed()
+      await markFailed('Payment gateway rejected request')
       return json({ error: `Payment API rejected order: ${result.error || result.message || JSON.stringify(result).slice(0, 500)}` }, 502)
     }
 
@@ -63,11 +70,11 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     try {
       paymentUrl = new URL(result.paymentUrl)
     } catch {
-      await markFailed()
+      await markFailed('Gateway returned invalid payment URL')
       return json({ error: 'গেটওয়ের পেমেন্ট URL গ্রহণযোগ্য নয়' }, 502)
     }
     if (paymentUrl.protocol !== 'https:') {
-      await markFailed()
+      await markFailed('Gateway returned insecure payment URL')
       return json({ error: 'গেটওয়ের পেমেন্ট URL গ্রহণযোগ্য নয়' }, 502)
     }
 
