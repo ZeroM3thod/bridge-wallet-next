@@ -20,6 +20,7 @@ export type Pkg = {
   requiresPackageId: string;
   allowWhileActive: boolean;
   visible: boolean;
+  imageUrl?: string;
 };
 
 export type PackageConfig = {
@@ -68,6 +69,7 @@ type Draft = {
   requiresPackageId: string;
   allowWhileActive: boolean;
   visible: boolean;
+  imageUrl?: string;
 };
 
 const toDraft = (p: Pkg): Draft => ({
@@ -92,6 +94,7 @@ const emptyDraft = (): Draft => ({
   requiresPackageId: "",
   allowWhileActive: false,
   visible: true,
+  imageUrl: "",
 });
 
 const fromDraft = (d: Draft): Pkg => ({
@@ -106,6 +109,7 @@ const fromDraft = (d: Draft): Pkg => ({
   requiresPackageId: d.requiresPackageId,
   allowWhileActive: d.allowWhileActive,
   visible: d.visible,
+  imageUrl: d.imageUrl,
 });
 
 type Errors = Partial<Record<keyof Draft, string>>;
@@ -168,6 +172,7 @@ export default function PackageManagement({
   const [errors, setErrors] = useState<Errors>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [toast, setToast] = useState<{ text: string; bad?: boolean } | null>(null);
 
   const dirty = useMemo(() => JSON.stringify(saved) !== JSON.stringify(config), [saved, config]);
@@ -205,6 +210,35 @@ export default function PackageManagement({
     setConfirmDelete(false);
   };
   const setField = <K extends keyof Draft>(k: K, v: Draft[K]) => setDraft((d) => (d ? { ...d, [k]: v } : d));
+  const uploadImage = async (file?: File) => {
+    if (!file || !draft?.id) return;
+    setImageUploading(true);
+    try {
+      const body = new FormData(); body.set("packageId", draft.id); body.set("image", file);
+      const res = await fetch("/api/admin/package-image", { method: "POST", credentials: "include", body });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setDraft(d => d ? { ...d, imageUrl: data.imageUrl } : d);
+      setConfig(c => ({ ...c, packages: c.packages.map(p => p.id === draft.id ? { ...p, imageUrl: data.imageUrl } : p) }));
+      setSaved(c => ({ ...c, packages: c.packages.map(p => p.id === draft.id ? { ...p, imageUrl: data.imageUrl } : p) }));
+      say("Package photo updated");
+    } catch (error) { say(error instanceof Error ? error.message : "Upload failed", true); }
+    finally { setImageUploading(false); }
+  };
+  const removeImage = async () => {
+    if (!draft?.id || imageUploading) return;
+    setImageUploading(true);
+    try {
+      const res = await fetch("/api/admin/package-image", { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packageId: draft.id }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Remove failed");
+      setDraft(d => d ? { ...d, imageUrl: "" } : d);
+      setConfig(c => ({ ...c, packages: c.packages.map(p => p.id === draft.id ? { ...p, imageUrl: "" } : p) }));
+      setSaved(c => ({ ...c, packages: c.packages.map(p => p.id === draft.id ? { ...p, imageUrl: "" } : p) }));
+      say("Package photo removed");
+    } catch (error) { say(error instanceof Error ? error.message : "Remove failed", true); }
+    finally { setImageUploading(false); }
+  };
 
   const applyDraft = () => {
     if (!draft) return;
@@ -360,6 +394,9 @@ export default function PackageManagement({
             </div>
 
             <div className="ad-modal-body">
+              <Field label="Package photo" hint="JPG, PNG or WebP; max 5 MB.">
+                {draft.id ? <><input type="file" accept="image/jpeg,image/png,image/webp" disabled={imageUploading} onChange={e => { void uploadImage(e.target.files?.[0]); e.currentTarget.value = ""; }} />{imageUploading && <small>Updating photo…</small>}{draft.imageUrl && <><img src={draft.imageUrl} alt="Package preview" style={{ display: "block", width: 120, height: 80, objectFit: "cover", marginTop: 8 }} /><button type="button" className="ad-btn ad-btn-danger-ghost" onClick={() => void removeImage()} disabled={imageUploading}>Remove photo</button></>}</> : <small>Add package first, then edit to upload photo.</small>}
+              </Field>
               <div className="ad-form-grid">
                 <Field label="Package name" error={errors.name}><input value={draft.name} onChange={(e) => setField("name", e.target.value)} placeholder="VIP 4" /></Field>
                 <Field label="Price (BDT)" error={errors.price}><input type="number" min={0} value={draft.price} onChange={(e) => setField("price", e.target.value)} /></Field>

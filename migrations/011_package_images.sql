@@ -1,0 +1,1 @@
+ALTER TABLE packages ADD COLUMN image_key TEXT NOT NULL DEFAULT '';

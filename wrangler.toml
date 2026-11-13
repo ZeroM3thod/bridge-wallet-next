@@ -2,6 +2,10 @@ name = "bridge-wallet"
 compatibility_date = "2026-11-05"
 pages_build_output_dir = "out"
 
+[[r2_buckets]]
+binding = "PACKAGE_IMAGES"
+bucket_name = "bridge-wallet-package-images"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "bridge-wallet-db"
