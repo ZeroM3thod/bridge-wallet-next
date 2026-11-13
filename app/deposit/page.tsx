@@ -21,6 +21,7 @@ export default function DepositPage() {
   const { showToast, changePage, balance, setBalance } = useAppState()
   const [method, setMethod] = useState<DepositMethod>("BKASH")
   const [amount, setAmount] = useState(300)
+  const [minimumAmount, setMinimumAmount] = useState(300)
   const [busy, setBusy] = useState(false)
 
   const toastRef = useRef(showToast)
@@ -30,6 +31,7 @@ export default function DepositPage() {
 
   useEffect(() => {
     let active = true
+    fetch("/api/deposits/create", { credentials: "include", cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((result) => { if (active && Number.isSafeInteger(result?.minimumAmount)) { setMinimumAmount(result.minimumAmount); setAmount(result.minimumAmount) } }).catch(() => {})
     fetch("/api/profile", { credentials: "include", cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error("Could not load wallet balance")
@@ -76,7 +78,7 @@ export default function DepositPage() {
   }, [setBalance])
 
   const startPayment = async () => {
-    if (!Number.isSafeInteger(amount) || amount < 300) return showToast("ন্যূনতম ৳৩০০ জমা দিন")
+    if (!Number.isSafeInteger(amount) || amount < minimumAmount) return showToast(`ন্যূনতম ৳${minimumAmount} জমা দিন`)
     setBusy(true)
     try {
       const response = await fetch("/api/deposits/create", {
@@ -157,7 +159,7 @@ export default function DepositPage() {
           </div>
         </label>
         <div className="office-amount-presets">
-          {[300, 500, 1000, 2500].map((preset) => (
+          {[minimumAmount, 500, 1000, 2500].filter((preset, index, items) => preset >= minimumAmount && items.indexOf(preset) === index).map((preset) => (
             <button key={preset} onClick={() => setAmount(preset)}>
               {money(preset)}
             </button>
@@ -187,7 +189,7 @@ export default function DepositPage() {
           <ul>
             <li>
               <span>ন্যূনতম জমা</span>
-              <b>৳ ৩০০.০০</b>
+              <b>{money(minimumAmount)}</b>
             </li>
             <li>
               <span>পেমেন্ট পদ্ধতি</span>

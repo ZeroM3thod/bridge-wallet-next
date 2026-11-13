@@ -14,15 +14,21 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
   const actorId = await adminId(request, env.DB)
   if (!actorId) return json({ error: 'Not found' }, 404)
   if (request.method === 'GET') {
-    const [rows, events] = await Promise.all([
+    const [rows, events, settings] = await Promise.all([
       env.DB.prepare('SELECT d.id,d.out_trade_no,d.gateway_transaction_id,d.method,d.amount,d.status,d.created_at,d.paid_at,u.id AS user_id,u.name,u.phone,u.email,u.balance FROM deposits d JOIN users u ON u.id=d.user_id ORDER BY d.created_at DESC').all(),
       env.DB.prepare('SELECT e.id,e.deposit_id,e.actor_id,e.event,e.previous_status,e.new_status,e.note,e.created_at,u.name AS actor_name FROM deposit_events e LEFT JOIN users u ON u.id=e.actor_id ORDER BY e.created_at DESC').all(),
+      env.DB.prepare('SELECT minimum_amount FROM deposit_settings WHERE id=1').first<{minimum_amount:number}>(),
     ])
-    return json({ deposits: rows.results, events: events.results })
+    return json({ deposits: rows.results, events: events.results, settings: { minimum_amount: settings?.minimum_amount ?? 300 } })
   }
   if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405)
   try {
-    const body = await request.json() as { id?: unknown; action?: unknown }
+    const body = await request.json() as { id?: unknown; action?: unknown; minimumAmount?: unknown }
+    if (body.action === 'settings') {
+      if (!Number.isSafeInteger(body.minimumAmount) || Number(body.minimumAmount) < 1) return json({ error: 'Minimum deposit must be a positive whole number' }, 400)
+      await env.DB.prepare('UPDATE deposit_settings SET minimum_amount=?,updated_at=? WHERE id=1').bind(body.minimumAmount, Date.now()).run()
+      return json({ success: true })
+    }
     if (typeof body.id !== 'string' || !['approve', 'reject'].includes(String(body.action))) return json({ error: 'Invalid request' }, 400)
     const row = await env.DB.prepare('SELECT user_id,amount FROM deposits WHERE id=?').bind(body.id).first<{ user_id: string; amount: number }>()
     if (!row) return json({ error: 'Deposit not found' }, 404)

@@ -11,8 +11,12 @@ import "../admin.css";
 export type Pkg = {
   id: string;
   name: string;
+  shortDescription?: string;
+  modelNo?: string;
+  tankOverview?: string;
+  profitMechanism?: string;
   price: number;
-  dailyRate: number;
+  dailyProfit: number;
   durationDays: number;
   maxPerUser: number;
   stockLimit: number;
@@ -30,17 +34,6 @@ export type PackageConfig = {
 /* ------------------------------------------------------------------ */
 /*  Placeholder data                                                   */
 /* ------------------------------------------------------------------ */
-
-const DEFAULT_CONFIG: PackageConfig = {
-  packages: [
-    { id: "vip0", name: "VIP 0", price: 500, dailyRate: 2, durationDays: 30, maxPerUser: 1, stockLimit: 0, minActiveReferrals: 0, requiresPackageId: "", allowWhileActive: false, visible: true },
-    { id: "vip1", name: "VIP 1", price: 1000, dailyRate: 2.2, durationDays: 30, maxPerUser: 2, stockLimit: 0, minActiveReferrals: 1, requiresPackageId: "", allowWhileActive: false, visible: true },
-    { id: "vip2", name: "VIP 2", price: 3000, dailyRate: 2.5, durationDays: 45, maxPerUser: 3, stockLimit: 500, minActiveReferrals: 3, requiresPackageId: "vip1", allowWhileActive: true, visible: true },
-    { id: "vip3", name: "VIP 3", price: 10000, dailyRate: 2.8, durationDays: 60, maxPerUser: 4, stockLimit: 100, minActiveReferrals: 5, requiresPackageId: "vip2", allowWhileActive: true, visible: true },
-    { id: "vip4", name: "VIP 4", price: 25000, dailyRate: 3, durationDays: 75, maxPerUser: 5, stockLimit: 50, minActiveReferrals: 8, requiresPackageId: "vip3", allowWhileActive: true, visible: true },
-    { id: "vip5", name: "VIP 5", price: 50000, dailyRate: 3.2, durationDays: 90, maxPerUser: 6, stockLimit: 20, minActiveReferrals: 10, requiresPackageId: "vip4", allowWhileActive: true, visible: true },
-  ],
-};
 
 const bdt = (n: number) => "৳" + n.toLocaleString("en-BD", { maximumFractionDigits: 2 });
 const limitText = (n: number, unit = "") => (n === 0 ? "Unlimited" : `${n}${unit}`);
@@ -60,8 +53,12 @@ function Icon({ d, size = 18 }: { d: string; size?: number }) {
 type Draft = {
   id: string;
   name: string;
+  shortDescription: string;
+  modelNo: string;
+  tankOverview: string;
+  profitMechanism: string;
   price: string;
-  dailyRate: string;
+  dailyProfit: string;
   durationDays: string;
   maxPerUser: string;
   stockLimit: string;
@@ -74,8 +71,12 @@ type Draft = {
 
 const toDraft = (p: Pkg): Draft => ({
   ...p,
+  shortDescription: p.shortDescription ?? "",
+  modelNo: p.modelNo ?? "",
+  tankOverview: p.tankOverview ?? "",
+  profitMechanism: p.profitMechanism ?? "",
   price: String(p.price),
-  dailyRate: String(p.dailyRate),
+  dailyProfit: String(p.dailyProfit),
   durationDays: String(p.durationDays),
   maxPerUser: String(p.maxPerUser),
   stockLimit: String(p.stockLimit),
@@ -85,8 +86,12 @@ const toDraft = (p: Pkg): Draft => ({
 const emptyDraft = (): Draft => ({
   id: "",
   name: "",
+  shortDescription: "",
+  modelNo: "",
+  tankOverview: "",
+  profitMechanism: "",
   price: "",
-  dailyRate: "",
+  dailyProfit: "300",
   durationDays: "",
   maxPerUser: "1",
   stockLimit: "0",
@@ -101,7 +106,7 @@ const fromDraft = (d: Draft): Pkg => ({
   id: d.id,
   name: d.name.trim(),
   price: Number(d.price),
-  dailyRate: Number(d.dailyRate),
+  dailyProfit: Number(d.dailyProfit),
   durationDays: Number(d.durationDays),
   maxPerUser: Number(d.maxPerUser),
   stockLimit: Number(d.stockLimit),
@@ -121,7 +126,7 @@ function validate(d: Draft, others: Pkg[]): Errors {
   else if (others.some((p) => p.name.toLowerCase() === d.name.trim().toLowerCase()))
     e.name = "Another package already uses this name.";
   if (!(n(d.price) > 0)) e.price = "Price must be more than 0.";
-  if (!(n(d.dailyRate) > 0 && n(d.dailyRate) <= 100)) e.dailyRate = "Enter a rate between 0 and 100.";
+  if (!(Number.isSafeInteger(n(d.dailyProfit)) && n(d.dailyProfit) > 0)) e.dailyProfit = "Enter daily profit in BDT, greater than 0.";
   if (!(Number.isInteger(n(d.durationDays)) && n(d.durationDays) >= 1)) e.durationDays = "Enter a whole number of days, 1 or more.";
   (["maxPerUser", "stockLimit", "minActiveReferrals"] as const).forEach((k) => {
     if (!(Number.isInteger(n(d[k])) && n(d[k]) >= 0)) e[k] = "Enter a whole number, 0 or more.";
@@ -289,16 +294,15 @@ export default function PackageManagement({
   const preview = useMemo(() => {
     if (!draft) return null;
     const price = Number(draft.price);
-    const rate = Number(draft.dailyRate) / 100;
+    const daily = Number(draft.dailyProfit);
     const days = Number(draft.durationDays);
-    if (!(price > 0 && rate > 0 && days >= 1) || !Number.isFinite(days)) return null;
-    const total = price * Math.pow(1 + rate, days) - price;
+    if (!(price > 0 && daily > 0 && days >= 1) || !Number.isFinite(days)) return null;
     const rows = Array.from({ length: Math.min(days, 365) }, (_, i) => {
-      const open = price * Math.pow(1 + rate, i);
-      const profit = open * rate;
-      return { day: i + 1, open, profit, close: open + profit };
+      const open = price + daily * i;
+      return { day: i + 1, open, profit: daily, close: open + daily };
     });
-    return { first: price * rate, total, end: price + total, rows };
+    const total = daily * days;
+    return { first: daily, total, end: price + total, rows };
   }, [draft]);
 
   const nameOf = (id: string) => config.packages.find((p) => p.id === id)?.name ?? "-";
@@ -332,15 +336,15 @@ export default function PackageManagement({
             </div>
             <div className="ad-pkg-grid">
               {config.packages.map((p) => {
-                const total = p.price * Math.pow(1 + p.dailyRate / 100, p.durationDays) - p.price;
-                const first = (p.price * p.dailyRate) / 100;
+                const total = p.dailyProfit * p.durationDays;
+                const first = p.dailyProfit;
                 return (
                   <article key={p.id} className={`ad-pkg ${p.visible ? "" : "is-hidden"}`}>
                     <div className="ad-pkg-head">
                       <span className="ad-pkg-icon"><Icon d="M5 12l5 5L20 7" size={21} /></span>
                       <div>
                         <h3>{p.name}</h3>
-                        <small>{p.durationDays} days duration</small>
+                        <small>{p.shortDescription || `${p.durationDays} days duration`}</small>
                       </div>
                       <b className={`ad-badge ${p.visible ? "" : "is-off"}`}>{p.visible ? "Active" : "Hidden"}</b>
                     </div>
@@ -348,7 +352,7 @@ export default function PackageManagement({
                     <div className="ad-pkg-metrics">
                       {[
                         ["Package price", bdt(p.price)],
-                        ["Daily rate", `${p.dailyRate}%`],
+                        ["Daily fixed profit", bdt(p.dailyProfit)],
                         ["Daily profit", bdt(first)],
                         ["Total profit", bdt(total)],
                       ].map(([label, value]) => (
@@ -399,10 +403,14 @@ export default function PackageManagement({
               </Field>
               <div className="ad-form-grid">
                 <Field label="Package name" error={errors.name}><input value={draft.name} onChange={(e) => setField("name", e.target.value)} placeholder="VIP 4" /></Field>
+                <Field label="Short description"><input value={draft.shortDescription} onChange={(e) => setField("shortDescription", e.target.value)} /></Field>
+                <Field label="Tank model"><input value={draft.modelNo} onChange={(e) => setField("modelNo", e.target.value)} /></Field>
                 <Field label="Price (BDT)" error={errors.price}><input type="number" min={0} value={draft.price} onChange={(e) => setField("price", e.target.value)} /></Field>
-                <Field label="Daily profit (%)" error={errors.dailyRate} hint="Compounded daily."><input type="number" min={0} step="0.1" value={draft.dailyRate} onChange={(e) => setField("dailyRate", e.target.value)} /></Field>
+                <Field label="Daily profit (BDT)" error={errors.dailyProfit} hint="Fixed amount; no percentage or compounding. Defaults to ৳300."><input type="number" min={1} step="1" value={draft.dailyProfit} onChange={(e) => setField("dailyProfit", e.target.value)} /></Field>
                 <Field label="Duration (days)" error={errors.durationDays}><input type="number" min={1} value={draft.durationDays} onChange={(e) => setField("durationDays", e.target.value)} /></Field>
               </div>
+              <Field label="Tank overview"><textarea rows={3} value={draft.tankOverview} onChange={(e) => setField("tankOverview", e.target.value)} /></Field>
+              <Field label="Profit mechanism / purchase details"><textarea rows={3} value={draft.profitMechanism} onChange={(e) => setField("profitMechanism", e.target.value)} /></Field>
 
               {preview && (
                 <div className="ad-preview">
@@ -500,8 +508,8 @@ const css = `
 .ad-field-label{font-size:14px; font-weight:600}
 .ad-field-hint{font-size:12.5px; color:var(--muted)}
 .ad-field-error{font-size:12.5px; color:#c23030}
-.ad input,.ad select{width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:10px; padding:9px 12px; font:inherit}
-.ad input:focus,.ad select:focus{outline:2px solid var(--sky-200); border-color:var(--sky-500)}
+.ad input,.ad select,.ad textarea{width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:10px; padding:9px 12px; font:inherit}
+.ad input:focus,.ad select:focus,.ad textarea:focus{outline:2px solid var(--sky-200); border-color:var(--sky-500)}
 .ad-modal-body h3{font-size:15px; font-weight:600; margin-top:20px}
 
 .ad-switch-row{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-top:1px solid var(--line)}

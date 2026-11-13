@@ -36,7 +36,8 @@ export default function TeamSalaryPage() {
       `}</style>
       <main className="mx-auto max-w-md space-y-6 px-4 pt-6">
         <div className="space-y-4">
-          {tiers.map((tier) => {
+          {tiers.map((tier, index) => {
+            const rank = `অভিজাত ধাপ-${bengaliNumber(index + 1)}`
             const completed = counts[0] >= tier.reqL1 && counts[1] >= tier.reqL2 && counts[2] >= tier.reqL3
             const requirements = [
               tier.reqL1 > 0 ? `প্রথম জনগোষ্ঠী ${bengaliNumber(tier.reqL1)} জন` : "",
@@ -46,7 +47,7 @@ export default function TeamSalaryPage() {
             return (
               <article key={tier.rank} className={`salary-card-custom space-y-3 p-4 ${completed ? "unlocked" : ""}`}>
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#2e1c3a]"><span>{tier.icon}</span><span>{tier.rank}</span></div>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#2e1c3a]"><span>{tier.icon}</span><span>{rank}</span></div>
                   <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">{bengaliNumber(tier.amount)}৳ / {cycleLabel}</span>
                 </div>
                 <div className="flex items-start gap-2">

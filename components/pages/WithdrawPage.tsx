@@ -1,30 +1,42 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogPortal, DialogOverlay, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Content as DialogPrimitiveContent } from "@radix-ui/react-dialog"
 import Icon from "@/components/app/Icon"
 import { useAppState } from "@/components/app/AppState"
 import { walletLogos } from "@/lib/wallet-logos"
-import { normalizeDigits, validWalletNumber, validWithdrawal, walletProviders, withdrawalTotals, type WalletProvider } from "@/lib/withdrawal"
+import { normalizeDigits, validWalletNumber, walletProviders, type WalletProvider } from "@/lib/withdrawal"
 import { toBengaliDigits, parseBengaliNumber, money } from "@/lib/app-format"
 import type { WithdrawalRecord } from "@/lib/app-types"
 export default function WithdrawPage() {
-  const { showToast: action, balance, wallets, withdrawals, addWallet: onAddWallet, confirmWithdrawal: onWithdraw, changePage: onNavigate } = useAppState()
+  const { showToast: action, changePage: onNavigate } = useAppState()
+  const [balance, setBalance] = useState(0)
+  const [wallets, setWallets] = useState<any[]>([])
+  const [withdrawals, setWithdrawals] = useState<any[]>([])
+  const [settings, setSettings] = useState({minimum_amount:1000,fee_percent:2})
+  const [hasPassword, setHasPassword] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const load = async () => { const r=await fetch('/api/withdrawals',{credentials:'include',cache:'no-store'}); const d=await r.json(); if(!r.ok) throw Error(d.error); setBalance(d.balance);setWallets(d.wallets);setWithdrawals(d.withdrawals);setSettings(d.settings??settings);setHasPassword(d.hasPassword);setLoaded(true) }
+  useEffect(()=>{load().catch(()=>{setLoaded(true);action('তথ্য লোড হয়নি')});const updated=()=>{setHasPassword(true);setShowPasswordPrompt(false)};window.addEventListener('withdrawal-password-updated',updated);return()=>window.removeEventListener('withdrawal-password-updated',updated)},[])
+  const addWalletClick = async () => { try { await load(); const r=await fetch('/api/withdrawal-password',{credentials:'include',cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error);setHasPassword(d.hasPassword);if(d.hasPassword)setShowAddWallet(true);else setShowPasswordPrompt(true) } catch(e) { action(e instanceof Error?e.message:'তথ্য লোড হয়নি') } }
 
   const [showAddWallet, setShowAddWallet] = useState(false)
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
   const [provider, setProvider] = useState<WalletProvider>("bkash")
   const [account, setAccount] = useState("")
   const [walletPassword, setWalletPassword] = useState("")
-  const [selectedWallet, setSelectedWallet] = useState<number | null>(null)
-  const [amount, setAmount] = useState(500)
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
+  const [amount, setAmount] = useState(1000)
   const [password, setPassword] = useState("")
   const [confirmation, setConfirmation] = useState<Pick<WithdrawalRecord, "amount" | "fee" | "net" | "provider" | "account"> | null>(null)
 
   const selected =
     wallets.find((wallet) => wallet.id === selectedWallet) ?? wallets[0]
-  const totals = withdrawalTotals(amount)
+  const totals = {fee:Math.round(amount*(settings.fee_percent??2))/100,net:amount-Math.round(amount*(settings.fee_percent??2))/100}
 
   const submitWallet = () => {
+    if (!hasPassword) { setShowAddWallet(false); setShowPasswordPrompt(true); return }
     if (!validWalletNumber(provider, account)) {
       action("সঠিক অ্যাকাউন্ট নম্বর লিখুন")
       return
@@ -33,14 +45,7 @@ export default function WithdrawPage() {
       action("উত্তোলন পাসওয়ার্ড লিখুন")
       return
     }
-    onAddWallet({
-      provider,
-      account: normalizeDigits(account),
-      password: walletPassword,
-    })
-    setShowAddWallet(false)
-    setAccount("")
-    setWalletPassword("")
+    void (async()=>{try{setBusy(true);const r=await fetch('/api/withdrawals',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'wallet',provider,account:normalizeDigits(account),password:walletPassword})});const d=await r.json();if(!r.ok)throw Error(d.error);await load();setShowAddWallet(false);setAccount('');setWalletPassword('');action('ওয়ালেট সংরক্ষিত হয়েছে')}catch(e){action(e instanceof Error?e.message:'ব্যর্থ')}finally{setBusy(false)}})()
   }
 
   const submitWithdrawal = () => {
@@ -48,22 +53,15 @@ export default function WithdrawPage() {
       action("আগে একটি ওয়ালেট যোগ করুন")
       return
     }
-    if (!validWithdrawal(amount, balance)) {
+    if (!Number.isFinite(amount) || amount < settings.minimum_amount || amount > balance || Math.round(amount * 100) !== amount * 100) {
       action(
         amount > balance
           ? "পর্যাপ্ত সঞ্চয় নেই"
-          : "সর্বনিম্ন ৳৫০০ উত্তোলন করতে হবে",
+          : `সর্বনিম্ন ৳${settings.minimum_amount} উত্তোলন করতে হবে`,
       )
       return
     }
-    if (password !== selected.password) {
-      action("উত্তোলন পাসওয়ার্ড সঠিক নয়")
-      return
-    }
-    onWithdraw(amount, totals.fee, totals.net, selected)
-    setConfirmation({ amount, fee: totals.fee, net: totals.net, provider: selected.provider, account: selected.account })
-    setPassword("")
-    setAmount(500)
+    void (async()=>{try{setBusy(true);const r=await fetch('/api/withdrawals',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'withdraw',walletId:selected.id,amount,password})});const d=await r.json();if(!r.ok)throw Error(d.error);setConfirmation({amount:d.amount,fee:d.fee,net:d.net,provider:selected.provider,account:selected.account});setPassword('');await load()}catch(e){action(e instanceof Error?e.message:'ব্যর্থ')}finally{setBusy(false)}})()
   }
 
   return (
@@ -72,7 +70,7 @@ export default function WithdrawPage() {
         <div className="office-welcome">
           <span>অর্থ উত্তোলন</span>
           <h1>আপনার ওয়ালেটে টাকা পাঠান</h1>
-          <p>বিকাশ, নগদ, রকেট ও উপায়ে উত্তোলন করুন</p>
+          <p>বিকাশ ও নগদে উত্তোলন করুন</p>
         </div>
         <div className="office-balance">
           <span>
@@ -88,7 +86,7 @@ export default function WithdrawPage() {
       <section className="withdraw-wallets">
         <div className="withdraw-section-head">
           <h2>সংরক্ষিত ওয়ালেট</h2>
-          <button onClick={() => setShowAddWallet(true)}>
+          <button disabled={!loaded || wallets.length >= 2} onClick={() => void addWalletClick()}>
             <Icon name="deposit" size={15} />
             ওয়ালেট যোগ করুন
           </button>
@@ -96,7 +94,7 @@ export default function WithdrawPage() {
         {wallets.length === 0 ? (
           <button
             className="withdraw-empty"
-            onClick={() => setShowAddWallet(true)}
+            onClick={() => void addWalletClick()}
           >
             <Icon name="wallet" size={28} />
             <b>কোনো ওয়ালেট সংরক্ষিত নেই</b>
@@ -151,7 +149,7 @@ export default function WithdrawPage() {
           </div>
         </label>
         <div className="office-amount-presets">
-          {[500, 1000, 2500].map((preset) => (
+          {[1000, 2500, 5000].map((preset) => (
             <button key={preset} onClick={() => setAmount(preset)}>
               {money(preset)}
             </button>
@@ -163,7 +161,7 @@ export default function WithdrawPage() {
             <b>{money(amount)}</b>
           </div>
           <div>
-            <span>সার্ভিস চার্জ (৬%)</span>
+            <span>সার্ভিস চার্জ ({settings.fee_percent}%)</span>
             <b>{money(totals.fee)}</b>
           </div>
           <div className="net">
@@ -183,10 +181,10 @@ export default function WithdrawPage() {
           </div>
         </label>
         <button className="withdraw-submit" onClick={submitWithdrawal}>
-          উত্তোলন নিশ্চিত করুন
+          {busy ? 'অপেক্ষা করুন…' : 'উত্তোলন নিশ্চিত করুন'}
         </button>
         <small className="withdraw-note">
-          সর্বনিম্ন উত্তোলন ৳৫০০ • ৬% সার্ভিস চার্জ প্রযোজ্য
+          সর্বনিম্ন উত্তোলন ৳{toBengaliDigits(settings.minimum_amount)} • {toBengaliDigits(settings.fee_percent)}% সার্ভিস চার্জ প্রযোজ্য
         </small>
         <div className="withdraw-rules">
           <h3>
@@ -204,11 +202,11 @@ export default function WithdrawPage() {
             </li>
             <li>
               <span>সর্বনিম্ন উত্তোলন</span>
-              <b>৳ ৫০০.০০</b>
+              <b>{money(settings.minimum_amount)}</b>
             </li>
             <li>
               <span>সার্ভিস চার্জ</span>
-              <b>৬%</b>
+              <b>{toBengaliDigits(settings.fee_percent)}%</b>
             </li>
             <li>
               <span>দৈনিক সীমা</span>
@@ -268,6 +266,16 @@ export default function WithdrawPage() {
         </DialogPortal>
       </Dialog>
 
+      {showPasswordPrompt && (
+        <div className="purchase-modal-backdrop" onClick={() => setShowPasswordPrompt(false)}>
+          <section className="purchase-modal office-money-modal" role="dialog" aria-modal="true" aria-labelledby="withdraw-password-prompt-title" onClick={(event) => event.stopPropagation()}>
+            <div className="purchase-modal-head"><div><span><Icon name="wallet" size={22} /></span><div><small>অ্যাকাউন্ট নিরাপত্তা</small><h2 id="withdraw-password-prompt-title">উত্তোলন পাসওয়ার্ড প্রয়োজন</h2></div></div><button aria-label="বন্ধ করুন" onClick={() => setShowPasswordPrompt(false)}><Icon name="close" size={20} /></button></div>
+            <p className="wallet-personal-rule">ওয়ালেট যোগ করার আগে উত্তোলন পাসওয়ার্ড সেট করুন। এরপর ফিরে এসে ওয়ালেট যোগ করতে পারবেন।</p>
+            <div className="purchase-actions"><button className="cancel" onClick={() => setShowPasswordPrompt(false)}>পরে করব</button><button className="confirm" onClick={() => { setShowPasswordPrompt(false); onNavigate('wpassword') }}>পাসওয়ার্ড সেট করুন</button></div>
+          </section>
+        </div>
+      )}
+
       {showAddWallet && (
         <div
           className="purchase-modal-backdrop"
@@ -312,7 +320,7 @@ export default function WithdrawPage() {
                 </Button>
               ))}
             </div>
-            <p className="wallet-personal-rule">শুধুমাত্র বিকাশ, নগদ, রকেট ও উপায়ের ব্যক্তিগত (পার্সোনাল) নম্বর গ্রহণযোগ্য। এজেন্ট বা মার্চেন্ট নম্বর গ্রহণযোগ্য নয়।</p>
+            <p className="wallet-personal-rule">শুধুমাত্র বিকাশ ও নগদের ব্যক্তিগত নম্বর গ্রহণযোগ্য। এজেন্ট বা মার্চেন্ট নম্বর গ্রহণযোগ্য নয়।</p>
             <label className="office-amount-field">
               <span>অ্যাকাউন্ট নম্বর</span>
               <div>
@@ -344,7 +352,7 @@ export default function WithdrawPage() {
               >
                 বাতিল করুন
               </button>
-              <button className="confirm" onClick={submitWallet}>
+              <button className="confirm" disabled={busy} onClick={submitWallet}>
                 সংরক্ষণ করুন
               </button>
             </div>

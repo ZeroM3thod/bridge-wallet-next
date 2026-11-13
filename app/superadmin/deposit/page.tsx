@@ -11,6 +11,7 @@ export default function AdminDepositsPage() {
   const [rows, setRows] = useState<Deposit[]>([])
   const [events, setEvents] = useState<DepositEvent[]>([])
   const [filter, setFilter] = useState("all")
+  const [minimumAmount, setMinimumAmount] = useState(300)
   const [busy, setBusy] = useState("")
   const [error, setError] = useState("")
   const load = useCallback(async () => {
@@ -19,6 +20,7 @@ export default function AdminDepositsPage() {
     if (!response.ok) throw new Error(data.error || "Could not load deposits")
     setRows(data.deposits)
     setEvents(data.events)
+    setMinimumAmount(data.settings?.minimum_amount ?? 300)
   }, [])
   useEffect(() => { load().catch((e) => setError(e.message)) }, [load])
   const review = async (id: string, action: "approve" | "reject") => {
@@ -31,6 +33,15 @@ export default function AdminDepositsPage() {
     } catch (e) { setError(e instanceof Error ? e.message : "Review failed") }
     finally { setBusy("") }
   }
+  const saveMinimum = async () => {
+    setBusy("settings"); setError("")
+    try {
+      const response = await fetch("/api/admin/deposits", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "settings", minimumAmount }) })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || "Could not save minimum deposit")
+    } catch (e) { setError(e instanceof Error ? e.message : "Could not save minimum deposit") }
+    finally { setBusy("") }
+  }
   const visible = rows.filter((row) => filter === "all" || row.status === filter)
   const pendingCount = rows.filter((row) => row.status === "pending" || row.status === "failed").length
   const eventLabels: Record<string, string> = { created: "Request created", paid: "Gateway payment confirmed", failed: "Payment failed", cancelled: "Payment cancelled", approved: "Admin approved", rejected: "Admin rejected / reversed" }
@@ -41,6 +52,7 @@ export default function AdminDepositsPage() {
       <article className="ad-card"><p className="ad-card-label">Awaiting review</p><p className="ad-card-value">{pendingCount}</p><p className="ad-card-note">Pending or failed payments</p></article>
       <article className="ad-card"><p className="ad-card-label">Approved deposits</p><p className="ad-card-value">{rows.filter((row) => row.status === "paid").length}</p><p className="ad-card-note">Wallet credited</p></article>
     </section>
+    <section className="ad-panel deposit-panel"><div className="deposit-panel-head"><div><h2>Minimum deposit</h2><p className="ad-muted">Set the lowest amount users can deposit.</p></div><label className="deposit-filter">Amount (৳) <input type="number" min="1" step="1" value={minimumAmount} onChange={(e) => setMinimumAmount(Number(e.target.value))} /></label><button className="deposit-action" disabled={busy === "settings"} onClick={saveMinimum}>{busy === "settings" ? "Saving…" : "Save minimum"}</button></div></section>
     <section className="ad-panel deposit-panel"><div className="deposit-panel-head"><div><h2>All deposits</h2><p className="ad-muted">Full request details, gateway outcomes, admin actions, and wallet history.</p></div><label className="deposit-filter">Status <select value={filter} onChange={(e) => setFilter(e.target.value)}><option value="all">All</option><option value="pending">Pending</option><option value="paid">Paid / approved</option><option value="failed">Failed</option><option value="cancelled">Cancelled</option><option value="rejected">Rejected / reversed</option></select></label></div>
       {error && <p className="deposit-error" role="alert">{error}</p>}
       <div className="ad-table-wrap"><table className="deposit-table"><thead><tr><th>User</th><th>Deposit details</th><th>Method</th><th>Amount</th><th>Status / dates</th><th>Date</th><th>Action</th><th>Audit history</th></tr></thead><tbody>

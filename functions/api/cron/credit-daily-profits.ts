@@ -5,12 +5,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!env.CRON_SECRET || request.headers.get('Authorization') !== `Bearer ${env.CRON_SECRET}`) return new Response('Not found', { status: 404 })
   const now = Date.now()
   try {
-    const { results = [] } = await env.DB.prepare("SELECT id,user_id,price_paid,daily_rate,duration_days,started_at FROM user_packages WHERE status='active' AND started_at<=? AND expires_at>? LIMIT 500").bind(now, now).all<{id:string;user_id:string;price_paid:number;daily_rate:number;duration_days:number;started_at:number}>()
+    const { results = [] } = await env.DB.prepare("SELECT id,user_id,package_id,daily_profit,duration_days,started_at FROM user_packages WHERE status='active' AND started_at<=? AND expires_at>? LIMIT 500").bind(now, now).all<{id:string;user_id:string;package_id:string;daily_profit:number;duration_days:number;started_at:number}>()
     let credited = 0
     for (const pkg of results) {
       const day = Math.floor((now - pkg.started_at) / 86400000) + 1
       if (day > pkg.duration_days) continue
-      const amount = Math.round(pkg.price_paid * Math.pow(1 + pkg.daily_rate / 100, day - 1) * pkg.daily_rate / 100)
+      const amount = pkg.daily_profit
       if (amount <= 0) continue
       const id = crypto.randomUUID()
       const result = await env.DB.batch([

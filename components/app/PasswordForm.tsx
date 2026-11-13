@@ -27,6 +27,7 @@ export default function PasswordForm({ title, withdrawal, action, onNavigate }: 
         if (!response.ok) throw new Error(data.error || "পাসওয়ার্ড সংরক্ষণ হয়নি")
         setHasWithdrawalPassword(true)
         setOldPw(""); setPw(""); setPw2("")
+        window.dispatchEvent(new Event("withdrawal-password-updated"))
         action("উত্তোলন পাসওয়ার্ড সংরক্ষিত হয়েছে")
       } catch (error) { action(error instanceof Error ? error.message : "সার্ভার সমস্যা হয়েছে") }
       finally { setSaving(false) }

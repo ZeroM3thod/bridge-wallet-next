@@ -8,6 +8,7 @@ const items = [
   ["users", "Users", "M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM4 21a8 8 0 0 1 16 0"],
   ["deposits", "Deposits", "M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"],
   ["withdraws", "Withdraws", "M12 15V3m0 0L8 7m4-4l4 4M4 21h16"],
+  ["withdrawal", "Withdrawal requests", "M4 6h16M4 12h16M4 18h16"],
   ["packages", "Packages", "M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"],
   ["referrals", "Referral Manage", "M17 8a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM7 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM19 21a5 5 0 0 0-8-4"],
   ["settings", "Settings", "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"],
@@ -20,7 +21,7 @@ export function AdminSidebar({ active: activeOverride, onNavigate }: { active?: 
   const active = activeOverride ?? (pathname === "/superadmin" ? "dashboard" : pathname.split("/").pop())
   const go = (key: string) => {
     onNavigate?.(key)
-    router.push(key === "dashboard" ? "/superadmin" : `/superadmin/${key === "referrals" ? "reffer" : key}`)
+    router.push(key === "dashboard" ? "/superadmin" : `/superadmin/${key === "referrals" ? "reffer" : key === "withdrawal" ? "withdrawl" : key}`)
     setOpen(false)
   }
   return <>

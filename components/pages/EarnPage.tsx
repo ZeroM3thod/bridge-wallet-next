@@ -6,8 +6,12 @@ import { bengaliNumber, money, expiryDateFromToday } from "@/lib/app-format"
 type VipPackage = {
   id: string
   name: string
+  shortDescription: string
+  modelNo: string
+  tankOverview: string
+  profitMechanism: string
   price: number
-  dailyRate: number
+  dailyProfit: number
   durationDays: number
   maxPerUser: number
   stockLimit: number
@@ -16,13 +20,13 @@ type VipPackage = {
   allowWhileActive: boolean
   visible: boolean
   imageUrl: string
+  stockSold: number
+  userPurchaseCount: number
+  eligible: boolean
+  eligibilityMessage: string
 }
 
-/* Compound return over the whole duration */
-const totalReturn = (p: VipPackage) => {
-  const value = p.price * Math.pow(1 + p.dailyRate / 100, p.durationDays)
-  return Number.isFinite(value) ? value : p.price
-}
+const totalReturn = (p: VipPackage) => p.price + p.dailyProfit * p.durationDays
 
 /* Square photo with a graceful fallback if the URL is empty or fails to load */
 function PackageImage({ src, alt }: { src: string; alt: string }) {
@@ -32,7 +36,15 @@ function PackageImage({ src, alt }: { src: string; alt: string }) {
   if (!src || failed) {
     return (
       <div className="pk-photo pk-photo-empty" role="img" aria-label={alt}>
-        <Icon name="chart" size={36} />
+        <svg viewBox="0 0 420 190" aria-hidden="true">
+          <defs><linearGradient id="tank-bg" x2="1" y2="1"><stop stopColor="#e8f2fe"/><stop offset="1" stopColor="#d4e7fc"/></linearGradient><linearGradient id="tank-steel" x2="0" y2="1"><stop stopColor="#fff"/><stop offset=".5" stopColor="#dbe5ef"/><stop offset="1" stopColor="#94a3b8"/></linearGradient></defs>
+          <rect width="420" height="190" rx="14" fill="url(#tank-bg)"/><ellipse cx="210" cy="160" rx="155" ry="9" fill="#0b63ce" opacity=".14"/>
+          <rect x="178" y="29" width="64" height="11" rx="3" fill="#475569"/><rect x="195" y="22" width="30" height="9" rx="2" fill="#0b63ce"/>
+          <rect x="64" y="42" width="292" height="102" rx="46" fill="url(#tank-steel)" stroke="#64748b" strokeWidth="2"/>
+          <path d="M132 44v98m78-98v98m78-98v98M52 36v116m316-116v116M50 37h320M50 151h320" stroke="#0b63ce" strokeWidth="5" opacity=".85"/>
+          <path d="m52 36 24 116m0-116-24 116m292-116 24 116m0-116-24 116" stroke="#0854c7" strokeWidth="2"/>
+          <rect x="147" y="75" width="126" height="34" rx="7" fill="#0b63ce"/><text x="210" y="96" textAnchor="middle" fill="#fff" fontFamily="monospace" fontWeight="700" fontSize="13">ISO TANK</text>
+        </svg>
       </div>
     )
   }
@@ -62,7 +74,9 @@ export default function EarnPage() {
     ])
       .then(([packages, profile]) => {
         setVipPackages(packages.packages ?? [])
-        if (profile.success) setBalance(profile.user.balance)
+        if (profile.success) {
+          setBalance(profile.user.balance)
+        }
       })
       .catch(() => toastRef.current("ডেটা লোড করা যায়নি"))
       .finally(() => setLoading(false))
@@ -85,11 +99,11 @@ export default function EarnPage() {
   }, [selectedPackage, purchasing])
 
   const suggestedPackage = [...vipPackages].reverse().find((item) => balance >= item.price)
-  const dailyRates = vipPackages.map((item) => item.dailyRate).filter(Number.isFinite)
-  const dailyProfitRange = dailyRates.length
-    ? dailyRates.length === 1
-      ? `${bengaliNumber(dailyRates[0])}%`
-      : `${bengaliNumber(Math.min(...dailyRates))}% – ${bengaliNumber(Math.max(...dailyRates))}%`
+  const dailyProfits = vipPackages.map((item) => item.dailyProfit).filter(Number.isFinite)
+  const dailyProfitRange = dailyProfits.length
+    ? dailyProfits.length === 1
+      ? money(dailyProfits[0])
+      : `${money(Math.min(...dailyProfits))} – ${money(Math.max(...dailyProfits))}`
     : "—"
 
   const shortage = selectedPackage ? Math.max(0, selectedPackage.price - balance) : 0
@@ -152,9 +166,9 @@ export default function EarnPage() {
               <Icon name="chart" size={28} />
             </span>
             <div className="pk-hero-text">
-              <span className="pk-chip">বিনিয়োগ পরিকল্পনা</span>
+               <span className="pk-chip">ট্যাংক লিজিং পরিকল্পনা</span>
               <h1>আপনার অর্জনের পথ</h1>
-              <p>প্যাকেজ বেছে নিন</p>
+              <p>পছন্দের প্যাকেজ বেছে নিন</p>
             </div>
           </div>
           <dl className="pk-stats">
@@ -180,8 +194,8 @@ export default function EarnPage() {
               <Icon name="wallet" size={20} />
             </span>
             <div>
-              <h2 id="pk-list-title">ভিআইপি প্যাকেজসমূহ</h2>
-              <p>মূল্য ও লাভ</p>
+              <h2 id="pk-list-title">আইএসও ট্যাংক প্যাকেজসমূহ</h2>
+              <p>নিরবচ্ছিন্ন বাণিজ্যিক ভাড়ার সুবর্ণ প্রবাহ</p>
             </div>
             <b className="pk-count">{bengaliNumber(vipPackages.length)}টি স্তর</b>
           </div>
@@ -201,26 +215,30 @@ export default function EarnPage() {
           {vipPackages.length === 0 ? (
             <p className="pk-empty">এই মুহূর্তে কোনো প্যাকেজ নেই। কিছুক্ষণ পরে আবার দেখুন।</p>
           ) : (
-            <div className="pk-grid" aria-label="ভিআইপি প্যাকেজের তালিকা">
+            <div className="pk-grid" aria-label="আইএসও ট্যাংক প্যাকেজের তালিকা">
               {vipPackages.map((item) => {
                 const isSuggested = suggestedPackage?.id === item.id
+                const requirement = item.eligibilityMessage
+                const unavailable = !item.eligible || balance < item.price
                 const profit = totalReturn(item) - item.price
                 return (
                   <article className={`pk-card${isSuggested ? " is-suggested" : ""}`} key={item.id}>
                     {/* square photo */}
                     <div className="pk-card-media">
                       <PackageImage src={item.imageUrl} alt={item.name} />
+                      {item.modelNo && <span className="pk-model-tag">{item.modelNo}</span>}
                       {isSuggested && <b className="pk-badge">সেরা পছন্দ</b>}
                     </div>
 
                     {/* name + price + rate (sits beside the photo on mobile) */}
                     <div className="pk-card-head">
-                      <h3>{item.name}</h3>
+                       <h3>{item.name}</h3>
+                       {item.shortDescription && <small>{item.shortDescription}</small>}
                       <div className="pk-price">
                         <small>প্যাকেজ মূল্য</small>
                         <strong>{money(item.price)}</strong>
                       </div>
-                      <span className="pk-rate">দৈনিক {bengaliNumber(item.dailyRate)}% লাভ</span>
+                      <span className="pk-rate">দৈনিক নির্ধারিত লাভ {money(item.dailyProfit)}</span>
                     </div>
 
                     {/* details + action (full width under both) */}
@@ -244,17 +262,17 @@ export default function EarnPage() {
                         </div>
                       </dl>
 
-                      {(item.minActiveReferrals > 0 || item.stockLimit > 0) && (
+                      {(item.minActiveReferrals > 0 || item.stockLimit > 0 || item.requiresPackageId) && (
                         <ul className="pk-reqs">
-                          {item.minActiveReferrals > 0 && (
-                            <li>ন্যূনতম {bengaliNumber(item.minActiveReferrals)} জন সক্রিয় রেফারেল</li>
-                          )}
+                          {item.minActiveReferrals > 0 && <li>{bengaliNumber(item.minActiveReferrals)} জন সক্রিয় রেফারেল</li>}
+                          {item.requiresPackageId && <li>আগে {vipPackages.find(p => p.id === item.requiresPackageId)?.name ?? 'পূর্ববর্তী'} প্যাকেজ কিনুন</li>}
                           {item.stockLimit > 0 && <li>স্টক {bengaliNumber(item.stockLimit)}টি</li>}
                         </ul>
                       )}
 
-                      <button className="pk-buy" type="button" onClick={() => openPackage(item)}>
-                        প্যাকেজ কিনুন
+                      {unavailable && <p className="pk-unavailable" role="status">{requirement || (balance < item.price ? 'পর্যাপ্ত ব্যালেন্স নেই' : item.userPurchaseCount >= item.maxPerUser ? 'ক্রয়ের সীমা পূর্ণ' : 'এই প্যাকেজ এখন কেনা যাবে না')}</p>}
+                      <button className="pk-buy" type="button" disabled={unavailable} onClick={() => openPackage(item)}>
+                        {unavailable ? 'কেনার যোগ্য নন' : 'প্যাকেজ কিনুন'}
                       </button>
                     </div>
                   </article>
@@ -280,16 +298,15 @@ export default function EarnPage() {
       {selectedPackage && (
         <div className="pk-backdrop" onClick={closeModal}>
           <section
-            className="pk-sheet"
+             className="pk-sheet"
             role="dialog"
             aria-modal="true"
             aria-labelledby="pk-modal-title"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="pk-grab" aria-hidden="true" />
-
             <header className="pk-sheet-head">
-              <small>প্যাকেজ কেনার অনুমোদন</small>
+              <button type="button" className="pk-return" onClick={closeModal} disabled={purchasing}>← ফিরে যান</button>
+              <small>প্যাকেজ চুক্তি ও নিশ্চিতকরণ</small>
               <button type="button" className="pk-close" aria-label="বন্ধ করুন" onClick={closeModal} disabled={purchasing}>
                 <Icon name="close" size={20} />
               </button>
@@ -301,17 +318,25 @@ export default function EarnPage() {
                 <PackageImage src={selectedPackage.imageUrl} alt={selectedPackage.name} />
                 <div>
                   <h2 id="pk-modal-title">{selectedPackage.name}</h2>
+                  <small>{selectedPackage.shortDescription}</small>
+                  {selectedPackage.modelNo && <small>মডেল নম্বর: {selectedPackage.modelNo}</small>}
                   <small>প্যাকেজের নির্ধারিত মূল্য</small>
                   <strong>{money(selectedPackage.price)}</strong>
-                  <span className="pk-rate">দৈনিক {bengaliNumber(selectedPackage.dailyRate)}% লাভ</span>
+                  <span className="pk-rate">মডেল: {selectedPackage.modelNo || selectedPackage.name}</span>
                 </div>
               </div>
+
+              <section className="pk-rules">
+                <h3>লভ্যাংশ অর্জনের উৎস ও ট্যাংক বিবরণ</h3>
+                {selectedPackage.tankOverview && <p>{selectedPackage.tankOverview}</p>}
+                {selectedPackage.profitMechanism && <p>{selectedPackage.profitMechanism}</p>}
+              </section>
 
               {/* details as a clean label/value list */}
               <dl className="pk-rows">
                 <div>
-                  <dt>দৈনিক সম্ভাব্য লাভ</dt>
-                  <dd>{bengaliNumber(selectedPackage.dailyRate)}%</dd>
+                  <dt>দৈনিক নির্ধারিত লাভ</dt>
+                  <dd>{money(selectedPackage.dailyProfit)}</dd>
                 </div>
                 <div>
                   <dt>প্যাকেজের মেয়াদ</dt>
@@ -321,6 +346,8 @@ export default function EarnPage() {
                   <dt>মেয়াদ ফুরোনোর দিন</dt>
                   <dd>{selectedExpiry}</dd>
                 </div>
+                <div><dt>মেয়াদ শেষে মোট লাভ</dt><dd>{money(totalReturn(selectedPackage) - selectedPackage.price)}</dd></div>
+                <div><dt>মেয়াদ শেষে মোট প্রাপ্তি</dt><dd>{money(totalReturn(selectedPackage))}</dd></div>
               </dl>
 
               {/* balance vs price */}
@@ -348,14 +375,14 @@ export default function EarnPage() {
               )}
 
               <div className="pk-rules">
-                <h3>প্যাকেজ কেনার নিয়ম</h3>
+                <h3>অঙ্গীকারনামা ও সম্মতি</h3>
                 <ol>
-                  <li>মূল্য কাটা হবে</li>
-                  <li>প্যাকেজ তাৎক্ষণিক সক্রিয়</li>
-                  <li>লাভ দৈনিক হিসাব</li>
-                  <li>মেয়াদে প্যাকেজ শেষ</li>
+                  <li>আমি নিজ ইচ্ছায় এই প্যাকেজ গ্রহণে সম্মত।</li>
+                  <li>দৈনিক লাভ হিসাব অনুযায়ী ব্যালেন্সে যুক্ত হবে।</li>
+                  <li>মেয়াদ শেষে বিনিয়োগকৃত মূলধন ফেরতযোগ্য।</li>
                 </ol>
               </div>
+              <div className="pk-contract-warning"><strong>বিশেষ সতর্কবার্তা</strong><p>চুক্তি নিশ্চিত করার আগে প্যাকেজের মূল্য, দৈনিক লাভ ও মেয়াদ যাচাই করুন।</p></div>
             </div>
 
             <footer className="pk-sheet-actions">

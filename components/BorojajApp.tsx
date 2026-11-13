@@ -14,6 +14,7 @@ function AppHeader({
   onNotice,
   onProfile,
   profile,
+  eliteStep,
 }: {
   page: Page
   isSubPage: boolean
@@ -21,6 +22,7 @@ function AppHeader({
   onNotice: () => void
   onProfile: () => void
   profile: HeaderProfile | null
+  eliteStep: string
 }) {
   const pageLabel = navItems.find((item) => item.id === page)?.label ?? ({ members: "সদস্য ও কমিশন", salary: "মাসিক বেতন", deposit: "জমা করুন", withdraw: "অর্থ উত্তোলন", settings: "প্রোফাইল সেটিংস", ledger: "লেনদেন", password: "পাসওয়ার্ড", wpassword: "উত্তোলন পাসওয়ার্ড", profits: "লাভের বিবরণ", download: "তথ্য ডাউনলোড" } as Partial<Record<Page, string>>)[page]
 
@@ -47,7 +49,7 @@ function AppHeader({
           <span>
             <b>আইডি {profile ? toBanglaDigit(profile.uid) : "০০০০০০০০"}</b>
             <em>
-              <Icon name="shield" size={12} /> বিশিষ্ট স্তর {profile ? toBanglaDigit(profile.vip_level) : "০"}
+              <Icon name="shield" size={12} /> অভিজাত ধাপ-{eliteStep}
             </em>
           </span>
         </span>
@@ -83,6 +85,7 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
  const router = useRouter()
   const { showToast, changePage } = useAppState()
   const [profile, setProfile] = useState<HeaderProfile | null>(null)
+  const [eliteStep, setEliteStep] = useState("০")
  const isPublic = pathname === "/signin" || pathname === "/signup"
  const [authorized, setAuthorized] = useState(false)
   useEffect(() => {
@@ -104,6 +107,17 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
       .then(d => { if (active && d?.success) setProfile(d.user) })
       .catch(() => {})
     load()
+    fetch('/api/team', { credentials: 'include', cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!active || !d) return
+        const counts = d.counts ?? [0, 0, 0]
+        const tiers = d.config?.salary?.tiers?.filter((tier: { enabled: boolean }) => tier.enabled) ?? []
+        const eligible = tiers.reduce((highest: number, tier: { reqL1: number; reqL2: number; reqL3: number }, index: number) =>
+          counts[0] >= tier.reqL1 && counts[1] >= tier.reqL2 && counts[2] >= tier.reqL3 ? Math.max(highest, index + 1) : highest, 0)
+        setEliteStep(toBanglaDigit(eligible))
+      })
+      .catch(() => {})
     const onFocus = () => { void load() }
     window.addEventListener('focus', onFocus)
     return () => { active = false; window.removeEventListener('focus', onFocus) }
@@ -112,8 +126,8 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
   const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits", "download"].includes(page)
-  return <div className="app blue-header">
-    <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} />
+   return <div className="app blue-header">
+      {!isPublic && <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} eliteStep={eliteStep} />}
   {children}
   <nav className="bottom-nav" aria-label="প্রধান নেভিগেশন">{navItems.map(item => <AppLink key={item.id} page={item.id} plain className={activePage === item.id ? "active" : ""}><Icon name={item.icon} size={27} /><span>{item.label}</span></AppLink>)}</nav>
  </div>

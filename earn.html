@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>অর্জনের পথ — আইএসও ট্যাংক লিজিং ও বিনিয়োগ পরিকল্পনা</title>
+  <!-- Google Fonts: Hind Siliguri & Noto Sans Bengali -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              royal: '#0B63CE',
+              royalDeep: '#0854C7',
+              vibrant: '#1484E6',
+              vibrantHover: '#0F72CA',
+              bg: '#EEF4FB',
+              highlight: '#E3F1FD',
+              ink: '#0F172A',
+              muted: '#64748B'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: #EEF4FB;
+      color: #0F172A;
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #0D6EFD 0%, #0B63CE 52%, #0854C7 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 18px -4px rgba(11, 99, 206, 0.08), 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    .card-hover {
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px -6px rgba(11, 99, 206, 0.14);
+    }
+    @keyframes pageFadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .view-animate {
+      animation: pageFadeUp 0.26s ease-out forwards;
+    }
+    @keyframes toastDrop {
+      from { opacity: 0; transform: translate(-50%, -14px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    .toast-animate {
+      animation: toastDrop 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-brand-bg text-brand-ink antialiased pb-24">
+
+  <!-- ===================================================================== -->
+  <!-- POETIC BENGALI NOTIFICATION TOAST (REPLACES NATIVE ALERTS)            -->
+  <!-- ===================================================================== -->
+  <div
+    id="poeticToast"
+    class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md rounded-2xl bg-slate-900/95 text-white px-4 py-3.5 shadow-2xl border border-white/15 backdrop-blur-md toast-animate"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="flex items-start gap-3">
+      <div id="toastIconBox" class="w-8 h-8 rounded-xl bg-brand-vibrant/25 text-sky-300 flex items-center justify-center shrink-0 mt-0.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="flex-1">
+        <p id="toastTitle" class="text-sm font-bold text-white leading-snug"></p>
+        <p id="toastMessage" class="text-xs text-slate-300 mt-0.5 leading-relaxed"></p>
+      </div>
+      <button
+        type="button"
+        onclick="hideToast()"
+        class="text-slate-400 hover:text-white p-1 rounded-lg"
+        aria-label="বার্তা বন্ধ করুন"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PAGE 1: MAIN PACKAGE LISTING VIEW ("অর্জনের পথ")                      -->
+  <!-- ===================================================================== -->
+  <div id="earnListView" class="block">
+    <!-- 1. Sticky Royal Blue Header Bar (#0B63CE) -->
+    <header class="sticky top-0 z-30 bg-brand-royal text-white shadow-md">
+      <div class="max-w-4xl mx-auto px-4 h-14 flex items-center justify-center relative">
+        <h1 class="text-lg sm:text-xl font-bold tracking-wide text-center">অর্জনের পথ</h1>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-3.5 sm:px-6 pt-4 space-y-5">
+
+      <!-- Active Purchase Receipt Banner (Shown after confirming a package) -->
+      <div
+        id="receiptBanner"
+        class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-4 shadow-sm view-animate"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h2 id="receiptTitle" class="text-sm sm:text-base font-bold text-emerald-900"></h2>
+              <p id="receiptBody" class="text-xs sm:text-sm text-emerald-800 mt-0.5 leading-relaxed"></p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onclick="dismissReceiptBanner()"
+            class="text-xs font-bold text-emerald-700 hover:text-emerald-950 px-2 py-1 rounded-lg bg-emerald-100/80 shrink-0"
+          >
+            বন্ধ করুন
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Hero Summary Banner (Gradient #0D6EFD to #0854C7) -->
+      <section class="hero-gradient rounded-2xl p-4 sm:p-6 text-white shadow-lg relative overflow-hidden">
+        <!-- Decorative soft light arcs -->
+        <div class="pointer-events-none absolute -right-12 -top-12 w-44 h-44 rounded-full bg-white/10"></div>
+        <div class="pointer-events-none absolute -left-10 -bottom-14 w-36 h-36 rounded-full bg-white/5"></div>
+
+        <!-- Top Row: Icon Badge + Pill Tag + Main Heading -->
+        <div class="relative z-10 flex items-center gap-3.5 mb-4">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center shrink-0 backdrop-blur-sm">
+            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="4" y="11" width="3.5" height="9" rx="1.2" />
+              <rect x="10.25" y="5" width="3.5" height="15" rx="1.2" />
+              <rect x="16.5" y="8" width="3.5" height="12" rx="1.2" />
+            </svg>
+          </div>
+          <div>
+            <span class="inline-block px-3 py-0.5 rounded-full bg-white/18 border border-white/20 text-[11px] sm:text-xs font-semibold text-blue-50 mb-1">
+              ট্যাংক লিজিং পরিকল্পনা
+            </span>
+            <h2 class="text-xl sm:text-2xl font-extrabold leading-tight tracking-tight">
+              আপনার অর্জনের পথ
+            </h2>
+            <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+              পছন্দের প্যাকেজ বেছে নিন
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom Row: 2 Translucent Glass Boxes Side-by-Side -->
+        <div class="relative z-10 grid grid-cols-2 gap-3">
+          <div class="rounded-xl bg-white/14 border border-white/18 px-3.5 py-2.5 backdrop-blur-sm">
+            <p class="text-[11px] sm:text-xs text-blue-100 font-medium">মোট প্যাকেজ</p>
+            <p class="text-base sm:text-lg font-extrabold text-white mt-0.5">৭টি স্তর</p>
+          </div>
+          <div class="rounded-xl bg-white/14 border border-white/18 px-3.5 py-2.5 backdrop-blur-sm">
+            <p class="text-[11px] sm:text-xs text-blue-100 font-medium">দৈনিক লভ্যাংশ</p>
+            <p class="text-base sm:text-lg font-extrabold text-white mt-0.5">৳ ৩৫ – ৳ ১,৩৩০</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Section Subheader Row -->
+      <section class="flex items-center justify-between gap-3 pt-1">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-brand-royal flex items-center justify-center shrink-0 border border-blue-200/70">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+              আইএসও ট্যাংক প্যাকেজসমূহ
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-500">
+              নিরবচ্ছিন্ন বাণিজ্যিক ভাড়ার সুবর্ণ প্রবাহ
+            </p>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-blue-100/90 text-brand-royal text-xs font-bold border border-blue-200/80 shrink-0">
+          ৭টি স্তর
+        </span>
+      </section>
+
+      <!-- 4. Seven (7) ISO Tank Leasing Package Cards Grid -->
+      <section
+        id="packageCardsContainer"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5"
+        aria-label="আইএসও ট্যাংক লিজিং প্যাকেজ তালিকা"
+      ></section>
+
+      <!-- Important Poetic Policy Footnote Card -->
+      <section class="bg-white rounded-2xl p-4 border border-slate-200/90 card-shadow">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-blue-50 text-brand-royal flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900">গুরুত্বপূর্ণ চুক্তি ও লভ্যাংশ নীতিমালা</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              প্রতিটি আইএসও ট্যাংক লিজিং চুক্তিতে নির্ধারিত দৈনিক লভ্যাংশ নিয়মিতভাবে যুক্ত হইবে এবং চুক্তির মেয়াদ পূর্ণ হইলেই বিনিয়োগকৃত মূল টাকা শতভাগ ফেরত প্রদান করা হইবে।
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PAGE 2: FULL-PAGE PACKAGE PURCHASE & CONTRACT CONFIRMATION VIEW       -->
+  <!-- Replaces list view cleanly when clicking "প্যাকেজ কিনুন"               -->
+  <!-- ===================================================================== -->
+  <div id="purchasePageView" class="hidden min-h-screen bg-brand-bg pb-24">
+    <!-- 1. Sticky Royal Blue Top Bar (#0B63CE) -->
+    <header class="sticky top-0 z-30 bg-brand-royal text-white shadow-md">
+      <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between relative">
+        <button
+          type="button"
+          onclick="returnToEarnList()"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-bold transition active:scale-95"
+        >
+          <span>← ফিরে যান</span>
+        </button>
+        <h1 class="text-base sm:text-lg font-bold tracking-wide text-center absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
+          প্যাকেজ চুক্তি ও নিশ্চিতকরণ
+        </h1>
+        <div class="w-16" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Dynamic Full-Page Purchase Contract Container -->
+    <main id="purchasePageBody" class="max-w-3xl mx-auto px-3.5 sm:px-6 pt-4 space-y-4 view-animate"></main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 5. FIXED 5-ITEM BOTTOM NAVIGATION BAR (EXACT MATCH TO SCREENSHOT)     -->
+  <!-- ===================================================================== -->
+  <nav
+    class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200/90 shadow-[0_-4px_16px_rgba(15,23,42,0.05)]"
+    aria-label="প্রধান নেভিগেশন"
+  >
+    <div class="max-w-4xl mx-auto grid grid-cols-5 h-16">
+      <!-- Item 1: মূল অফিস -->
+      <button
+        type="button"
+        onclick="handleBottomNav('মূল অফিস')"
+        class="flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-brand-vibrant transition"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z" />
+        </svg>
+        <span class="text-[11px] font-semibold">মূল অফিস</span>
+      </button>
+
+      <!-- Item 2: কর্মক্ষেত্র -->
+      <button
+        type="button"
+        onclick="handleBottomNav('কর্মক্ষেত্র')"
+        class="flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-brand-vibrant transition"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+        </svg>
+        <span class="text-[11px] font-semibold">কর্মক্ষেত্র</span>
+      </button>
+
+      <!-- Item 3: অর্জনের পথ (Active) -->
+      <button
+        type="button"
+        onclick="returnToEarnList()"
+        class="flex flex-col items-center justify-center gap-1 text-brand-vibrant relative"
+        aria-current="page"
+      >
+        <span class="absolute top-0 w-8 h-0.5 rounded-full bg-brand-vibrant"></span>
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="4" y="11" width="3.2" height="9" rx="1" />
+          <rect x="10.4" y="5" width="3.2" height="15" rx="1" />
+          <rect x="16.8" y="8" width="3.2" height="12" rx="1" />
+        </svg>
+        <span class="text-[11px] font-bold">অর্জনের পথ</span>
+      </button>
+
+      <!-- Item 4: সাফল্যের সঙ্গী -->
+      <button
+        type="button"
+        onclick="handleBottomNav('সাফল্যের সঙ্গী')"
+        class="flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-brand-vibrant transition"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+        <span class="text-[11px] font-semibold">সাফল্যের সঙ্গী</span>
+      </button>
+
+      <!-- Item 5: আমার পরিসর -->
+      <button
+        type="button"
+        onclick="handleBottomNav('আমার পরিসর')"
+        class="flex flex-col items-center justify-center gap-1 text-slate-500 hover:text-brand-vibrant transition"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span class="text-[11px] font-semibold">আমার পরিসর</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: PACKAGE DATA, CUSTOM ISO TANK SVGs, STATE & FLOW          -->
+  <!-- ===================================================================== -->
+  <script>
+    // Safe storage wrapper with in-memory fallback
+    const memStorage = {};
+    function readStore(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        return memStorage[key] || null;
+      }
+    }
+    function writeStore(key, val) {
+      try {
+        localStorage.setItem(key, val);
+      } catch (e) {
+        memStorage[key] = val;
+      }
+    }
+
+    // Bengali numeral formatter (e.g., 50199 -> "৫০,১৯৯")
+    const BN_DIGITS = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    function toBengaliNumber(num) {
+      const formatted = Number(num).toLocaleString('en-IN');
+      return formatted.replace(/\d/g, d => BN_DIGITS[Number(d)]);
+    }
+
+    // Custom High-Detail Inline SVG Illustrations for Each of the 7 ISO Tank Models
+    function getIsoTankSvg(svgType, isLarge = false) {
+      const heightClass = isLarge ? 'h-44 sm:h-52' : 'h-32 sm:h-36';
+
+      const svgs = {
+        // 1. ISO-T11-20FT: Classic 20ft Stainless Steel Beam ISO Tank Container
+        't11-beam': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bgGrad1" x1="0" y1="0" x2="420" y2="190" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#E8F2FE"/>
+                <stop offset="100%" stop-color="#D4E7FC"/>
+              </linearGradient>
+              <linearGradient id="steelCyl1" x1="80" y1="44" x2="80" y2="142" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="48%" stop-color="#E2E8F0"/>
+                <stop offset="100%" stop-color="#94A3B8"/>
+              </linearGradient>
+            </defs>
+            <rect width="420" height="190" rx="14" fill="url(#bgGrad1)"/>
+            <ellipse cx="210" cy="162" rx="156" ry="10" fill="#0B63CE" fill-opacity="0.14"/>
+            <!-- Top Manway & Walkway -->
+            <rect x="178" y="30" width="64" height="10" rx="3" fill="#475569"/>
+            <rect x="196" y="23" width="28" height="9" rx="2" fill="#0B63CE"/>
+            <line x1="115" y1="34" x2="305" y2="34" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 4"/>
+            <!-- Main Cylindrical Stainless Shell -->
+            <rect x="64" y="42" width="292" height="102" rx="46" fill="url(#steelCyl1)" stroke="#64748B" stroke-width="2"/>
+            <!-- Structural Reinforcing Rings -->
+            <rect x="128" y="42" width="7" height="102" fill="#0B63CE" fill-opacity="0.85"/>
+            <rect x="206" y="42" width="7" height="102" fill="#0B63CE" fill-opacity="0.85"/>
+            <rect x="284" y="42" width="7" height="102" fill="#0B63CE" fill-opacity="0.85"/>
+            <!-- Front & Rear ISO Frame End-Frames -->
+            <rect x="52" y="36" width="24" height="116" rx="3" stroke="#0B63CE" stroke-width="4" fill="#0B63CE" fill-opacity="0.08"/>
+            <line x1="52" y1="36" x2="76" y2="152" stroke="#0B63CE" stroke-width="2.2"/>
+            <line x1="76" y1="36" x2="52" y2="152" stroke="#0B63CE" stroke-width="2.2"/>
+            <rect x="344" y="36" width="24" height="116" rx="3" stroke="#0B63CE" stroke-width="4" fill="#0B63CE" fill-opacity="0.08"/>
+            <line x1="344" y1="36" x2="368" y2="152" stroke="#0B63CE" stroke-width="2.2"/>
+            <line x1="368" y1="36" x2="344" y2="152" stroke="#0B63CE" stroke-width="2.2"/>
+            <!-- Top & Bottom Longitudinal Rails -->
+            <rect x="50" y="34" width="320" height="6" rx="2" fill="#0854C7"/>
+            <rect x="50" y="148" width="320" height="7" rx="2" fill="#0854C7"/>
+            <!-- ISO Corner Castings -->
+            <rect x="49" y="32" width="11" height="11" rx="2" fill="#0F172A"/>
+            <rect x="360" y="32" width="11" height="11" rx="2" fill="#0F172A"/>
+            <rect x="49" y="146" width="11" height="11" rx="2" fill="#0F172A"/>
+            <rect x="360" y="146" width="11" height="11" rx="2" fill="#0F172A"/>
+            <!-- Bottom Discharge Valve -->
+            <rect x="198" y="142" width="24" height="12" rx="2" fill="#1484E6"/>
+            <circle cx="210" cy="148" r="4" fill="#FFFFFF"/>
+            <!-- Model Stencil Plate -->
+            <rect x="148" y="75" width="124" height="34" rx="7" fill="#0B63CE"/>
+            <text x="210" y="96" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="13">ISO-T11-20FT</text>
+          </svg>
+        `,
+
+        // 2. ISO-T14-24KL: Insulated Food-Grade & Specialty Liquid ISO Tank
+        't14-insulated': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#E6F3FF"/>
+            <ellipse cx="210" cy="162" rx="158" ry="10" fill="#0B63CE" fill-opacity="0.14"/>
+            <!-- Full Frame Box -->
+            <rect x="52" y="34" width="316" height="118" rx="5" stroke="#1484E6" stroke-width="4.5" fill="#1484E6" fill-opacity="0.06"/>
+            <!-- Insulated White Thermal Cladded Tank -->
+            <rect x="66" y="42" width="288" height="102" rx="38" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2.5"/>
+            <!-- Royal Blue Thermal Cladding Bands -->
+            <rect x="108" y="42" width="10" height="102" fill="#0B63CE"/>
+            <rect x="176" y="42" width="10" height="102" fill="#1484E6"/>
+            <rect x="244" y="42" width="10" height="102" fill="#1484E6"/>
+            <rect x="304" y="42" width="10" height="102" fill="#0B63CE"/>
+            <!-- Diagonal End Braces -->
+            <line x1="52" y1="34" x2="82" y2="152" stroke="#1484E6" stroke-width="3"/>
+            <line x1="368" y1="34" x2="338" y2="152" stroke="#1484E6" stroke-width="3"/>
+            <!-- Top Spill Box -->
+            <rect x="184" y="25" width="52" height="11" rx="3" fill="#0B63CE"/>
+            <!-- Model Label -->
+            <rect x="145" y="75" width="130" height="34" rx="7" fill="#0854C7"/>
+            <text x="210" y="96" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="13">ISO-T14-24KL</text>
+          </svg>
+        `,
+
+        // 3. ISO-T20-CHEM: Heavy-Duty Chemical ISO Tank with Hazard Diamond & Top Cage
+        't20-chem': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#E4EFFC"/>
+            <ellipse cx="210" cy="162" rx="160" ry="10" fill="#0F172A" fill-opacity="0.14"/>
+            <!-- Heavy Frame -->
+            <rect x="48" y="34" width="324" height="118" rx="4" stroke="#0F172A" stroke-width="4.5" fill="#CBD5E1" fill-opacity="0.25"/>
+            <!-- Thick Pressure Barrel -->
+            <rect x="64" y="43" width="292" height="100" rx="44" fill="#F8FAFC" stroke="#475569" stroke-width="2.5"/>
+            <!-- Protective Top Valve Roll-Cage -->
+            <path d="M168 34V20H252V34" stroke="#0B63CE" stroke-width="3.5" stroke-linejoin="round"/>
+            <rect x="190" y="24" width="40" height="10" rx="2" fill="#0B63CE"/>
+            <!-- Safety Hazard Diamond Placards -->
+            <g transform="translate(96, 92) rotate(45)">
+              <rect x="-12" y="-12" width="24" height="24" rx="2" fill="#F59E0B" stroke="#0F172A" stroke-width="1.5"/>
+            </g>
+            <g transform="translate(324, 92) rotate(45)">
+              <rect x="-12" y="-12" width="24" height="24" rx="2" fill="#0EA5E9" stroke="#0F172A" stroke-width="1.5"/>
+            </g>
+            <!-- Frame Gussets -->
+            <line x1="48" y1="34" x2="78" y2="152" stroke="#0F172A" stroke-width="3"/>
+            <line x1="372" y1="34" x2="342" y2="152" stroke="#0F172A" stroke-width="3"/>
+            <!-- Model Plate -->
+            <rect x="145" y="75" width="130" height="34" rx="7" fill="#0F172A"/>
+            <text x="210" y="96" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="13">ISO-T20-CHEM</text>
+          </svg>
+        `,
+
+        // 4. ISO-T50-GAS: High-Pressure Liquefied Gas Tank with Sunshield Canopy
+        't50-gas': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#E2EEFC"/>
+            <ellipse cx="210" cy="162" rx="160" ry="10" fill="#0B63CE" fill-opacity="0.16"/>
+            <!-- ISO Outer Frame -->
+            <rect x="48" y="34" width="324" height="118" rx="4" stroke="#0B63CE" stroke-width="4.5" fill="#0B63CE" fill-opacity="0.06"/>
+            <!-- Hemispherical Pressure Vessel -->
+            <rect x="64" y="45" width="292" height="96" rx="48" fill="#FFFFFF" stroke="#0B63CE" stroke-width="2.5"/>
+            <!-- Upper Aluminum Sunshield Canopy -->
+            <path d="M74 68C74 48 92 40 112 40H308C328 40 346 48 346 68H74Z" fill="#1484E6"/>
+            <!-- Pressure Relief & Vapor/Liquid Valves -->
+            <circle cx="155" cy="34" r="5" fill="#0F172A"/>
+            <circle cx="210" cy="34" r="6" fill="#0B63CE"/>
+            <circle cx="265" cy="34" r="5" fill="#0F172A"/>
+            <!-- Model Plate -->
+            <rect x="148" y="84" width="124" height="34" rx="7" fill="#0B63CE"/>
+            <text x="210" y="105" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="13">ISO-T50-GAS</text>
+          </svg>
+        `,
+
+        // 5. ISO-T75-CRYO: Ultra-Cold Vacuum-Insulated Cryogenic ISO Tank
+        't75-cryo': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#DFF0FF"/>
+            <ellipse cx="210" cy="162" rx="162" ry="10" fill="#0284C7" fill-opacity="0.18"/>
+            <!-- Cryogenic Outer Frame -->
+            <rect x="46" y="34" width="328" height="118" rx="5" stroke="#0369A1" stroke-width="4.5" fill="#E0F2FE"/>
+            <!-- Vacuum Jacketed Double-Wall Shell -->
+            <rect x="62" y="42" width="252" height="102" rx="34" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2.5"/>
+            <!-- Cryo Frost Wave Lines -->
+            <path d="M84 68Q100 62 116 68T148 68" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M84 118Q100 112 116 118T148 118" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- Rear Cryogenic Vaporizer & Piping Cabinet -->
+            <rect x="318" y="42" width="44" height="102" rx="4" fill="#0B63CE"/>
+            <line x1="328" y1="54" x2="328" y2="132" stroke="#7DD3FC" stroke-width="2.5"/>
+            <line x1="340" y1="54" x2="340" y2="132" stroke="#FFFFFF" stroke-width="2.5"/>
+            <line x1="352" y1="54" x2="352" y2="132" stroke="#7DD3FC" stroke-width="2.5"/>
+            <!-- Model Plate -->
+            <rect x="122" y="75" width="132" height="34" rx="7" fill="#0369A1"/>
+            <text x="188" y="96" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="13">ISO-T75-CRYO</text>
+          </svg>
+        `,
+
+        // 6. ISO-T11-DUO-48K: Dual Intermodal ISO Tank Chassis Fleet
+        't11-duo': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#E5F0FD"/>
+            <!-- Highway / Rail Deck -->
+            <rect x="28" y="138" width="364" height="10" rx="4" fill="#0F172A"/>
+            <!-- Tank Unit 1 (Left) -->
+            <rect x="38" y="42" width="166" height="92" rx="4" stroke="#0B63CE" stroke-width="3.5" fill="#0B63CE" fill-opacity="0.08"/>
+            <rect x="46" y="49" width="150" height="78" rx="30" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+            <rect x="92" y="49" width="6" height="78" fill="#1484E6"/>
+            <rect x="144" y="49" width="6" height="78" fill="#1484E6"/>
+            <!-- Tank Unit 2 (Right) -->
+            <rect x="216" y="42" width="166" height="92" rx="4" stroke="#0B63CE" stroke-width="3.5" fill="#0B63CE" fill-opacity="0.08"/>
+            <rect x="224" y="49" width="150" height="78" rx="30" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+            <rect x="270" y="49" width="6" height="78" fill="#1484E6"/>
+            <rect x="322" y="49" width="6" height="78" fill="#1484E6"/>
+            <!-- Heavy Bogie Wheels -->
+            <circle cx="72" cy="156" r="13" fill="#1E293B" stroke="#94A3B8" stroke-width="3"/>
+            <circle cx="106" cy="156" r="13" fill="#1E293B" stroke="#94A3B8" stroke-width="3"/>
+            <circle cx="314" cy="156" r="13" fill="#1E293B" stroke="#94A3B8" stroke-width="3"/>
+            <circle cx="348" cy="156" r="13" fill="#1E293B" stroke="#94A3B8" stroke-width="3"/>
+            <!-- Unified Fleet Model Badge -->
+            <rect x="130" y="72" width="160" height="32" rx="8" fill="#0B63CE"/>
+            <text x="210" y="92" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="12.5">ISO-T11-DUO-48K</text>
+          </svg>
+        `,
+
+        // 7. ISO-T75-GLOBAL-PRO: Flagship Maritime Port Terminal Fleet Stack
+        't75-global': `
+          <svg viewBox="0 0 420 190" class="w-full ${heightClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="190" rx="14" fill="#DCEBFC"/>
+            <!-- Port Gantry Crane Silhouette -->
+            <path d="M320 154V22H388M320 44L365 22" stroke="#0854C7" stroke-width="4" stroke-linecap="round"/>
+            <line x1="358" y1="22" x2="358" y2="66" stroke="#0854C7" stroke-width="2.2" stroke-dasharray="4 3"/>
+            <!-- Bottom Row Stacked ISO Tanks -->
+            <rect x="36" y="94" width="134" height="58" rx="4" stroke="#0B63CE" stroke-width="3" fill="#FFFFFF"/>
+            <rect x="44" y="100" width="118" height="46" rx="20" fill="#E2E8F0"/>
+            <rect x="178" y="94" width="134" height="58" rx="4" stroke="#0B63CE" stroke-width="3" fill="#FFFFFF"/>
+            <rect x="186" y="100" width="118" height="46" rx="20" fill="#E2E8F0"/>
+            <!-- Top Tier Flagship ISO Tank -->
+            <rect x="106" y="32" width="138" height="58" rx="4" stroke="#0854C7" stroke-width="3.5" fill="#0B63CE"/>
+            <rect x="114" y="38" width="122" height="46" rx="20" fill="#FFFFFF"/>
+            <!-- Terminal Quay Ground -->
+            <rect x="24" y="152" width="372" height="10" rx="4" fill="#0F172A"/>
+            <!-- Flagship Model Badge -->
+            <rect x="122" y="106" width="176" height="32" rx="8" fill="#0854C7"/>
+            <text x="210" y="126" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-weight="700" font-size="12">ISO-T75-GLOBAL-PRO</text>
+          </svg>
+        `
+      };
+
+      return svgs[svgType] || svgs['t11-beam'];
+    }
+
+    // =========================================================================
+    // COMPLETE 7 ISO TANK LEASING PACKAGES DATA
+    // =========================================================================
+    const PACKAGES = [
+      {
+        id: 1,
+        tierNumBn: '১',
+        poeticName: 'প্রারম্ভিক জলধারা',
+        poeticSubtitle: 'স্বল্পমেয়াদী পরীক্ষামূলক লিজিং',
+        modelNo: 'ISO-T11-20FT',
+        svgType: 't11-beam',
+        price: 499,
+        dailyProfit: 35,
+        durationDays: 3,
+        maxLimit: 1,
+        isLockedByDefault: false,
+        lockShortLabel: '',
+        lockRequirementText: '',
+        tankOverview:
+          'আন্তর্জাতিক সমুদ্র ও সড়কপথে তরল রাসায়নিক ও শিল্পজাত পণ্য পরিবহনের জন্য সর্বাধিক ব্যবহৃত স্টেইনলেস স্টিল নির্মিত ২০ ফুটের আদর্শ আইএসও ট্যাংক এটি। স্বল্পমেয়াদী বাণিজ্যিক চাহিদা পূরণে বিশ্বের শীর্ষস্থানীয় আমদানিকারক প্রতিষ্ঠানসমূহ এই ইউনিটটি দৈনিক ভাড়ায় ব্যবহার করিয়া থাকে।',
+        profitMechanism:
+          'আপনার বিনিয়োগকৃত মূলধন এই ট্যাংকের আন্তঃবন্দর বাণিজ্যিক ভাড়ার তহবিলে যুক্ত হয়। প্রতিদিন ভাড়ার আয় হইতে নির্ধারিত লভ্যাংশ আপনার হিসাবে জমা হইবে এবং ৩ দিনের চুক্তি পূর্ণ হইলেই মূলধন ৳ ৪৯৯ সম্পূর্ণরূপে ফেরত পাইবেন।'
+      },
+      {
+        id: 2,
+        tierNumBn: '২',
+        poeticName: 'সুবর্ণ প্রবাহ',
+        poeticSubtitle: 'নিয়মিত বাণিজ্যিক ট্যাংক অংশীদারিত্ব',
+        modelNo: 'ISO-T14-24KL',
+        svgType: 't14-insulated',
+        price: 1499,
+        dailyProfit: 40,
+        durationDays: 20,
+        maxLimit: 2,
+        isLockedByDefault: false,
+        lockShortLabel: '',
+        lockRequirementText: '',
+        tankOverview:
+          'তাপমাত্রা নিয়ন্ত্রিত ও বিশেষ সুরক্ষা আবরণযুক্ত ২৪,০০০ লিটার ধারণক্ষমতার এই আইএসও ট্যাংকটি খাদ্যমানের তরল ও সংবেদনশীল শিল্প উপাদান পরিবহনে ব্যবহৃত হয়। দীর্ঘ রুটের সমুদ্রযাত্রায় ইহার চাহিদা সারা বছরই অটুট থাকে।',
+        profitMechanism:
+          '২০ দিনের বাণিজ্যিক লিজিং চুক্তির আওতায় প্রতিদিন নির্ধারিত হারে লভ্যাংশ প্রদান করা হয়। মেয়াদান্তে অর্জিত মোট লাভ ৳ ৮০০ সহ আপনার বিনিয়োগকৃত মূলধন ৳ ১,৪৯৯ একত্রে ফেরত প্রদান করা হইবে।'
+      },
+      {
+        id: 3,
+        tierNumBn: '৩',
+        poeticName: 'রজত তরঙ্গ',
+        poeticSubtitle: 'রাসায়নিক পরিবহন বিশেষায়িত ট্যাংক',
+        modelNo: 'ISO-T20-CHEM',
+        svgType: 't20-chem',
+        price: 4499,
+        dailyProfit: 145,
+        durationDays: 45,
+        maxLimit: 1,
+        isLockedByDefault: true,
+        lockShortLabel: 'অভিজাত ধাপ-১ প্রয়োজন',
+        lockRequirementText:
+          'তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-১ অর্জন করিতে হইবে (৩ জন সক্রিয় সঙ্গী যুক্ত করিলেই এই স্তরটি উন্মুক্ত হইবে)',
+        tankOverview:
+          'উচ্চ-ঘনত্বের শিল্প রাসায়নিক ও ক্ষয়রোধী সুরক্ষা স্তরবিশিষ্ট এই বিশেষায়িত আইএসও ট্যাংকটি বৃহৎ পেট্রোকেমিক্যাল কারখানাগুলোর মাঝে নিরবচ্ছিন্ন সরবরাহ নিশ্চিত করে।',
+        profitMechanism:
+          '৪৫ দিনের দীর্ঘমেয়াদী বাণিজ্যিক ভাড়ার চুক্তিতে প্রতিদিন ৳ ১৪৫ করিয়া লভ্যাংশ যুক্ত হইবে এবং মেয়াদ শেষে মূলধন ৳ ৪,৪৯৯ সহ সর্বমোট ৳ ১১,০২৪ প্রাপ্ত হইবেন।'
+      },
+      {
+        id: 4,
+        tierNumBn: '৪',
+        poeticName: 'নীল দিগন্ত',
+        poeticSubtitle: 'উচ্চচাপ তরল গ্যাস পরিবহন ইউনিট',
+        modelNo: 'ISO-T50-GAS',
+        svgType: 't50-gas',
+        price: 9499,
+        dailyProfit: 299,
+        durationDays: 60,
+        maxLimit: 1,
+        isLockedByDefault: true,
+        lockShortLabel: 'অভিজাত ধাপ-২ প্রয়োজন',
+        lockRequirementText:
+          'তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-২ অর্জন করিতে হইবে',
+        tankOverview:
+          'উচ্চচাপ সহনশীল এবং বিশেষ তাপ-প্রতিরোধী ছাউনিযুক্ত এই গ্যাস ট্যাংক কন্টেইনারটি তরলীকৃত জ্বালানি গ্যাস ও শিল্প গ্যাস বৈশ্বিক বন্দরে নিরাপদে পৌঁছে দেয়।',
+        profitMechanism:
+          '৬০ দিনের বাণিজ্যিক চুক্তিতে প্রতিদিন ৳ ২৯৯ করিয়া লভ্যাংশ অর্জিত হইবে এবং মেয়াদ পূর্ণ হইলেই মূলধন ৳ ৯,৪৯৯ সহ সর্বমোট ৳ ২৭,৪৩৯ ফেরত পাইবেন।'
+      },
+      {
+        id: 5,
+        tierNumBn: '৫',
+        poeticName: 'মণিকোঠা প্রহর',
+        poeticSubtitle: 'অতি-শীতল ক্রায়োজেনিক বিশেষ ট্যাংক',
+        modelNo: 'ISO-T75-CRYO',
+        svgType: 't75-cryo',
+        price: 19999,
+        dailyProfit: 570,
+        durationDays: 60,
+        maxLimit: 1,
+        isLockedByDefault: true,
+        lockShortLabel: 'অভিজাত ধাপ-৩ প্রয়োজন',
+        lockRequirementText:
+          'তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-৩ অর্জন করিতে হইবে',
+        tankOverview:
+          'শূন্যস্থান-নিরোধক দ্বিস্তর বিশিষ্ট এই অতি-শীতল ক্রায়োজেনিক ট্যাংকটি হিমাঙ্কের নিচে তরলীকৃত প্রাকৃতিক গ্যাস ও চিকিৎসা অক্সিজেন পরিবহনে অতুলনীয় ভূমিকা রাখে।',
+        profitMechanism:
+          '৬০ দিনের বিশেষ চুক্তিতে প্রতিদিন ৳ ৫৭০ করিয়া লভ্যাংশ যুক্ত হইবে এবং মেয়াদান্তে মূলধন ৳ ১৯,৯৯৯ সহ সর্বমোট ৳ ৫৪,১৯৯ প্রাপ্ত হইবেন।'
+      },
+      {
+        id: 6,
+        tierNumBn: '৬',
+        poeticName: 'সমুদ্র বিজয়',
+        poeticSubtitle: 'দ্বৈত আন্তঃমহাদেশীয় ট্যাংক বহর',
+        modelNo: 'ISO-T11-DUO-48K',
+        svgType: 't11-duo',
+        price: 29999,
+        dailyProfit: 810,
+        durationDays: 90,
+        maxLimit: 2,
+        isLockedByDefault: true,
+        lockShortLabel: 'অভিজাত ধাপ-৪ প্রয়োজন',
+        lockRequirementText:
+          'তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-৪ অর্জন করিতে হইবে',
+        tankOverview:
+          'আন্তঃমহাদেশীয় রেল ও সমুদ্র করিডোরে একযোগে পরিচালিত দ্বৈত ট্যাংক বহর, যাহা বৃহৎ শিল্পগোষ্ঠীর নিরবচ্ছিন্ন কাঁচামাল পরিবহনে চুক্তিবদ্ধ থাকে।',
+        profitMechanism:
+          '৯০ দিনের প্রিমিয়াম লিজিং চুক্তিতে প্রতিদিন ৳ ৮১০ করিয়া লভ্যাংশ প্রদান করা হইবে এবং মেয়াদ শেষে মূলধন ৳ ২৯,৯৯৯ সহ সর্বমোট ৳ ১,০২,৮৯৯ ফেরত পাইবেন।'
+      },
+      {
+        id: 7,
+        tierNumBn: '৭',
+        poeticName: 'সপ্তর্ষি সাম্রাজ্য',
+        poeticSubtitle: 'বৈশ্বিক বন্দর টার্মিনাল প্রধান বহর',
+        modelNo: 'ISO-T75-GLOBAL-PRO',
+        svgType: 't75-global',
+        price: 50199,
+        dailyProfit: 1330,
+        durationDays: 120,
+        maxLimit: 2,
+        isLockedByDefault: true,
+        lockShortLabel: 'অভিজাত ধাপ-৫ প্রয়োজন',
+        lockRequirementText:
+          'তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-৫ অর্জন করিতে হইবে',
+        tankOverview:
+          'বৈশ্বিক প্রধান সমুদ্রবন্দর টার্মিনালসমূহে সংরক্ষিত সর্বোচ্চ সক্ষমতার সমন্বিত আইএসও ট্যাংক বহর, যাহা বহুজাতিক জ্বালানি ও রাসায়নিক প্রতিষ্ঠানের দীর্ঘমেয়াদী চুক্তিতে নিয়োজিত।',
+        profitMechanism:
+          '১২০ দিনের সর্বোচ্চ স্তরের চুক্তিতে প্রতিদিন ৳ ১,৩৩০ করিয়া লভ্যাংশ যুক্ত হইবে এবং মেয়াদ পূর্ণ হইলেই মূলধন ৳ ৫০,১৯৯ সহ সর্বমোট ৳ ২,০৯,৭৯৯ প্রাপ্ত হইবেন।'
+      }
+    ];
+
+    // Load persisted purchase counts (e.g., { "1": 0, "2": 0 })
+    let purchaseCounts = {};
+    try {
+      const saved = readStore('iso_tank_purchase_counts_v1');
+      if (saved) purchaseCounts = JSON.parse(saved);
+    } catch (e) {
+      purchaseCounts = {};
+    }
+
+    function getPurchasedCount(pkgId) {
+      return Number(purchaseCounts[pkgId] || 0);
+    }
+
+    function savePurchasedCount(pkgId, count) {
+      purchaseCounts[pkgId] = count;
+      writeStore('iso_tank_purchase_counts_v1', JSON.stringify(purchaseCounts));
+    }
+
+    // Toast Notification Helpers
+    let toastTimer = null;
+    function showToast(title, message) {
+      const toast = document.getElementById('poeticToast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 4500);
+    }
+
+    function hideToast() {
+      document.getElementById('poeticToast').classList.add('hidden');
+    }
+
+    function dismissReceiptBanner() {
+      document.getElementById('receiptBanner').classList.add('hidden');
+    }
+
+    function handleBottomNav(sectionName) {
+      if (sectionName === 'অর্জনের পথ') {
+        returnToEarnList();
+        return;
+      }
+      showToast(
+        `${sectionName} বিভাগ`,
+        `আপনি বর্তমানে 'অর্জনের পথ' পাতায় রহিয়াছেন। এখান হইতেই পছন্দের আইএসও ট্যাংক প্যাকেজ নির্বাচন করিতে পারিবেন।`
+      );
+    }
+
+    // =========================================================================
+    // RENDER PAGE 1: ALL 7 PACKAGE CARDS
+    // =========================================================================
+    function renderPackageCards() {
+      const container = document.getElementById('packageCardsContainer');
+      container.innerHTML = PACKAGES.map(pkg => {
+        const usedCount = getPurchasedCount(pkg.id);
+        const isLimitExhausted = !pkg.isLockedByDefault && usedCount >= pkg.maxLimit;
+        const isLocked = pkg.isLockedByDefault || isLimitExhausted;
+
+        const totalProfit = pkg.dailyProfit * pkg.durationDays;
+        const grandTotal = pkg.price + totalProfit;
+
+        const priceBn = toBengaliNumber(pkg.price);
+        const dailyBn = toBengaliNumber(pkg.dailyProfit);
+        const daysBn = toBengaliNumber(pkg.durationDays);
+        const totalProfitBn = toBengaliNumber(totalProfit);
+        const grandTotalBn = toBengaliNumber(grandTotal);
+        const maxLimitBn = toBengaliNumber(pkg.maxLimit);
+        const usedCountBn = toBengaliNumber(usedCount);
+
+        // Status pill & lock notice
+        let topStatusPill = '';
+        let lockBannerHtml = '';
+
+        if (isLimitExhausted) {
+          topStatusPill = `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-200 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>ক্রয় সীমা পূর্ণ — তালাবদ্ধ</span>
+            </span>
+          `;
+          lockBannerHtml = `
+            <div class="rounded-xl bg-amber-50 border border-amber-200/90 px-3 py-2 flex items-center gap-2 text-xs font-semibold text-amber-900">
+              <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>এই প্যাকেজের নির্ধারিত ক্রয় সীমা (${usedCountBn}/${maxLimitBn} বার) পূর্ণ হইয়াছে।</span>
+            </div>
+          `;
+        } else if (pkg.isLockedByDefault) {
+          topStatusPill = `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold border border-slate-200 shrink-0">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>তালাবদ্ধ</span>
+            </span>
+          `;
+          lockBannerHtml = `
+            <div class="rounded-xl bg-slate-100/95 border border-slate-200 px-3 py-2 flex items-start gap-2 text-xs font-semibold text-slate-700">
+              <svg class="w-4 h-4 text-slate-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span class="leading-relaxed">${pkg.lockRequirementText}</span>
+            </div>
+          `;
+        } else {
+          topStatusPill = `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200 shrink-0">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span>উন্মুক্ত স্তর</span>
+            </span>
+          `;
+        }
+
+        // Action CTA Button
+        let actionButtonHtml = '';
+        if (isLimitExhausted) {
+          actionButtonHtml = `
+            <button
+              type="button"
+              onclick="handleLockedPackageClick(${pkg.id})"
+              class="w-full py-3 px-4 rounded-xl bg-slate-200 text-slate-600 font-bold text-sm flex items-center justify-center gap-2 cursor-not-allowed"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>ক্রয় সীমা পূর্ণ — তালাবদ্ধ</span>
+            </button>
+          `;
+        } else if (pkg.isLockedByDefault) {
+          actionButtonHtml = `
+            <button
+              type="button"
+              onclick="handleLockedPackageClick(${pkg.id})"
+              class="w-full py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 border border-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition"
+            >
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>তালাবদ্ধ • ${pkg.lockShortLabel}</span>
+            </button>
+          `;
+        } else {
+          actionButtonHtml = `
+            <button
+              type="button"
+              onclick="openPurchasePage(${pkg.id})"
+              class="w-full py-3 px-4 rounded-xl bg-brand-vibrant hover:bg-brand-vibrantHover active:scale-[0.99] text-white font-bold text-sm sm:text-base shadow-sm transition"
+            >
+              প্যাকেজ কিনুন
+            </button>
+          `;
+        }
+
+        return `
+          <article class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 card-shadow card-hover flex flex-col justify-between space-y-3.5 ${isLocked ? 'opacity-95' : ''}">
+            <!-- Top Header Row: Tier Badge + Poetic Name + Status Pill -->
+            <div class="flex items-start justify-between gap-2.5">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl ${isLocked ? 'bg-slate-500' : 'bg-brand-vibrant'} text-white font-extrabold text-lg flex items-center justify-center shrink-0 shadow-sm">
+                  ${pkg.tierNumBn}
+                </div>
+                <div>
+                  <h4 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+                    ${pkg.poeticName}
+                  </h4>
+                  <p class="text-xs text-slate-500 font-medium mt-0.5">
+                    ${pkg.poeticSubtitle}
+                  </p>
+                </div>
+              </div>
+              ${topStatusPill}
+            </div>
+
+            <!-- ISO Tank Product Illustration & Model Badge -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-200/80 bg-slate-50">
+              ${getIsoTankSvg(pkg.svgType, false)}
+              <div class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-slate-900/85 text-white text-[11px] font-bold tracking-wider backdrop-blur-sm">
+                ${pkg.modelNo}
+              </div>
+              <div class="absolute bottom-2 left-2.5 px-2.5 py-0.5 rounded-full bg-white/90 text-brand-royal text-[11px] font-bold border border-blue-100">
+                আইএসও ট্যাংক ইউনিট
+              </div>
+            </div>
+
+            <!-- Optional Lock Requirement Notice -->
+            ${lockBannerHtml}
+
+            <!-- 2x2 Light Gray Bordered Metric Grid (Exact Screenshot Layout) -->
+            <div class="grid grid-cols-2 gap-2.5">
+              <!-- Box 1: প্যাকেজ মূল্য -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5">
+                <p class="text-xs text-slate-500 font-medium">প্যাকেজ মূল্য</p>
+                <p class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">৳ ${priceBn}</p>
+              </div>
+
+              <!-- Box 2: ক্রয় সীমা -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5">
+                <p class="text-xs text-slate-500 font-medium">ক্রয় সীমা</p>
+                <p class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
+                  ${maxLimitBn} বার <span class="text-xs font-semibold text-slate-500">(${usedCountBn}/${maxLimitBn})</span>
+                </p>
+              </div>
+
+              <!-- Box 3: দৈনিক লাভ -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5">
+                <p class="text-xs text-slate-500 font-medium">দৈনিক লাভ</p>
+                <p class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">৳ ${dailyBn}</p>
+              </div>
+
+              <!-- Box 4: মেয়াদ -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5">
+                <p class="text-xs text-slate-500 font-medium">মেয়াদ</p>
+                <p class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">${daysBn} দিন</p>
+              </div>
+            </div>
+
+            <!-- Total Return Highlight Strip (#E3F1FD) -->
+            <div class="rounded-xl bg-brand-highlight border border-blue-200/70 px-3.5 py-2.5 text-center">
+              <p class="text-xs sm:text-[13px] font-bold text-slate-900 leading-snug">
+                মেয়াদ শেষে মোট প্রাপ্তি: <span class="text-brand-royal font-extrabold">৳ ${grandTotalBn}</span>
+                <span class="block sm:inline text-slate-700 font-semibold mt-0.5 sm:mt-0">
+                  (মূলধন ৳ ${priceBn} ফেরত + লাভ: ৳ ${totalProfitBn})
+                </span>
+              </p>
+            </div>
+
+            <!-- Full-Width Action Button -->
+            <div>
+              ${actionButtonHtml}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Handle click on locked package or exhausted limit package
+    function handleLockedPackageClick(pkgId) {
+      const pkg = PACKAGES.find(p => p.id === pkgId);
+      if (!pkg) return;
+
+      const usedCount = getPurchasedCount(pkg.id);
+      if (!pkg.isLockedByDefault && usedCount >= pkg.maxLimit) {
+        showToast(
+          'ক্রয় সীমা পূর্ণ হইয়াছে',
+          `'${pkg.poeticName}' (${pkg.modelNo}) প্যাকেজটির নির্ধারিত ক্রয় সীমা ইতিমধ্যেই সম্পূর্ণ হইয়াছে।`
+        );
+        return;
+      }
+
+      if (pkg.id === 3) {
+        showToast(
+          'প্যাকেজটি বর্তমানে তালাবদ্ধ',
+          `'${pkg.poeticName}' (${pkg.modelNo}) গ্রহণ করিতে হইলে অভিজাত ধাপ-১ অর্জন করিতে হইবে। ৩ জন সক্রিয় সঙ্গী যুক্ত করিলেই এই স্তরটি উন্মুক্ত হইবে।`
+        );
+      } else {
+        showToast(
+          'প্যাকেজটি বর্তমানে তালাবদ্ধ',
+          `'${pkg.poeticName}' (${pkg.modelNo}) গ্রহণ করিতে হইলে ${pkg.lockShortLabel}।`
+        );
+      }
+    }
+
+    // =========================================================================
+    // PAGE 2: FULL-PAGE PACKAGE PURCHASE & CONTRACT CONFIRMATION VIEW
+    // =========================================================================
+    let selectedPackageId = null;
+
+    function openPurchasePage(pkgId) {
+      const pkg = PACKAGES.find(p => p.id === pkgId);
+      if (!pkg) return;
+
+      const usedCount = getPurchasedCount(pkg.id);
+      if (pkg.isLockedByDefault || usedCount >= pkg.maxLimit) {
+        handleLockedPackageClick(pkgId);
+        return;
+      }
+
+      selectedPackageId = pkgId;
+
+      const totalProfit = pkg.dailyProfit * pkg.durationDays;
+      const grandTotal = pkg.price + totalProfit;
+
+      const priceBn = toBengaliNumber(pkg.price);
+      const dailyBn = toBengaliNumber(pkg.dailyProfit);
+      const daysBn = toBengaliNumber(pkg.durationDays);
+      const totalProfitBn = toBengaliNumber(totalProfit);
+      const grandTotalBn = toBengaliNumber(grandTotal);
+      const remainingSlotsBn = toBengaliNumber(pkg.maxLimit - usedCount);
+
+      const bodyEl = document.getElementById('purchasePageBody');
+      bodyEl.innerHTML = `
+        <!-- 1. Top Product Showcase Card -->
+        <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 card-shadow space-y-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-brand-vibrant text-white font-extrabold text-base flex items-center justify-center">
+                ${pkg.tierNumBn}
+              </span>
+              <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+                  ${pkg.poeticName}
+                </h2>
+                <p class="text-xs text-slate-500 font-medium">${pkg.poeticSubtitle}</p>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold tracking-wider">
+              মডেল নম্বর: ${pkg.modelNo}
+            </span>
+          </div>
+
+          <div class="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+            ${getIsoTankSvg(pkg.svgType, true)}
+          </div>
+
+          <div class="flex items-center justify-between text-xs bg-brand-highlight text-brand-royal font-bold px-3.5 py-2 rounded-xl">
+            <span>অবশিষ্ট ক্রয় সুযোগ: ${remainingSlotsBn} বার</span>
+            <span>চুক্তির ধরন: মেয়াদান্তে মূলধন ফেরতযোগ্য</span>
+          </div>
+        </section>
+
+        <!-- 2. ISO Tank Profit Mechanism Details Card -->
+        <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 card-shadow space-y-2.5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-blue-100 text-brand-royal flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-900">
+              লভ্যাংশ অর্জনের উৎস ও ট্যাংক বিবরণ
+            </h3>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            ${pkg.tankOverview}
+          </p>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pt-1 border-t border-slate-100">
+            ${pkg.profitMechanism}
+          </p>
+        </section>
+
+        <!-- 3. Complete Financial Breakdown Card -->
+        <section class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 card-shadow">
+          <div class="bg-brand-royal text-white px-4 sm:px-5 py-3 flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-bold">নির্বাচিত প্যাকেজের পূর্ণাঙ্গ আর্থিক হিসাব</h3>
+            <span class="text-xs font-semibold text-blue-100">${pkg.modelNo}</span>
+          </div>
+
+          <div class="divide-y divide-slate-100 text-xs sm:text-sm">
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">প্যাকেজের নাম ও স্তর</span>
+              <span class="font-bold text-slate-900">${pkg.poeticName} (স্তর ${pkg.tierNumBn})</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">আইএসও ট্যাংক মডেল</span>
+              <span class="font-bold text-brand-royal">${pkg.modelNo}</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">বিনিয়োগকৃত মূলধন</span>
+              <span class="font-extrabold text-slate-900">৳ ${priceBn}</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">দৈনিক নির্ধারিত লাভ</span>
+              <span class="font-extrabold text-emerald-700">৳ ${dailyBn} / দিন</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">চুক্তির মেয়াদ</span>
+              <span class="font-bold text-slate-900">${daysBn} দিন</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <span class="text-slate-500 font-medium">মেয়াদ শেষে অর্জিত মোট লাভ</span>
+              <span class="font-extrabold text-emerald-700">+ ৳ ${totalProfitBn}</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3 flex items-center justify-between gap-2 bg-emerald-50/60">
+              <span class="text-emerald-900 font-semibold">মেয়াদ শেষে ফেরতযোগ্য মূল টাকা</span>
+              <span class="font-extrabold text-emerald-800">হ্যাঁ, শতভাগ মূলধন ফেরতযোগ্য (৳ ${priceBn})</span>
+            </div>
+
+            <div class="px-4 sm:px-5 py-3.5 flex items-center justify-between gap-2 bg-brand-highlight">
+              <span class="text-slate-900 font-extrabold">মেয়াদ শেষে সর্বমোট প্রাপ্তি</span>
+              <span class="text-base sm:text-lg font-extrabold text-brand-royal">৳ ${grandTotalBn}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Voluntary Consent Declaration ("অঙ্গীকারনামা ও সম্মতি") -->
+        <section class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 card-shadow space-y-2.5">
+          <h3 class="text-sm font-extrabold text-slate-900">অঙ্গীকারনামা ও সম্মতি</h3>
+          <label class="flex items-start gap-3 cursor-pointer select-none">
+            <input
+              id="voluntaryConsentCheckbox"
+              type="checkbox"
+              checked
+              class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-royal focus:ring-brand-vibrant shrink-0"
+            />
+            <span class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              আমি নিজ ইচ্ছায়, সম্পূর্ণ সজ্ঞানে ও সুস্থ মস্তিষ্কে এই নির্ধারিত আইএসও ট্যাংক লিজিং প্রকল্পে আমার অর্থ বিনিয়োগ করিতেছি এবং ইহার দৈনিক ও মেয়াদান্তে লভ্যাংশ গ্রহণে সম্মত রহিলাম।
+            </span>
+          </label>
+        </section>
+
+        <!-- 5. Non-Refundable Warning Box ("বিশেষ সতর্কবার্তা") -->
+        <section class="rounded-2xl bg-amber-50 border border-amber-300/90 p-4 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-amber-950">বিশেষ সতর্কবার্তা</h4>
+            <p class="text-xs sm:text-sm text-amber-900 mt-0.5 leading-relaxed font-medium">
+              সতর্কতা: চুক্তি চূড়ান্ত করিবার পর ক্রয়কৃত প্যাকেজ বা পণ্য কোনো অবস্থাতেই ফেরতযোগ্য নহে; নির্ধারিত মেয়াদ পূর্ণ হইলেই কেবল মূলধন ও লভ্যাংশ প্রদেয় হইবে।
+            </p>
+          </div>
+        </section>
+
+        <!-- 6. Bottom Side-by-Side Action Button Pair: "নিশ্চিত করুন" (Left) & "বাতিল করুন" (Right) -->
+        <section class="grid grid-cols-2 gap-3 pt-1">
+          <button
+            type="button"
+            onclick="confirmPackagePurchase()"
+            class="w-full py-3.5 px-4 rounded-xl bg-brand-royal hover:bg-brand-royalDeep active:scale-[0.99] text-white font-extrabold text-sm sm:text-base shadow-md transition"
+          >
+            নিশ্চিত করুন
+          </button>
+          <button
+            type="button"
+            onclick="returnToEarnList()"
+            class="w-full py-3.5 px-4 rounded-xl bg-white hover:bg-slate-100 active:scale-[0.99] text-slate-700 border border-slate-300 font-bold text-sm sm:text-base transition"
+          >
+            বাতিল করুন
+          </button>
+        </section>
+      `;
+
+      document.getElementById('earnListView').classList.add('hidden');
+      document.getElementById('purchasePageView').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function returnToEarnList() {
+      selectedPackageId = null;
+      document.getElementById('purchasePageView').classList.add('hidden');
+      document.getElementById('earnListView').classList.remove('hidden');
+      renderPackageCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function confirmPackagePurchase() {
+      const consentBox = document.getElementById('voluntaryConsentCheckbox');
+      if (consentBox && !consentBox.checked) {
+        showToast(
+          'সম্মতি আবশ্যক',
+          'চুক্তি চূড়ান্ত করিবার পূর্বে অনুগ্রহ করিয়া অঙ্গীকারনামার ঘরটিতে টিক চিহ্ন প্রদান করুন।'
+        );
+        return;
+      }
+
+      const pkg = PACKAGES.find(p => p.id === selectedPackageId);
+      if (!pkg) return;
+
+      const currentCount = getPurchasedCount(pkg.id);
+      if (currentCount >= pkg.maxLimit) {
+        returnToEarnList();
+        return;
+      }
+
+      const nextCount = currentCount + 1;
+      savePurchasedCount(pkg.id, nextCount);
+
+      const totalProfit = pkg.dailyProfit * pkg.durationDays;
+      const grandTotal = pkg.price + totalProfit;
+
+      const priceBn = toBengaliNumber(pkg.price);
+      const daysBn = toBengaliNumber(pkg.durationDays);
+      const grandTotalBn = toBengaliNumber(grandTotal);
+
+      const lockNote =
+        nextCount >= pkg.maxLimit
+          ? ' এই প্যাকেজের নির্ধারিত ক্রয় সীমা পূর্ণ হওয়ায় এটি স্বয়ংক্রিয়ভাবে তালাবদ্ধ হইয়াছে।'
+          : '';
+
+      // Show persistent receipt banner on Page 1
+      const receiptBanner = document.getElementById('receiptBanner');
+      document.getElementById('receiptTitle').textContent =
+        `অভিনন্দন! '${pkg.poeticName}' (${pkg.modelNo}) প্যাকেজটি সফলভাবে গৃহীত হইয়াছে`;
+      document.getElementById('receiptBody').textContent =
+        `বিনিয়োগকৃত মূলধন ৳ ${priceBn} এবং ${daysBn} দিন মেয়াদান্তে মোট প্রাপ্তি ৳ ${grandTotalBn} নির্ধারিত হইয়াছে।${lockNote}`;
+      receiptBanner.classList.remove('hidden');
+
+      returnToEarnList();
+    }
+
+    // Initialize Page 1 on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPackageCards();
+    });
+  </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     if (!session) return Response.json({ error: 'Unauthorized' }, { status: 401 })
     const [user, packageRow, tx, deposited, withdrawn] = await Promise.all([
       env.DB.prepare('SELECT id,name,balance FROM users WHERE id=?').bind(session.user_id).first(),
-      env.DB.prepare("SELECT up.id,up.package_id AS packageId,p.name,up.price_paid AS amount,up.daily_rate AS dailyRate,up.duration_days AS durationDays,up.started_at AS startedAt,up.expires_at AS expiresAt FROM user_packages up JOIN packages p ON p.id=up.package_id WHERE up.user_id=? AND up.status='active' AND up.expires_at>? ORDER BY up.created_at DESC LIMIT 1").bind(session.user_id,Date.now()).first(),
+      env.DB.prepare("SELECT up.id,up.package_id AS packageId,p.name,up.price_paid AS amount,up.daily_profit AS dailyProfit,up.duration_days AS durationDays,up.started_at AS startedAt,up.expires_at AS expiresAt FROM user_packages up JOIN packages p ON p.id=up.package_id WHERE up.user_id=? AND up.status='active' AND up.expires_at>? ORDER BY up.created_at DESC LIMIT 1").bind(session.user_id,Date.now()).first(),
       env.DB.prepare('SELECT id,type,amount,label,created_at AS createdAt FROM transactions WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(session.user_id).all(),
       env.DB.prepare("SELECT COALESCE(SUM(amount),0) AS total FROM transactions WHERE user_id=? AND type='credit' AND label NOT LIKE '%লাভ%'").bind(session.user_id).first<{total:number}>(),
       env.DB.prepare("SELECT COALESCE(SUM(amount),0) AS total FROM transactions WHERE user_id=? AND type='debit' AND label LIKE '%উত্তোলন%'").bind(session.user_id).first<{total:number}>(),

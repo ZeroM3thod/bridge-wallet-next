@@ -23,7 +23,7 @@ export default function HomePage() {
   )
   const [amount, setAmount] = useState(500)
   const dailyProfit = investment
-    ? (investment.amount * investment.dailyRate) / 100
+    ? investment.dailyProfit
     : 0
   const totalDeposited = dashboard?.totalDeposited ?? 0
   const totalWithdrawn = dashboard?.totalWithdrawn ?? 0
@@ -106,7 +106,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <small>দৈনিক লাভ</small>
-                  <strong>{bengaliNumber(pkg.dailyRate)}%</strong>
+                  <strong>{money(pkg.dailyProfit)}</strong>
                 </div>
                 <div>
                   <small>{investment ? "মেয়াদ ফুরোবে" : "মেয়াদ"}</small>
@@ -120,7 +120,7 @@ export default function HomePage() {
                 </div>}
               </div>
               {!investment && <div className="package-total-return">
-                মেয়াদ শেষে মোট রিটার্ন: <strong>{money(pkg.price * Math.pow(1 + pkg.dailyRate / 100, pkg.durationDays))}</strong> (লাভ: <strong>{money(pkg.price * (Math.pow(1 + pkg.dailyRate / 100, pkg.durationDays) - 1))}</strong>)
+                মেয়াদ শেষে মোট রিটার্ন: <strong>{money(pkg.price + pkg.dailyProfit * pkg.durationDays)}</strong> (লাভ: <strong>{money(pkg.dailyProfit * pkg.durationDays)}</strong>)
               </div>}
               {investment ? (
                 <AppLink page="work">বিস্তারিত</AppLink>

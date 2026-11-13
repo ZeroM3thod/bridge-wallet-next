@@ -10,6 +10,11 @@ const makeOutTradeNo = () => {
   return `${Date.now()}${String(rand).padStart(4, '0')}`
 }
 
+export async function onRequestGet({ env }: EventContext<Env, any, any>) {
+  const settings = await env.DB.prepare('SELECT minimum_amount FROM deposit_settings WHERE id=1').first<{ minimum_amount: number }>()
+  return json({ minimumAmount: settings?.minimum_amount ?? 300 })
+}
+
 export async function onRequestPost({ request, env }: EventContext<Env, any, any>) {
   try {
     const sessionId = request.headers.get('Cookie')?.match(/(?:^|;\s*)session=([^;]+)/)?.[1]
@@ -18,12 +23,14 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     if (!session) return json({ error: 'সেশন মেয়াদোত্তীর্ণ' }, 401)
 
     const body = await request.json() as { amount?: number; method?: string }
+    const settings = await env.DB.prepare('SELECT minimum_amount FROM deposit_settings WHERE id=1').first<{ minimum_amount: number }>()
+    const minimumAmount = (settings?.minimum_amount ?? 300) * 100
     if (
       !Number.isSafeInteger(body.amount) ||
-      (body.amount ?? 0) < 30_000 ||
+      (body.amount ?? 0) < minimumAmount ||
       (body.amount as number) % 100 !== 0 ||
       !['BKASH', 'NAGAD', 'ROCKET', 'BKASH-C', 'NAGAD-C'].includes(body.method ?? '')
-    ) return json({ error: 'সঠিক পেমেন্ট পদ্ধতি ও ন্যূনতম ৳৩০০ পরিমাণ দিন' }, 400)
+    ) return json({ error: `সঠিক পেমেন্ট পদ্ধতি ও ন্যূনতম ৳${settings?.minimum_amount ?? 300} পরিমাণ দিন` }, 400)
 
     const depositId = crypto.randomUUID()
     const outTradeNo = makeOutTradeNo()

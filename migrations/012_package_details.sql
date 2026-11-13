@@ -1,0 +1,4 @@
+ALTER TABLE packages ADD COLUMN short_description TEXT NOT NULL DEFAULT '';
+ALTER TABLE packages ADD COLUMN model_no TEXT NOT NULL DEFAULT '';
+ALTER TABLE packages ADD COLUMN tank_overview TEXT NOT NULL DEFAULT '';
+ALTER TABLE packages ADD COLUMN profit_mechanism TEXT NOT NULL DEFAULT '';

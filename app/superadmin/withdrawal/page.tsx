@@ -1,0 +1,16 @@
+"use client"
+import {useCallback,useEffect,useState} from "react"
+import {AdminSidebar} from "@/components/admin/AdminSidebar"
+type Row={id:string;amount:number;fee:number;net:number;status:string;created_at:number;user_id:string;name:string;phone:string;email:string;balance:number;provider:string;account:string}
+const money=(n:number)=>`৳${Number(n).toLocaleString("en-BD")}`
+export default function AdminWithdrawals(){
+ const [rows,setRows]=useState<Row[]>([]),[min,setMin]=useState(1000),[fee,setFee]=useState(2),[busy,setBusy]=useState(""),[error,setError]=useState("")
+ const load=useCallback(async()=>{const r=await fetch('/api/admin/withdrawals',{credentials:'include',cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);setRows(d.withdrawals);setMin(d.settings.minimum_amount);setFee(d.settings.fee_percent)},[])
+ useEffect(()=>{load().catch(e=>setError(e.message))},[load])
+ const post=async(body:object)=>{const r=await fetch('/api/admin/withdrawals',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error);return d}
+ const review=async(id:string,action:'approve'|'reject')=>{setBusy(id);setError('');try{await post({id,action});await load()}catch(e){setError(e instanceof Error?e.message:'Request failed')}finally{setBusy('')}}
+ const save=async()=>{setError('');try{await post({action:'settings',minimumAmount:min,feePercent:fee});await load()}catch(e){setError(e instanceof Error?e.message:'Settings save failed')}}
+ return <div className="ad"><AdminSidebar active="withdrawal"/><main className="ad-main"><header className="ad-top"><div><p>PAYMENT MANAGEMENT</p><h1>Withdrawal requests</h1></div></header>
+ <section className="ad-panel" style={{background:'white',padding:20,borderRadius:14,marginBottom:20}}><h2>Withdrawal settings</h2><div style={{display:'flex',gap:12,marginTop:12,flexWrap:'wrap'}}><label>Minimum amount ৳ <input type="number" min="1" value={min} onChange={e=>setMin(Number(e.target.value))}/></label><label>Fee % <input type="number" min="0" max="100" step="0.1" value={fee} onChange={e=>setFee(Number(e.target.value))}/></label><button onClick={save}>Save settings</button></div></section>
+ {error&&<p role="alert">{error}</p>}<section className="ad-panel" style={{background:'white',padding:20,borderRadius:14,overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:950}}><thead><tr>{['User details','Wallet','Amount / fee / net','Status','Requested','Actions'].map(x=><th style={{textAlign:'left',padding:10}} key={x}>{x}</th>)}</tr></thead><tbody>{rows.map(r=><tr key={r.id} style={{borderTop:'1px solid #e3eef5'}}><td style={{padding:10}}>{r.name}<br/>{r.phone}<br/>{r.email}<br/>ID: {r.user_id}</td><td>{r.provider} · {r.account}</td><td>{money(r.amount)} · fee {money(r.fee)} · net {money(r.net)}</td><td>{r.status}</td><td>{new Date(r.created_at).toLocaleString()}</td><td>{r.status==='pending'?<><button disabled={busy===r.id} onClick={()=>review(r.id,'approve')}>Approve</button> <button disabled={busy===r.id} onClick={()=>review(r.id,'reject')}>Reject</button></>:'—'}</td></tr>)}{!rows.length&&<tr><td colSpan={6} style={{padding:16}}>No withdrawals</td></tr>}</tbody></table></section></main></div>
+}
