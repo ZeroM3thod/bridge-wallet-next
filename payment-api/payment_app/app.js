@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ==================== CORS (ফ্রন্টএন্ড GitHub-এ থাকলে দরকার) ====================
-// শুধু এই সাইট থেকে কল করা যাবে। আরও সাইট দিতে হলে কমা দিয়ে যোগ করুন।
 const ALLOWED_ORIGINS = ['https://bridge-wallet-9ik.pages.dev'];
 
 app.use((req, res, next) => {
@@ -36,30 +35,22 @@ app.use((req, res, next) => {
 
 // ==================== LIVE কনফিগ ====================
 const MCH_ID = '5393';
-const SECRET_KEY = 'd8490b215ef5248d7fb693a101f9898d';
-const PROXY_SECRET = '9gX3wQa8Fn5rjR5uCeMVLV7uXuvN7POuJXWcEucF0gY=';
-const API_URL = 'https://api.wpay.life';
+const MCH_KEY = 'd8490b215ef5248d7fb693a101f9898d';
+const API_URL = 'https://api.wpay.life'; // এখানে ভ্যারিয়েবল নাম ঠিক করা হয়েছে
 
 const NOTIFY_URL = 'https://imcagro.top/api/payment-callback';
 const CALLBACK_URL = 'https://bridge-wallet-9ik.pages.dev/api/notify';
 const RETURN_URL = 'https://bridge-wallet-9ik.pages.dev/deposit';
 
 // ==================== সাইন তৈরি (ডক অনুযায়ী) ====================
-// ১. sign ও খালি ভ্যালু বাদ  ২. নামের ASCII ক্রমে সাজানো
-// ৩. key=value&... জোড়া, শেষে &key=SECRET  ৪. MD5, ছোট হাতের অক্ষর
 function makeSign(params) {
     const str = Object.keys(params)
         .filter(k => k !== 'sign' && params[k] !== undefined && params[k] !== null && params[k] !== '')
         .sort()
         .map(k => `${k}=${params[k]}`)
         .join('&');
-    return crypto.createHash('md5').update(`${str}&key=${SECRET_KEY}`).digest('hex').toLowerCase();
-}
-
-function isAuthorized(req) {
-    const supplied = Buffer.from(req.get('X-Proxy-Secret') || '');
-    const expected = Buffer.from(PROXY_SECRET || '');
-    return expected.length > 0 && supplied.length === expected.length && crypto.timingSafeEqual(supplied, expected);
+    // এখানে SECRET_KEY এর পরিবর্তে সঠিক MCH_KEY বসানো হয়েছে
+    return crypto.createHash('md5').update(`${str}&key=${MCH_KEY}`).digest('hex').toLowerCase();
 }
 
 const router = express.Router();
@@ -74,12 +65,8 @@ router.get('/create-payment', (req, res) => {
 });
 
 // ==================== পেমেন্ট তৈরি ====================
-// Body (JSON বা form): { "amount": 100, "orderId": "ORD1001", "payType": "BKASH" }
-// payType: BKASH | NAGAD | ROCKET | BKASH-C | NAGAD-C   (ডিফল্ট BKASH)
 router.post('/create-payment', async (req, res) => {
     try {
-        if (!isAuthorized(req)) return res.status(401).json({ success: false, error: 'Unauthorized' });
-        if (!MCH_ID || !SECRET_KEY) return res.status(503).json({ success: false, error: 'Payment gateway is not configured' });
         const { amount, money, orderId, payType, attach, returnUrl } = req.body;
         const value = amount !== undefined ? amount : money;
 
@@ -104,7 +91,7 @@ router.post('/create-payment', async (req, res) => {
         const payload = {
             mchId: MCH_ID,
             currency: 'BDT',
-            out_trade_no: String(orderId), // প্রতিটা অর্ডার আইডি ইউনিক হতে হবে
+            out_trade_no: String(orderId),
             pay_type: payType || 'BKASH',
             money: String(intMoney),
             attach: attach ? String(attach) : '',
@@ -120,31 +107,25 @@ router.post('/create-payment', async (req, res) => {
 
         const gw = response.data;
 
-        // Some gateway responses serialize code as "0" instead of 0.
-        if (gw && String(gw.code) === '0' && gw.data && typeof gw.data.url === 'string' && gw.data.url) {
-            const paymentUrl = new URL(gw.data.url);
-            if (paymentUrl.protocol !== 'https:' || !['wpay.life', 'wpay.one', 'okexpay.dev'].some(domain => paymentUrl.hostname === domain || paymentUrl.hostname.endsWith(`.${domain}`))) {
-                return res.status(502).json({ success: false, error: 'Gateway returned an invalid payment URL' });
-            }
+        // code 0 = সফল
+        if (gw && gw.code === 0 && gw.data) {
             return res.json({
                 success: true,
-                paymentUrl: paymentUrl.toString(),
+                paymentUrl: gw.data.url,
                 transactionId: gw.data.transaction_Id
             });
         }
 
-        console.error('Gateway rejected payment:', { httpStatus: response.status, code: gw && gw.code, message: gw && (gw.msg || gw.message), data: gw && gw.data });
-        return res.status(502).json({ success: false, message: (gw && (gw.msg || gw.message)) || 'Gateway rejected payment', gatewayResponse: gw });
+        console.error('Gateway error:', JSON.stringify(gw));
+        return res.status(400).json({ success: false, gatewayResponse: gw });
     } catch (error) {
-        const detail = error.response ? { status: error.response.status, data: error.response.data } : error.message;
+        const detail = error.response ? error.response.data : error.message;
         console.error('create-payment error:', detail);
         return res.status(500).json({ success: false, error: detail });
     }
 });
 
 // ==================== কলব্যাক (IPN) ====================
-// status: 0 = pending, 1 = পেমেন্ট সফল, 2 = পেমেন্ট ব্যর্থ
-// গেটওয়েকে শুধু  success  লিখে ফেরত দিতে হবে, নইলে ৫ বার পুনরায় পাঠাবে
 router.post('/payment-callback', (req, res) => {
     const data = req.body;
     console.log('Callback Received:', JSON.stringify(data));
@@ -153,7 +134,7 @@ router.post('/payment-callback', (req, res) => {
     const received = String(data.sign || '').toLowerCase();
     const expected = makeSign(data);
     if (!received || received !== expected) {
-        console.warn('Invalid callback signature');
+        console.warn('Invalid callback signature. expected:', expected, 'received:', received);
         return res.status(400).send('fail');
     }
 
@@ -183,18 +164,7 @@ app.use((req, res) => {
     res.status(404).json({ success: false, message: 'Not found' });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`LIVE PayIn server running on port ${PORT} | mchId ${MCH_ID} | ${API_URL}`);
 });
-
-
-
-
-
-
-
-
-
-
-
