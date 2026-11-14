@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
-import { AppLink } from "@/components/app/AppLink"
+import { useRouter } from "next/navigation"
 
 /* ------------------------------------------------------------------ */
 /* Company                                                             */
@@ -76,6 +76,9 @@ const css = `
 .ap-submit:disabled{opacity:.7;cursor:default}
 .ap-page a.ap-login{display:block;text-align:center;margin-top:16px;font-size:17px;font-weight:600;color:var(--accent-dark);text-decoration:none}
 .ap-page a.ap-login:hover{text-decoration:underline}
+.ap-page a.ap-login,.ap-page .ap-signup a{transition:color .18s ease,opacity .18s ease}
+.ap-page a.ap-login:active,.ap-page .ap-signup a:active{opacity:.65}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:ease-out}
 .ap-signup{margin:16px 0 0;text-align:center;font-size:16px;font-weight:500;color:var(--muted)}
 .ap-page .ap-signup a{color:var(--accent-dark);font-weight:700;text-decoration:none}
 .ap-page .ap-signup a:hover{text-decoration:underline}
@@ -149,6 +152,18 @@ function Shell({ title, sub, children }: { title: string; sub: string; children:
 /* ------------------------------------------------------------------ */
 /* Signup follows index.html; second password field confirms password. */
 /* ------------------------------------------------------------------ */
+function AuthSwitch({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
+  const router = useRouter()
+  return <a href={href} className={className} onClick={(event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    const navigate = () => router.push(href)
+    const doc = document as Document & { startViewTransition?: (callback: () => void) => unknown }
+    if (doc.startViewTransition) doc.startViewTransition(navigate)
+    else navigate()
+  }}>{children}</a>
+}
+
 export function SignupPage() {
   const [f, setF] = useState({ name: "", phone: "", email: "", otp: "", pw: "", confirmPw: "", invite: "" })
   const [bad, setBad] = useState("")
@@ -281,7 +296,7 @@ export function SignupPage() {
         </Field>
 
         <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "নিবন্ধন"}</button>
-        <AppLink page="signin" plain className="ap-login">ইতিমধ্যে নিবন্ধিত</AppLink>
+        <AuthSwitch href="/signin" className="ap-login">ইতিমধ্যে নিবন্ধিত</AuthSwitch>
         <p className={`ap-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
       </form>
     </Shell>
@@ -378,7 +393,7 @@ export function SigninPage() {
         </div>
 
         <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "লগইন"}</button>
-        <p className="ap-signup">অ্যাকাউন্ট নেই? <AppLink page="signup" plain>নিবন্ধন করুন</AppLink></p>
+        <p className="ap-signup">অ্যাকাউন্ট নেই? <AuthSwitch href="/signup">নিবন্ধন করুন</AuthSwitch></p>
         <p className={`ap-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
       </form>
     </Shell>
