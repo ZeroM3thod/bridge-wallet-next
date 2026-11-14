@@ -22,7 +22,7 @@ type VipPackage = {
 }
 
 /* Set to false if your app shell already renders its own title bar on this route */
-const SHOW_TOPBAR = true
+const SHOW_TOPBAR = false
 
 const totalReturn = (p: VipPackage) => p.price + p.dailyProfit * p.durationDays
 

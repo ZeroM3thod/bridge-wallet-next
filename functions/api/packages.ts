@@ -15,7 +15,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       const result = await env.DB.prepare("SELECT id,name,short_description AS shortDescription,model_no AS modelNo,tank_overview AS tankOverview,profit_mechanism AS profitMechanism,price,daily_profit AS dailyProfit,duration_days AS durationDays,min_vip_level AS minVipLevel,max_per_user AS maxPerUser,visible,CASE WHEN image_key='' THEN '' ELSE '/api/package-images/'||id||'?v='||updated_at END AS imageUrl FROM packages WHERE visible = 1 ORDER BY price").all<any>()
       const sessionId = request.headers.get('Cookie')?.match(/(?:^|;\s*)session=([^;]+)/)?.[1]
       const session = sessionId ? await env.DB.prepare('SELECT user_id FROM sessions WHERE id=? AND expires_at>?').bind(sessionId, now).first<{user_id:string}>() : null
-      if (!session) return json({ packages: result.results.map(p => ({ ...p, eligible: false, eligibilityMessage: 'প্যাকেজ কিনতে লগইন করুন' })) })
+       if (!session) return json({ packages: result.results.map(({ maxPerUser, ...p }) => ({ ...p, purchaseLimit: maxPerUser, purchasedCount: 0, eligible: false, eligibilityMessage: 'প্যাকেজ কিনতে লগইন করুন' })) })
       const [balance, userVip] = await Promise.all([
         env.DB.prepare('SELECT balance FROM users WHERE id=?').bind(session.user_id).first<{balance:number}>(),
         env.DB.prepare('SELECT COALESCE(vip_level,0) AS level FROM users WHERE id=?').bind(session.user_id).first<{level:number}>(),
@@ -26,8 +26,8 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
         if (balance && balance.balance < p.price) eligibilityMessage = 'পর্যাপ্ত ব্যালেন্স নেই'
         else if (p.maxPerUser && (bought?.n ?? 0) >= p.maxPerUser) eligibilityMessage = 'ক্রয়ের সীমা পূর্ণ'
         else if ((userVip?.level ?? 0) < p.minVipLevel) eligibilityMessage = `অভিজাত ধাপ ${p.minVipLevel} প্রয়োজন`
-        const { maxPerUser: _buyLimit, ...publicPackage } = p
-        return { ...publicPackage, eligible: !eligibilityMessage, eligibilityMessage }
+        const { maxPerUser, ...publicPackage } = p
+        return { ...publicPackage, purchaseLimit: maxPerUser, purchasedCount: bought?.n ?? 0, eligible: !eligibilityMessage, eligibilityMessage }
       }))
       return json({ packages })
     } catch {

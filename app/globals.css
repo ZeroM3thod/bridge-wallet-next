@@ -6497,7 +6497,7 @@ body,
 .pk-sheet .pk-mech p + p { padding-top: 4px; border-top: 1px solid #f1f5f9; }
 
 /* 3. financial breakdown */
-.pk-ledger { gap: 0; padding: 0; overflow: hidden; }
+.pk-sheet-body > .pk-ledger { display: grid !important; visibility: visible !important; gap: 0; padding: 0; overflow: hidden; }
 .pk-ledger-head {
   display: flex;
   align-items: center;
