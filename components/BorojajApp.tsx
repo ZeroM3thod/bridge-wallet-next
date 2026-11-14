@@ -125,7 +125,7 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
  if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
-  const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits", "download"].includes(page)
+  const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits"].includes(page)
    return <div className="app blue-header">
       {!isPublic && <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} eliteStep={eliteStep} />}
   {children}
