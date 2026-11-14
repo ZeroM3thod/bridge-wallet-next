@@ -13,15 +13,9 @@ type VipPackage = {
   price: number
   dailyProfit: number
   durationDays: number
-  maxPerUser: number
-  stockLimit: number
-  minActiveReferrals: number
-  requiresPackageId: string
-  allowWhileActive: boolean
+  minVipLevel: number
   visible: boolean
   imageUrl: string
-  stockSold: number
-  userPurchaseCount: number
   eligible: boolean
   eligibilityMessage: string
 }
@@ -249,8 +243,8 @@ export default function EarnPage() {
                           <dd>{bengaliNumber(item.durationDays)} দিন</dd>
                         </div>
                         <div>
-                          <dt>ক্রয় সীমা</dt>
-                          <dd>{item.maxPerUser > 0 ? `${bengaliNumber(item.maxPerUser)} বার` : "সীমাহীন"}</dd>
+                          <dt>অভিজাত ধাপ</dt>
+                          <dd>{item.minVipLevel > 0 ? bengaliNumber(item.minVipLevel) : "যেকোনো ধাপ"}</dd>
                         </div>
                         <div>
                           <dt>মোট রিটার্ন</dt>
@@ -262,15 +256,7 @@ export default function EarnPage() {
                         </div>
                       </dl>
 
-                      {(item.minActiveReferrals > 0 || item.stockLimit > 0 || item.requiresPackageId) && (
-                        <ul className="pk-reqs">
-                          {item.minActiveReferrals > 0 && <li>{bengaliNumber(item.minActiveReferrals)} জন সক্রিয় রেফারেল</li>}
-                          {item.requiresPackageId && <li>আগে {vipPackages.find(p => p.id === item.requiresPackageId)?.name ?? 'পূর্ববর্তী'} প্যাকেজ কিনুন</li>}
-                          {item.stockLimit > 0 && <li>স্টক {bengaliNumber(item.stockLimit)}টি</li>}
-                        </ul>
-                      )}
-
-                      {unavailable && <p className="pk-unavailable" role="status">{requirement || (balance < item.price ? 'পর্যাপ্ত ব্যালেন্স নেই' : item.userPurchaseCount >= item.maxPerUser ? 'ক্রয়ের সীমা পূর্ণ' : 'এই প্যাকেজ এখন কেনা যাবে না')}</p>}
+                      {unavailable && <p className="pk-unavailable" role="status">{requirement || (balance < item.price ? 'পর্যাপ্ত ব্যালেন্স নেই' : 'এই প্যাকেজ এখন কেনা যাবে না')}</p>}
                       <button className="pk-buy" type="button" disabled={unavailable} onClick={() => openPackage(item)}>
                         {unavailable ? 'কেনার যোগ্য নন' : 'প্যাকেজ কিনুন'}
                       </button>

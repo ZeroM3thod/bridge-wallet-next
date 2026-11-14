@@ -12,21 +12,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (typeof body.packageId !== 'string' || !body.packageId) return json({ error: 'প্যাকেজ নির্বাচন করুন' }, 400)
     const pkg = await env.DB.prepare('SELECT * FROM packages WHERE id=? AND visible=1').bind(body.packageId).first<any>()
     if (!pkg) return json({ error: 'প্যাকেজ পাওয়া যায়নি' }, 404)
-    const user = await env.DB.prepare('SELECT balance FROM users WHERE id=?').bind(session.user_id).first<{balance:number}>()
+    const user = await env.DB.prepare('SELECT balance,COALESCE(vip_level,0) AS vip_level FROM users WHERE id=?').bind(session.user_id).first<{balance:number;vip_level:number}>()
     if (!user) return json({ error: 'ব্যবহারকারী পাওয়া যায়নি' }, 404)
     if (user.balance < pkg.price) return json({ error: 'পর্যাপ্ত ব্যালেন্স নেই' }, 400)
-    const [count, stock, referrals, prerequisite, active] = await Promise.all([
-      env.DB.prepare('SELECT COUNT(*) AS n FROM user_packages WHERE user_id=? AND package_id=?').bind(session.user_id,pkg.id).first<{n:number}>(),
-      env.DB.prepare('SELECT COUNT(*) AS n FROM user_packages WHERE package_id=?').bind(pkg.id).first<{n:number}>(),
-      env.DB.prepare("SELECT COUNT(*) AS n FROM users u WHERE u.referred_by=? AND EXISTS (SELECT 1 FROM user_packages up WHERE up.user_id=u.id AND up.status='active' AND up.expires_at>?)").bind(session.user_id,Date.now()).first<{n:number}>(),
-      pkg.requires_package_id ? env.DB.prepare('SELECT 1 AS yes FROM user_packages WHERE user_id=? AND package_id=? LIMIT 1').bind(session.user_id,pkg.requires_package_id).first() : Promise.resolve({ yes: 1 }),
-      env.DB.prepare("SELECT 1 AS yes FROM user_packages WHERE user_id=? AND status='active' AND expires_at>? LIMIT 1").bind(session.user_id,Date.now()).first(),
-    ])
+    const count = await env.DB.prepare('SELECT COUNT(*) AS n FROM user_packages WHERE user_id=? AND package_id=?').bind(session.user_id,pkg.id).first<{n:number}>()
     if (pkg.max_per_user && count!.n >= pkg.max_per_user) return json({ error: 'এই প্যাকেজ কেনার সর্বোচ্চ সীমা পূর্ণ' }, 400)
-    if (pkg.stock_limit && stock!.n >= pkg.stock_limit) return json({ error: 'প্যাকেজের স্টক শেষ' }, 400)
-    if (referrals!.n < pkg.min_active_referrals) return json({ error: `সক্রিয় রেফারেল কম। প্রয়োজন: ${pkg.min_active_referrals}` }, 400)
-    if (!prerequisite) return json({ error: 'আগের প্রয়োজনীয় প্যাকেজটি আগে কিনুন' }, 400)
-    if (!pkg.allow_while_active && active) return json({ error: 'চলমান প্যাকেজ শেষ হলে আবার কিনতে পারবেন' }, 400)
+    if (user.vip_level < pkg.min_vip_level) return json({ error: `অভিজাত ধাপ ${pkg.min_vip_level} প্রয়োজন` }, 400)
 
     const now = Date.now(), purchaseId = crypto.randomUUID()
     const result = await env.DB.batch([

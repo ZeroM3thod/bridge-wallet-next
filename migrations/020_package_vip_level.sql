@@ -1,0 +1,1 @@
+ALTER TABLE packages ADD COLUMN min_vip_level INTEGER NOT NULL DEFAULT 0;

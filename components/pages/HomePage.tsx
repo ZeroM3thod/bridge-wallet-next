@@ -115,8 +115,8 @@ export default function HomePage() {
                   </strong>
                 </div>
                 {!investment && <div>
-                  <small>ক্রয় সীমা</small>
-                  <strong>{pkg.maxPerUser > 0 ? `${bengaliNumber(pkg.maxPerUser)} বার` : "সীমাহীন"}</strong>
+                  <small>অভিজাত ধাপ</small>
+                  <strong>{pkg.minVipLevel > 0 ? bengaliNumber(pkg.minVipLevel) : "যেকোনো ধাপ"}</strong>
                 </div>}
               </div>
               {!investment && <div className="package-total-return">

@@ -19,6 +19,7 @@ export type Pkg = {
   dailyProfit: number;
   durationDays: number;
   maxPerUser: number;
+  minVipLevel: number;
   stockLimit: number;
   minActiveReferrals: number;
   requiresPackageId: string;
@@ -36,8 +37,6 @@ export type PackageConfig = {
 /* ------------------------------------------------------------------ */
 
 const bdt = (n: number) => "৳" + n.toLocaleString("en-BD", { maximumFractionDigits: 2 });
-const limitText = (n: number, unit = "") => (n === 0 ? "Unlimited" : `${n}${unit}`);
-
 function Icon({ d, size = 18 }: { d: string; size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -61,6 +60,7 @@ type Draft = {
   dailyProfit: string;
   durationDays: string;
   maxPerUser: string;
+  minVipLevel: string;
   stockLimit: string;
   minActiveReferrals: string;
   requiresPackageId: string;
@@ -79,6 +79,7 @@ const toDraft = (p: Pkg): Draft => ({
   dailyProfit: String(p.dailyProfit),
   durationDays: String(p.durationDays),
   maxPerUser: String(p.maxPerUser),
+  minVipLevel: String(p.minVipLevel ?? 0),
   stockLimit: String(p.stockLimit),
   minActiveReferrals: String(p.minActiveReferrals),
 });
@@ -94,6 +95,7 @@ const emptyDraft = (): Draft => ({
   dailyProfit: "300",
   durationDays: "",
   maxPerUser: "1",
+  minVipLevel: "0",
   stockLimit: "0",
   minActiveReferrals: "0",
   requiresPackageId: "",
@@ -109,6 +111,7 @@ const fromDraft = (d: Draft): Pkg => ({
   dailyProfit: Number(d.dailyProfit),
   durationDays: Number(d.durationDays),
   maxPerUser: Number(d.maxPerUser),
+  minVipLevel: Number(d.minVipLevel),
   stockLimit: Number(d.stockLimit),
   minActiveReferrals: Number(d.minActiveReferrals),
   requiresPackageId: d.requiresPackageId,
@@ -128,7 +131,7 @@ function validate(d: Draft, others: Pkg[]): Errors {
   if (!(n(d.price) > 0)) e.price = "Price must be more than 0.";
   if (!(Number.isSafeInteger(n(d.dailyProfit)) && n(d.dailyProfit) > 0)) e.dailyProfit = "Enter daily profit in BDT, greater than 0.";
   if (!(Number.isInteger(n(d.durationDays)) && n(d.durationDays) >= 1)) e.durationDays = "Enter a whole number of days, 1 or more.";
-  (["maxPerUser", "stockLimit", "minActiveReferrals"] as const).forEach((k) => {
+  (["maxPerUser", "minVipLevel"] as const).forEach((k) => {
     if (!(Number.isInteger(n(d[k])) && n(d[k]) >= 0)) e[k] = "Enter a whole number, 0 or more.";
   });
   return e;
@@ -193,7 +196,7 @@ export default function PackageManagement({
       const res = await fetch("/api/admin/packages", { cache: "no-store", credentials: "include" });
       const data = await res.json();
       if (!res.ok || !Array.isArray(data.packages)) throw new Error(data.error || "Load failed");
-      const cfg = { packages: data.packages.map((p: Pkg) => ({ ...p, allowWhileActive: Boolean(p.allowWhileActive), visible: Boolean(p.visible) })) };
+      const cfg = { packages: data.packages.map((p: Pkg) => ({ ...p, minVipLevel: p.minVipLevel ?? 0, allowWhileActive: Boolean(p.allowWhileActive), visible: Boolean(p.visible) })) };
       setSaved(cfg);
       setConfig(cfg);
     } catch (error) { say(error instanceof Error ? error.message : "Failed to load packages", true); }
@@ -305,7 +308,6 @@ export default function PackageManagement({
     return { first: daily, total, end: price + total, rows };
   }, [draft]);
 
-  const nameOf = (id: string) => config.packages.find((p) => p.id === id)?.name ?? "-";
 
   if (loading) return <div className="ad"><AdminSidebar active={active} onNavigate={setActive} /><main className="ad-main">Loading packages…</main></div>;
 
@@ -363,12 +365,7 @@ export default function PackageManagement({
                       ))}
                     </div>
 
-                    <div className="ad-pkg-rules">
-                      <div><small>Buy limit per user</small><strong>{p.maxPerUser === 0 ? "Unlimited" : `${p.maxPerUser} time${p.maxPerUser > 1 ? "s" : ""}`}</strong></div>
-                      <div><small>Active referrals needed</small><strong>{p.minActiveReferrals === 0 ? "None" : p.minActiveReferrals}</strong></div>
-                      <div><small>Total stock</small><strong>{limitText(p.stockLimit)}</strong></div>
-                      <div><small>Must have bought first</small><strong>{p.requiresPackageId ? nameOf(p.requiresPackageId) : "None"}</strong></div>
-                    </div>
+                    <div className="ad-pkg-rules"><div><small>অভিজাত ধাপ</small><strong>{p.minVipLevel === 0 ? "যেকোনো ধাপ" : p.minVipLevel}</strong></div><div><small>Buy limit per user</small><strong>{p.maxPerUser === 0 ? "Unlimited" : `${p.maxPerUser} time${p.maxPerUser > 1 ? "s" : ""}`}</strong></div></div>
 
                     <div className="ad-pkg-actions">
                       <label className="ad-pkg-toggle">
@@ -438,19 +435,11 @@ export default function PackageManagement({
                 </details>
               )}
 
-              <h3>Purchase rules</h3>
+              <h3>ক্রয় সীমা</h3>
               <div className="ad-form-grid">
                 <Field label="Times one user can buy" error={errors.maxPerUser} hint="0 means unlimited. Example: VIP 0 = 1, VIP 2 = 3."><input type="number" min={0} value={draft.maxPerUser} onChange={(e) => setField("maxPerUser", e.target.value)} /></Field>
-                <Field label="Total stock (all users)" error={errors.stockLimit} hint="0 means unlimited."><input type="number" min={0} value={draft.stockLimit} onChange={(e) => setField("stockLimit", e.target.value)} /></Field>
-                <Field label="Active referrals needed to buy" error={errors.minActiveReferrals} hint="0 means no requirement."><input type="number" min={0} value={draft.minActiveReferrals} onChange={(e) => setField("minActiveReferrals", e.target.value)} /></Field>
-                <Field label="User must have bought first">
-                  <select value={draft.requiresPackageId} onChange={(e) => setField("requiresPackageId", e.target.value)}>
-                    <option value="">No package needed</option>
-                    {config.packages.filter((p) => p.id !== draft.id).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-                  </select>
-                </Field>
+                <Field label="অভিজাত ধাপ (সর্বনিম্ন)" error={errors.minVipLevel} hint="0 মানে কোনো ধাপের শর্ত নেই।"><input type="number" min={0} value={draft.minVipLevel} onChange={(e) => setField("minVipLevel", e.target.value)} /></Field>
               </div>
-              <Switch checked={draft.allowWhileActive} onChange={(v) => setField("allowWhileActive", v)} label="Allow buying again while one is still running" hint="Off: the user must wait until the current one ends." />
               <Switch checked={draft.visible} onChange={(v) => setField("visible", v)} label="Show to users" hint="Hidden packages cannot be bought. Running ones continue." />
             </div>
 
