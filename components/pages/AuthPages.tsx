@@ -205,6 +205,7 @@ export function SignupPage() {
     if (loading) return
 
     const phone = onlyDigits(f.phone)
+    if (f.name.trim().length < 2) return fail("name", "নাম কমপক্ষে ২ অক্ষরের হতে হবে")
     if (!phoneRe.test(phone)) return fail("phone", "সঠিক ফোন নম্বর দিন")
     if (!emailRe.test(f.email.trim())) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
     if (!/^\d{6}$/.test(f.otp.trim())) return fail("otp", "ইমেইলে পাঠানো ৬ সংখ্যার কোড দিন")
@@ -220,7 +221,7 @@ export function SignupPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          name: f.email.trim().split("@")[0],
+          name: f.name.trim(),
           phone,
           email: f.email.trim(),
           otp: f.otp.trim(),
@@ -245,6 +246,10 @@ export function SignupPage() {
   return (
     <Shell title="নিবন্ধন" sub="নতুন অ্যাকাউন্ট তৈরি করুন">
       <form onSubmit={submit} noValidate>
+        <Field icon="user" invalid={bad === "name"}>
+          <input value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="আপনার পুরো নাম" maxLength={100} autoComplete="name" />
+        </Field>
+
         <Field icon="phone" invalid={bad === "phone"}>
           <span className="ap-prefix">+৮৮০</span>
           <input type="tel" inputMode="numeric" value={toBanglaDigits(f.phone)} onChange={(e) => set("phone")(onlyDigits(e.target.value))} placeholder="ফোন নম্বর" maxLength={11} autoComplete="tel-national" />
