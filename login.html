@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>লগইন | Your Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eff3f7;--card:#ffffff;--text:#000000;--muted:#374151;--border:#b8bfc9;
+    --accent:#0471f4;--accent-dark:#0052b6;--dark:#003376;--link:#003b9a;
+    --error:#d64545;--ok:#1f9d6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center}
+  .page{width:100%;max-width:430px;min-height:100vh;background:var(--card);position:relative;overflow:hidden;padding:0 26px 40px;box-shadow:0 0 40px rgba(0,51,118,.08)}
+  .page::before{content:"";position:absolute;inset:0 0 auto 0;height:190px;background:linear-gradient(160deg,#dde7f2 0%,#f3f6fa 55%,#fff 100%);z-index:0}
+  .page::after{content:"";position:absolute;top:-70px;right:-70px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(4,113,244,.25);box-shadow:0 0 0 24px rgba(4,113,244,.06);z-index:0}
+  .inner{position:relative;z-index:1;padding-top:max(30px,env(safe-area-inset-top))}
+  h1{text-align:center;font-size:28px;font-weight:700;color:#000}
+  .sub{text-align:center;font-size:16px;font-weight:500;color:var(--muted);margin:2px 0 14px}
+  .logo{width:68px;height:68px;margin:0 auto 24px;display:block;filter:drop-shadow(0 8px 14px rgba(4,113,244,.35))}
+  .brand{text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;color:#001e51;margin:-12px 0 22px}
+
+  /* phone / email switch */
+  .tabs{display:flex;background:#e3eaf2;border-radius:10px;padding:4px;margin-bottom:16px}
+  .tab{flex:1;height:42px;border:0;border-radius:7px;background:transparent;font:inherit;font-size:17px;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
+  .tab[aria-selected="true"]{background:#fff;color:#001e51;box-shadow:0 2px 6px rgba(0,51,118,.15)}
+
+  .field{position:relative;display:flex;align-items:center;height:52px;margin-bottom:13px;border:1px solid var(--border);border-radius:8px;background:#fff;transition:border-color .15s,box-shadow .15s}
+  .field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(4,113,244,.18)}
+  .field.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
+  .field .ico{width:44px;height:100%;display:flex;align-items:center;justify-content:center;color:#5b6472;flex:none}
+  .field:focus-within .ico{color:var(--accent)}
+  .field input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font:inherit;font-size:18px;font-weight:500;color:var(--text);padding:0 12px 0 0}
+  .field input::placeholder{color:#4b5563;font-weight:500}
+  .prefix{height:60%;padding:0 12px 0 0;margin-right:12px;display:flex;align-items:center;font-size:17px;font-weight:600;color:var(--text);border-right:1px solid var(--border)}
+  .eye{width:42px;height:100%;border:0;background:none;cursor:pointer;color:#6b7280;flex:none;display:flex;align-items:center;justify-content:center}
+  .eye:hover{color:var(--muted)}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  [hidden]{display:none!important}
+
+  .row{display:flex;justify-content:space-between;align-items:center;margin:2px 0 16px;font-size:15px;font-weight:500}
+  .remember{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text)}
+  .remember input{width:18px;height:18px;accent-color:var(--accent)}
+  .forgot{color:#002d78;font-weight:600;text-decoration:none}
+  .forgot:hover,.signup a:hover{text-decoration:underline}
+
+  .submit{width:100%;height:50px;border:0;border-radius:8px;background:var(--dark);color:#fff;font:inherit;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(0,51,118,.25);transition:transform .1s,box-shadow .15s}
+  .submit:active{transform:translateY(1px);box-shadow:0 3px 8px rgba(0,51,118,.25)}
+  .signup{text-align:center;margin-top:16px;font-size:16px;font-weight:500;color:var(--muted)}
+  .signup a{color:#002d78;font-weight:700;text-decoration:none}
+  .msg{font-size:16px;font-weight:500;color:var(--error);text-align:center;margin-top:10px;min-height:20px}
+  .msg.ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="inner">
+  <h1>লগইন</h1>
+  <p class="sub">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+
+  <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0053db"/><stop offset="1" stop-color="#002d78"/></linearGradient>
+      <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#f2a93b"/></linearGradient>
+    </defs>
+    <path d="M32 3 56 17v30L32 61 8 47V17z" fill="url(#lg1)"/>
+    <path d="M32 3 56 17v30L32 61 8 47V17z" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/>
+    <path d="M18 40 27 30l7 6 12-14" fill="none" stroke="url(#lg2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 21h7v7" fill="none" stroke="url(#lg2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="brand" id="brandName">Your Platform</div>
+
+  <form id="loginForm" novalidate>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" role="tab" id="tabPhone" aria-selected="true">ফোন</button>
+      <button type="button" class="tab" role="tab" id="tabEmail" aria-selected="false">ইমেইল</button>
+    </div>
+
+    <!-- Phone login -->
+    <div class="field" id="f-phone">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+      </span>
+      <span class="prefix">+880</span>
+      <input type="tel" id="phone" inputmode="numeric" placeholder="ফোন নম্বর" autocomplete="tel-national" maxlength="11">
+    </div>
+
+    <!-- Email login -->
+    <div class="field" id="f-email" hidden>
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+      </span>
+      <input type="email" id="email" inputmode="email" placeholder="ইমেইল ঠিকানা" autocomplete="email">
+    </div>
+
+    <!-- Password -->
+    <div class="field" id="f-pw">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </span>
+      <input type="password" id="pw" placeholder="লগইন পাসওয়ার্ড" autocomplete="current-password">
+      <button type="button" class="eye" id="eyeBtn" aria-label="পাসওয়ার্ড দেখান">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+
+    <div class="row">
+      <label class="remember"><input type="checkbox" id="remember"> মনে রাখুন</label>
+      <a class="forgot" href="forgot-password.html">পাসওয়ার্ড ভুলে গেছেন?</a>
+    </div>
+
+    <button type="submit" class="submit">লগইন</button>
+    <p class="signup">অ্যাকাউন্ট নেই? <a href="register.html">নিবন্ধন করুন</a></p>
+    <p class="msg" id="msg" role="alert"></p>
+  </form>
+</div>
+</main>
+
+<script>
+  var $ = function(id){return document.getElementById(id)};
+  var mode = 'phone';
+  var msg = $('msg');
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function clearErrors(){document.querySelectorAll('.field').forEach(function(f){f.classList.remove('invalid')})}
+  function fail(id, text){clearErrors();$(id).classList.add('invalid');msg.className='msg';msg.textContent=text;return false}
+
+  function setMode(m){
+    mode = m;
+    $('tabPhone').setAttribute('aria-selected', m==='phone');
+    $('tabEmail').setAttribute('aria-selected', m==='email');
+    $('f-phone').hidden = m!=='phone';
+    $('f-email').hidden = m!=='email';
+    clearErrors(); msg.textContent='';
+    (m==='phone' ? $('phone') : $('email')).focus();
+  }
+  $('tabPhone').addEventListener('click', function(){setMode('phone')});
+  $('tabEmail').addEventListener('click', function(){setMode('email')});
+
+  document.querySelectorAll('.field input').forEach(function(i){
+    i.addEventListener('input', function(){i.closest('.field').classList.remove('invalid')});
+  });
+  $('eyeBtn').addEventListener('click', function(){
+    $('pw').type = $('pw').type === 'password' ? 'text' : 'password';
+  });
+
+  $('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var identifier;
+    if(mode === 'phone'){
+      var p = $('phone').value.trim();
+      if(!/^0?1\d{9}$/.test(p)) return fail('f-phone','সঠিক ফোন নম্বর দিন');
+      identifier = '+880' + p.replace(/^0/,'');
+    } else {
+      var em = $('email').value.trim();
+      if(!emailRe.test(em)) return fail('f-email','সঠিক ইমেইল ঠিকানা দিন');
+      identifier = em.toLowerCase();
+    }
+    if(!$('pw').value) return fail('f-pw','পাসওয়ার্ড দিন');
+    clearErrors();
+    msg.className='msg ok'; msg.textContent='ফর্ম সঠিক আছে';
+    // TODO: POST { identifier, password, remember } to your login endpoint
+    // e.g. fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'},
+    //   body: JSON.stringify({identifier: identifier, password: $('pw').value, remember: $('remember').checked})})
+  });
+</script>
+</body>
+</html>

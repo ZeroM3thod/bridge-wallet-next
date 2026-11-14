@@ -3,10 +3,39 @@ import { AppLink } from "@/components/app/AppLink"
 
 /* ------------------------------------------------------------------ */
 /* Company                                                             */
-/* Logo file: /public/ghm-logo.png  (transparent PNG)                  */
+/* Logo: inline SVG (see <Logo /> below) - no image file needed        */
 /* ------------------------------------------------------------------ */
 const COMPANY_NAME = "GHM Groups"
-const LOGO_SRC = "/ghm-logo.png"
+
+function Logo() {
+  const blue = "#1b9be0"
+  return (
+    <svg className="ap-logo" viewBox="50 95 400 310" role="img" aria-label={COMPANY_NAME} xmlns="http://www.w3.org/2000/svg">
+      {/* tank / container body (light outlines) */}
+      <g fill="none" stroke="#c9d6e3" strokeWidth="2.5" strokeLinecap="round">
+        <ellipse cx="262" cy="195" rx="42" ry="62" />
+        <path d="M262 133 L345 150 L350 235 L300 262" />
+        <path d="M232 160 C285 150 320 165 340 185" />
+        <path d="M232 228 C285 240 320 232 338 215" />
+      </g>
+      {/* striped band */}
+      <path d="M214 180 L332 196 L336 216 L214 234 Z" fill={blue} />
+      <path d="M250 184 L246 232 M280 188 L276 228 M310 192 L306 222" stroke="#fff" strokeWidth="4" />
+      {/* container front frame */}
+      <path d="M130 140 L214 128 L214 268 L130 262 Z" fill="none" stroke={blue} strokeWidth="9" strokeLinejoin="round" />
+      <path d="M214 128 L352 150 L352 162 L214 143 Z" fill={blue} />
+      <ellipse cx="170" cy="200" rx="27" ry="48" fill={blue} />
+      <ellipse cx="170" cy="200" rx="17" ry="36" fill="none" stroke="#fff" strokeWidth="3" opacity=".85" />
+      {/* swoosh + arrow */}
+      <path d="M95 238 C102 292 192 318 262 292 C322 270 352 242 374 190 L360 184 C336 232 306 256 256 273 C190 293 122 286 95 238 Z" fill={blue} />
+      <path d="M112 262 C160 300 235 305 300 275" fill="none" stroke="#e3ecf5" strokeWidth="3" strokeLinecap="round" />
+      <polygon points="411,114 340,140 371,155 390,190" fill={blue} />
+      {/* wordmark */}
+      <text x="62" y="386" fontFamily="Montserrat, 'Segoe UI', Arial, sans-serif" fontWeight="800" fontSize="58" fill={blue} textLength="135" lengthAdjust="spacingAndGlyphs">GHM</text>
+      <text x="212" y="386" fontFamily="Montserrat, 'Segoe UI', Arial, sans-serif" fontWeight="700" fontSize="58" fill="#003376" textLength="225" lengthAdjust="spacingAndGlyphs">GROUPS</text>
+    </svg>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /* Styles - copied from index.html / login.html, scoped with `ap-`     */
@@ -30,9 +59,7 @@ const css = `
 .ap-sub{margin:2px 0 14px;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--muted)}
 
 /* logo: the emblem of ghm-logo.png on the logo's own navy tile (same spot as the old hexagon) */
-.ap-logo{width:132px;margin:0 auto 24px;padding:12px 16px;border-radius:20px;background:#0c203b;filter:drop-shadow(0 8px 14px rgba(4,113,244,.35))}
-.ap-logo-crop{width:100%;aspect-ratio:640/372;overflow:hidden}
-.ap-logo-crop img{display:block;width:100%;height:auto;max-width:none}
+.ap-logo{display:block;width:min(100%,240px);height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(4,113,244,.16))}
 .ap-brand{margin:-12px 0 22px;text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;line-height:1.4;color:#001e51}
 
 /* phone / email switch (login) */
@@ -137,12 +164,7 @@ function Shell({ title, sub, children }: { title: string; sub: string; children:
         <div className="ap-inner">
           <h1>{title}</h1>
           <p className="ap-sub">{sub}</p>
-          <div className="ap-logo">
-            <div className="ap-logo-crop">
-              <img src={LOGO_SRC} alt={COMPANY_NAME} width={640} height={472} decoding="async" />
-            </div>
-          </div>
-          <div className="ap-brand">{COMPANY_NAME}</div>
+          <Logo />
           {children}
         </div>
       </main>
@@ -151,8 +173,7 @@ function Shell({ title, sub, children }: { title: string; sub: string; children:
 }
 
 /* ------------------------------------------------------------------ */
-/* Signup  (design of index.html - confirm password instead of the     */
-/* withdrawal password)                                                */
+/* Signup follows index.html; second password field confirms password. */
 /* ------------------------------------------------------------------ */
 export function SignupPage() {
   const [f, setF] = useState({ name: "", phone: "", email: "", otp: "", pw: "", confirmPw: "", invite: "" })
@@ -209,7 +230,6 @@ export function SignupPage() {
     e.preventDefault()
     if (loading) return
 
-    if (!f.name.trim() || !/^[\u0980-\u09FF\s]+$/.test(f.name.trim())) return fail("name", "বাংলায় পূর্ণ নাম লিখুন")
     const phone = onlyDigits(f.phone)
     if (!phoneRe.test(phone)) return fail("phone", "সঠিক ফোন নম্বর দিন")
     if (!emailRe.test(f.email.trim())) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
@@ -226,7 +246,7 @@ export function SignupPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          name: f.name.trim(),
+          name: f.email.trim().split("@")[0],
           phone,
           email: f.email.trim(),
           otp: f.otp.trim(),
@@ -251,10 +271,6 @@ export function SignupPage() {
   return (
     <Shell title="নিবন্ধন" sub="নতুন অ্যাকাউন্ট তৈরি করুন">
       <form onSubmit={submit} noValidate>
-        <Field icon="user" invalid={bad === "name"}>
-          <input lang="bn" value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম (বাংলায়)" maxLength={100} autoComplete="name" />
-        </Field>
-
         <Field icon="phone" invalid={bad === "phone"}>
           <span className="ap-prefix">+৮৮০</span>
           <input type="tel" inputMode="numeric" value={toBanglaDigits(f.phone)} onChange={(e) => set("phone")(onlyDigits(e.target.value))} placeholder="ফোন নম্বর" maxLength={11} autoComplete="tel-national" />
@@ -294,7 +310,7 @@ export function SignupPage() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Signin  (design of login.html)                                      */
+/* Signin follows login.html.                                          */
 /* ------------------------------------------------------------------ */
 export function SigninPage() {
   const [mode, setMode] = useState<"phone" | "email">("phone")

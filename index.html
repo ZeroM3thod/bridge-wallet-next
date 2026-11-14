@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>নিবন্ধন | Your Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eff3f7;
+    --card:#ffffff;
+    --text:#000000;
+    --muted:#374151;
+    --border:#b8bfc9;
+    --accent:#0471f4;
+    --accent-dark:#0052b6;
+    --dark:#003376;
+    --link:#003b9a;
+    --error:#d64545;
+    --ok:#1f9d6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
+    background:var(--bg);color:var(--text);
+    display:flex;justify-content:center;
+  }
+  .page{
+    width:100%;max-width:430px;min-height:100vh;background:var(--card);
+    position:relative;overflow:hidden;
+    padding:0 26px 40px;
+    box-shadow:0 0 40px rgba(0,51,118,.08);
+  }
+  .page::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:190px;
+    background:linear-gradient(160deg,#dde7f2 0%,#f3f6fa 55%,#fff 100%);
+    z-index:0;
+  }
+  .page::after{
+    content:"";position:absolute;top:-70px;right:-70px;width:200px;height:200px;border-radius:50%;
+    border:1px solid rgba(4,113,244,.25);box-shadow:0 0 0 24px rgba(4,113,244,.06);
+    z-index:0;
+  }
+  .inner{position:relative;z-index:1;padding-top:max(30px,env(safe-area-inset-top))}
+  h1{text-align:center;font-size:28px;font-weight:700;color:#000}
+  .sub{text-align:center;font-size:16px;font-weight:500;color:var(--muted);margin:2px 0 14px}
+  .logo{
+    width:68px;height:68px;margin:0 auto 24px;display:block;
+    filter:drop-shadow(0 8px 14px rgba(4,113,244,.35));
+  }
+
+  .brand{
+    text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;color:#001e51;
+    margin:-12px 0 22px;
+  }
+  .field{
+    position:relative;display:flex;align-items:center;height:52px;margin-bottom:13px;
+    border:1px solid var(--border);border-radius:8px;background:#fff;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(4,113,244,.18)}
+  .field.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
+  .field .ico{
+    width:44px;height:100%;display:flex;align-items:center;justify-content:center;
+    color:#5b6472;flex:none;
+  }
+  .field:focus-within .ico{color:var(--accent)}
+  .field input{
+    flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;
+    font:inherit;font-size:18px;font-weight:500;color:var(--text);padding:0 12px 0 0;
+  }
+  .field input::placeholder{color:#4b5563;font-weight:500}
+  .prefix{
+    height:60%;padding:0 12px 0 0;margin-right:12px;display:flex;align-items:center;
+    font-size:17px;font-weight:600;color:var(--text);border-right:1px solid var(--border);
+  }
+  .send{
+    margin-right:8px;height:36px;padding:0 20px;border:0;border-radius:6px;flex:none;
+    background:var(--accent);color:#fff;font:inherit;font-size:17px;font-weight:700;cursor:pointer;
+    transition:background .15s;
+  }
+  .send:hover:not(:disabled){background:var(--accent-dark)}
+  .send:disabled{opacity:.6;cursor:default}
+  .eye{
+    width:42px;height:100%;border:0;background:none;cursor:pointer;color:#6b7280;flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .eye:hover{color:var(--muted)}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hint{font-size:15px;font-weight:500;color:var(--muted);margin:-5px 0 12px}
+  .otp-note{font-size:15px;font-weight:500;color:var(--muted);margin:-6px 0 12px}
+  .otp-note.ok{color:#0f7a54}
+
+  .strength{display:flex;gap:4px;margin:-4px 0 12px}
+  .strength i{flex:1;height:3px;border-radius:2px;background:#e5e8ec;transition:background .2s}
+  .strength[data-level="1"] i:nth-child(1){background:var(--error)}
+  .strength[data-level="2"] i:nth-child(-n+2){background:#e9a23b}
+  .strength[data-level="3"] i:nth-child(-n+3){background:var(--ok)}
+
+  .submit{
+    width:100%;height:50px;margin-top:4px;border:0;border-radius:8px;
+    background:var(--dark);color:#fff;font:inherit;font-size:20px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 16px rgba(0,51,118,.25);transition:transform .1s,box-shadow .15s;
+  }
+  .submit:active{transform:translateY(1px);box-shadow:0 3px 8px rgba(0,51,118,.25)}
+  .login{display:block;text-align:center;margin-top:16px;font-size:17px;font-weight:600;color:#002d78;text-decoration:none}
+  .login:hover{text-decoration:underline}
+  .msg{font-size:16px;font-weight:500;color:var(--error);text-align:center;margin-top:10px;min-height:18px}
+  .msg.ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="inner">
+  <h1>নিবন্ধন</h1>
+  <p class="sub">নতুন অ্যাকাউন্ট তৈরি করুন</p>
+  <!-- Placeholder logo: replace with your own -->
+  <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0053db"/><stop offset="1" stop-color="#002d78"/></linearGradient>
+      <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#f2a93b"/></linearGradient>
+    </defs>
+    <path d="M32 3 56 17v30L32 61 8 47V17z" fill="url(#lg1)"/>
+    <path d="M32 3 56 17v30L32 61 8 47V17z" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/>
+    <path d="M18 40 27 30l7 6 12-14" fill="none" stroke="url(#lg2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 21h7v7" fill="none" stroke="url(#lg2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="brand" id="brandName">Your Platform</div>
+
+  <form id="regForm" novalidate>
+
+    <!-- Phone (no OTP) -->
+    <div class="field" id="f-phone">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+      </span>
+      <span class="prefix">+880</span>
+      <input type="tel" id="phone" inputmode="numeric" placeholder="ফোন নম্বর" autocomplete="tel-national" maxlength="11">
+    </div>
+
+    <!-- Email -->
+    <div class="field" id="f-email">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+      </span>
+      <input type="email" id="email" placeholder="ইমেইল ঠিকানা" autocomplete="email" inputmode="email">
+    </div>
+
+    <!-- Email OTP -->
+    <div class="field" id="f-otp">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg>
+      </span>
+      <input type="text" id="otp" inputmode="numeric" placeholder="ইমেইল যাচাই কোড (OTP)" maxlength="6" autocomplete="one-time-code">
+      <button type="button" class="send" id="sendBtn">পাঠান</button>
+    </div>
+    <p class="otp-note" id="otpNote">আপনার ইমেইলে ৬ সংখ্যার কোড পাঠানো হবে</p>
+
+    <!-- Login password -->
+    <div class="field" id="f-pw">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </span>
+      <input type="password" id="pw" placeholder="লগইন পাসওয়ার্ড" autocomplete="new-password">
+      <button type="button" class="eye" data-target="pw" aria-label="পাসওয়ার্ড দেখান">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="strength" id="strength" data-level="0"><i></i><i></i><i></i></div>
+
+    <!-- Withdrawal password -->
+    <div class="field" id="f-pw2">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 6.5C16 5.4 14.2 5 12 5c-2.8 0-4.5 1.2-4.5 3s1.7 2.6 4.5 3 4.5 1.2 4.5 3-1.7 3-4.5 3c-2.2 0-4-.5-5-1.6"/></svg>
+      </span>
+      <input type="password" id="pw2" placeholder="উত্তোলন পাসওয়ার্ড" autocomplete="new-password">
+      <button type="button" class="eye" data-target="pw2" aria-label="পাসওয়ার্ড দেখান">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <p class="hint">উত্তোলন পাসওয়ার্ডে ইংরেজি অক্ষর থাকতে হবে</p>
+
+    <!-- Invite code -->
+    <div class="field" id="f-invite">
+      <span class="ico">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 13h18M12 8c-2 0-4-1-4-3s2-2.5 4 1c2-3.5 4-3 4-1s-2 3-4 3z"/></svg>
+      </span>
+      <input type="text" id="invite" placeholder="আমন্ত্রণ কোড" autocomplete="off">
+    </div>
+
+    <button type="submit" class="submit">নিবন্ধন</button>
+    <a class="login" href="login.html">ইতিমধ্যে নিবন্ধিত</a>
+    <p class="msg" id="msg" role="alert"></p>
+  </form>
+</div>
+</main>
+
+<script>
+  var $ = function(id){return document.getElementById(id)};
+  var msg = $('msg');
+
+  function fail(fieldId, text){
+    document.querySelectorAll('.field').forEach(function(f){f.classList.remove('invalid')});
+    $(fieldId).classList.add('invalid');
+    msg.className = 'msg';
+    msg.textContent = text;
+    return false;
+  }
+  document.querySelectorAll('.field input').forEach(function(i){
+    i.addEventListener('input', function(){ i.closest('.field').classList.remove('invalid'); });
+  });
+
+  // show / hide password
+  document.querySelectorAll('.eye').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var input = $(btn.dataset.target);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+  });
+
+  // password strength
+  $('pw').addEventListener('input', function(){
+    var v = this.value, s = 0;
+    if(v.length >= 6) s++;
+    if(/[A-Za-z]/.test(v) && /\d/.test(v)) s++;
+    if(v.length >= 10 && /[^A-Za-z0-9]/.test(v)) s++;
+    $('strength').dataset.level = v ? Math.max(s,1) : 0;
+  });
+
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // send OTP to EMAIL only (front-end only; connect to your backend)
+  var sendBtn = $('sendBtn');
+  sendBtn.addEventListener('click', function(){
+    var email = $('email').value.trim();
+    if(!emailRe.test(email)) return fail('f-email', 'সঠিক ইমেইল ঠিকানা দিন');
+    document.querySelectorAll('.field').forEach(function(f){f.classList.remove('invalid')});
+    msg.textContent = '';
+    // TODO: call your API here, e.g. POST /api/send-email-otp { email }
+    $('otpNote').textContent = email + ' ঠিকানায় কোড পাঠানো হয়েছে';
+    $('otpNote').classList.add('ok');
+    var s = 60;
+    sendBtn.disabled = true;
+    sendBtn.textContent = s + 's';
+    var t = setInterval(function(){
+      s--;
+      if(s <= 0){clearInterval(t);sendBtn.disabled = false;sendBtn.textContent = 'পাঠান';}
+      else sendBtn.textContent = s + 's';
+    }, 1000);
+  });
+
+  // validate + submit (connect to your backend)
+  $('regForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var phone = $('phone').value.trim();
+    if(!/^0?1\d{9}$/.test(phone)) return fail('f-phone', 'সঠিক ফোন নম্বর দিন');
+    if(!emailRe.test($('email').value.trim())) return fail('f-email', 'সঠিক ইমেইল ঠিকানা দিন');
+    if(!/^\d{6}$/.test($('otp').value.trim())) return fail('f-otp', 'ইমেইলে পাঠানো ৬ সংখ্যার কোড দিন');
+    if($('pw').value.length < 6) return fail('f-pw', 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+    if(!/[A-Za-z]/.test($('pw2').value)) return fail('f-pw2', 'উত্তোলন পাসওয়ার্ডে ইংরেজি অক্ষর থাকতে হবে');
+    document.querySelectorAll('.field').forEach(function(f){f.classList.remove('invalid')});
+    msg.className = 'msg ok';
+    msg.textContent = 'ফর্ম সঠিক আছে';
+    // TODO: POST phone, email, otp, passwords, invite code to your registration endpoint
+  });
+</script>
+</body>
+</html>
