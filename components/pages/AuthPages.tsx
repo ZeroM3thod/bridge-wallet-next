@@ -3,38 +3,12 @@ import { AppLink } from "@/components/app/AppLink"
 
 /* ------------------------------------------------------------------ */
 /* Company                                                             */
-/* Logo: inline SVG (see <Logo /> below) - no image file needed        */
+/* Company logo asset */
 /* ------------------------------------------------------------------ */
 const COMPANY_NAME = "GHM Groups"
 
 function Logo() {
-  const blue = "#1b9be0"
-  return (
-    <svg className="ap-logo" viewBox="50 95 400 310" role="img" aria-label={COMPANY_NAME} xmlns="http://www.w3.org/2000/svg">
-      {/* tank / container body (light outlines) */}
-      <g fill="none" stroke="#c9d6e3" strokeWidth="2.5" strokeLinecap="round">
-        <ellipse cx="262" cy="195" rx="42" ry="62" />
-        <path d="M262 133 L345 150 L350 235 L300 262" />
-        <path d="M232 160 C285 150 320 165 340 185" />
-        <path d="M232 228 C285 240 320 232 338 215" />
-      </g>
-      {/* striped band */}
-      <path d="M214 180 L332 196 L336 216 L214 234 Z" fill={blue} />
-      <path d="M250 184 L246 232 M280 188 L276 228 M310 192 L306 222" stroke="#fff" strokeWidth="4" />
-      {/* container front frame */}
-      <path d="M130 140 L214 128 L214 268 L130 262 Z" fill="none" stroke={blue} strokeWidth="9" strokeLinejoin="round" />
-      <path d="M214 128 L352 150 L352 162 L214 143 Z" fill={blue} />
-      <ellipse cx="170" cy="200" rx="27" ry="48" fill={blue} />
-      <ellipse cx="170" cy="200" rx="17" ry="36" fill="none" stroke="#fff" strokeWidth="3" opacity=".85" />
-      {/* swoosh + arrow */}
-      <path d="M95 238 C102 292 192 318 262 292 C322 270 352 242 374 190 L360 184 C336 232 306 256 256 273 C190 293 122 286 95 238 Z" fill={blue} />
-      <path d="M112 262 C160 300 235 305 300 275" fill="none" stroke="#e3ecf5" strokeWidth="3" strokeLinecap="round" />
-      <polygon points="411,114 340,140 371,155 390,190" fill={blue} />
-      {/* wordmark */}
-      <text x="62" y="386" fontFamily="Montserrat, 'Segoe UI', Arial, sans-serif" fontWeight="800" fontSize="58" fill={blue} textLength="135" lengthAdjust="spacingAndGlyphs">GHM</text>
-      <text x="212" y="386" fontFamily="Montserrat, 'Segoe UI', Arial, sans-serif" fontWeight="700" fontSize="58" fill="#003376" textLength="225" lengthAdjust="spacingAndGlyphs">GROUPS</text>
-    </svg>
-  )
+  return <img className="ap-logo" src="/ghm-logo.png" alt={COMPANY_NAME} width={640} height={472} />
 }
 
 /* ------------------------------------------------------------------ */
@@ -42,7 +16,7 @@ function Logo() {
 /* so nothing else in the app is touched (no globals.css change)       */
 /* ------------------------------------------------------------------ */
 const css = `
-.ap-wrap{--bg:#eff3f7;--card:#ffffff;--text:#000000;--muted:#374151;--border:#b8bfc9;--accent:#0471f4;--accent-dark:#0052b6;--dark:#003376;--error:#d64545;--ok:#1f9d6b;
+.ap-wrap{--bg:#eff3f7;--card:#ffffff;--text:#000000;--muted:#374151;--border:#b8bfc9;--accent:#008ad9;--accent-dark:#0077bd;--dark:#008ad9;--error:#d64545;--ok:#1f9d6b;
   display:flex;justify-content:center;width:100%;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);
   font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
 .ap-wrap *,.ap-wrap *::before,.ap-wrap *::after{box-sizing:border-box}
@@ -51,24 +25,24 @@ const css = `
 .ap-wrap ~ .bottom-nav{display:none}
 .app:has(.ap-wrap) .bottom-nav{display:none}
 
-.ap-page{width:100%;max-width:430px;min-height:100vh;min-height:100dvh;background:var(--card);position:relative;overflow:hidden;padding:0 26px 40px;box-shadow:0 0 40px rgba(0,51,118,.08)}
+.ap-page{width:100%;max-width:430px;min-height:100vh;min-height:100dvh;background:var(--card);position:relative;overflow:hidden;padding:0 26px 40px;box-shadow:0 0 40px rgba(0,138,217,.08)}
 .ap-page::before{content:"";position:absolute;inset:0 0 auto 0;height:190px;background:linear-gradient(160deg,#dde7f2 0%,#f3f6fa 55%,#fff 100%);z-index:0}
-.ap-page::after{content:"";position:absolute;top:-70px;right:-70px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(4,113,244,.25);box-shadow:0 0 0 24px rgba(4,113,244,.06);z-index:0}
+.ap-page::after{content:"";position:absolute;top:-70px;right:-70px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(0,138,217,.25);box-shadow:0 0 0 24px rgba(0,138,217,.06);z-index:0}
 .ap-inner{position:relative;z-index:1;padding-top:max(30px,env(safe-area-inset-top))}
 .ap-page h1{margin:0;text-align:center;font-size:28px;font-weight:700;line-height:1.3;color:#000}
 .ap-sub{margin:2px 0 14px;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--muted)}
 
 /* logo: the emblem of ghm-logo.png on the logo's own navy tile (same spot as the old hexagon) */
-.ap-logo{display:block;width:min(100%,240px);height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(4,113,244,.16))}
+.ap-logo{display:block;width:min(100%,240px);height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(0,138,217,.16))}
 .ap-brand{margin:-12px 0 22px;text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;line-height:1.4;color:#001e51}
 
 /* phone / email switch (login) */
-.ap-tabs{display:flex;background:#e3eaf2;border-radius:10px;padding:4px;margin-bottom:16px}
+.ap-tabs{display:flex;background:#e3f4fc;border-radius:10px;padding:4px;margin-bottom:16px}
 .ap-tab{flex:1;height:42px;border:0;border-radius:7px;background:transparent;font-size:17px;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
-.ap-tab[aria-selected="true"]{background:#fff;color:#001e51;box-shadow:0 2px 6px rgba(0,51,118,.15)}
+.ap-tab[aria-selected="true"]{background:#fff;color:#0077bd;box-shadow:0 2px 6px rgba(0,138,217,.2)}
 
 .ap-field{position:relative;display:flex;align-items:center;height:52px;margin-bottom:13px;border:1px solid var(--border);border-radius:8px;background:#fff;transition:border-color .15s,box-shadow .15s}
-.ap-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(4,113,244,.18)}
+.ap-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,138,217,.18)}
 .ap-field.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
 .ap-ico{width:44px;height:100%;display:flex;align-items:center;justify-content:center;color:#5b6472;flex:none}
 .ap-field:focus-within .ap-ico{color:var(--accent)}
@@ -94,16 +68,16 @@ const css = `
 .ap-row{display:flex;justify-content:space-between;align-items:center;margin:2px 0 16px;font-size:15px;font-weight:500}
 .ap-remember{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text)}
 .ap-remember input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
-.ap-page a.ap-forgot{color:#002d78;font-weight:600;text-decoration:none}
+.ap-page a.ap-forgot{color:var(--accent-dark);font-weight:600;text-decoration:none}
 .ap-page a.ap-forgot:hover{text-decoration:underline}
 
-.ap-submit{width:100%;height:50px;margin-top:4px;border:0;border-radius:8px;background:var(--dark);color:#fff;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(0,51,118,.25);transition:transform .1s,box-shadow .15s,opacity .15s}
-.ap-submit:active:not(:disabled){transform:translateY(1px);box-shadow:0 3px 8px rgba(0,51,118,.25)}
+.ap-submit{width:100%;height:50px;margin-top:4px;border:0;border-radius:8px;background:linear-gradient(135deg,#12a4e8,#008ad9 60%,#0077bd);color:#fff;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(0,138,217,.25);transition:transform .1s,box-shadow .15s,opacity .15s}
+.ap-submit:active:not(:disabled){transform:translateY(1px);box-shadow:0 3px 8px rgba(0,138,217,.25)}
 .ap-submit:disabled{opacity:.7;cursor:default}
-.ap-page a.ap-login{display:block;text-align:center;margin-top:16px;font-size:17px;font-weight:600;color:#002d78;text-decoration:none}
+.ap-page a.ap-login{display:block;text-align:center;margin-top:16px;font-size:17px;font-weight:600;color:var(--accent-dark);text-decoration:none}
 .ap-page a.ap-login:hover{text-decoration:underline}
 .ap-signup{margin:16px 0 0;text-align:center;font-size:16px;font-weight:500;color:var(--muted)}
-.ap-page .ap-signup a{color:#002d78;font-weight:700;text-decoration:none}
+.ap-page .ap-signup a{color:var(--accent-dark);font-weight:700;text-decoration:none}
 .ap-page .ap-signup a:hover{text-decoration:underline}
 .ap-msg{min-height:20px;margin:10px 0 0;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--error)}
 .ap-msg.ok{color:var(--ok)}
