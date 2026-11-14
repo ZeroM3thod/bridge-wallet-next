@@ -44,6 +44,9 @@ const css = `
 .ap-field{position:relative;display:flex;align-items:center;height:52px;margin-bottom:13px;border:1px solid var(--border);border-radius:8px;background:#fff;transition:border-color .15s,box-shadow .15s}
 .ap-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,138,217,.18)}
 .ap-field.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
+.ap-consent{display:flex;align-items:flex-start;gap:16px;margin:16px 0;padding:18px 16px;border:1px solid #d8dee7;border-radius:20px;background:#f8fafc;color:#374151;font-size:17px;line-height:1.7;cursor:pointer}
+.ap-consent input{width:24px;height:24px;flex:none;margin:4px 0 0;accent-color:#1264c4}
+.ap-consent.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
 .ap-ico{width:44px;height:100%;display:flex;align-items:center;justify-content:center;color:#5b6472;flex:none}
 .ap-field:focus-within .ap-ico{color:var(--accent)}
 .ap-field input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font-size:18px;font-weight:500;color:var(--text);padding:0 12px 0 0;box-shadow:none}
@@ -166,6 +169,7 @@ function AuthSwitch({ href, children, className }: { href: string; children: Rea
 
 export function SignupPage() {
   const [f, setF] = useState({ name: "", phone: "", email: "", otp: "", pw: "", confirmPw: "", invite: "" })
+  const [consent, setConsent] = useState(false)
   const [bad, setBad] = useState("")
   const [msg, setMsg] = useState({ text: "", ok: false })
   const [timer, setTimer] = useState(0)
@@ -219,6 +223,7 @@ export function SignupPage() {
     e.preventDefault()
     if (loading) return
 
+    if (!consent) return fail("consent", "নিবন্ধন করতে শর্তাবলিতে সম্মতি দিন")
     const phone = onlyDigits(f.phone)
     if (f.name.trim().length < 2) return fail("name", "নাম কমপক্ষে ২ অক্ষরের হতে হবে")
     if (!phoneRe.test(phone)) return fail("phone", "সঠিক ফোন নম্বর দিন")
@@ -294,6 +299,11 @@ export function SignupPage() {
         <Field icon="gift">
           <input value={f.invite} onChange={(e) => set("invite")(e.target.value)} placeholder="আমন্ত্রণ কোড" maxLength={20} autoComplete="off" />
         </Field>
+
+        <label className={`ap-consent${bad === "consent" ? " invalid" : ""}`}>
+          <input type="checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setBad("") }} />
+          <span>আমি GHM GROUPS-এর ব্যবহারবিধি, গোপনীয়তা নীতি এবং আইএসও ট্যাংক লিজ চুক্তির শর্তাবলি পড়েছি ও স্বেচ্ছায় সম্মত হয়েছি। আমার দেওয়া সব তথ্য সত্য ও নির্ভুল।</span>
+        </label>
 
         <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "নিবন্ধন"}</button>
         <AuthSwitch href="/signin" className="ap-login">ইতিমধ্যে নিবন্ধিত</AuthSwitch>
