@@ -1,10 +1,96 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { AppLink } from "@/components/app/AppLink"
 
+/* ------------------------------------------------------------------ */
+/* Company                                                             */
+/* Logo file: /public/ghm-logo.png  (transparent PNG)                  */
+/* ------------------------------------------------------------------ */
+const COMPANY_NAME = "GHM Groups"
+const LOGO_SRC = "/ghm-logo.png"
+
+/* ------------------------------------------------------------------ */
+/* Styles - copied from index.html / login.html, scoped with `ap-`     */
+/* so nothing else in the app is touched (no globals.css change)       */
+/* ------------------------------------------------------------------ */
+const css = `
+.ap-wrap{--bg:#eff3f7;--card:#ffffff;--text:#000000;--muted:#374151;--border:#b8bfc9;--accent:#0471f4;--accent-dark:#0052b6;--dark:#003376;--error:#d64545;--ok:#1f9d6b;
+  display:flex;justify-content:center;width:100%;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);
+  font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
+.ap-wrap *,.ap-wrap *::before,.ap-wrap *::after{box-sizing:border-box}
+.ap-wrap input,.ap-wrap button{font-family:inherit}
+.ap-wrap [hidden]{display:none!important}
+.ap-wrap ~ .bottom-nav{display:none}
+.app:has(.ap-wrap) .bottom-nav{display:none}
+
+.ap-page{width:100%;max-width:430px;min-height:100vh;min-height:100dvh;background:var(--card);position:relative;overflow:hidden;padding:0 26px 40px;box-shadow:0 0 40px rgba(0,51,118,.08)}
+.ap-page::before{content:"";position:absolute;inset:0 0 auto 0;height:190px;background:linear-gradient(160deg,#dde7f2 0%,#f3f6fa 55%,#fff 100%);z-index:0}
+.ap-page::after{content:"";position:absolute;top:-70px;right:-70px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(4,113,244,.25);box-shadow:0 0 0 24px rgba(4,113,244,.06);z-index:0}
+.ap-inner{position:relative;z-index:1;padding-top:max(30px,env(safe-area-inset-top))}
+.ap-page h1{margin:0;text-align:center;font-size:28px;font-weight:700;line-height:1.3;color:#000}
+.ap-sub{margin:2px 0 14px;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--muted)}
+
+/* logo: the emblem of ghm-logo.png on the logo's own navy tile (same spot as the old hexagon) */
+.ap-logo{width:132px;margin:0 auto 24px;padding:12px 16px;border-radius:20px;background:#0c203b;filter:drop-shadow(0 8px 14px rgba(4,113,244,.35))}
+.ap-logo-crop{width:100%;aspect-ratio:640/372;overflow:hidden}
+.ap-logo-crop img{display:block;width:100%;height:auto;max-width:none}
+.ap-brand{margin:-12px 0 22px;text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;line-height:1.4;color:#001e51}
+
+/* phone / email switch (login) */
+.ap-tabs{display:flex;background:#e3eaf2;border-radius:10px;padding:4px;margin-bottom:16px}
+.ap-tab{flex:1;height:42px;border:0;border-radius:7px;background:transparent;font-size:17px;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
+.ap-tab[aria-selected="true"]{background:#fff;color:#001e51;box-shadow:0 2px 6px rgba(0,51,118,.15)}
+
+.ap-field{position:relative;display:flex;align-items:center;height:52px;margin-bottom:13px;border:1px solid var(--border);border-radius:8px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.ap-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(4,113,244,.18)}
+.ap-field.invalid{border-color:var(--error);box-shadow:0 0 0 3px rgba(214,69,69,.12)}
+.ap-ico{width:44px;height:100%;display:flex;align-items:center;justify-content:center;color:#5b6472;flex:none}
+.ap-field:focus-within .ap-ico{color:var(--accent)}
+.ap-field input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font-size:18px;font-weight:500;color:var(--text);padding:0 12px 0 0;box-shadow:none}
+.ap-field input::placeholder{color:#4b5563;font-weight:500}
+.ap-prefix{height:60%;padding:0 12px 0 0;margin-right:12px;display:flex;align-items:center;font-size:17px;font-weight:600;color:var(--text);border-right:1px solid var(--border)}
+.ap-send{margin-right:8px;height:36px;padding:0 20px;border:0;border-radius:6px;flex:none;background:var(--accent);color:#fff;font-size:17px;font-weight:700;cursor:pointer;transition:background .15s}
+.ap-send:hover:not(:disabled){background:var(--accent-dark)}
+.ap-send:disabled{opacity:.6;cursor:default}
+.ap-eye{width:42px;height:100%;border:0;background:none;cursor:pointer;color:#6b7280;flex:none;display:flex;align-items:center;justify-content:center}
+.ap-eye:hover{color:var(--muted)}
+.ap-page button:focus-visible,.ap-page a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.ap-note{margin:-6px 0 12px;font-size:15px;font-weight:500;line-height:1.5;color:var(--muted)}
+.ap-note.ok{color:#0f7a54}
+
+.ap-strength{display:flex;gap:4px;margin:-4px 0 12px}
+.ap-strength i{flex:1;height:3px;border-radius:2px;background:#e5e8ec;transition:background .2s}
+.ap-strength[data-level="1"] i:nth-child(1){background:var(--error)}
+.ap-strength[data-level="2"] i:nth-child(-n+2){background:#e9a23b}
+.ap-strength[data-level="3"] i:nth-child(-n+3){background:var(--ok)}
+
+.ap-row{display:flex;justify-content:space-between;align-items:center;margin:2px 0 16px;font-size:15px;font-weight:500}
+.ap-remember{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text)}
+.ap-remember input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.ap-page a.ap-forgot{color:#002d78;font-weight:600;text-decoration:none}
+.ap-page a.ap-forgot:hover{text-decoration:underline}
+
+.ap-submit{width:100%;height:50px;margin-top:4px;border:0;border-radius:8px;background:var(--dark);color:#fff;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(0,51,118,.25);transition:transform .1s,box-shadow .15s,opacity .15s}
+.ap-submit:active:not(:disabled){transform:translateY(1px);box-shadow:0 3px 8px rgba(0,51,118,.25)}
+.ap-submit:disabled{opacity:.7;cursor:default}
+.ap-page a.ap-login{display:block;text-align:center;margin-top:16px;font-size:17px;font-weight:600;color:#002d78;text-decoration:none}
+.ap-page a.ap-login:hover{text-decoration:underline}
+.ap-signup{margin:16px 0 0;text-align:center;font-size:16px;font-weight:500;color:var(--muted)}
+.ap-page .ap-signup a{color:#002d78;font-weight:700;text-decoration:none}
+.ap-page .ap-signup a:hover{text-decoration:underline}
+.ap-msg{min-height:20px;margin:10px 0 0;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--error)}
+.ap-msg.ok{color:var(--ok)}
+`
+
+/* ------------------------------------------------------------------ */
+/* Helpers                                                             */
+/* ------------------------------------------------------------------ */
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phoneRe = /^0?1\d{9}$/
 const toEnglishDigits = (value: string) => value.replace(/[০-৯]/g, digit => String("০১২৩৪৫৬৭৮৯".indexOf(digit)))
 const toBanglaDigits = (value: string) => value.replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[Number(digit)])
+const onlyDigits = (value: string) => toEnglishDigits(value).replace(/\D/g, "")
+
 const sv = { width: 21, height: 21, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const }
 const icons: Record<string, ReactNode> = {
   user: <svg {...sv}><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>,
@@ -15,39 +101,59 @@ const icons: Record<string, ReactNode> = {
   gift: <svg {...sv}><rect x="3" y="8" width="18" height="13" rx="2" /><path d="M12 8v13M3 13h18M12 8c-2 0-4-1-4-3s2-2.5 4 1c2-3.5 4-3 4-1s-2 3-4 3z" /></svg>,
 }
 
-function Logo() {
+/* ------------------------------------------------------------------ */
+/* Small components                                                    */
+/* ------------------------------------------------------------------ */
+function Field({ icon, invalid, hidden, children }: { icon: string; invalid?: boolean; hidden?: boolean; children: ReactNode }) {
   return (
-    <svg className="auth-logo" viewBox="0 0 64 64" role="img" aria-label="লোগো">
-      <defs>
-        <linearGradient id="alg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#0053db" /><stop offset="1" stopColor="#002d78" /></linearGradient>
-        <linearGradient id="alg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffe08a" /><stop offset="1" stopColor="#f2a93b" /></linearGradient>
-      </defs>
-      <path d="M32 3 56 17v30L32 61 8 47V17z" fill="url(#alg1)" />
-      <path d="M32 3 56 17v30L32 61 8 47V17z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.5" />
-      <path d="M18 40 27 30l7 6 12-14" fill="none" stroke="url(#alg2)" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M40 21h7v7" fill="none" stroke="url(#alg2)" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <div className={`ap-field${invalid ? " invalid" : ""}`} hidden={hidden}>
+      <span className="ap-ico">{icons[icon]}</span>
+      {children}
+    </div>
   )
 }
 
-function Field({ icon, invalid, children }: { icon: string; invalid?: boolean; children: ReactNode }) {
-  return <div className={`auth-field${invalid ? " invalid" : ""}`}><span className="auth-ico">{icons[icon]}</span>{children}</div>
-}
-
-function PwInput({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
+function PwInput({ value, onChange, placeholder, autoComplete }: { value: string; onChange: (v: string) => void; placeholder: string; autoComplete: string }) {
   const [show, setShow] = useState(false)
-  return <>
-    <input type={show ? "text" : "password"} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
-    <button type="button" className="auth-eye" onClick={() => setShow(!show)} aria-label="পাসওয়ার্ড দেখান">
-      <svg {...sv} width={23} height={23}><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
-    </button>
-  </>
+  return (
+    <>
+      <input type={show ? "text" : "password"} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoComplete={autoComplete} />
+      <button type="button" className="ap-eye" onClick={() => setShow(s => !s)} aria-label={show ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখান"} aria-pressed={show}>
+        {show ? (
+          <svg {...sv} width={23} height={23}><path d="M3 3l18 18" /><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-3.2 4M6.6 6.6A18.4 18.4 0 0 0 1 12s4 7 11 7a10.8 10.8 0 0 0 5.4-1.4" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
+        ) : (
+          <svg {...sv} width={23} height={23}><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" /><circle cx="12" cy="12" r="3" /></svg>
+        )}
+      </button>
+    </>
+  )
 }
 
 function Shell({ title, sub, children }: { title: string; sub: string; children: ReactNode }) {
-  return <main className="auth-page"><div className="auth-inner"><h1>{title}</h1><p className="auth-sub">{sub}</p><Logo /><div className="auth-brand">বরজাজ</div>{children}</div></main>
+  return (
+    <div className="ap-wrap">
+      <style>{css}</style>
+      <main className="ap-page">
+        <div className="ap-inner">
+          <h1>{title}</h1>
+          <p className="ap-sub">{sub}</p>
+          <div className="ap-logo">
+            <div className="ap-logo-crop">
+              <img src={LOGO_SRC} alt={COMPANY_NAME} width={640} height={472} decoding="async" />
+            </div>
+          </div>
+          <div className="ap-brand">{COMPANY_NAME}</div>
+          {children}
+        </div>
+      </main>
+    </div>
+  )
 }
 
+/* ------------------------------------------------------------------ */
+/* Signup  (design of index.html - confirm password instead of the     */
+/* withdrawal password)                                                */
+/* ------------------------------------------------------------------ */
 export function SignupPage() {
   const [f, setF] = useState({ name: "", phone: "", email: "", otp: "", pw: "", confirmPw: "", invite: "" })
   const [bad, setBad] = useState("")
@@ -56,54 +162,64 @@ export function SignupPage() {
   const [sentTo, setSentTo] = useState("")
   const [loading, setLoading] = useState(false)
   const [sendingCode, setSendingCode] = useState(false)
+
   useEffect(() => {
     const referralCode = new URLSearchParams(window.location.search).get("ref")
     if (referralCode) setF(current => ({ ...current, invite: referralCode.slice(0, 20) }))
   }, [])
-  const set = (k: keyof typeof f) => (v: string) => { setF({ ...f, [k]: v }); if (bad === k) setBad("") }
-  useEffect(() => { if (timer <= 0) return; const t = setTimeout(() => setTimer(timer - 1), 1000); return () => clearTimeout(t) }, [timer])
+
+  useEffect(() => {
+    if (timer <= 0) return
+    const t = setTimeout(() => setTimer(s => s - 1), 1000)
+    return () => clearTimeout(t)
+  }, [timer])
+
+  const set = (k: keyof typeof f) => (v: string) => {
+    setF(current => ({ ...current, [k]: v }))
+    setBad(current => (current === k ? "" : current))
+  }
   const fail = (k: string, text: string) => { setBad(k); setMsg({ text, ok: false }) }
   const level = !f.pw ? 0 : Math.max(1, (f.pw.length >= 6 ? 1 : 0) + (/[A-Za-z]/.test(f.pw) && /\d/.test(f.pw) ? 1 : 0) + (f.pw.length >= 10 && /[^A-Za-z0-9]/.test(f.pw) ? 1 : 0))
-  
+
   const sendCode = async () => {
-    if (!emailRe.test(f.email.trim())) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
+    if (timer > 0 || sendingCode) return
+    const email = f.email.trim()
+    if (!emailRe.test(email)) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
     setSendingCode(true)
     setBad("")
     setMsg({ text: "", ok: false })
-    
     try {
-      const res = await fetch('/api/send-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: f.email.trim() })
+      const res = await fetch("/api/send-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error)
-      setSentTo(f.email.trim())
+      setSentTo(email)
       setTimer(60)
     } catch (err) {
-      fail("email", err instanceof Error ? err.message : "কোড পাঠাতে ব্যর্থ")
+      fail("email", err instanceof Error && err.message ? err.message : "কোড পাঠাতে ব্যর্থ")
     } finally {
       setSendingCode(false)
     }
   }
-  
-  const submit = async (e: React.FormEvent) => {
+
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
     if (loading) return
-    
+
     if (!f.name.trim() || !/^[\u0980-\u09FF\s]+$/.test(f.name.trim())) return fail("name", "বাংলায় পূর্ণ নাম লিখুন")
-    const phone = toEnglishDigits(f.phone.trim())
+    const phone = onlyDigits(f.phone)
     if (!phoneRe.test(phone)) return fail("phone", "সঠিক ফোন নম্বর দিন")
     if (!emailRe.test(f.email.trim())) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
     if (!/^\d{6}$/.test(f.otp.trim())) return fail("otp", "ইমেইলে পাঠানো ৬ সংখ্যার কোড দিন")
     if (f.pw.length < 6) return fail("pw", "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে")
     if (f.pw !== f.confirmPw) return fail("confirmPw", "পাসওয়ার্ড মিলছে না")
-    
+
     setLoading(true)
     setBad("")
     setMsg({ text: "", ok: false })
-    
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -118,96 +234,157 @@ export function SignupPage() {
           invite: f.invite.trim()
         })
       })
-      const data = await res.json()
-      
+      const data = await res.json().catch(() => ({}))
       if (res.ok) {
         setMsg({ text: "নিবন্ধন সফল হয়েছে", ok: true })
-        setTimeout(() => window.location.href = "/", 1500)
+        setTimeout(() => { window.location.href = "/" }, 1500)
       } else {
         fail(data.field || "", data.error || "নিবন্ধন ব্যর্থ")
       }
-    } catch (err) {
+    } catch {
       fail("", "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন")
     } finally {
       setLoading(false)
     }
   }
+
   return (
     <Shell title="নিবন্ধন" sub="নতুন অ্যাকাউন্ট তৈরি করুন">
       <form onSubmit={submit} noValidate>
-        <Field icon="user" invalid={bad === "name"}><input lang="bn" value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম (বাংলায়)" maxLength={100} autoComplete="name" /></Field>
-        <Field icon="phone" invalid={bad === "phone"}><span className="auth-prefix">+৮৮০</span><input type="tel" inputMode="numeric" value={toBanglaDigits(f.phone)} onChange={(e) => set("phone")(toBanglaDigits(toEnglishDigits(e.target.value).replace(/\D/g, "")))} placeholder="ফোন নম্বর" maxLength={11} /></Field>
-        <Field icon="mail" invalid={bad === "email"}><input type="email" value={f.email} onChange={(e) => set("email")(e.target.value)} placeholder="ইমেইল ঠিকানা" maxLength={255} /></Field>
-        <Field icon="shield" invalid={bad === "otp"}>
-          <input inputMode="numeric" value={f.otp} onChange={(e) => set("otp")(e.target.value)} placeholder="ইমেইল যাচাই কোড (OTP)" maxLength={6} autoComplete="one-time-code" />
-          <button type="button" className="auth-send" onClick={sendCode} disabled={timer > 0 || sendingCode}>{timer > 0 ? `${timer}s` : sendingCode ? "..." : "পাঠান"}</button>
+        <Field icon="user" invalid={bad === "name"}>
+          <input lang="bn" value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম (বাংলায়)" maxLength={100} autoComplete="name" />
         </Field>
-        <p className={`auth-hint${sentTo ? " ok" : ""}`}>{sentTo ? `${sentTo} ঠিকানায় কোড পাঠানো হয়েছে` : "আপনার ইমেইলে ৬ সংখ্যার কোড পাঠানো হবে"}</p>
-        <Field icon="lock" invalid={bad === "pw"}><PwInput value={f.pw} onChange={set("pw")} placeholder="লগইন পাসওয়ার্ড" /></Field>
-        <div className="auth-strength" data-level={level}><i /><i /><i /></div>
-        <Field icon="lock" invalid={bad === "confirmPw"}><PwInput value={f.confirmPw} onChange={set("confirmPw")} placeholder="পাসওয়ার্ড নিশ্চিত করুন" /></Field>
-        <Field icon="gift"><input value={f.invite} onChange={(e) => set("invite")(e.target.value)} placeholder="আমন্ত্রণ কোড" maxLength={20} autoComplete="off" /></Field>
-        <button type="submit" className="auth-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "নিবন্ধন"}</button>
-        <AppLink page="signin" plain className="auth-login">ইতিমধ্যে নিবন্ধিত</AppLink>
-        <p className={`auth-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
+
+        <Field icon="phone" invalid={bad === "phone"}>
+          <span className="ap-prefix">+৮৮০</span>
+          <input type="tel" inputMode="numeric" value={toBanglaDigits(f.phone)} onChange={(e) => set("phone")(onlyDigits(e.target.value))} placeholder="ফোন নম্বর" maxLength={11} autoComplete="tel-national" />
+        </Field>
+
+        <Field icon="mail" invalid={bad === "email"}>
+          <input type="email" inputMode="email" value={f.email} onChange={(e) => set("email")(e.target.value)} placeholder="ইমেইল ঠিকানা" maxLength={255} autoComplete="email" />
+        </Field>
+
+        <Field icon="shield" invalid={bad === "otp"}>
+          <input inputMode="numeric" value={toBanglaDigits(f.otp)} onChange={(e) => set("otp")(onlyDigits(e.target.value).slice(0, 6))} placeholder="ইমেইল যাচাই কোড (OTP)" maxLength={6} autoComplete="one-time-code" />
+          <button type="button" className="ap-send" onClick={sendCode} disabled={timer > 0 || sendingCode}>
+            {timer > 0 ? `${timer}s` : sendingCode ? "..." : "পাঠান"}
+          </button>
+        </Field>
+        <p className={`ap-note${sentTo ? " ok" : ""}`}>{sentTo ? `${sentTo} ঠিকানায় কোড পাঠানো হয়েছে` : "আপনার ইমেইলে ৬ সংখ্যার কোড পাঠানো হবে"}</p>
+
+        <Field icon="lock" invalid={bad === "pw"}>
+          <PwInput value={f.pw} onChange={set("pw")} placeholder="লগইন পাসওয়ার্ড" autoComplete="new-password" />
+        </Field>
+        <div className="ap-strength" data-level={level}><i /><i /><i /></div>
+
+        <Field icon="lock" invalid={bad === "confirmPw"}>
+          <PwInput value={f.confirmPw} onChange={set("confirmPw")} placeholder="পাসওয়ার্ড নিশ্চিত করুন" autoComplete="new-password" />
+        </Field>
+
+        <Field icon="gift">
+          <input value={f.invite} onChange={(e) => set("invite")(e.target.value)} placeholder="আমন্ত্রণ কোড" maxLength={20} autoComplete="off" />
+        </Field>
+
+        <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "নিবন্ধন"}</button>
+        <AppLink page="signin" plain className="ap-login">ইতিমধ্যে নিবন্ধিত</AppLink>
+        <p className={`ap-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
       </form>
     </Shell>
   )
 }
 
+/* ------------------------------------------------------------------ */
+/* Signin  (design of login.html)                                      */
+/* ------------------------------------------------------------------ */
 export function SigninPage() {
-  const [id, setId] = useState("")
+  const [mode, setMode] = useState<"phone" | "email">("phone")
+  const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState("")
   const [pw, setPw] = useState("")
+  const [remember, setRemember] = useState(false)
   const [bad, setBad] = useState("")
   const [msg, setMsg] = useState({ text: "", ok: false })
   const [loading, setLoading] = useState(false)
+  const phoneRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
   const fail = (k: string, text: string) => { setBad(k); setMsg({ text, ok: false }) }
-  
-  const submit = async (e: React.FormEvent) => {
+
+  const switchMode = (m: "phone" | "email") => {
+    setMode(m)
+    setBad("")
+    setMsg({ text: "", ok: false })
+    setTimeout(() => (m === "phone" ? phoneRef : emailRef).current?.focus(), 0)
+  }
+
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
     if (loading) return
-    
-    const v = id.trim()
-    if (!emailRe.test(v) && !phoneRe.test(v)) return fail("id", "সঠিক ইমেইল বা ফোন নম্বর দিন")
+
+    let identifier = ""
+    if (mode === "phone") {
+      identifier = onlyDigits(phone)
+      if (!phoneRe.test(identifier)) return fail("phone", "সঠিক ফোন নম্বর দিন")
+    } else {
+      identifier = email.trim()
+      if (!emailRe.test(identifier)) return fail("email", "সঠিক ইমেইল ঠিকানা দিন")
+    }
     if (!pw) return fail("pw", "পাসওয়ার্ড দিন")
-    
+
     setLoading(true)
     setBad("")
     setMsg({ text: "", ok: false })
-    
     try {
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          identifier: v,
-          password: pw
-        })
+        body: JSON.stringify({ identifier, password: pw, remember })
       })
-      const data = await res.json()
-      
+      const data = await res.json().catch(() => ({}))
       if (res.ok) {
         setMsg({ text: "লগইন সফল হয়েছে", ok: true })
-        const redirect = data.user?.role === 'admin' ? "/superadmin" : "/"
-        setTimeout(() => window.location.href = redirect, 1500)
+        const redirect = data.user?.role === "admin" ? "/superadmin" : "/"
+        setTimeout(() => { window.location.href = redirect }, 1500)
       } else {
         fail(data.field || "", data.error || "লগইন ব্যর্থ")
       }
-    } catch (err) {
+    } catch {
       fail("", "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন")
     } finally {
       setLoading(false)
     }
   }
+
   return (
     <Shell title="লগইন" sub="আপনার অ্যাকাউন্টে প্রবেশ করুন">
       <form onSubmit={submit} noValidate>
-        <Field icon="user" invalid={bad === "id"}><input value={id} onChange={(e) => { setId(e.target.value); setBad("") }} placeholder="ইমেইল বা ফোন নম্বর" maxLength={255} autoComplete="username" /></Field>
-        <Field icon="lock" invalid={bad === "pw"}><PwInput value={pw} onChange={(v) => { setPw(v); setBad("") }} placeholder="লগইন পাসওয়ার্ড" /></Field>
-        <button type="submit" className="auth-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "লগইন"}</button>
-        <AppLink page="signup" plain className="auth-login">নতুন অ্যাকাউন্ট তৈরি করুন</AppLink>
-        <p className={`auth-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
+        <div className="ap-tabs" role="tablist">
+          <button type="button" className="ap-tab" role="tab" aria-selected={mode === "phone"} onClick={() => switchMode("phone")}>ফোন</button>
+          <button type="button" className="ap-tab" role="tab" aria-selected={mode === "email"} onClick={() => switchMode("email")}>ইমেইল</button>
+        </div>
+
+        <Field icon="phone" invalid={bad === "phone"} hidden={mode !== "phone"}>
+          <span className="ap-prefix">+৮৮০</span>
+          <input ref={phoneRef} type="tel" inputMode="numeric" value={toBanglaDigits(phone)} onChange={(e) => { setPhone(onlyDigits(e.target.value)); setBad("") }} placeholder="ফোন নম্বর" maxLength={11} autoComplete="tel-national" />
+        </Field>
+
+        <Field icon="mail" invalid={bad === "email"} hidden={mode !== "email"}>
+          <input ref={emailRef} type="email" inputMode="email" value={email} onChange={(e) => { setEmail(e.target.value); setBad("") }} placeholder="ইমেইল ঠিকানা" maxLength={255} autoComplete="email" />
+        </Field>
+
+        <Field icon="lock" invalid={bad === "pw"}>
+          <PwInput value={pw} onChange={(v) => { setPw(v); setBad("") }} placeholder="লগইন পাসওয়ার্ড" autoComplete="current-password" />
+        </Field>
+
+        <div className="ap-row">
+          <label className="ap-remember"><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> মনে রাখুন</label>
+          {/* change href to your real "forgot password" route */}
+          <a className="ap-forgot" href="/forgot-password">পাসওয়ার্ড ভুলে গেছেন?</a>
+        </div>
+
+        <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : "লগইন"}</button>
+        <p className="ap-signup">অ্যাকাউন্ট নেই? <AppLink page="signup" plain>নিবন্ধন করুন</AppLink></p>
+        <p className={`ap-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
       </form>
     </Shell>
   )

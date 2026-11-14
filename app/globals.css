@@ -5826,10 +5826,10 @@ body,
 
 .pk-screen,
 .pk-backdrop {
-  --pk-royal: #0b63ce;
-  --pk-royal-deep: #0854c7;
-  --pk-vibrant: #1484e6;
-  --pk-vibrant-hover: #0f72ca;
+  --pk-royal: #008ad9;
+  --pk-royal-deep: #0077bd;
+  --pk-vibrant: #12a4e8;
+  --pk-vibrant-hover: #0781c4;
   --pk-bg: #eef4fb;
   --pk-highlight: #e3f1fd;
   --pk-ink: #0f172a;
@@ -6497,7 +6497,7 @@ body,
 .pk-sheet .pk-mech p + p { padding-top: 4px; border-top: 1px solid #f1f5f9; }
 
 /* 3. financial breakdown */
-.pk-sheet-body > .pk-ledger { display: grid !important; visibility: visible !important; gap: 0; padding: 0; overflow: hidden; }
+.pk-sheet-body > .pk-ledger { display: grid !important; visibility: visible !important; align-self: start; height: auto; min-height: max-content; gap: 0; padding: 0; overflow: visible; }
 .pk-ledger-head {
   display: flex;
   align-items: center;
@@ -6509,7 +6509,7 @@ body,
 }
 .pk-sheet .pk-ledger-head h3 { color: #fff; font-size: 14px; font-weight: 700; line-height: 1.4; }
 .pk-ledger-head span { flex: none; color: #dbeafe; font-size: 12px; font-weight: 600; }
-.pk-rows { font-size: 12px; }
+.pk-rows { display: block; height: auto; min-height: max-content; overflow: visible; font-size: 12px; }
 .pk-rows > div {
   display: flex;
   align-items: center;
