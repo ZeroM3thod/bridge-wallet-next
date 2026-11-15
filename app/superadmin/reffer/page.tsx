@@ -488,7 +488,6 @@ export default function ReferralManagement() {
 
   return (
     <div className="ad">
-      <style>{css}</style>
 
       <AdminSidebar active="referrals" />
 
@@ -713,7 +712,7 @@ export default function ReferralManagement() {
           )}
 
           <div className="ad-table-wrap">
-            <table>
+            <table className="ad-cards">
               <thead>
                 <tr>
                   <th className="ad-check">
@@ -733,18 +732,18 @@ export default function ReferralManagement() {
                   const dup = r.status === "pending" && hasApprovedThatMonth(r, requests);
                   return (
                     <tr key={r.id}>
-                      <td className="ad-check">
+                      <td className="ad-check" data-label="Select">
                         {r.status === "pending" && <input type="checkbox" aria-label={`Select ${r.mobile}`} checked={rSel.includes(r.id)} onChange={() => toggleRow(r.id)} />}
                       </td>
-                      <td>
+                      <td data-label="Member">
                         <strong>{r.mobile}</strong>
                         <div className="ad-hint">ID {r.memberId} · VIP {r.vipLevel}</div>
                       </td>
-                      <td>{r.tierIcon} {r.tierRank}</td>
-                      <td><strong>{bdt(r.amount)}</strong></td>
-                      <td className="ad-muted">L1 {r.teamL1} · L2 {r.teamL2} · L3 {r.teamL3}</td>
-                      <td className="ad-muted">{when(r.requestedAt)}</td>
-                      <td>
+                      <td data-label="Tier">{r.tierIcon} {r.tierRank}</td>
+                      <td data-label="Amount"><strong>{bdt(r.amount)}</strong></td>
+                      <td className="ad-muted" data-label="Active team">L1 {r.teamL1} · L2 {r.teamL2} · L3 {r.teamL3}</td>
+                      <td className="ad-muted" data-label="Requested">{when(r.requestedAt)}</td>
+                      <td data-label="Status">
                         <span className={`ad-pill ad-${r.status}`}>{r.status[0].toUpperCase() + r.status.slice(1)}</span>
                         {dup && <div className="ad-hint ad-warn">Already paid this month</div>}
                         {r.status === "rejected" && r.reviewNote && <div className="ad-hint">{r.reviewNote}</div>}
@@ -924,173 +923,3 @@ export default function ReferralManagement() {
 /* ------------------------------------------------------------------ */
 /*  Styles (self-contained)                                            */
 /* ------------------------------------------------------------------ */
-
-const css = `
-.ad{
-  --sky-50:#f0f9ff; --sky-100:#e0f2fe; --sky-200:#bae6fd; --sky-500:#0ea5e9; --sky-600:#0284c7; --sky-700:#0369a1;
-  --ink:#0c2a3d; --muted:#5b7488; --line:#e3eef5; --bg:#f7fbfe; --card:#fff; --red:#c23030;
-  display:flex; min-height:100vh; background:var(--bg); color:var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size:15px; line-height:1.5;
-}
-.ad *{box-sizing:border-box}
-.ad h1,.ad h2,.ad h3,.ad p{margin:0}
-.ad button{font:inherit}
-.ad-muted{color:var(--muted)}
-.ad-spacer{flex:1}
-
-/* sidebar */
-.ad-side{width:240px; flex:none; background:var(--card); border-right:1px solid var(--line); padding:20px 14px; display:flex; flex-direction:column; gap:20px; position:sticky; top:0; height:100vh}
-.ad-brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px; padding:4px 10px}
-.ad-logo{width:22px; height:22px; border-radius:7px; background:var(--sky-500); display:inline-block}
-.ad-nav{display:flex; flex-direction:column; gap:2px}
-.ad-link{display:flex; align-items:center; gap:12px; width:100%; text-align:left; border:0; background:transparent; color:var(--muted); font-weight:500; padding:10px 12px; border-radius:10px; cursor:pointer; transition:background .15s,color .15s}
-.ad-link:hover{background:var(--sky-50); color:var(--sky-700)}
-.ad-link.is-active{background:var(--sky-100); color:var(--sky-700)}
-.ad-link:focus-visible,.ad-burger:focus-visible,.ad-btn:focus-visible,.ad-tab:focus-visible,.ad-switch:focus-visible,.ad-x:focus-visible{outline:2px solid var(--sky-500); outline-offset:2px}
-
-/* layout */
-.ad-main{flex:1; min-width:0; padding:28px 32px 56px}
-.ad-top{display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap}
-.ad-top-title{flex:1; min-width:220px}
-.ad-top h1{font-size:24px; font-weight:700; letter-spacing:-.01em}
-.ad-top-actions{display:flex; gap:8px}
-.ad-burger{display:none; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:8px; cursor:pointer}
-
-/* buttons */
-.ad-btn{border:1px solid transparent; border-radius:10px; padding:8px 16px; font-weight:600; cursor:pointer; transition:background .15s,border-color .15s; white-space:nowrap}
-.ad-btn:disabled{opacity:.5; cursor:not-allowed}
-.ad-btn-primary{background:var(--sky-500); color:#fff}
-.ad-btn-primary:hover:not(:disabled){background:var(--sky-600)}
-.ad-btn-ghost{background:transparent; color:var(--sky-700); border-color:var(--line)}
-.ad-btn-ghost:hover:not(:disabled){background:var(--sky-50); border-color:var(--sky-200)}
-.ad-btn-danger{background:var(--red); color:#fff}
-.ad-btn-danger-ghost{background:transparent; color:var(--red); border-color:#f3d4d4}
-.ad-btn-danger-ghost:hover{background:#fdf1f1}
-
-/* tabs */
-.ad-tabs{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:16px; overflow-x:auto}
-.ad-tab{border:0; background:transparent; color:var(--muted); font-weight:600; padding:10px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap}
-.ad-tab:hover{color:var(--sky-700)}
-.ad-tab.is-active{color:var(--sky-700); border-bottom-color:var(--sky-500)}
-
-/* panels */
-.ad-panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px}
-.ad-panel + .ad-panel{margin-top:16px}
-.ad-panel h2{font-size:17px; font-weight:600; margin-bottom:6px}
-.ad-panel-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px}
-.ad-empty{text-align:center; color:var(--muted); padding:24px 12px}
-.ad-table-wrap{overflow-x:auto; margin-top:8px}
-.ad table{width:100%; border-collapse:collapse; min-width:420px}
-.ad th{text-align:left; font-weight:500; color:var(--muted); font-size:13px; padding:8px 12px; border-bottom:1px solid var(--line); white-space:nowrap}
-.ad td{padding:12px; border-bottom:1px solid var(--line)}
-.ad tr:last-child td{border-bottom:0}
-
-/* forms */
-.ad-form-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 16px; margin:14px 0}
-.ad-form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.ad-form-grid.is-off{opacity:.45; pointer-events:none}
-.ad-stack{display:flex; flex-direction:column; gap:12px}
-.ad-field{display:flex; flex-direction:column; gap:5px}
-.ad-field-label{font-size:14px; font-weight:600}
-.ad-field-hint{font-size:12.5px; color:var(--muted)}
-.ad-field-error{font-size:12.5px; color:var(--red)}
-.ad input,.ad select,.ad textarea{width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:10px; padding:9px 12px; font:inherit}
-.ad textarea{resize:vertical}
-.ad input:focus,.ad select:focus,.ad textarea:focus{outline:2px solid var(--sky-200); border-color:var(--sky-500)}
-.ad input:disabled{background:var(--bg); color:var(--muted)}
-.ad-modal-body h3{font-size:15px; font-weight:600; margin-top:20px}
-
-/* switch */
-.ad-switch-row{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-top:1px solid var(--line)}
-.ad-panel > h2 + .ad-switch-row{border-top:0}
-.ad-switch-label{font-weight:600}
-.ad-switch{flex:none; width:40px; height:24px; border-radius:999px; border:0; background:#cfe0ea; position:relative; cursor:pointer; transition:background .15s; padding:0}
-.ad-switch span{position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:transform .15s}
-.ad-switch.is-on{background:var(--sky-500)}
-.ad-switch.is-on span{transform:translateX(16px)}
-
-/* cards (levels, tiers) */
-.ad-lvl-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:12px}
-.ad-pkg-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px}
-.ad-pkg{border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:14px; background:var(--card)}
-.ad-pkg.is-hidden{background:var(--bg)}
-.ad-pkg-head{display:flex; align-items:center; gap:12px}
-.ad-pkg-head > div{flex:1; min-width:0}
-.ad-pkg-head h3{font-size:17px; font-weight:700}
-.ad-pkg-head small{color:var(--muted)}
-.ad-pkg-icon{width:40px; height:40px; border-radius:12px; background:var(--sky-100); color:var(--sky-700); display:inline-flex; align-items:center; justify-content:center; flex:none; font-weight:700}
-.ad-emoji{font-size:20px}
-.ad-badge{font-size:12.5px; font-weight:600; padding:3px 12px; border-radius:999px; background:var(--sky-100); color:var(--sky-700)}
-.ad-badge.is-off{background:#eef2f5; color:var(--muted)}
-.ad-reqs{display:flex; flex-wrap:wrap; gap:8px}
-.ad-req{background:var(--sky-50); border:1px solid var(--sky-100); color:var(--sky-700); border-radius:999px; padding:3px 12px; font-size:13px; font-weight:500}
-.ad-pkg-actions{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:auto}
-.ad-pkg-toggle{display:flex; align-items:center; gap:10px; font-weight:500; font-size:14px}
-.ad-grid-empty{grid-column:1/-1}
-
-/* modal */
-.ad-modal-back{position:fixed; inset:0; background:rgba(12,42,61,.4); display:flex; align-items:center; justify-content:center; padding:16px; z-index:50}
-.ad-modal{background:var(--card); border-radius:16px; width:100%; max-width:600px; max-height:92vh; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(12,42,61,.2)}
-.ad-modal-head{display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--line)}
-.ad-modal-head h2{font-size:18px; font-weight:700; margin:0}
-.ad-x{border:0; background:transparent; color:var(--muted); cursor:pointer; border-radius:8px; padding:6px}
-.ad-x:hover{background:var(--sky-50); color:var(--ink)}
-.ad-modal-body{padding:6px 20px 14px; overflow-y:auto}
-.ad-modal-foot{display:flex; align-items:center; gap:8px; padding:14px 20px; border-top:1px solid var(--line); flex-wrap:wrap}
-.ad-confirm{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13.5px}
-
-.ad-toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:10px 18px; border-radius:10px; z-index:60; font-weight:500}
-.ad-toast.is-bad{background:var(--red)}
-.ad-scrim{display:none}
-
-
-/* salary requests */
-.ad input[type=checkbox]{width:16px; height:16px; padding:0; accent-color:var(--sky-500)}
-.ad-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:16px}
-.ad-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px}
-.ad-card-label{color:var(--muted); font-size:14px}
-.ad-card-value{font-size:30px; font-weight:700; letter-spacing:-.02em; margin-top:6px; color:var(--sky-700)}
-.ad-card-note{color:var(--muted); font-size:13px; margin-top:4px}
-.ad-count{display:inline-block; min-width:22px; text-align:center; background:var(--sky-100); color:var(--sky-700); border-radius:999px; font-size:12.5px; padding:0 7px; margin-left:6px}
-.ad-toolbar{display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap}
-.ad-toolbar input{flex:1; min-width:200px}
-.ad-toolbar select{width:200px}
-.ad-bulk{display:flex; align-items:center; gap:10px; background:var(--sky-50); border:1px solid var(--sky-100); border-radius:12px; padding:10px 14px; margin-bottom:12px; flex-wrap:wrap}
-.ad-check{width:36px}
-.ad-right{text-align:right}
-.ad-hint{font-size:12.5px; color:var(--muted)}
-.ad-warn{color:var(--red)}
-.ad-pill{display:inline-block; padding:2px 10px; border-radius:999px; font-size:12.5px; font-weight:600}
-.ad-approved{background:var(--sky-100); color:var(--sky-700)}
-.ad-pending{background:#fff4d6; color:#8a5a00}
-.ad-rejected{background:#fde4e4; color:#a12525}
-.ad-col{display:flex; flex-direction:column; gap:14px; padding-top:16px}
-.ad-col h3{margin-top:0 !important}
-.ad-modal-sm{max-width:440px}
-.ad-dl{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:0}
-.ad-dl > div{border:1px solid var(--line); border-radius:12px; padding:10px 12px}
-.ad-dl dt{color:var(--muted); font-size:12.5px}
-.ad-dl dd{font-weight:600; margin:0}
-.ad-req.pass{background:var(--sky-50); border-color:var(--sky-100); color:var(--sky-700)}
-.ad-req.fail{background:#fdf1f1; border-color:#f3d4d4; color:var(--red)}
-.ad-note{border-radius:12px; padding:10px 14px; font-size:14px}
-.ad-note-warn{background:#fff8e1; color:#8a5a00}
-.ad-note-bad{background:#fdf1f1; color:#a12525}
-.ad-reject{display:flex; flex-direction:column; gap:12px}
-
-@media (max-width:1024px){ .ad-lvl-grid{grid-template-columns:1fr} }
-@media (max-width:760px){
-  .ad-side{position:fixed; left:0; top:0; z-index:30; transform:translateX(-100%); transition:transform .2s ease}
-  .ad-side.is-open{transform:none}
-  .ad-scrim{display:block; position:fixed; inset:0; background:rgba(12,42,61,.35); z-index:20}
-  .ad-burger{display:inline-flex}
-  .ad-main{padding:20px 16px 40px}
-  .ad-form-grid,.ad-form-grid.three,.ad-pkg-grid,.ad-stats,.ad-dl{grid-template-columns:1fr}
-  .ad-toolbar select{width:100%}
-  .ad-top-actions{width:100%}
-  .ad-top-actions .ad-btn{flex:1}
-  .ad-panel-head{flex-direction:column}
-}
-@media (prefers-reduced-motion:reduce){ .ad-side,.ad-link,.ad-switch,.ad-switch span{transition:none} }
-`;

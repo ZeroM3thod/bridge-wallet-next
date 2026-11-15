@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const items = [
   ["dashboard", "Dashboard", "M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"],
@@ -26,11 +26,34 @@ export function AdminSidebar({ active: activeOverride, onNavigate }: { active?: 
     router.push(routes[key] ?? `/superadmin/${key}`)
     setOpen(false)
   }
+
+  // Mobile drawer: close with Esc, lock page scroll while open
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false) }
+    document.addEventListener("keydown", onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = prev }
+  }, [open])
+
   return <>
+    <header className="ad-mbar">
+      <button className="ad-burger" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)}>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+      <span className="ad-mbar-title"><span className="ad-logo" />Admin</span>
+    </header>
     {open && <button className="ad-scrim" aria-label="Close menu" onClick={() => setOpen(false)} />}
-    <button className="ad-burger" aria-label="Open menu" onClick={() => setOpen(true)}><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 6h16M4 12h16M4 18h16" /></svg></button>
-    <aside className={`ad-side ${open ? "is-open" : ""}`}><div className="ad-brand"><span className="ad-logo" />Admin</div><nav className="ad-nav" aria-label="Admin">
-      {items.map(([key, label, d]) => <button key={key} className={`ad-link ${active === key ? "is-active" : ""}`} aria-current={active === key ? "page" : undefined} onClick={() => go(key)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>{label}</button>)}
-    </nav></aside>
+    <aside className={`ad-side ${open ? "is-open" : ""}`}>
+      <div className="ad-brand"><span className="ad-logo" />Admin
+        <button className="ad-side-close" aria-label="Close menu" onClick={() => setOpen(false)}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <nav className="ad-nav" aria-label="Admin">
+        {items.map(([key, label, d]) => <button key={key} className={`ad-link ${active === key ? "is-active" : ""}`} aria-current={active === key ? "page" : undefined} onClick={() => go(key)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>{label}</button>)}
+      </nav>
+    </aside>
   </>
 }
