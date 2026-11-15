@@ -105,8 +105,8 @@ export default function HomePage() {
 
         <section className="menu-list" aria-label="অফিসের অন্যান্য কার্যক্রম">
           <AppLink page="team"><span>সাফল্যের সঙ্গী</span><b aria-hidden="true">›</b></AppLink>
-          <AppLink page="notifications"><span>বার্তা ও ঘোষণা</span><b aria-hidden="true">›</b></AppLink>
-          <AppLink page="settings"><span>নিরাপত্তা ও বিন্যাস</span><b aria-hidden="true">›</b></AppLink>
+          <AppLink page="notifications"><span>নোটিফিকেশন</span><b aria-hidden="true">›</b></AppLink>
+          <AppLink page="settings"><span>সেটিংস</span><b aria-hidden="true">›</b></AppLink>
         </section>
 
       </main>
