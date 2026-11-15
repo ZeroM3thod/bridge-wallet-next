@@ -122,8 +122,8 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
   const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
   const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits", "fleet", "terms", "support", "notifications"].includes(page)
-   return <div className="app blue-header">
-       {!isPublic && <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => router.push("/notifications")} onProfile={() => changePage("profile")} profile={profile} eliteStep={eliteStep} />}
+    return <div className="app blue-header">
+        {!isPublic && <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => router.push("/notifications")} onProfile={() => changePage("profile")} profile={profile} eliteStep={eliteStep} />}
   {children}
   <nav className="bottom-nav" aria-label="প্রধান নেভিগেশন">{navItems.map(item => <AppLink key={item.id} page={item.id} plain className={activePage === item.id ? "active" : ""}><Icon name={item.icon} size={27} /><span>{item.label}</span></AppLink>)}</nav>
  </div>

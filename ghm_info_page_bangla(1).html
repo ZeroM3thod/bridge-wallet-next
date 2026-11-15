@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>জিএইচএম গ্রুপস | আইএসও ট্যাঙ্ক কন্টেইনার লিজিংয়ে বিশ্বজোড়া নির্ভরতা</title>
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & Hind Siliguri for crisp English & Bangla typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ghm: {
+              navy: '#081B33',
+              royal: '#0033A0',
+              royalDark: '#002475',
+              sky: '#0EA5E9',
+              green: '#16803C',
+              greenDark: '#11632E',
+              slate: '#F3F6FA',
+              ink: '#111827'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Hind Siliguri', system-ui, sans-serif; line-height: 1.7;
+      color: #111827;
+    }
+    body.lang-bn {
+      font-family: 'Hind Siliguri', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    .hero-overlay {
+      background: linear-gradient(
+        90deg,
+        rgba(8, 27, 51, 0.38) 0%,
+        rgba(8, 27, 51, 0.82) 46%,
+        rgba(8, 27, 51, 0.96) 100%
+      );
+    }
+    @media (max-width: 1023px) {
+      .hero-overlay {
+        background: linear-gradient(
+          180deg,
+          rgba(8, 27, 51, 0.74) 0%,
+          rgba(8, 27, 51, 0.89) 55%,
+          rgba(8, 27, 51, 0.97) 100%
+        );
+      }
+    }
+    .card-lift {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px -10px rgba(8, 27, 51, 0.16);
+    }
+    .nav-dropdown {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: all 0.2s ease;
+    }
+    .group:hover .nav-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    @keyframes pulsePin {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.45); opacity: 0.35; }
+    }
+    .map-pulse {
+      animation: pulsePin 2.4s infinite ease-in-out;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .page-enter {
+      animation: fadeSlideIn 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="lang-bn bg-white antialiased selection:bg-ghm-sky selection:text-white">
+  <main id="homeView" class="block">
+    <!-- HERO SECTION (ISO TANK CONTAINER TRUCK VISUAL + REGISTER & LOGIN) -->
+    <section id="top" class="relative min-h-[560px] sm:min-h-[620px] lg:min-h-[660px] flex items-center bg-ghm-navy overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img
+          id="heroTankTruckImg"
+          src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=85"
+          alt="জিএইচএম গ্রুপসের আইএসও ট্যাঙ্ক কন্টেইনারবাহী ট্রাক"
+          class="w-full h-full object-cover object-center"
+          onerror="this.style.display='none'; document.getElementById('heroSvgFallback').classList.remove('hidden');"
+        />
+        <!-- High-Detail ISO Tank Container Semi-Trailer Truck Vector Fallback -->
+        <div id="heroSvgFallback" class="hidden w-full h-full bg-gradient-to-br from-[#081B33] via-[#0F2C56] to-[#061324] flex items-center">
+          <svg class="w-full h-full object-cover" viewBox="0 0 1440 720" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="1440" height="720" fill="#081B33"/>
+            <circle cx="300" cy="190" r="260" fill="#0EA5E9" fill-opacity="0.14"/>
+            <rect y="480" width="1440" height="240" fill="#0F172A"/>
+            <line x1="0" y1="590" x2="1440" y2="590" stroke="#F59E0B" stroke-width="4" stroke-dasharray="36 28" opacity="0.7"/>
+            <rect x="110" y="455" width="495" height="18" rx="4" fill="#1E293B"/>
+            <g transform="translate(120, 292)">
+              <rect x="0" y="0" width="380" height="162" rx="6" stroke="#0EA5E9" stroke-width="8" fill="#081B33" fill-opacity="0.45"/>
+              <rect x="14" y="14" width="352" height="134" rx="52" fill="#F8FAFC"/>
+              <path d="M14 82H366V94C366 122 343 148 314 148H66C37 148 14 122 14 94V82Z" fill="#E2E8F0"/>
+              <rect x="95" y="14" width="10" height="134" fill="#0033A0"/>
+              <rect x="275" y="14" width="10" height="134" fill="#0033A0"/>
+              <text x="185" y="74" text-anchor="middle" fill="#0033A0" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="28" letter-spacing="2">GHM GROUPS</text>
+              <text x="185" y="102" text-anchor="middle" fill="#0EA5E9" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="1">GHMU 441268 6 • 22K2</text>
+            </g>
+            <g transform="translate(512, 315)">
+              <path d="M0 140V30C0 14 12 0 28 0H92L128 58V140H0Z" fill="#FFFFFF"/>
+              <path d="M62 14H88L116 58H62V14Z" fill="#081B33"/>
+              <rect x="0" y="96" width="128" height="16" fill="#0EA5E9"/>
+            </g>
+            <g fill="#0F172A" stroke="#64748B" stroke-width="5">
+              <circle cx="175" cy="485" r="26"/><circle cx="238" cy="485" r="26"/>
+              <circle cx="465" cy="485" r="26"/><circle cx="595" cy="485" r="26"/>
+            </g>
+          </svg>
+        </div>
+        <div class="hero-overlay absolute inset-0"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-20 lg:py-24">
+        <div class="lg:ml-auto lg:w-[54%] text-white">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-ghm-sky text-xs font-bold mb-5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span data-i18n="heroPill">জিএইচএম গ্রুপস — বিশ্বজুড়ে</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-[54px] font-extrabold leading-[1.12] mb-4" data-i18n="heroTitle">ট্যাঙ্ক কন্টেইনার লিজিংয়ে বিশ্বজোড়া এক নির্ভরতার নাম</h1>
+
+          <p class="text-lg sm:text-xl font-semibold text-slate-200 mb-5" data-i18n="heroSub">জিএইচএম গ্রুপস — সাগর-মহাসাগর পেরোনো এক লজিস্টিকস-যাত্রা</p>
+
+          <p class="text-sm sm:text-base lg:text-[17px] text-slate-200/95 leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">বিশ্বের অন্যতম বৃহৎ ও আস্থাভাজন আইএসও ট্যাঙ্ক লিজিং প্রতিষ্ঠানের হাত ধরে পথ চলুন। নির্ভরযোগ্য, টেকসই সরঞ্জাম আর অনন্য সেবার মেলবন্ধনে জিএইচএম গ্রুপস সেইসব পণ্যকে পৌঁছে দেয় দেশ থেকে দেশান্তরে, যা আমাদের প্রতিদিনের জীবনের অপরিহার্য অংশ। দুই দশকেরও বেশি অভিজ্ঞতা আর দক্ষতা নিয়ে আমরা আছি আপনার পাশেই।</p>
+
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION A & B: 4 CORE PILLAR CARDS + ROYAL BLUE STATS BAND (NO OVERLAP) -->
+    <section class="bg-ghm-royal text-white pt-16 lg:pt-20 pb-20 lg:pb-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 4 Equal-Height White Value Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          <!-- Card 1 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
+                alt="সাধারণ ও বিশেষ ট্যাঙ্ক"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat1Title">সাধারণ ও বিশেষ ট্যাঙ্কের সম্ভার</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat1Desc">আমাদের ঝুলিতে আছে পূর্ণাঙ্গ <strong class="text-ghm-green font-bold">সাধারণ ও বিশেষ ট্যাঙ্কের</strong> সমাহার। আপনার পণ্যকে পরবর্তী গন্তব্যে পৌঁছে দেওয়ার সকল সরঞ্জাম এখানেই মেলে।</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=80"
+                alt="বৈশ্বিক কার্যক্রম"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat2Title">দিগন্তজোড়া কর্মযজ্ঞ</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat2Desc">আমাদের <strong class="text-ghm-green font-bold">বিশ্বব্যাপী উপস্থিতির</strong> ছায়ায় আসুন। প্রায় প্রতিটি মহাদেশে অফিস ও ডিপোর জাল বিছিয়ে আছি, যেন আপনার প্রয়োজন যেখানেই জন্ম নিক, আমরা সেখানেই হাজির।</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=800&q=80"
+                alt="গ্রাহকসেবা"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/16803C/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat3Title">হৃদ্যতাপূর্ণ দ্রুত সেবা</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat3Desc">অনুভব করুন অতুলনীয় <strong class="text-ghm-green font-bold">গ্রাহকসেবার</strong> উষ্ণতা। জাহাজের সময়সীমা আর সরবরাহ শৃঙ্খলের দুশ্চিন্তা ছেড়ে দিন এমন এক পূর্ণাঙ্গ লিজিং সঙ্গীর হাতে, যে আপনার ভার নিজের কাঁধে তুলে নেয়।</p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=800&q=80"
+                alt="কারিগরি ও প্রকৌশল সেবা"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat4Title">প্রযুক্তি ও প্রকৌশলের নিপুণ হাত</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat4Desc">আস্থা রাখুন আমাদের বিশেষজ্ঞ দলের ওপর। বিশ বছরেরও বেশি সময় ধরে আমরা গ্রাহকদের উপহার দিয়ে চলেছি অসামান্য <strong class="text-ghm-green font-bold">কারিগরি ও প্রকৌশল দক্ষতা</strong>।</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section B: Stats Banner -->
+        <div class="pt-16 lg:pt-24 text-center">
+          <h2 class="text-2xl sm:text-4xl lg:text-[42px] font-extrabold max-w-3xl mx-auto leading-tight mb-12 sm:mb-14" data-i18n="statsHeading">ট্যাঙ্ক কন্টেইনার লিজিংয়ে আপনার সরবরাহ শৃঙ্খলকে নিখুঁত করে তোলার চিরসঙ্গী আমরা।</h2>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">৭৫,০০০+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat1Label">বিশ্বজুড়ে ট্যাঙ্ক</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">২৫+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat2Label">বছরের পথচলা</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">১৭</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat3Label">বিশ্বজুড়ে অফিস</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">৫০+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat4Label">ডিপো সহযোগী</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C: DIVERSE FLEET GRID (7 ISO TANK CONTAINER TYPES) -->
+    <section class="bg-ghm-slate py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="fleetEyebrow">ট্যাঙ্ক কন্টেইনার লিজিং</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="fleetHeading">বৈচিত্র্যময় আইএসও ট্যাঙ্কের বহর নিয়ে আমরা পণ্য পৌঁছে দিই ঠিক সময়ের ঘাটে।</h2>
+          <p class="text-base text-slate-600 mb-6" data-i18n="fleetSub">সর্বোচ্চ আন্তর্জাতিক নিরাপত্তার মানদণ্ডে গড়া ও পরিকল্পিত প্রতিটি ট্যাঙ্ক।</p>
+        </div>
+
+        <!-- Row 1: 4 Fleet Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 items-stretch">
+          <!-- 1. Liquid Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=700&q=80" alt="তরল ট্যাঙ্ক কন্টেইনার" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T1–T22</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet1Title">তরল ট্যাঙ্ক কন্টেইনার</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet1Desc">সাধারণ ও বিশেষ তরল ট্যাঙ্ক কন্টেইনারের সম্ভারে আপনার তরল পণ্য ভ্রমণ করুক নিশ্চিন্তে, নিরাপদে।</p>
+            </div>
+          </div>
+
+          <!-- 2. Gas Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80" alt="গ্যাস ট্যাঙ্ক কন্টেইনার" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T50</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet2Title">গ্যাস ট্যাঙ্ক কন্টেইনার</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet2Desc">নানা তরলীকৃত গ্যাসের বিশ্বজোড়া পরিবহনের উপযোগী আমাদের T50 গ্যাস ট্যাঙ্ক কন্টেইনারের ভান্ডার ঘুরে দেখুন।</p>
+            </div>
+          </div>
+
+          <!-- 3. Tank Container Chassis -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=700&q=80" alt="ট্যাঙ্ক কন্টেইনার চ্যাসিস" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0EA5E9/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">ড্রপ-ফ্রেম</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet3Title">ট্যাঙ্ক কন্টেইনার চ্যাসিস</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet3Desc">যুক্তরাষ্ট্রসহ বিশ্বজুড়ে নানা নকশার চ্যাসিস মেলে আপনার বিশেষ প্রয়োজনের সঙ্গী হয়ে। হালকা ওজনের, পরীক্ষিত ড্রপ-ফ্রেম চ্যাসিস ভরা ট্যাঙ্কের ভারকেন্দ্রকে নামিয়ে আনে মাটির কাছাকাছি, পথচলাকে করে স্থির ও নিরাপদ।</p>
+            </div>
+          </div>
+
+          <!-- 4. Cryogenic Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=700&q=80" alt="ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T75 (−১৯৬°সে.)</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet4Title">ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet4Desc">চরম হিমশীতল তাপমাত্রায় ক্রায়োজেনিক গ্যাস বহনের জন্য বিশেষভাবে গড়া T75 ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার।</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: 3 Centered Fleet Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:max-w-5xl lg:mx-auto items-stretch">
+          <!-- 5. Swap Body Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=700&q=80" alt="সোয়াপ বডি ট্যাঙ্ক কন্টেইনার" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">২৬,০০০–৩৫,০০০ লিটার</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet5Title">সোয়াপ বডি ট্যাঙ্ক কন্টেইনার</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet5Desc">সড়ক ও রেলপথে সর্বোচ্চ পণ্যভার বহনের দক্ষতায় নির্মিত, বিপুল ধারণক্ষমতার ইন্টারমডাল সোয়াপ বডি ট্যাঙ্ক কন্টেইনার।</p>
+            </div>
+          </div>
+
+          <!-- 6. Small Portable Tanks -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=700&q=80" alt="ছোট বহনযোগ্য ট্যাঙ্ক" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/16803C/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">৪৫০–৫,০০০ লিটার</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet6Title">ছোট বহনযোগ্য ট্যাঙ্ক</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet6Desc">নানা নকশা ও বৈশিষ্ট্যের ছোট বহনযোগ্য ট্যাঙ্ক লিজ নিন, যা ৪৫০ থেকে ৫,০০০ লিটার পর্যন্ত তরল ও গ্যাসের নির্দিষ্ট চাহিদা মেটায়।</p>
+            </div>
+          </div>
+
+          <!-- 7. Offshore Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col md:col-span-2 lg:col-span-1">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=700&q=80" alt="অফশোর ট্যাঙ্ক কন্টেইনার" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">DNV 2.7-1</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet7Title">অফশোর ট্যাঙ্ক কন্টেইনার</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet7Desc">সাগরবুকের পরিবহন ও সংরক্ষণের জন্য ভাড়ায় মেলে উচ্চমানের ডিএনভি-প্রত্যয়িত ট্যাঙ্ক কন্টেইনারের বিশেষ বহর।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION D: CLIENT TESTIMONIAL -->
+    <section class="bg-ghm-slate pb-16 lg:pb-24">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative pl-6 sm:pl-14">
+          <span class="text-6xl sm:text-7xl font-serif text-slate-300 leading-none select-none absolute -top-3 left-0">“</span>
+          <blockquote class="text-xl sm:text-2xl lg:text-[26px] font-extrabold italic text-ghm-ink leading-snug mb-5" data-i18n="testimonialQuote">“জিএইচএম গ্রুপস আর স্টল্টের সম্পর্ক দীর্ঘদিনের, সাফল্যে ভরা। জিএইচএম গ্রুপসের বিশ্বজোড়া উপস্থিতি, সুদৃঢ় কারিগরি সহায়তা আর চমৎকার গ্রাহকসেবা আমাদের চলমান বাজারের চাহিদা মেটাতে অপরিহার্য। এই সহযোগিতা ও অংশীদারিত্ব আগামী বহু বছর অটুট থাকুক, এই প্রত্যাশাই করি!”</blockquote>
+          <p class="text-sm font-semibold text-slate-600" data-i18n="testimonialAuthor">ডাস্টিন ক্যালাওয়ে, টেকনিক্যাল সার্ভিসেস/এম অ্যান্ড আর, স্টল্ট ট্যাঙ্ক কন্টেইনার্স</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION E: SUSTAINABILITY & ECOVADIS SILVER BADGE -->
+    <section class="bg-ghm-slate pb-20 lg:pb-28 border-t border-slate-200/70 pt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="susEyebrow">স্থায়িত্ব</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="susHeading">টেকসই পরিবহনের পথে হেঁটে সুরক্ষিত রাখুন আপনার সরবরাহ শৃঙ্খলকে।</h2>
+            <p class="text-lg font-bold text-slate-800 mb-5" data-i18n="susSub">আপনার ব্যবসার জন্য কল্যাণকর, ধরিত্রীর জন্যও।</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-4" data-i18n="susPara1">আমাদের ট্যাঙ্ক কন্টেইনারের ৯৩ শতাংশই পুনর্ব্যবহারযোগ্য। যে সঙ্গী পৃথিবীকে বাঁচিয়ে রাখার প্রতিজ্ঞায় অটল, তার হাত ধরে সাজিয়ে তুলুন আপনার টেকসই উদ্যোগ।</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="susPara2">বিশ্বের নামী সাসটেইনেবিলিটি রেটিং সংস্থা ইকোভাডিস জিএইচএম গ্রুপসকে দিয়েছে সিলভার পদকের স্বীকৃতি। মূল্যায়িত এক লক্ষেরও বেশি প্রতিষ্ঠানের মধ্যে আমরা শীর্ষ ১৫ শতাংশের কাতারে। পরিবেশ, শ্রম ও মানবাধিকার, নৈতিকতা এবং টেকসই ক্রয়, মূল্যায়নের প্রতিটি ক্ষেত্রেই আমরা পেয়েছি উচ্চ নম্বর।</p>
+          </div>
+
+          <div class="lg:col-span-6 flex justify-center">
+            <div class="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-br from-slate-200 via-white to-slate-300 p-5 shadow-2xl flex items-center justify-center border-8 border-white hover:scale-[1.02] transition-transform">
+              <div class="w-full h-full rounded-full bg-white shadow-inner flex flex-col items-center justify-center text-center p-6 border border-slate-200">
+                <div class="bg-gradient-to-r from-slate-400 via-slate-500 to-slate-400 text-white text-xs sm:text-sm font-extrabold px-6 py-1.5 rounded-full shadow mb-4">
+                  সিলভার | শীর্ষ ১৫%
+                </div>
+                <div class="text-3xl sm:text-5xl font-extrabold text-slate-800 mb-1">
+                  ইকোভাডিস
+                </div>
+                <div class="text-sm sm:text-base font-medium text-slate-500 mb-4">
+                  স্থায়িত্ব রেটিং
+                </div>
+                <div class="w-24 h-0.5 bg-slate-200 mb-3"></div>
+                <div class="text-sm sm:text-lg font-extrabold text-slate-800">
+                  ডিসেম্বর ২০২৫
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION F: 6 LOGISTICS SERVICE CARDS + 24/7 TRUST STATEMENT -->
+    <section class="bg-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="logHeading">আইএসও ট্যাঙ্ক লিজিং, ব্যবসায়িক লজিস্টিকসের পথকে করে সহজ ও সরল</h2>
+          <p class="text-base text-slate-600 leading-relaxed" data-i18n="logSub">প্রয়োজনের মুহূর্তে, প্রয়োজনের ঠিকানায় পেয়ে যান আপনার বিশেষায়িত আইএসও ট্যাঙ্ক। ট্যাঙ্ক কন্টেইনার লিজ নিয়ে ব্যবসা চালিয়ে যান নির্ভার মনে।</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-16 items-stretch">
+          <!-- 1 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc1Title">প্রকৌশল ও কারিগরি সহায়তা</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc1Desc">আমাদের অফিস ও ডিপোর কারিগরি দল আপনাকে দেবে মানসম্পন্ন, নির্ভরযোগ্য প্রকৌশল সেবা।</p>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc2Title">বৈশ্বিক অংশীদার নেটওয়ার্ক</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc2Desc">পৃথিবীজোড়া সম্পর্কের বন্ধনে বাঁধা এক সঙ্গীর সঙ্গে সরবরাহ শৃঙ্খলের বিঘ্ন কমিয়ে আনুন।</p>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc3Title">টেলিমেট্রি সেবা</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc3Desc">ট্যাঙ্কের নজরদারি আর অবস্থান-অনুসরণের মধ্য দিয়ে সরবরাহ শৃঙ্খলজুড়ে যোগাযোগ করুন আরও নিবিড়।</p>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc4Title">লিজিং সমাধান</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc4Desc">ট্যাঙ্ক কন্টেইনার লিজিংয়ের পথে আপনার প্রতিষ্ঠানের মূলধনী ব্যয় ও ঝুঁকির বোঝা হালকা করুন।</p>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc5Title">বিশ্বজোড়া নেটওয়ার্ক</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc5Desc">প্রায় প্রতিটি মহাদেশে ছড়ানো আমাদের অফিস ও ডিপোর জালে ভরসা রাখুন, যা সময়মতো আপনার হাতে পৌঁছে দেবে প্রয়োজনের ধন।</p>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc6Title">গ্রাহক সহায়তা</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc6Desc">জরুরি প্রাপ্যতা, রক্ষণাবেক্ষণের সময়সূচিসহ লিজিংয়ের যেকোনো জটিলতায় পাশে দাঁড়াতে প্রস্তুত আমাদের নিবেদিতপ্রাণ গ্রাহক সহায়তা দল।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center max-w-2xl mx-auto">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-ghm-ink leading-snug" data-i18n="trust247">দিনরাত চব্বিশ ঘণ্টা, সাত দিন। জানবেন, আপনার পাশে আছে এক বিশ্বস্ত ট্যাঙ্ক লিজিং সঙ্গী।</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION G: GLOBAL FOOTPRINT WORLD MAP SECTION -->
+    <section class="bg-ghm-slate py-20 lg:py-24 border-t border-slate-200/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-7">
+            <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200/80">
+              <svg viewBox="0 0 800 400" class="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#16803C">
+                  <path d="M85 85 L165 70 L215 95 L205 145 L175 180 L145 195 L125 165 L100 135 Z" opacity="0.92"/>
+                  <path d="M185 215 L230 220 L265 265 L245 335 L215 365 L195 310 L185 255 Z" opacity="0.92"/>
+                  <path d="M365 75 L430 65 L455 95 L435 125 L385 130 L360 105 Z" opacity="0.92"/>
+                  <path d="M375 145 L440 145 L475 195 L455 285 L415 305 L385 240 L365 185 Z" opacity="0.92"/>
+                  <path d="M460 75 L635 70 L685 120 L655 195 L575 210 L515 190 L470 140 Z" opacity="0.92"/>
+                  <path d="M615 245 L695 245 L710 300 L655 315 L615 285 Z" opacity="0.92"/>
+                </g>
+
+                <g>
+                  <circle cx="168" cy="152" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="168" cy="152" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="168" y="138" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">হিউস্টন</text>
+
+                  <circle cx="242" cy="296" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="242" cy="296" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="242" y="282" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">সাও পাউলো</text>
+
+                  <circle cx="402" cy="96" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="402" cy="96" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="402" y="83" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">রটারডাম</text>
+
+                  <circle cx="496" cy="158" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="496" cy="158" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="496" y="145" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">দুবাই</text>
+
+                  <circle cx="578" cy="162" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="578" cy="162" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="582" y="148" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">চট্টগ্রাম</text>
+
+                  <circle cx="614" cy="204" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="614" cy="204" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="614" y="232" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">সিঙ্গাপুর</text>
+
+                  <circle cx="645" cy="138" r="10" fill="#0EA5E9" class="map-pulse"/>
+                  <circle cx="645" cy="138" r="4.5" fill="#081B33" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="645" y="124" text-anchor="middle" fill="#081B33" font-size="11" font-weight="700">সাংহাই</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="locEyebrow">অবস্থান</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="locHeading">হিউস্টন থেকে সাংহাই, সর্বত্রই আমরা আপনার ছায়াসঙ্গী।</h2>
+            <p class="text-lg font-bold text-slate-800 mb-3" data-i18n="locSub">আপনি যেখানেই থাকুন, সেখানেই ট্যাঙ্ক কন্টেইনার লিজিংয়ের সেবা।</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="locDesc">বিশ্বস্ত এক লিজিং সঙ্গীর যখনই প্রয়োজন হবে, আমাদের ওপর ভরসা রাখুন। যেখানে আপনার দরকার, আমরা সেখানেই আছি।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION H: FULL-WIDTH PROMO BANNER -->
+    <section class="bg-ghm-slate pb-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden shadow-xl h-64 sm:h-80 flex items-center justify-center text-center p-6 group">
+          <img
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80"
+            alt="জিএইচএম গ্রুপসের বহর"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onerror="this.src='https://placehold.co/1400x400/081B33/FFFFFF?text=+'"
+          />
+          <div class="absolute inset-0 bg-ghm-navy/75"></div>
+          <div class="relative z-10 max-w-2xl">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-snug" data-i18n="bannerMidHeading">নমনীয় ট্যাঙ্ক কন্টেইনার লিজিংয়ে গড়ে তুলুন আগামীর নিরাপদ ভিত।</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION I: HERITAGE & STRATEGIC PARTNER SPLIT -->
+    <section class="bg-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6 flex justify-center">
+            <div class="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 max-w-md w-full bg-ghm-slate">
+              <img
+                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=85"
+                alt="জিএইচএম গ্রুপসের আইএসও ট্যাঙ্ক কন্টেইনার"
+                class="w-full h-80 object-cover"
+                onerror="this.src='https://placehold.co/800x600/0033A0/FFFFFF?text=+'"
+              />
+              <div class="p-4 bg-ghm-navy text-white flex items-center justify-between text-xs font-bold">
+                <span>GHMU 817114 1 • IMO 1 / T11</span>
+                <span class="text-ghm-sky">২৬,০০০ লিটার</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="partnerEyebrow">৭৫,০০০-এরও বেশি ট্যাঙ্কের বহর নিয়ে বিশ্বের অগ্রগণ্য ট্যাঙ্ক কন্টেইনার লিজিং প্রতিষ্ঠান।</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-6" data-i18n="partnerHeading">২০০০ সাল থেকে সরবরাহ শৃঙ্খলের রূপ বদলে দিচ্ছি।</h2>
+            <p class="text-base text-slate-600 leading-relaxed mb-4" data-i18n="partnerPara1">আপনার ও আপনার দলের পাশে দাঁড়ানোর মতো অভিজ্ঞতা আর শিল্পজ্ঞান আমাদের আছে। বিশ বছরেরও বেশি সময় ধরে নমনীয় লিজিংয়ের পথ দেখিয়ে আমরা প্রতিষ্ঠানগুলোকে ব্যয় কমাতে ও কার্যক্রম গুছিয়ে নিতে সাহায্য করে আসছি।</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="partnerPara2">অতুলনীয় গ্রাহকসেবা আর অংশীদারিত্বের প্রতিটি ধাপে সেরাটুকু দেওয়ার অঙ্গীকার নিয়ে আমরা আত্মবিশ্বাসী, আপনার সাফল্যের পথে আমরা সঠিক সহযাত্রী।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION J: ROYAL BLUE RESOURCES SECTION -->
+    <section class="bg-ghm-royal text-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <p class="text-xs font-bold text-blue-200 mb-3" data-i18n="resEyebrow">জ্ঞানভান্ডার</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold leading-tight mb-4" data-i18n="resHeading">ট্যাঙ্ক কন্টেইনার শিল্পের অন্দরমহলের আলোকিত তথ্য ঘুরে দেখুন।</h2>
+          <p class="text-base text-blue-100 leading-relaxed" data-i18n="resSub">আমাদের বিশেষজ্ঞরা শিল্পের নানা অন্তর্দৃষ্টি ভাগ করে নেন, যেন ক্রয় ও প্রকৌশল সহযোগীরা সময়ের চেয়ে এক ধাপ এগিয়ে থাকতে পারেন।</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res1Title">টি-কোড চার্ট</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res1Desc">পরীক্ষার চাপ, খোলের পুরুত্ব, চাপ-নিষ্কাশন ব্যবস্থা আর তলদেশের নির্গম বিন্যাসের নিরিখে টি-কোড বা “বহনযোগ্য ট্যাঙ্ক নির্দেশিকা”র ব্যাখ্যা।</p>
+          </div>
+
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res2Title">শব্দকোষ</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res2Desc">বিশ্বব্যাপী ট্যাঙ্ক কন্টেইনার লিজিং শিল্পের প্রয়োজনীয় পরিভাষার সংকলন।</p>
+          </div>
+
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res3Title">কারিগরি নকশা ও স্পেসিফিকেশন</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res3Desc">আমাদের ট্যাঙ্কের দলিলপত্র ও খুঁটিনাটি বিবরণের এক সুবিশাল গ্রন্থাগার।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION K: BOTTOM TERMINAL CTA BANNER -->
+    <section class="bg-ghm-slate py-14 sm:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden shadow-xl min-h-[300px] sm:min-h-[340px] flex items-center justify-center text-center p-6 sm:p-12">
+          <img
+            src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1600&q=80"
+            alt="কন্টেইনার বন্দরের কর্মযজ্ঞ"
+            class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.src='https://placehold.co/1400x450/081B33/FFFFFF?text=+'"
+          />
+          <div class="absolute inset-0 bg-ghm-navy/78"></div>
+          <div class="relative z-10 max-w-2xl mx-auto bg-ghm-navy/70 backdrop-blur-md border border-white/15 rounded-2xl p-6 sm:p-8">
+            <p class="text-base sm:text-lg font-medium text-white leading-relaxed " data-i18n="bottomCtaText">নিরাপত্তা, নির্ভরতা আর বিশ্বজোড়া বিস্তারের শক্তিতে জিএইচএম গ্রুপসের বহর আপনার বাল্ক তরল পরিবহনের পথকে করে তোলে সহজ, আর কর্মযজ্ঞকে দেয় শ্রেষ্ঠত্বের ছোঁয়া।</p>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- DETAILED INFORMATION SECTIONS (rendered from PAGES_DATA) -->
+  <section class="bg-ghm-navy text-white py-14 text-center">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class="text-xs font-bold text-ghm-sky mb-3" data-i18n="infoEyebrow">বিস্তারিত তথ্য</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold " data-i18n="infoHeading">বহর, সেবা ও প্রতিষ্ঠানের কথা</h2>
+    </div>
+  </section>
+  <div id="infoSections"></div>
+
+  <script>
+const i18n = {
+  heroPill: `জিএইচএম গ্রুপস — বিশ্বজুড়ে`,
+  heroTitle: `ট্যাঙ্ক কন্টেইনার লিজিংয়ে বিশ্বজোড়া এক নির্ভরতার নাম`,
+  heroSub: `জিএইচএম গ্রুপস — সাগর-মহাসাগর পেরোনো এক লজিস্টিকস-যাত্রা`,
+  heroDesc: `বিশ্বের অন্যতম বৃহৎ ও আস্থাভাজন আইএসও ট্যাঙ্ক লিজিং প্রতিষ্ঠানের হাত ধরে পথ চলুন। নির্ভরযোগ্য, টেকসই সরঞ্জাম আর অনন্য সেবার মেলবন্ধনে জিএইচএম গ্রুপস সেইসব পণ্যকে পৌঁছে দেয় দেশ থেকে দেশান্তরে, যা আমাদের প্রতিদিনের জীবনের অপরিহার্য অংশ। দুই দশকেরও বেশি অভিজ্ঞতা আর দক্ষতা নিয়ে আমরা আছি আপনার পাশেই।`,
+  feat1Title: `সাধারণ ও বিশেষ ট্যাঙ্কের সম্ভার`,
+  feat1Desc: `আমাদের ঝুলিতে আছে পূর্ণাঙ্গ <strong class="text-ghm-green font-bold">সাধারণ ও বিশেষ ট্যাঙ্কের</strong> সমাহার। আপনার পণ্যকে পরবর্তী গন্তব্যে পৌঁছে দেওয়ার সকল সরঞ্জাম এখানেই মেলে।`,
+  feat2Title: `দিগন্তজোড়া কর্মযজ্ঞ`,
+  feat2Desc: `আমাদের <strong class="text-ghm-green font-bold">বিশ্বব্যাপী উপস্থিতির</strong> ছায়ায় আসুন। প্রায় প্রতিটি মহাদেশে অফিস ও ডিপোর জাল বিছিয়ে আছি, যেন আপনার প্রয়োজন যেখানেই জন্ম নিক, আমরা সেখানেই হাজির।`,
+  feat3Title: `হৃদ্যতাপূর্ণ দ্রুত সেবা`,
+  feat3Desc: `অনুভব করুন অতুলনীয় <strong class="text-ghm-green font-bold">গ্রাহকসেবার</strong> উষ্ণতা। জাহাজের সময়সীমা আর সরবরাহ শৃঙ্খলের দুশ্চিন্তা ছেড়ে দিন এমন এক পূর্ণাঙ্গ লিজিং সঙ্গীর হাতে, যে আপনার ভার নিজের কাঁধে তুলে নেয়।`,
+  feat4Title: `প্রযুক্তি ও প্রকৌশলের নিপুণ হাত`,
+  feat4Desc: `আস্থা রাখুন আমাদের বিশেষজ্ঞ দলের ওপর। বিশ বছরেরও বেশি সময় ধরে আমরা গ্রাহকদের উপহার দিয়ে চলেছি অসামান্য <strong class="text-ghm-green font-bold">কারিগরি ও প্রকৌশল দক্ষতা</strong>।`,
+  statsHeading: `ট্যাঙ্ক কন্টেইনার লিজিংয়ে আপনার সরবরাহ শৃঙ্খলকে নিখুঁত করে তোলার চিরসঙ্গী আমরা।`,
+  stat1Label: `বিশ্বজুড়ে ট্যাঙ্ক`,
+  stat2Label: `বছরের পথচলা`,
+  stat3Label: `বিশ্বজুড়ে অফিস`,
+  stat4Label: `ডিপো সহযোগী`,
+  fleetEyebrow: `ট্যাঙ্ক কন্টেইনার লিজিং`,
+  fleetHeading: `বৈচিত্র্যময় আইএসও ট্যাঙ্কের বহর নিয়ে আমরা পণ্য পৌঁছে দিই ঠিক সময়ের ঘাটে।`,
+  fleetSub: `সর্বোচ্চ আন্তর্জাতিক নিরাপত্তার মানদণ্ডে গড়া ও পরিকল্পিত প্রতিটি ট্যাঙ্ক।`,
+  fleet1Title: `তরল ট্যাঙ্ক কন্টেইনার`,
+  fleet1Desc: `সাধারণ ও বিশেষ তরল ট্যাঙ্ক কন্টেইনারের সম্ভারে আপনার তরল পণ্য ভ্রমণ করুক নিশ্চিন্তে, নিরাপদে।`,
+  fleet2Title: `গ্যাস ট্যাঙ্ক কন্টেইনার`,
+  fleet2Desc: `নানা তরলীকৃত গ্যাসের বিশ্বজোড়া পরিবহনের উপযোগী আমাদের T50 গ্যাস ট্যাঙ্ক কন্টেইনারের ভান্ডার ঘুরে দেখুন।`,
+  fleet3Title: `ট্যাঙ্ক কন্টেইনার চ্যাসিস`,
+  fleet3Desc: `যুক্তরাষ্ট্রসহ বিশ্বজুড়ে নানা নকশার চ্যাসিস মেলে আপনার বিশেষ প্রয়োজনের সঙ্গী হয়ে। হালকা ওজনের, পরীক্ষিত ড্রপ-ফ্রেম চ্যাসিস ভরা ট্যাঙ্কের ভারকেন্দ্রকে নামিয়ে আনে মাটির কাছাকাছি, পথচলাকে করে স্থির ও নিরাপদ।`,
+  fleet4Title: `ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার`,
+  fleet4Desc: `চরম হিমশীতল তাপমাত্রায় ক্রায়োজেনিক গ্যাস বহনের জন্য বিশেষভাবে গড়া T75 ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার।`,
+  fleet5Title: `সোয়াপ বডি ট্যাঙ্ক কন্টেইনার`,
+  fleet5Desc: `সড়ক ও রেলপথে সর্বোচ্চ পণ্যভার বহনের দক্ষতায় নির্মিত, বিপুল ধারণক্ষমতার ইন্টারমডাল সোয়াপ বডি ট্যাঙ্ক কন্টেইনার।`,
+  fleet6Title: `ছোট বহনযোগ্য ট্যাঙ্ক`,
+  fleet6Desc: `নানা নকশা ও বৈশিষ্ট্যের ছোট বহনযোগ্য ট্যাঙ্ক লিজ নিন, যা ৪৫০ থেকে ৫,০০০ লিটার পর্যন্ত তরল ও গ্যাসের নির্দিষ্ট চাহিদা মেটায়।`,
+  fleet7Title: `অফশোর ট্যাঙ্ক কন্টেইনার`,
+  fleet7Desc: `সাগরবুকের পরিবহন ও সংরক্ষণের জন্য ভাড়ায় মেলে উচ্চমানের ডিএনভি-প্রত্যয়িত ট্যাঙ্ক কন্টেইনারের বিশেষ বহর।`,
+  testimonialQuote: `“জিএইচএম গ্রুপস আর স্টল্টের সম্পর্ক দীর্ঘদিনের, সাফল্যে ভরা। জিএইচএম গ্রুপসের বিশ্বজোড়া উপস্থিতি, সুদৃঢ় কারিগরি সহায়তা আর চমৎকার গ্রাহকসেবা আমাদের চলমান বাজারের চাহিদা মেটাতে অপরিহার্য। এই সহযোগিতা ও অংশীদারিত্ব আগামী বহু বছর অটুট থাকুক, এই প্রত্যাশাই করি!”`,
+  testimonialAuthor: `ডাস্টিন ক্যালাওয়ে, টেকনিক্যাল সার্ভিসেস/এম অ্যান্ড আর, স্টল্ট ট্যাঙ্ক কন্টেইনার্স`,
+  susEyebrow: `স্থায়িত্ব`,
+  susHeading: `টেকসই পরিবহনের পথে হেঁটে সুরক্ষিত রাখুন আপনার সরবরাহ শৃঙ্খলকে।`,
+  susSub: `আপনার ব্যবসার জন্য কল্যাণকর, ধরিত্রীর জন্যও।`,
+  susPara1: `আমাদের ট্যাঙ্ক কন্টেইনারের ৯৩ শতাংশই পুনর্ব্যবহারযোগ্য। যে সঙ্গী পৃথিবীকে বাঁচিয়ে রাখার প্রতিজ্ঞায় অটল, তার হাত ধরে সাজিয়ে তুলুন আপনার টেকসই উদ্যোগ।`,
+  susPara2: `বিশ্বের নামী সাসটেইনেবিলিটি রেটিং সংস্থা ইকোভাডিস জিএইচএম গ্রুপসকে দিয়েছে সিলভার পদকের স্বীকৃতি। মূল্যায়িত এক লক্ষেরও বেশি প্রতিষ্ঠানের মধ্যে আমরা শীর্ষ ১৫ শতাংশের কাতারে। পরিবেশ, শ্রম ও মানবাধিকার, নৈতিকতা এবং টেকসই ক্রয়, মূল্যায়নের প্রতিটি ক্ষেত্রেই আমরা পেয়েছি উচ্চ নম্বর।`,
+  logHeading: `আইএসও ট্যাঙ্ক লিজিং, ব্যবসায়িক লজিস্টিকসের পথকে করে সহজ ও সরল`,
+  logSub: `প্রয়োজনের মুহূর্তে, প্রয়োজনের ঠিকানায় পেয়ে যান আপনার বিশেষায়িত আইএসও ট্যাঙ্ক। ট্যাঙ্ক কন্টেইনার লিজ নিয়ে ব্যবসা চালিয়ে যান নির্ভার মনে।`,
+  svc1Title: `প্রকৌশল ও কারিগরি সহায়তা`,
+  svc1Desc: `আমাদের অফিস ও ডিপোর কারিগরি দল আপনাকে দেবে মানসম্পন্ন, নির্ভরযোগ্য প্রকৌশল সেবা।`,
+  svc2Title: `বৈশ্বিক অংশীদার নেটওয়ার্ক`,
+  svc2Desc: `পৃথিবীজোড়া সম্পর্কের বন্ধনে বাঁধা এক সঙ্গীর সঙ্গে সরবরাহ শৃঙ্খলের বিঘ্ন কমিয়ে আনুন।`,
+  svc3Title: `টেলিমেট্রি সেবা`,
+  svc3Desc: `ট্যাঙ্কের নজরদারি আর অবস্থান-অনুসরণের মধ্য দিয়ে সরবরাহ শৃঙ্খলজুড়ে যোগাযোগ করুন আরও নিবিড়।`,
+  svc4Title: `লিজিং সমাধান`,
+  svc4Desc: `ট্যাঙ্ক কন্টেইনার লিজিংয়ের পথে আপনার প্রতিষ্ঠানের মূলধনী ব্যয় ও ঝুঁকির বোঝা হালকা করুন।`,
+  svc5Title: `বিশ্বজোড়া নেটওয়ার্ক`,
+  svc5Desc: `প্রায় প্রতিটি মহাদেশে ছড়ানো আমাদের অফিস ও ডিপোর জালে ভরসা রাখুন, যা সময়মতো আপনার হাতে পৌঁছে দেবে প্রয়োজনের ধন।`,
+  svc6Title: `গ্রাহক সহায়তা`,
+  svc6Desc: `জরুরি প্রাপ্যতা, রক্ষণাবেক্ষণের সময়সূচিসহ লিজিংয়ের যেকোনো জটিলতায় পাশে দাঁড়াতে প্রস্তুত আমাদের নিবেদিতপ্রাণ গ্রাহক সহায়তা দল।`,
+  trust247: `দিনরাত চব্বিশ ঘণ্টা, সাত দিন। জানবেন, আপনার পাশে আছে এক বিশ্বস্ত ট্যাঙ্ক লিজিং সঙ্গী।`,
+  locEyebrow: `অবস্থান`,
+  locHeading: `হিউস্টন থেকে সাংহাই, সর্বত্রই আমরা আপনার ছায়াসঙ্গী।`,
+  locSub: `আপনি যেখানেই থাকুন, সেখানেই ট্যাঙ্ক কন্টেইনার লিজিংয়ের সেবা।`,
+  locDesc: `বিশ্বস্ত এক লিজিং সঙ্গীর যখনই প্রয়োজন হবে, আমাদের ওপর ভরসা রাখুন। যেখানে আপনার দরকার, আমরা সেখানেই আছি।`,
+  bannerMidHeading: `নমনীয় ট্যাঙ্ক কন্টেইনার লিজিংয়ে গড়ে তুলুন আগামীর নিরাপদ ভিত।`,
+  partnerEyebrow: `৭৫,০০০-এরও বেশি ট্যাঙ্কের বহর নিয়ে বিশ্বের অগ্রগণ্য ট্যাঙ্ক কন্টেইনার লিজিং প্রতিষ্ঠান।`,
+  partnerHeading: `২০০০ সাল থেকে সরবরাহ শৃঙ্খলের রূপ বদলে দিচ্ছি।`,
+  partnerPara1: `আপনার ও আপনার দলের পাশে দাঁড়ানোর মতো অভিজ্ঞতা আর শিল্পজ্ঞান আমাদের আছে। বিশ বছরেরও বেশি সময় ধরে নমনীয় লিজিংয়ের পথ দেখিয়ে আমরা প্রতিষ্ঠানগুলোকে ব্যয় কমাতে ও কার্যক্রম গুছিয়ে নিতে সাহায্য করে আসছি।`,
+  partnerPara2: `অতুলনীয় গ্রাহকসেবা আর অংশীদারিত্বের প্রতিটি ধাপে সেরাটুকু দেওয়ার অঙ্গীকার নিয়ে আমরা আত্মবিশ্বাসী, আপনার সাফল্যের পথে আমরা সঠিক সহযাত্রী।`,
+  resEyebrow: `জ্ঞানভান্ডার`,
+  resHeading: `ট্যাঙ্ক কন্টেইনার শিল্পের অন্দরমহলের আলোকিত তথ্য ঘুরে দেখুন।`,
+  resSub: `আমাদের বিশেষজ্ঞরা শিল্পের নানা অন্তর্দৃষ্টি ভাগ করে নেন, যেন ক্রয় ও প্রকৌশল সহযোগীরা সময়ের চেয়ে এক ধাপ এগিয়ে থাকতে পারেন।`,
+  res1Title: `টি-কোড চার্ট`,
+  res1Desc: `পরীক্ষার চাপ, খোলের পুরুত্ব, চাপ-নিষ্কাশন ব্যবস্থা আর তলদেশের নির্গম বিন্যাসের নিরিখে টি-কোড বা “বহনযোগ্য ট্যাঙ্ক নির্দেশিকা”র ব্যাখ্যা।`,
+  res2Title: `শব্দকোষ`,
+  res2Desc: `বিশ্বব্যাপী ট্যাঙ্ক কন্টেইনার লিজিং শিল্পের প্রয়োজনীয় পরিভাষার সংকলন।`,
+  res3Title: `কারিগরি নকশা ও স্পেসিফিকেশন`,
+  res3Desc: `আমাদের ট্যাঙ্কের দলিলপত্র ও খুঁটিনাটি বিবরণের এক সুবিশাল গ্রন্থাগার।`,
+  bottomCtaText: `নিরাপত্তা, নির্ভরতা আর বিশ্বজোড়া বিস্তারের শক্তিতে জিএইচএম গ্রুপসের বহর আপনার বাল্ক তরল পরিবহনের পথকে করে তোলে সহজ, আর কর্মযজ্ঞকে দেয় শ্রেষ্ঠত্বের ছোঁয়া।`,
+  infoEyebrow: `বিস্তারিত তথ্য`,
+  infoHeading: `বহর, সেবা ও প্রতিষ্ঠানের কথা`,
+  secOverview: `বিস্তারিত বিবরণ`,
+  secSpecs: `কারিগরি বিবরণ ও মানদণ্ড`,
+  secBenefits: `মূল সুবিধা ও নিরাপত্তার বৈশিষ্ট্য`
+};
+
+const PAGES = [
+{ id: 'tanks',
+  category: `ট্যাঙ্ক কন্টেইনার`,
+  title: `আইএসও ট্যাঙ্ক কন্টেইনার বহরের পূর্ণাঙ্গ চিত্র`,
+  subtitle: `বৈশ্বিক নিরাপত্তা ও ইন্টারমডাল পরিবহনের মানদণ্ডে গড়া ৭৫,০০০-এরও বেশি সনদপ্রাপ্ত সাধারণ ও বিশেষ আইএসও ট্যাঙ্ক কন্টেইনার।`,
+  overview: [
+    `জিএইচএম গ্রুপস পরিচালনা করে বিশ্বের অন্যতম তরুণ ও বহুমুখী আইএসও ট্যাঙ্ক বহর, যার সংখ্যা ৭৫,০০০-এরও বেশি। সাগরের জাহাজ, রেলের ধাতব পথ আর মহাসড়কের ড্রপ-ফ্রেম চ্যাসিসে নির্বিঘ্ন যাত্রার উপযোগী করে গড়া এই বহর বহন করে শিল্প-রাসায়নিক, খাদ্যমানের তরল, তরলীকৃত গ্যাস, হিমশীতল ক্রায়োজেনিক তরল, এমনকি অফশোর জ্বালানির ভারও।`,
+    `আমাদের প্রতিটি ট্যাঙ্ক অনুমোদিত বৈশ্বিক ডিপোতে নিয়মিত আড়াই বছর ও পাঁচ বছরের বাধ্যতামূলক পরিদর্শনের পরীক্ষা পেরিয়ে আসে, যা নিশ্চিত করে শতভাগ বিধিসম্মত ও ক্ষরণমুক্ত নিরাপদ পরিচালনা।`
+  ],
+  specs: [
+    [`মোট বৈশ্বিক বহর`, `৭৫,০০০-এরও বেশি আইএসও ট্যাঙ্ক`],
+    [`ধারণক্ষমতার পরিসর`, `৪৫০ লিটার (ছোট বহনযোগ্য) থেকে ৩৫,০০০ লিটার (সোয়াপ বডি)`],
+    [`ইউএন বহনযোগ্য ট্যাঙ্ক কোড`, `T1, T4, T7, T11, T14, T20, T22, T50, T75`],
+    [`খোল নির্মাণের উপাদান`, `316L স্টেইনলেস স্টিল / সূক্ষ্মদানা কার্বন স্টিল`],
+    [`আন্তর্জাতিক অনুমোদন`, `IMO, IMDG, ADR/RID, ASME VIII Div.1, CSC, DNV 2.7-1`]
+  ],
+  benefits: [
+    `বাক্স কন্টেইনারে সাধারণ ২০০ লিটারের ড্রামের তুলনায় পণ্যবহনে ৪০ শতাংশ পর্যন্ত বাড়তি দক্ষতা`,
+    `খাদ্যমান ও উচ্চবিশুদ্ধতার রাসায়নিকের জন্য পৃথক ট্যাঙ্ক-ভান্ডারে পণ্যদূষণের কোনো আশঙ্কাই নেই`,
+    `১৭টি আঞ্চলিক অফিস ও ৫০টিরও বেশি বৈশ্বিক ডিপো সহযোগীর মাধ্যমে তাৎক্ষণিক প্রাপ্যতা`,
+    `ঐচ্ছিক স্টিম হিটিং কয়েল, বৈদ্যুতিক তাপন, ইনসুলেশন আবরণ ও জিপিএস টেলিমেট্রির সুবিধা`
+  ] },
+
+{ id: 'liquid-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / তরল ট্যাঙ্ক`,
+  title: `তরল ট্যাঙ্ক কন্টেইনার (ইউএন T1 – T22)`,
+  subtitle: `বিপজ্জনক ও নিরাপদ তরলের জন্য সাধারণ IMO 1 / T11 এবং বিশেষ লাইনিংযুক্ত, ব্যাফলযুক্ত বা বৈদ্যুতিকভাবে উত্তপ্ত আইএসও ট্যাঙ্ক।`,
+  overview: [
+    `জিএইচএম গ্রুপসের তরল ট্যাঙ্ক কন্টেইনার বিশ্বজুড়ে বাল্ক রাসায়নিক, ওষুধ ও খাদ্যমানের লজিস্টিকসের মেরুদণ্ড। ১৪,০০০ লিটারের ঘন অ্যাসিড-বাহী ট্যাঙ্ক থেকে ২৬,০০০ লিটারের সাধারণ T11 রাসায়নিক ও খাদ্যমানের ট্যাঙ্ক পর্যন্ত, প্রতিটির খোল গড়া হয়েছে উচ্চমানের 316L স্টেইনলেস স্টিলে।`,
+    `রেজিন, ল্যাটেক্স, পাম তেলজাত দ্রব্য কিংবা বিশেষ মনোমারের মতো তাপ-সংবেদনশীল পণ্যের জন্য আমাদের তরল ট্যাঙ্কে আছে আটটি ধাপের স্টিম হিটিং কয়েল, রকউল বা পলিইউরেথেন ইনসুলেশন, আর ঐচ্ছিক গ্লাইকল বা বৈদ্যুতিক তাপন ব্যবস্থা।`
+  ],
+  specs: [
+    [`প্রচলিত ধারণক্ষমতা`, `১৪,০০০ / ১৭,৫০০ / ২১,০০০ / ২৪,০০০ / ২৬,০০০ লিটার`],
+    [`ইউএন ট্যাঙ্ক কোড`, `T11 (৪ বার), T14 (৬ বার), T20 (১০ বার), T22`],
+    [`সর্বোচ্চ মোট ওজন`, `৩৬,০০০ কেজি (৭৯,৩৬৬ পাউন্ড)`],
+    [`বাহ্যিক আইএসও মাপ`, `৬,০৫৮ মিমি (দৈর্ঘ্য) × ২,৪৩৮ মিমি (প্রস্থ) × ২,৫৯১ মিমি (উচ্চতা)`],
+    [`তাপন ও ইনসুলেশন`, `৮-ধাপ স্টিম কয়েল (৪ বার) + ৫০ মিমি রকউল / জিআরপি আবরণ`]
+  ],
+  benefits: [
+    `ভোজ্যতেল, ফলের রস ও ওয়াইনের জন্য কোশার ও হালাল সনদপ্রাপ্ত পৃথক খাদ্যমানের ট্যাঙ্ক বহর`,
+    `অতি-ক্ষয়কারী খনিজ অ্যাসিডের জন্য PTFE, কেমলাইন বা রাবার লাইনিংযুক্ত T14 ও T20 ট্যাঙ্ক`,
+    `আংশিক ভারেও তরলের দোলা সামলে স্থির থাকতে ব্যাফল কক্ষের নকশা`,
+    `অভ্যন্তরীণ ফুট ভালভ ও বাটারফ্লাই ভালভসহ ৩ ইঞ্চি BSP / ক্যামলক তলদেশীয় নির্গমপথ`
+  ] },
+
+{ id: 'gas-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / গ্যাস ট্যাঙ্ক`,
+  title: `ইউএন T50 তরলীকৃত গ্যাস ট্যাঙ্ক কন্টেইনার`,
+  subtitle: `তরলীকৃত গ্যাসের নিরাপদ বিশ্বজোড়া পরিবহনের জন্য গড়া উচ্চচাপ-সহনশীল, ASME ও PED সনদপ্রাপ্ত T50 বহনযোগ্য ট্যাঙ্ক।`,
+  overview: [
+    `চাপের বাঁধনে তরলীকৃত, অথচ হিমায়িত নয় এমন গ্যাসের জন্য জিএইচএম গ্রুপস রেখেছে ইউএন T50 চাপযুক্ত গ্যাস ট্যাঙ্ক কন্টেইনারের বিশেষ বহর। এলপিজি, প্রোপেন, বিউটেন, নির্জল অ্যামোনিয়া, R-134a ও R-32 রেফ্রিজারেন্ট, ক্লোরিন কিংবা শিল্প-অ্যারোসলের প্রোপেল্যান্ট, সবই এতে নিরাপদে ভ্রমণ করে।`,
+    `উচ্চ-সহনশীল সূক্ষ্মদানা কার্বন স্টিল বা স্টেইনলেস স্টিলে গড়া, রোদ-আড়ালকারী সানশিল্ড, অতিপ্রবাহ-রোধী ভালভ ও দ্বিমুখী চাপ-নিষ্কাশন ব্যবস্থায় সজ্জিত আমাদের T50 ইউনিট বিপজ্জনক পণ্য পরিবহনের কঠোর আন্তর্জাতিক বিধির প্রতিটি শর্ত পূরণ করে।`
+  ],
+  specs: [
+    [`ইউএন ট্যাঙ্ক কোড`, `ইউএন T50 (অহিমায়িত তরলীকৃত গ্যাস)`],
+    [`কার্যকরী চাপ (MAWP)`, `১৪.০ বার থেকে ৩৪.৪ বার (২০৩ – ৫০০ পিএসআই)`],
+    [`উপলব্ধ আয়তন`, `১৭,৫০০ / ২০,০০০ / ২৪,০০০ / ২৪,৫০০ লিটার`],
+    [`নিরাপত্তা ফিটিংস`, `অতিপ্রবাহ-রোধী ভালভ, চৌম্বক লেভেল গেজ, সানশিল্ড`],
+    [`নকশার বিধি`, `ASME Sec. VIII Div. 1, EN 14025, IMDG, ADR/RID`]
+  ],
+  benefits: [
+    `ব্যয়বহুল সিলিন্ডার ভরা, বহন আর খালি সিলিন্ডার ফেরত আনার ঝক্কি থেকে মুক্তি`,
+    `অ্যালুমিনিয়াম বা গ্যালভানাইজড স্টিলের সানশিল্ড সূর্যতাপে চাপ বেড়ে যাওয়ার আশঙ্কা ঠেকায়`,
+    `টার্মিনালে দ্রুত স্থানান্তরের জন্য উপরে বা পেছনে তরল ও বাষ্প দশার নির্গম ম্যানিফোল্ড`,
+    `বিশ্বজুড়ে বিশেষায়িত T50 গ্যাস ডিপোর পরীক্ষা-সুবিধার সহযোগিতা`
+  ] },
+
+{ id: 'chassis-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / ট্যাঙ্ক চ্যাসিস`,
+  title: `হালকা ওজনের ড্রপ-ফ্রেম ট্যাঙ্ক কন্টেইনার চ্যাসিস`,
+  subtitle: `মহাসড়কে সর্বোচ্চ স্থিতি ও পণ্যভারের জন্য নিচু ভারকেন্দ্রের ড্রপ-ফ্রেম ও ত্রি-অ্যাক্সেল আইএসও ট্যাঙ্ক চ্যাসিস।`,
+  overview: [
+    `আইএসও ট্যাঙ্কে তরল বয়ে নিতে হলে প্রয়োজন বিশেষ জ্যামিতির চ্যাসিস, যেন তরলের ঢেউয়ে গাড়ি উল্টে যাওয়ার ঝুঁকি দূরে থাকে। জিএইচএম গ্রুপস দেয় পরীক্ষিত, হালকা ওজনের ড্রপ-ফ্রেম চ্যাসিস, যা সাধারণ ফ্ল্যাটবেডের চেয়ে ভরা ট্যাঙ্কের ভারকেন্দ্রকে প্রায় ১৪ ইঞ্চি পর্যন্ত নামিয়ে আনে।`,
+    `আমাদের আইএসও ট্যাঙ্কের পাশাপাশি স্বল্প ও দীর্ঘমেয়াদি লিজে মেলে এই চ্যাসিস, যাতে আছে স্টেইনলেস স্টিলের স্পিল ট্রে, পেছনের হোস টিউব, এবিএস ব্রেক আর এলইডি আলো।`
+  ],
+  specs: [
+    [`চ্যাসিসের বিন্যাস`, `৪০ ফুট / ৪৩ ফুট ট্যান্ডেম ও ত্রি-অ্যাক্সেল ড্রপ-ফ্রেম`],
+    [`খালি ওজন`, `৬,৪৫০ পাউন্ড – ৭,৮০০ পাউন্ড (উচ্চ-টান ৮০ KSI স্টিল)`],
+    [`সামঞ্জস্য`, `২০ ফুট আইএসও ট্যাঙ্ক কন্টেইনার (সাধারণ ও ব্যাফলযুক্ত)`],
+    [`নিরাপত্তা সরঞ্জাম`, `2S/1M এবিএস, স্টেইনলেস স্পিল প্যান, দুই সেট হোস ক্যারিয়ার`],
+    [`বিধিসম্মত অনুমোদন`, `US DOT, FMVSS, AAR, ISO 668 টুইস্টলক`]
+  ],
+  benefits: [
+    `ভারকেন্দ্র উল্লেখযোগ্যভাবে নেমে আসায় মহাসড়কের বাঁকে অনন্য স্থিতিশীলতা`,
+    `হালকা ফ্রেমের নকশায় আইনসম্মত ব্রিজ-সূত্র মেনে সর্বোচ্চ পণ্যভার বহন`,
+    `পেছনের ওয়াকওয়ে ও স্টেইনলেস ড্রিপ প্যান রক্ষা করে চালক ও পরিবেশকে`,
+    `ট্যাঙ্ক ও চ্যাসিস একসঙ্গে লিজ নিলে এক চালানেই সহজ হয় বহর ব্যবস্থাপনা`
+  ] },
+
+{ id: 'cryo-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / ক্রায়োজেনিক ট্যাঙ্ক`,
+  title: `ইউএন T75 ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার (−১৯৬°সে.)`,
+  subtitle: `এলএনজি, তরল নাইট্রোজেন, অক্সিজেন, আর্গন ও কার্বন ডাই-অক্সাইডের জন্য বহুস্তরীয় ভ্যাকুয়াম-সুপার-ইনসুলেটেড দ্বিপ্রাচীর ট্যাঙ্ক।`,
+  overview: [
+    `জিএইচএম গ্রুপসের T75 ক্রায়োজেনিক ট্যাঙ্ক কন্টেইনার −১৯৬°সে. (−৩২০°ফা.) পর্যন্ত হিমশীতল তাপমাত্রার তরলীকৃত গ্যাসকে নিরাপদে বয়ে নেয় ইন্টারমডাল পথে। বাইরের কার্বন বা স্টেইনলেস ভ্যাকুয়াম আবরণের ভেতর ঝুলে থাকা 304L স্টেইনলেস স্টিলের অভ্যন্তরীণ চাপপাত্র, আর বহুস্তরীয় সুপার-ইনসুলেশনের কল্যাণে শীতলতা ধরে রাখার ক্ষমতায় এই ইউনিট শিল্পে অগ্রগণ্য।`,
+    `ভার্চুয়াল এলএনজি পাইপলাইন, সেমিকন্ডাক্টর শিল্পে অতি-বিশুদ্ধ নাইট্রোজেন সরবরাহ, চিকিৎসার অক্সিজেন বিতরণ আর শিল্প-কার্বন ডাই-অক্সাইডের লজিস্টিকসের জন্য এটি আদর্শ।`
+  ],
+  specs: [
+    [`ইউএন ট্যাঙ্ক কোড`, `ইউএন T75 (হিমায়িত তরলীকৃত গ্যাস)`],
+    [`সর্বনিম্ন নকশা-তাপমাত্রা`, `−১৯৬°সে. (−৩২০°ফা.) | −২৫৩°সে. (তরল হাইড্রোজেনের বিশেষ মডেল)`],
+    [`ট্যাঙ্কের আকার ও আয়তন`, `২০ ফুট আইএসও (২০,০০০ – ২২,৫০০ লিটার) | ৪০ ফুট আইএসও (৪৩,৫০০ – ৪৬,০০০ লিটার)`],
+    [`ইনসুলেশন প্রযুক্তি`, `উচ্চ-ভ্যাকুয়াম বহুস্তরীয় সুপার-ইনসুলেশন (MLI)`],
+    [`ধারণকাল (হোল্ডিং টাইম)`, `৬০ থেকে ১২০ দিনের বেশি (বাষ্প-নির্গমন ছাড়াই)`]
+  ],
+  benefits: [
+    `অন্তর্নির্মিত পরিবেশ-বাষ্পায়ক চাপ-বর্ধক কয়েলের গুণে পাম্প ছাড়াই নিজের চাপে খালাস সম্ভব`,
+    `অতি-স্বল্প বয়েল-অফ হার (এলএনজির ক্ষেত্রে দৈনিক ০.১৫ শতাংশের কম) রক্ষা করে মূল্যবান পণ্যকে`,
+    `ভার্চুয়াল এলএনজি বাঙ্কারিং ও বিদ্যুৎ উৎপাদনের মধ্য দিয়ে জ্বালানি-রূপান্তরের উদ্যোগে সহায়ক`,
+    `দ্বৈত সেফটি রিলিফ ভালভ ও রাপচার ডিস্ক নিশ্চিত করে অতিচাপের বিরুদ্ধে অটুট সুরক্ষা`
+  ] },
+
+{ id: 'swap-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / সোয়াপ বডি ট্যাঙ্ক`,
+  title: `বিপুল ধারণক্ষমতার সোয়াপ বডি ট্যাঙ্ক কন্টেইনার`,
+  subtitle: `ইউরোপ ও বিশ্বের সড়ক-রেল করিডোরে সর্বোচ্চ পণ্যভার বহনের জন্য ২৬,০০০ থেকে ৩৫,০০০ লিটারের ইন্টারমডাল সোয়াপ বডি ট্যাঙ্ক।`,
+  overview: [
+    `কম ঘনত্বের রাসায়নিক, পলিমার, সারফ্যাক্ট্যান্ট কিংবা খাদ্যমানের তরল স্থলপথ ও রেলপথে বইতে গেলে সাধারণ ২০ ফুট আইএসও ট্যাঙ্ক মোট ওজনের সীমায় পৌঁছানোর আগেই আয়তনের সীমায় ঠেকে যায়। জিএইচএম গ্রুপসের সোয়াপ বডি ট্যাঙ্ক কন্টেইনার এর সমাধান: ৭.১৫ থেকে ৭.৮২ মিটারের প্রশস্ত, দীর্ঘ কাঠামোয় ৩৫,০০০ লিটার পর্যন্ত ধারণক্ষমতা।`,
+    `সাধারণ চ্যাসিস ও রেল ওয়াগনের টুইস্টলকের সঙ্গে খাপ খাওয়াতে ২০ ফুট আইএসও নিম্ন কর্নার কাস্টিং থাকায় এই সোয়াপ বডি ট্যাঙ্ক প্রতি টন পরিবহন ব্যয় ২২ শতাংশ পর্যন্ত কমিয়ে আনে।`
+  ],
+  specs: [
+    [`ধারণক্ষমতার পরিসর`, `২৬,০০০ / ৩০,০০০ / ৩২,০০০ / ৩৫,০০০ লিটার`],
+    [`কাঠামোর দৈর্ঘ্য`, `৭,১৫০ মিমি / ৭,৪৫০ মিমি / ৭,৮২০ মিমি (প্রস্থ ২,৫৫০ মিমি)`],
+    [`ইউএন ট্যাঙ্ক কোড`, `ইউএন T11 (কার্যকরী চাপ ৪ বার / পরীক্ষার চাপ ৬ বার)`],
+    [`টুইস্টলকের ব্যবধান`, `সাধারণ ২০ ফুট আইএসও নিম্ন কর্নার কাস্টিং`],
+    [`তাপন ও ইনসুলেশন`, `পূর্ণ স্টিম হিটিং + উচ্চদক্ষতার ইনসুলেশন`]
+  ],
+  benefits: [
+    `কম আপেক্ষিক ঘনত্বের পণ্যে সাধারণ ২০ ফুট আইএসও ট্যাঙ্কের চেয়ে ৩৫ শতাংশ পর্যন্ত বেশি আয়তন`,
+    `সাধারণ ২০ ফুট সড়ক চ্যাসিস এবং ইউরোপ-এশিয়ার ইন্টারমডাল রেল ওয়াগনের সঙ্গে পুরোপুরি সামঞ্জস্যপূর্ণ`,
+    `প্রতি টন পণ্যে মহাসড়কে ট্রাকের ট্রিপ ও কার্বন নিঃসরণ কমে আসে`,
+    `একক কক্ষ ও বহুকক্ষ, দুই বিন্যাসেই উপলব্ধ`
+  ] },
+
+{ id: 'portable-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / ছোট বহনযোগ্য ট্যাঙ্ক`,
+  title: `ছোট বহনযোগ্য ও মিনি ট্যাঙ্ক (৪৫০ – ৫,০০০ লিটার)`,
+  subtitle: `বিশেষ রাসায়নিক, তেলক্ষেত্রের সংযোজক ও ওষুধের জন্য মজবুত স্টেইনলেস স্টিলের ইউএন বহনযোগ্য মিনি-ট্যাঙ্ক ও আইবিসি।`,
+  overview: [
+    `বিশেষ রাসায়নিক মিশ্রণ, পানি পরিশোধনের সংযোজক, অনুঘটক কিংবা ওষুধের মধ্যবর্তী উপাদান, যাদের পূর্ণ ২০ ফুট আইএসও ট্যাঙ্কের চেয়ে ছোট ব্যাচের প্রয়োজন, তাদের জন্য জিএইচএম গ্রুপস রেখেছে ৪৫০ থেকে ৫,০০০ লিটারের ছোট বহনযোগ্য ট্যাঙ্কের বিশাল বহর।`,
+    `316L স্টেইনলেস স্টিলে গড়া, রক্ষাকবচের ক্র্যাশ ফ্রেম, স্তূপ করার উপযোগী কোণার খুঁটি আর চতুর্দিক থেকে ফর্কলিফটের পকেটযুক্ত এই ইউনিটগুলো একবার-ব্যবহারের প্লাস্টিক আইবিসির জায়গায় আসে মজবুত, ইউএন-সনদপ্রাপ্ত, বারবার ব্যবহারযোগ্য সম্পদ হয়ে।`
+  ],
+  specs: [
+    [`ধারণক্ষমতার বিকল্প`, `৪৫০ / ১,০০০ / ১,৫০০ / ২,০০০ / ৩,০০০ / ৫,০০০ লিটার`],
+    [`ইউএন সনদ`, `ইউএন 31A/Y (আইবিসি) ও ইউএন T11 / T14 বহনযোগ্য ট্যাঙ্ক`],
+    [`নাড়াচাড়ার সুবিধা`, `চার দিক থেকে ফর্কলিফট চ্যানেল, উপরের উত্তোলন-কড়া, তিন স্তর পর্যন্ত স্তূপ করা যায়`],
+    [`চাপের মান`, `বায়ুমণ্ডলীয় চাপ থেকে ৪.০ বার MAWP পর্যন্ত`],
+    [`নির্মাণ উপাদান`, `316L স্টেইনলেস স্টিল (2B / ইলেকট্রোপলিশড ফিনিশ)`]
+  ],
+  benefits: [
+    `একবার-ব্যবহারের প্লাস্টিক আইবিসি ফেলে দেওয়ার খরচ ও ক্ষরণের ঝুঁকি দূর হয়`,
+    `ছোট আকারের কারণে সাধারণ ড্রাই বক্স কন্টেইনার কিংবা কারখানার সংকীর্ণ জায়গাতেও সহজেই ঠাঁই মেলে`,
+    `ডিপ টিউব, লেভেল গেজ, নাইট্রোজেন ব্ল্যাঙ্কেটিং ও আলোড়ক যুক্ত করার সুযোগ রয়েছে`,
+    `অফশোর রাসায়নিক ডোজিংয়ের জন্য IMDG ও DNV 2.7-1 দ্বৈত-সনদপ্রাপ্ত মডেলও মেলে`
+  ] },
+
+{ id: 'offshore-tanks',
+  category: `ট্যাঙ্ক কন্টেইনার / অফশোর ট্যাঙ্ক`,
+  title: `ডিএনভি 2.7-1 সনদপ্রাপ্ত অফশোর ট্যাঙ্ক কন্টেইনার`,
+  subtitle: `উত্তাল সাগরের রিগ ও সরবরাহ জাহাজের জন্য গড়া, মজবুত অফশোর রাসায়নিক, হেলিফুয়েল ও ক্রায়োজেনিক ট্যাঙ্ক।`,
+  overview: [
+    `অফশোর তেল, গ্যাস ও বায়ুশক্তির প্ল্যাটফর্ম কাজ করে পৃথিবীর সবচেয়ে কঠিন সামুদ্রিক পরিবেশে। উত্তর সাগর, মেক্সিকো উপসাগর, পশ্চিম আফ্রিকা আর এশিয়া-প্রশান্ত অঞ্চলের উত্তাল জলে ক্রেনে ওঠানামার ধকল সামলাতে জিএইচএম গ্রুপস রেখেছে DNV 2.7-1 / EN 12079 / ISO 10855 সনদপ্রাপ্ত অফশোর ট্যাঙ্ক কন্টেইনারের নিবেদিত ভাড়া-বহর।`,
+    `প্রতিটি ইউনিটের সঙ্গে থাকে সনদপ্রাপ্ত বহু-পায়ার তারের দড়ির স্লিং সেট, সুরক্ষিত ভালভ ক্যাবিনেট এবং সম্পূর্ণ নন-ডেস্ট্রাক্টিভ টেস্টিং (NDT) ওয়েল্ড-নথি।`
+  ],
+  specs: [
+    [`অফশোর মানদণ্ড`, `DNV 2.7-1, EN 12079, ISO 10855, IMO MSC/Circ.860`],
+    [`উপলব্ধ আকার`, `১,০০০ লিটার / ২,৫০০ লিটার / ৪,৫০০ লিটার / ১০ ফুট (১০,০০০ লিটার) / ২০ ফুট (২৪,০০০ লিটার)`],
+    [`উত্তোলন-রিগিং`, `মাস্টার লিংকসহ ডিএনভি-সনদপ্রাপ্ত ৪-পায়া তারের দড়ির স্লিং`],
+    [`ব্যবহারের ক্ষেত্র`, `মিথানল, গ্লাইকল, হেলিফুয়েল (Jet A-1), ড্রিলিং ফ্লুইড, অ্যাসিড`],
+    [`কাঠামোর সুরক্ষা`, `মজবুত ধাক্কা-রোধী ক্র্যাশ ফ্রেম + পিছল-রোধী ওপরের ডেক`]
+  ],
+  benefits: [
+    `হালনাগাদ ডিএনভি স্লিং ও এনডিটি পরিদর্শন সনদসহ, তোলার জন্য পুরোপুরি প্রস্তুত অবস্থায় সরবরাহ`,
+    `তালাবদ্ধ বদ্ধ ভালভ-সুরক্ষা বাক্স সামুদ্রিক ঢেউ ও ক্রেন-হুকের আঘাত থেকে ভালভকে আগলে রাখে`,
+    `ইপোক্সি-আস্তরযুক্ত ভেতরভাগ ও গ্রাউন্ডিং রিলসহ বিমান-জ্বালানি Jet A-1 হেলিফুয়েলের নিবেদিত ট্যাঙ্ক`,
+    `অ্যাবারডিন, স্টাভাঙ্গার, হিউস্টন, মাকায়ে ও সিঙ্গাপুরে কৌশলগত অফশোর সরবরাহ ঘাঁটি`
+  ] },
+
+{ id: 'services',
+  category: `সাপ্লাই চেইন সেবা`,
+  title: `আদ্যোপান্ত সরবরাহ শৃঙ্খল ও কারিগরি সেবা`,
+  subtitle: `প্রকৌশল সহায়তা, স্মার্ট আইওটি টেলিমেট্রি, বিশ্বজোড়া ডিপো রক্ষণাবেক্ষণ আর চব্বিশ ঘণ্টার গ্রাহক অপারেশন।`,
+  overview: [
+    `জিএইচএম গ্রুপস থেকে আইএসও ট্যাঙ্ক লিজ নেওয়া মানে কেবল ইস্পাতের সরঞ্জাম পাওয়া নয়। এ যেন আপনার সরবরাহ শৃঙ্খলকে জুড়ে দেওয়া কারিগরি প্রকৌশলী, সনদপ্রাপ্ত রক্ষণাবেক্ষণ ডিপো আর ডিজিটাল বহর-দৃশ্যমানতার এক বিশ্বজোড়া বাস্তুতন্ত্রের সঙ্গে।`,
+    `ক্ষয়কারী রাসায়নিকের জন্য ভালভ ও গ্যাসকেটের উপযোগিতার প্রকৌশল থেকে শুরু করে জিপিএসের রিয়েল-টাইম অবস্থান, পণ্যের তাপমাত্রা ও চাপের টেলিমেট্রি সতর্কবার্তা, আমাদের সেবা দল প্রতিটি পদক্ষেপে আপনার পণ্যকে সময়মতো ও নিরাপদে গন্তব্যে এগিয়ে নিয়ে যায়।`
+  ],
+  specs: [
+    [`প্রকৌশল ও কারিগরি`, `রাসায়নিক সামঞ্জস্য, ভালভ/গ্যাসকেটের বিবরণ, কাস্টম পরিমার্জন`],
+    [`আইওটি টেলিমেট্রি সুবিধা`, `রিয়েল-টাইম জিপিএস, অভ্যন্তরীণ তাপমাত্রা, চাপ ও জিওফেন্স সতর্কবার্তা`],
+    [`ডিপো নেটওয়ার্কের পরিধি`, `৫০টিরও বেশি নিরীক্ষিত ডিপো সহযোগী (পরিষ্কার, মেরামত, বাধ্যতামূলক পরীক্ষা)`],
+    [`বহর ব্যবস্থাপনা`, `২৪/৭ অনলাইন সনদ, অন-হায়ার/অফ-হায়ার ও বিলিংয়ের তথ্য`],
+    [`সাড়াদানের সময়সীমা`, `২ ঘণ্টার কম সময়ে নিবেদিত অ্যাকাউন্ট ও কারিগরি সহায়তা`]
+  ],
+  benefits: [
+    `আপনার পুরো বহরের আড়াই বছর ও পাঁচ বছরের বাধ্যতামূলক পরীক্ষার তারিখ স্বয়ংক্রিয়ভাবে অনুসরণ`,
+    `টপ-ডিসচার্জে রূপান্তর, লাইনিং ও টেলিমেট্রি স্থাপনসহ ট্যাঙ্কের কাস্টম পরিমার্জন`,
+    `সমন্বিত বৈশ্বিক মেরামত-নিরীক্ষা নিশ্চিত করে স্বচ্ছ ও ন্যায্য ডিপো মেরামত-মূল্য`,
+    `সিএসসি প্লেট, পরীক্ষার সনদ ও কারিগরি নকশায় নির্বিঘ্ন ডিজিটাল প্রবেশাধিকার`
+  ] },
+
+{ id: 'whylease',
+  category: `কেন লিজ?`,
+  title: `জিএইচএম গ্রুপসের সঙ্গে আইএসও ট্যাঙ্ক কন্টেইনার কেন লিজ নেবেন?`,
+  subtitle: `ভারী মূলধনী ব্যয়কে রূপ দিন নিয়ন্ত্রিত পরিচালন-ব্যয়ে, আর অর্জন করুন অতুলনীয় বৈশ্বিক নমনীয়তা।`,
+  overview: [
+    `নিজস্ব আইএসও ট্যাঙ্কের বহর কিনে রক্ষণাবেক্ষণ করা মানে কোটি কোটি টাকার মূলধন আটকে রাখা, ব্যালান্স শিটের ওপর সম্পদ-অবশিষ্ট মূল্যের ঝুঁকি ঝুলিয়ে রাখা, আর বাণিজ্যপথ বদলে গেলে খালি ট্যাঙ্ক ফিরিয়ে আনার ব্যয়বহুল জটিলতায় পড়া।`,
+    `জিএইচএম গ্রুপসের সঙ্গে লিজ নিলে রাসায়নিক উৎপাদক, ট্যাঙ্ক অপারেটর ও লজিস্টিকস প্রদানকারী তৎক্ষণাৎ পেয়ে যান বিশেষায়িত সরঞ্জাম, এক বছরের নমনীয় পরিচালন-লিজ থেকে পাঁচ বছরের মাস্টার লিজ চুক্তি পর্যন্ত, সঙ্গে থাকে বিশ্বজোড়া ড্রপ-অফের সুবিধা।`
+  ],
+  specs: [
+    [`মূলধনের দক্ষতা`, `শতভাগ পরিচালন-ব্যয় নির্ভর মডেল, সম্পদ কেনার জন্য কোনো অগ্রিম মূলধন নেই`],
+    [`লিজের মেয়াদের বিকল্প`, `স্বল্পমেয়াদি স্পট, ১–৩ বছরের পরিচালন-লিজ, ৫+ বছরের মাস্টার লিজ`],
+    [`ড্রামের তুলনায় পণ্যভারের সুবিধা`, `২০ ফুটের একটি স্লটে ৪০ শতাংশ বেশি তরল (২৬,০০০ লিটার বনাম ১৬,০০০ লিটার)`],
+    [`বাধ্যতামূলক পরীক্ষা`, `আড়াই বছর ও পাঁচ বছরের নির্ধারিত পরীক্ষার সুব্যবস্থাপিত সময়সূচি`],
+    [`বৈশ্বিক ড্রপ-অফ নেটওয়ার্ক`, `ছয় মহাদেশজুড়ে ৫০টিরও বেশি কৌশলগত বন্দর-ডিপো`]
+  ],
+  benefits: [
+    `মূল উৎপাদন এবং গবেষণা ও উন্নয়নের বিনিয়োগের জন্য কার্যকরী মূলধন সুরক্ষিত রাখুন`,
+    `সাধারণ T11, লাইনিংযুক্ত T14, গ্যাস T50 আর ক্রায়োজেনিক T75 ইউনিটের মধ্যে অনায়াসে বদল করুন`,
+    `প্যাকেজিং-বর্জ্য ও ড্রাম ফেলার ঝামেলা দূর করুন, একটি আইএসও ট্যাঙ্ক সমান ১৩০টি ড্রাম`,
+    `ঐচ্ছিক ক্ষতি-সুরক্ষা পরিকল্পনাসহ নির্দিষ্ট ও পূর্বানুমেয় মাসিক লিজ হার`
+  ] },
+
+{ id: 'locations',
+  category: `বৈশ্বিক অবস্থান ও ডিপো`,
+  title: `১৭টি বৈশ্বিক অফিস ও ৫০টিরও বেশি সনদপ্রাপ্ত ডিপো সহযোগী`,
+  subtitle: `হিউস্টন ও রটারডাম থেকে চট্টগ্রাম, সিঙ্গাপুর ও সাংহাই, আপনার পণ্য যেখানেই ভেসে যাক, আঞ্চলিক বিশেষজ্ঞরা পাশে আছেন।`,
+  overview: [
+    `বাল্ক রাসায়নিক ও জ্বালানির সরবরাহ শৃঙ্খল চায় মাটির কাছাকাছি, দ্রুত কর্মযজ্ঞ। উত্তর আমেরিকা, দক্ষিণ আমেরিকা, ইউরোপ, মধ্যপ্রাচ্য, দক্ষিণ এশিয়া ও এশিয়া-প্রশান্ত অঞ্চল জুড়ে জিএইচএম গ্রুপস পরিচালনা করে ১৭টি আঞ্চলিক বাণিজ্যিক ও কারিগরি অফিস, যাদের হাত ধরে আছে ৫০টিরও বেশি নিরীক্ষিত ডিপো সহযোগী।`,
+    `হিউস্টন, রটারডাম, জেবেল আলী, চট্টগ্রাম বন্দর, সিঙ্গাপুর কিংবা সাংহাই, যেখানেই জরুরি ভিত্তিতে ট্যাঙ্ক ছাড়ের প্রয়োজন হোক, আমাদের স্থানীয় অপারেশন দল দ্রুত গেট-আউট ও পরিদর্শন সমন্বয় করে।`
+  ],
+  specs: [
+    [`বৈশ্বিক সদর দপ্তর`, `১৮১ ওয়েস্ট ম্যাডিসন স্ট্রিট, স্যুট ২৫০০, শিকাগো, ইলিনয় ৬০৬০২ | +১ (৯১৪) ৮৪৮-৪২০০`],
+    [`আমেরিকা মহাদেশের আঞ্চলিক কেন্দ্র`, `হিউস্টন (টেক্সাস), নিউআর্ক (নিউ জার্সি), সাও পাউলো (ব্রাজিল), বুয়েনস আইরেস`],
+    [`ইউরোপ ও মধ্যপ্রাচ্যের কেন্দ্র`, `রটারডাম (নেদারল্যান্ডস), লন্ডন (যুক্তরাজ্য), হামবুর্গ (জার্মানি), দুবাই (জেবেল আলী)`],
+    [`দক্ষিণ এশিয়া ও বাংলাদেশের কেন্দ্র`, `চট্টগ্রাম বন্দর লজিস্টিকস জোন ও ঢাকা কর্পোরেট ডেস্ক, মুম্বাই, চেন্নাই`],
+    [`এশিয়া-প্রশান্ত অঞ্চলের কেন্দ্র`, `সিঙ্গাপুর, সাংহাই, নিংবো, বুসান, টোকিও, মেলবোর্ন`]
+  ],
+  benefits: [
+    `আপনার নিজের সময় অঞ্চলে সরাসরি সংযুক্ত বহুভাষী আঞ্চলিক অ্যাকাউন্ট ম্যানেজার`,
+    `প্রধান পেট্রোকেমিক্যাল রপ্তানি কেন্দ্রগুলোতে (মার্কিন উপসাগর, এআরএ, মধ্যপ্রাচ্য, চীন) কৌশলগত অবস্থান`,
+    `চট্টগ্রাম ও সিঙ্গাপুর ডিপোর মাধ্যমে দক্ষিণ এশিয়া ও বঙ্গোপসাগর অঞ্চলে নিবেদিত সহায়তা`,
+    `প্রমিত বৈশ্বিক ডিপো-মান নিরীক্ষা নিশ্চিত করে সর্বত্র অভিন্ন ট্যাঙ্ক-প্রস্তুতি`
+  ] },
+
+{ id: 'sustainability',
+  category: `স্থায়িত্ব ও ইএসজি`,
+  title: `টেকসই বাল্ক পরিবহন ও ইকোভাডিস সিলভার রেটিং`,
+  subtitle: `৯৩ শতাংশ পুনর্ব্যবহারযোগ্য স্টিলের ট্যাঙ্ক আর বিশ্বের শীর্ষ ১৫ শতাংশের টেকসই কর্মক্ষমতা, ব্যবসা ও ধরিত্রী উভয়ের কল্যাণে।`,
+  overview: [
+    `জিএইচএম গ্রুপস গর্বের সঙ্গে ধারণ করে ইকোভাডিসের সিলভার পদকের স্বীকৃতি। পরিবেশ, শ্রম ও মানবাধিকার, নৈতিকতা এবং টেকসই ক্রয়, এই চার ক্ষেত্রে বিশ্বব্যাপী মূল্যায়িত এক লক্ষেরও বেশি প্রতিষ্ঠানের মধ্যে আমরা শীর্ষ ১৫ শতাংশে।`,
+    `আইএসও ট্যাঙ্ক কন্টেইনার স্বভাবতই টেকসই: একটি ২০ ফুট ট্যাঙ্কের আয়ু ২৫ বছরের বেশি, জীবনশেষে এর ৯৩ শতাংশই পুনর্ব্যবহারযোগ্য, আর এটি অসংখ্য একবার-ব্যবহারের প্লাস্টিক ও ইস্পাতের ড্রামকে বিদায় জানায়, যেগুলো পুনর্ব্যবহারে প্রচুর শক্তি খরচ করত কিংবা শেষ ঠিকানা পেত আবর্জনার ভাগাড়ে।`
+  ],
+  specs: [
+    [`ইকোভাডিস রেটিংয়ের অবস্থা`, `সিলভার পদক, বিশ্বের শীর্ষ ১৫ শতাংশ (মূল্যায়ন: ডিসেম্বর ২০২৫)`],
+    [`ট্যাঙ্কের পুনর্ব্যবহারযোগ্যতা`, `স্টেইনলেস ও কার্বন স্টিলের কাঠামোর ৯৩ শতাংশ পুনর্ব্যবহারযোগ্য`],
+    [`ব্যবহারযোগ্য আয়ুষ্কাল`, `নিয়মিত বাধ্যতামূলক সংস্কারসহ ২৫ থেকে ৩০ বছরের বেশি`],
+    [`ড্রাম-বর্জ্য হ্রাস`, `প্রতি ট্রিপে একটি আইএসও ট্যাঙ্ক প্রায় ১৩০টি একবার-ব্যবহারের ২০০ লিটারের ড্রামের বিকল্প`],
+    [`ইন্টারমডাল কার্বন ডাই-অক্সাইড সাশ্রয়`, `রেল ও স্বল্পদূরত্বের সাগরপথে স্থানান্তরে প্রতি টন-কিমিতে ৪৫ শতাংশ পর্যন্ত কম নিঃসরণ`]
+  ],
+  benefits: [
+    `রাসায়নিক ও লজিস্টিকস শিপারদের স্কোপ-৩ সরবরাহ শৃঙ্খলে কার্বন-নিঃসরণ হ্রাসের লক্ষ্য ছুঁতে সহায়তা করে`,
+    `শূন্য-ক্ষরণের বদ্ধ-চক্র লোডিং ও আনলোডিং রক্ষা করে মাটি ও সামুদ্রিক বাস্তুতন্ত্রকে`,
+    `বদ্ধ-চক্র ধোয়া-পানি পরিশোধন ও বাষ্প পুনরুদ্ধারের নিরিখে নিরীক্ষিত অংশীদার ডিপো`,
+    `T75 এলএনজি, বায়ো-এলএনজি ও সবুজ অ্যামোনিয়া-উপযোগী ট্যাঙ্কে পরিচ্ছন্ন জ্বালানির পথে রূপান্তরে সহায়তা`
+  ] },
+
+{ id: 'resources',
+  category: `জ্ঞানভান্ডার ও কারিগরি গ্রন্থাগার`,
+  title: `ইউএন টি-কোড চার্ট, শিল্পের শব্দকোষ ও স্পেসিফিকেশন`,
+  subtitle: `ক্রয় ব্যবস্থাপক, নিরাপত্তা কর্মকর্তা ও বাল্ক লজিস্টিকস পরিকল্পনাকারীদের জন্য অপরিহার্য প্রকৌশল-তথ্যের সংকলন।`,
+  overview: [
+    `বিপজ্জনক তরল বা গ্যাস পাঠানোর আগে IMDG, ADR/RID ও মার্কিন DOT বিধি অনুযায়ী যথাযথ ইউএন বহনযোগ্য ট্যাঙ্ক নির্দেশিকা (“টি-কোড”) বেছে নেওয়া বাধ্যতামূলক। ট্যাঙ্কের টি-কোডই ঠিক করে দেয় এর ন্যূনতম পরীক্ষার চাপ, প্রমিত ইস্পাতে ন্যূনতম খোলের পুরুত্ব, চাপ-নিষ্কাশন যন্ত্রের শর্ত আর তলদেশে ছিদ্রের অনুমতি।`,
+    `নিচে দেওয়া হলো জিএইচএম গ্রুপসের টি-কোডের দ্রুত-সূত্র তালিকা, সঙ্গে শিল্পের গুরুত্বপূর্ণ পরিভাষা ও প্রমিত আইএসও মাপের বিবরণ।`
+  ],
+  specs: [
+    [`ইউএন T4 / T7 (নিরাপদ ও কম ঝুঁকিপূর্ণ)`, `পরীক্ষার চাপ: ২.৬৫ – ৪.০ বার | তলদেশীয় নির্গম: অনুমোদিত (দুটি বন্ধকারী)`],
+    [`ইউএন T11 (সাধারণ রাসায়নিক ও খাদ্য)`, `পরীক্ষার চাপ: ৬.০ বার (কার্যকরী চাপ ৪.০ বার) | ৬ মিমি প্রমিত ইস্পাত | তিনটি বন্ধকারী`],
+    [`ইউএন T14 (উচ্চ ঝুঁকি / ক্ষয়কারী)`, `পরীক্ষার চাপ: ৬.০ বার (কার্যকরী চাপ ৪.০ বার) | তলদেশে ছিদ্র নিষিদ্ধ`],
+    [`ইউএন T20 / T22 (বিষাক্ত / অতি-সংবেদনশীল)`, `পরীক্ষার চাপ: ১০.০ বার | ৮ মিমি – ১০ মিমি প্রমিত ইস্পাত | কেবল উপর থেকে খালাস`],
+    [`ইউএন T50 ও T75 (গ্যাস ও ক্রায়োজেনিক)`, `T50: তরলীকৃত গ্যাস (১৪ – ৩৪.৪ বার) | T75: হিমায়িত ক্রায়োজেনিক (−১৯৬°সে.)`]
+  ],
+  benefits: [
+    `MAWP (সর্বোচ্চ অনুমোদিত কার্যকরী চাপ): স্বাভাবিক পরিচালনার সময় ভেতরের সর্বোচ্চ অনুমোদিত গেজ চাপ`,
+    `সিএসসি প্লেট (নিরাপদ কন্টেইনার সনদ): পেছনের কোণার খুঁটিতে সাঁটা বাধ্যতামূলক নিরাপত্তা-অনুমোদন প্লেট`,
+    `IMDG / ADR / RID: সাগর, সড়ক ও রেলপথে বিপজ্জনক পণ্য পরিবহনের আন্তর্জাতিক বিধিমালা`,
+    `প্রকৌশল-অনুরোধে সম্পূর্ণ ক্যাড জেনারেল অ্যারেঞ্জমেন্ট (GA) নকশা পাওয়া যায়`
+  ] },
+
+{ id: 'about',
+  category: `জিএইচএম গ্রুপস সম্পর্কে`,
+  title: `২০০০ সাল থেকে বৈশ্বিক ট্যাঙ্ক কন্টেইনার নেতৃত্বের পথে`,
+  subtitle: `পঁচিশ বছরেরও বেশি পরিচালনা-শ্রেষ্ঠত্ব, ৭৫,০০০-এরও বেশি আইএসও ট্যাঙ্ক সম্পদ আর নিবেদিত বৈশ্বিক গ্রাহক-অংশীদারিত্বের মেলবন্ধন।`,
+  overview: [
+    `২০০০ সালে যাত্রা শুরু করে জিএইচএম গ্রুপস আজ আইএসও ট্যাঙ্ক কন্টেইনারের অগ্রগণ্য বৈশ্বিক লিজদাতা, যে সেবা দিয়ে চলেছে বহুজাতিক রাসায়নিক উৎপাদক, খাদ্যমানের শিপার, জ্বালানি কোম্পানি ও ইন্টারমডাল ট্যাঙ্ক অপারেটরদের।`,
+    `নিরাপত্তা, প্রকৌশলের নির্ভরতা আর সাড়াদানকারী গ্রাহকসেবার প্রতি অবিচল অঙ্গীকারে ভর করে জিএইচএম গ্রুপস অংশীদারদের সাহস জোগায়, যেন তারা প্রতিটি মহাদেশে আত্মবিশ্বাসের সঙ্গে জীবনের অত্যাবশ্যক তরল ও গ্যাস পৌঁছে দিতে পারে।`
+  ],
+  specs: [
+    [`প্রতিষ্ঠান ও ঐতিহ্য`, `প্রতিষ্ঠা ২০০০ সাল, শিল্পে ২৫ বছরেরও বেশি নিরবচ্ছিন্ন নেতৃত্ব`],
+    [`বৈশ্বিক সদর দপ্তর`, `১৮১ ওয়েস্ট ম্যাডিসন স্ট্রিট, স্যুট ২৫০০, শিকাগো, ইলিনয় ৬০৬০২, যুক্তরাষ্ট্র`],
+    [`সরাসরি বৈশ্বিক ফোন`, `+১ (৯১৪) ৮৪৮-৪২০০`],
+    [`মান ও শিল্প-সদস্যপদ`, `ISO 9001:2015 সনদপ্রাপ্ত, ITCO সদস্য, ইকোভাডিস সিলভার রেটিংপ্রাপ্ত`]
+  ],
+  benefits: [
+    `বাজারের উত্থান-পতনে আর্থিক স্থিতিশীলতা ও দীর্ঘমেয়াদি বহর-বিনিয়োগের সক্ষমতা`,
+    `ITCO, IMO ও ASME আন্তর্জাতিক বিধি মেনে চলা আপসহীন নিরাপত্তা-সংস্কৃতি`,
+    `দ্রুত লিজ সম্পাদনের জন্য ১৭টি আঞ্চলিক অফিসে স্থানীয়ভাবে সিদ্ধান্ত নেওয়ার ক্ষমতা`
+  ] }
+];
+
+const SECTION_LABELS = { overview: i18n.secOverview, specs: i18n.secSpecs, benefits: i18n.secBenefits };
+
+function renderInfoSections() {
+  const html = PAGES.map((p, i) => {
+    const bg = i % 2 === 0 ? 'bg-ghm-slate' : 'bg-white';
+    const card = i % 2 === 0 ? 'bg-white' : 'bg-ghm-slate';
+    const specs = p.specs.map(r => `
+      <div class="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 px-5 py-3.5">
+        <div class="sm:col-span-4 text-sm font-bold text-ghm-navy">${r[0]}</div>
+        <div class="sm:col-span-8 text-sm font-semibold text-slate-700">${r[1]}</div>
+      </div>`).join('');
+    const benefits = p.benefits.map(b => `
+      <div class="flex items-start gap-3 ${card} p-4 rounded-2xl border border-slate-200/80">
+        <span class="w-6 h-6 rounded-full bg-emerald-50 text-ghm-green font-extrabold flex items-center justify-center shrink-0 mt-0.5">✓</span>
+        <p class="text-sm text-slate-700 leading-relaxed font-medium">${b}</p>
+      </div>`).join('');
+    return `
+      <section id="${p.id}" class="${bg} py-14 sm:py-16 border-t border-slate-200/70">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-xs font-bold tracking-widest text-ghm-green mb-2">${p.category}</p>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-ghm-ink leading-snug mb-3">${p.title}</h2>
+          <p class="text-base text-slate-600 max-w-3xl mb-8">${p.subtitle}</p>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-8">
+            <div class="lg:col-span-6 ${card} rounded-2xl p-6 border border-slate-200/80 space-y-3">
+              <h3 class="text-lg font-extrabold text-ghm-royal">${SECTION_LABELS.overview}</h3>
+              ${p.overview.map(t => `<p class="text-base text-slate-600 leading-relaxed">${t}</p>`).join('')}
+            </div>
+            <div class="lg:col-span-6 ${card} rounded-2xl overflow-hidden border border-slate-200/80">
+              <div class="bg-ghm-royal text-white px-5 py-3"><h3 class="text-base font-extrabold">${SECTION_LABELS.specs}</h3></div>
+              <div class="divide-y divide-slate-100">${specs}</div>
+            </div>
+          </div>
+          <h3 class="text-lg font-extrabold text-ghm-royal mb-4">${SECTION_LABELS.benefits}</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${benefits}</div>
+        </div>
+      </section>`;
+  }).join('');
+  document.getElementById('infoSections').innerHTML = html;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[key]) el.innerHTML = i18n[key];
+  });
+  renderInfoSections();
+});
+
+  </script>
+</body>
+</html>

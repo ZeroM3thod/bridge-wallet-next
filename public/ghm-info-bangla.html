@@ -1,0 +1,1146 @@
+﻿<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ | à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾</title>
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & Hind Siliguri for crisp English & Bangla typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ghm: {
+              navy: '#05295f',
+              royal: '#0875ec',
+              royalDark: '#0564c4',
+              sky: '#00a6ef',
+              green: '#008f74',
+              greenDark: '#08775f',
+              slate: '#eefaff',
+              ink: '#05295f'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>@font-face{font-family: Mashbik Athena;src:url(/fonts/Mashbik-Athena-Unicode.ttf) format("truetype");font-display:swap;}
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Mashbik Athena', 'Hind Siliguri', system-ui, sans-serif; line-height: 1.7;
+      color: #05295f;
+    }
+    body.lang-bn {
+      font-family: 'Mashbik Athena', 'Hind Siliguri', system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    .hero-overlay {
+      background: linear-gradient(
+        90deg,
+        rgba(8, 27, 51, 0.38) 0%,
+        rgba(8, 27, 51, 0.82) 46%,
+        rgba(8, 27, 51, 0.96) 100%
+      );
+    }
+    @media (max-width: 1023px) {
+      .hero-overlay {
+        background: linear-gradient(
+          180deg,
+          rgba(8, 27, 51, 0.74) 0%,
+          rgba(8, 27, 51, 0.89) 55%,
+          rgba(8, 27, 51, 0.97) 100%
+        );
+      }
+    }
+    .card-lift {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px -10px rgba(8, 27, 51, 0.16);
+    }
+    .nav-dropdown {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: all 0.2s ease;
+    }
+    .group:hover .nav-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    @keyframes pulsePin {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.45); opacity: 0.35; }
+    }
+    .map-pulse {
+      animation: pulsePin 2.4s infinite ease-in-out;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .page-enter {
+      animation: fadeSlideIn 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="lang-bn bg-white antialiased selection:bg-ghm-sky selection:text-white">
+  <main id="homeView" class="block">
+    <!-- HERO SECTION (ISO TANK CONTAINER TRUCK VISUAL + REGISTER & LOGIN) -->
+    <section id="top" class="relative min-h-[560px] sm:min-h-[620px] lg:min-h-[660px] flex items-center bg-ghm-navy overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img
+          id="heroTankTruckImg"
+          src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=85"
+          alt="à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¦¬à¦¾à¦¹à§€ à¦Ÿà§à¦°à¦¾à¦•"
+          class="w-full h-full object-cover object-center"
+          onerror="this.style.display='none'; document.getElementById('heroSvgFallback').classList.remove('hidden');"
+        />
+        <!-- High-Detail ISO Tank Container Semi-Trailer Truck Vector Fallback -->
+        <div id="heroSvgFallback" class="hidden w-full h-full bg-gradient-to-br from-[#05295f] via-[#0F2C56] to-[#061324] flex items-center">
+          <svg class="w-full h-full object-cover" viewBox="0 0 1440 720" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="1440" height="720" fill="#05295f"/>
+            <circle cx="300" cy="190" r="260" fill="#00a6ef" fill-opacity="0.14"/>
+            <rect y="480" width="1440" height="240" fill="#0F172A"/>
+            <line x1="0" y1="590" x2="1440" y2="590" stroke="#F59E0B" stroke-width="4" stroke-dasharray="36 28" opacity="0.7"/>
+            <rect x="110" y="455" width="495" height="18" rx="4" fill="#1E293B"/>
+            <g transform="translate(120, 292)">
+              <rect x="0" y="0" width="380" height="162" rx="6" stroke="#00a6ef" stroke-width="8" fill="#05295f" fill-opacity="0.45"/>
+              <rect x="14" y="14" width="352" height="134" rx="52" fill="#F8FAFC"/>
+              <path d="M14 82H366V94C366 122 343 148 314 148H66C37 148 14 122 14 94V82Z" fill="#E2E8F0"/>
+              <rect x="95" y="14" width="10" height="134" fill="#0875ec"/>
+              <rect x="275" y="14" width="10" height="134" fill="#0875ec"/>
+              <text x="185" y="74" text-anchor="middle" fill="#0875ec" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="28" letter-spacing="2">GHM GROUPS</text>
+              <text x="185" y="102" text-anchor="middle" fill="#00a6ef" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14" letter-spacing="1">GHMU 441268 6 â€¢ 22K2</text>
+            </g>
+            <g transform="translate(512, 315)">
+              <path d="M0 140V30C0 14 12 0 28 0H92L128 58V140H0Z" fill="#FFFFFF"/>
+              <path d="M62 14H88L116 58H62V14Z" fill="#05295f"/>
+              <rect x="0" y="96" width="128" height="16" fill="#00a6ef"/>
+            </g>
+            <g fill="#0F172A" stroke="#64748B" stroke-width="5">
+              <circle cx="175" cy="485" r="26"/><circle cx="238" cy="485" r="26"/>
+              <circle cx="465" cy="485" r="26"/><circle cx="595" cy="485" r="26"/>
+            </g>
+          </svg>
+        </div>
+        <div class="hero-overlay absolute inset-0"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-20 lg:py-24">
+        <div class="lg:ml-auto lg:w-[54%] text-white">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-ghm-sky text-xs font-bold mb-5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span data-i18n="heroPill">à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ â€” à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-[54px] font-extrabold leading-[1.12] mb-4" data-i18n="heroTitle">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦à¦• à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾à¦° à¦¨à¦¾à¦®</h1>
+
+          <p class="text-lg sm:text-xl font-semibold text-slate-200 mb-5" data-i18n="heroSub">à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ â€” à¦¸à¦¾à¦—à¦°-à¦®à¦¹à¦¾à¦¸à¦¾à¦—à¦° à¦ªà§‡à¦°à§‹à¦¨à§‹ à¦à¦• à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸-à¦¯à¦¾à¦¤à§à¦°à¦¾</p>
+
+          <p class="text-sm sm:text-base lg:text-[17px] text-slate-200/95 leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦…à¦¨à§à¦¯à¦¤à¦® à¦¬à§ƒà¦¹à§Ž à¦“ à¦†à¦¸à§à¦¥à¦¾à¦­à¦¾à¦œà¦¨ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦¹à¦¾à¦¤ à¦§à¦°à§‡ à¦ªà¦¥ à¦šà¦²à§à¦¨à¥¤ à¦¨à¦¿à¦°à§à¦­à¦°à¦¯à§‹à¦—à§à¦¯, à¦Ÿà§‡à¦•à¦¸à¦‡ à¦¸à¦°à¦žà§à¦œà¦¾à¦® à¦†à¦° à¦…à¦¨à¦¨à§à¦¯ à¦¸à§‡à¦¬à¦¾à¦° à¦®à§‡à¦²à¦¬à¦¨à§à¦§à¦¨à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦¸à§‡à¦‡à¦¸à¦¬ à¦ªà¦£à§à¦¯à¦•à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦¯à¦¼ à¦¦à§‡à¦¶ à¦¥à§‡à¦•à§‡ à¦¦à§‡à¦¶à¦¾à¦¨à§à¦¤à¦°à§‡, à¦¯à¦¾ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦¦à¦¿à¦¨à§‡à¦° à¦œà§€à¦¬à¦¨à§‡à¦° à¦…à¦ªà¦°à¦¿à¦¹à¦¾à¦°à§à¦¯ à¦…à¦‚à¦¶à¥¤ à¦¦à§à¦‡ à¦¦à¦¶à¦•à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦…à¦­à¦¿à¦œà§à¦žà¦¤à¦¾ à¦†à¦° à¦¦à¦•à§à¦·à¦¤à¦¾ à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦†à¦›à¦¿ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦¾à¦¶à§‡à¦‡à¥¤</p>
+
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION A & B: 4 CORE PILLAR CARDS + ROYAL BLUE STATS BAND (NO OVERLAP) -->
+    <section class="bg-ghm-royal text-white pt-16 lg:pt-20 pb-20 lg:pb-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 4 Equal-Height White Value Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          <!-- Card 1 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
+                alt="à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦Ÿà§à¦¯à¦¾à¦™à§à¦•"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat1Title">à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¸à¦®à§à¦­à¦¾à¦°</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat1Desc">à¦†à¦®à¦¾à¦¦à§‡à¦° à¦à§à¦²à¦¿à¦¤à§‡ à¦†à¦›à§‡ à¦ªà§‚à¦°à§à¦£à¦¾à¦™à§à¦— <strong class="text-ghm-green font-bold">à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦°</strong> à¦¸à¦®à¦¾à¦¹à¦¾à¦°à¥¤ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦£à§à¦¯à¦•à§‡ à¦ªà¦°à¦¬à¦°à§à¦¤à§€ à¦—à¦¨à§à¦¤à¦¬à§à¦¯à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦¸à¦•à¦² à¦¸à¦°à¦žà§à¦œà¦¾à¦® à¦à¦–à¦¾à¦¨à§‡à¦‡ à¦®à§‡à¦²à§‡à¥¤</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=80"
+                alt="à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦•à¦¾à¦°à§à¦¯à¦•à§à¦°à¦®"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat2Title">à¦¦à¦¿à¦—à¦¨à§à¦¤à¦œà§‹à¦¡à¦¼à¦¾ à¦•à¦°à§à¦®à¦¯à¦œà§à¦ž</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat2Desc">à¦†à¦®à¦¾à¦¦à§‡à¦° <strong class="text-ghm-green font-bold">à¦¬à¦¿à¦¶à§à¦¬à¦¬à§à¦¯à¦¾à¦ªà§€ à¦‰à¦ªà¦¸à§à¦¥à¦¿à¦¤à¦¿à¦°</strong> à¦›à¦¾à¦¯à¦¼à¦¾à¦¯à¦¼ à¦†à¦¸à§à¦¨à¥¤ à¦ªà§à¦°à¦¾à¦¯à¦¼ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡ à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦œà¦¾à¦² à¦¬à¦¿à¦›à¦¿à¦¯à¦¼à§‡ à¦†à¦›à¦¿, à¦¯à§‡à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦œà¦¨à§à¦® à¦¨à¦¿à¦•, à¦†à¦®à¦°à¦¾ à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦¹à¦¾à¦œà¦¿à¦°à¥¤</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=800&q=80"
+                alt="à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/16803C/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat3Title">à¦¹à§ƒà¦¦à§à¦¯à¦¤à¦¾à¦ªà§‚à¦°à§à¦£ à¦¦à§à¦°à§à¦¤ à¦¸à§‡à¦¬à¦¾</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat3Desc">à¦…à¦¨à§à¦­à¦¬ à¦•à¦°à§à¦¨ à¦…à¦¤à§à¦²à¦¨à§€à¦¯à¦¼ <strong class="text-ghm-green font-bold">à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾à¦°</strong> à¦‰à¦·à§à¦£à¦¤à¦¾à¥¤ à¦œà¦¾à¦¹à¦¾à¦œà§‡à¦° à¦¸à¦®à¦¯à¦¼à¦¸à§€à¦®à¦¾ à¦†à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦¦à§à¦¶à§à¦šà¦¿à¦¨à§à¦¤à¦¾ à¦›à§‡à¦¡à¦¼à§‡ à¦¦à¦¿à¦¨ à¦à¦®à¦¨ à¦à¦• à¦ªà§‚à¦°à§à¦£à¦¾à¦™à§à¦— à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¦° à¦¹à¦¾à¦¤à§‡, à¦¯à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦­à¦¾à¦° à¦¨à¦¿à¦œà§‡à¦° à¦•à¦¾à¦à¦§à§‡ à¦¤à§à¦²à§‡ à¦¨à§‡à¦¯à¦¼à¥¤</p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-white text-ghm-ink rounded-2xl overflow-hidden shadow-xl card-lift h-full flex flex-col">
+            <div class="h-48 shrink-0 overflow-hidden bg-slate-200">
+              <img
+                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=800&q=80"
+                alt="à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à§‡à¦¬à¦¾"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"
+              />
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-ghm-royal mb-3" data-i18n="feat4Title">à¦ªà§à¦°à¦¯à§à¦•à§à¦¤à¦¿ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦²à§‡à¦° à¦¨à¦¿à¦ªà§à¦£ à¦¹à¦¾à¦¤</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="feat4Desc">à¦†à¦¸à§à¦¥à¦¾ à¦°à¦¾à¦–à§à¦¨ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦œà§à¦ž à¦¦à¦²à§‡à¦° à¦“à¦ªà¦°à¥¤ à¦¬à¦¿à¦¶ à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦®à¦¯à¦¼ à¦§à¦°à§‡ à¦†à¦®à¦°à¦¾ à¦—à§à¦°à¦¾à¦¹à¦•à¦¦à§‡à¦° à¦‰à¦ªà¦¹à¦¾à¦° à¦¦à¦¿à¦¯à¦¼à§‡ à¦šà¦²à§‡à¦›à¦¿ à¦…à¦¸à¦¾à¦®à¦¾à¦¨à§à¦¯ <strong class="text-ghm-green font-bold">à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¦à¦•à§à¦·à¦¤à¦¾</strong>à¥¤</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section B: Stats Banner -->
+        <div class="pt-16 lg:pt-24 text-center">
+          <h2 class="text-2xl sm:text-4xl lg:text-[42px] font-extrabold max-w-3xl mx-auto leading-tight mb-12 sm:mb-14" data-i18n="statsHeading">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦•à§‡ à¦¨à¦¿à¦–à§à¦à¦¤ à¦•à¦°à§‡ à¦¤à§‹à¦²à¦¾à¦° à¦šà¦¿à¦°à¦¸à¦™à§à¦—à§€ à¦†à¦®à¦°à¦¾à¥¤</h2>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">à§­à§«,à§¦à§¦à§¦+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat1Label">à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">à§¨à§«+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat2Label">à¦¬à¦›à¦°à§‡à¦° à¦ªà¦¥à¦šà¦²à¦¾</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">à§§à§­</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat3Label">à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦…à¦«à¦¿à¦¸</div>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-2">à§«à§¦+</div>
+              <div class="text-sm sm:text-base font-medium text-blue-100" data-i18n="stat4Label">à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C: DIVERSE FLEET GRID (7 ISO TANK CONTAINER TYPES) -->
+    <section class="bg-ghm-slate py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="fleetEyebrow">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="fleetHeading">à¦¬à§ˆà¦šà¦¿à¦¤à§à¦°à§à¦¯à¦®à¦¯à¦¼ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¹à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦ªà¦£à§à¦¯ à¦ªà§Œà¦à¦›à§‡ à¦¦à¦¿à¦‡ à¦ à¦¿à¦• à¦¸à¦®à¦¯à¦¼à§‡à¦° à¦˜à¦¾à¦Ÿà§‡à¥¤</h2>
+          <p class="text-base text-slate-600 mb-6" data-i18n="fleetSub">à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾à¦° à¦®à¦¾à¦¨à¦¦à¦£à§à¦¡à§‡ à¦—à¦¡à¦¼à¦¾ à¦“ à¦ªà¦°à¦¿à¦•à¦²à§à¦ªà¦¿à¦¤ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤</p>
+        </div>
+
+        <!-- Row 1: 4 Fleet Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 items-stretch">
+          <!-- 1. Liquid Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=700&q=80" alt="à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T1â€“T22</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet1Title">à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet1Desc">à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¸à¦®à§à¦­à¦¾à¦°à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¤à¦°à¦² à¦ªà¦£à§à¦¯ à¦­à§à¦°à¦®à¦£ à¦•à¦°à§à¦• à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¨à§à¦¤à§‡, à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 2. Gas Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80" alt="à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T50</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet2Title">à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet2Desc">à¦¨à¦¾à¦¨à¦¾ à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦‰à¦ªà¦¯à§‹à¦—à§€ à¦†à¦®à¦¾à¦¦à§‡à¦° T50 à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦­à¦¾à¦¨à§à¦¡à¦¾à¦° à¦˜à§à¦°à§‡ à¦¦à§‡à¦–à§à¦¨à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 3. Tank Container Chassis -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=700&q=80" alt="à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0EA5E9/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦®</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet3Title">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet3Desc">à¦¯à§à¦•à§à¦¤à¦°à¦¾à¦·à§à¦Ÿà§à¦°à¦¸à¦¹ à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦¨à¦¾à¦¨à¦¾ à¦¨à¦•à¦¶à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦®à§‡à¦²à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦¸à¦™à§à¦—à§€ à¦¹à¦¯à¦¼à§‡à¥¤ à¦¹à¦¾à¦²à¦•à¦¾ à¦“à¦œà¦¨à§‡à¦°, à¦ªà¦°à§€à¦•à§à¦·à¦¿à¦¤ à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦­à¦°à¦¾ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦­à¦¾à¦°à¦•à§‡à¦¨à§à¦¦à§à¦°à¦•à§‡ à¦¨à¦¾à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§‡ à¦®à¦¾à¦Ÿà¦¿à¦° à¦•à¦¾à¦›à¦¾à¦•à¦¾à¦›à¦¿, à¦ªà¦¥à¦šà¦²à¦¾à¦•à§‡ à¦•à¦°à§‡ à¦¸à§à¦¥à¦¿à¦° à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 4. Cryogenic Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=700&q=80" alt="à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">T75 (âˆ’à§§à§¯à§¬Â°à¦¸à§‡.)</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet4Title">à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet4Desc">à¦šà¦°à¦® à¦¹à¦¿à¦®à¦¶à§€à¦¤à¦² à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾à¦¯à¦¼ à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦—à§à¦¯à¦¾à¦¸ à¦¬à¦¹à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à¦¬à¦¿à¦¶à§‡à¦·à¦­à¦¾à¦¬à§‡ à¦—à¦¡à¦¼à¦¾ T75 à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¥¤</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: 3 Centered Fleet Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:max-w-5xl lg:mx-auto items-stretch">
+          <!-- 5. Swap Body Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=700&q=80" alt="à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/081B33/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">à§¨à§¬,à§¦à§¦à§¦â€“à§©à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet5Title">à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet5Desc">à¦¸à¦¡à¦¼à¦• à¦“ à¦°à§‡à¦²à¦ªà¦¥à§‡ à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦ªà¦£à§à¦¯à¦­à¦¾à¦° à¦¬à¦¹à¦¨à§‡à¦° à¦¦à¦•à§à¦·à¦¤à¦¾à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦®à¦¿à¦¤, à¦¬à¦¿à¦ªà§à¦² à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 6. Small Portable Tanks -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=700&q=80" alt="à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/16803C/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">à§ªà§«à§¦â€“à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet6Title">à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet6Desc">à¦¨à¦¾à¦¨à¦¾ à¦¨à¦•à¦¶à¦¾ à¦“ à¦¬à§ˆà¦¶à¦¿à¦·à§à¦Ÿà§à¦¯à§‡à¦° à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œ à¦¨à¦¿à¦¨, à¦¯à¦¾ à§ªà§«à§¦ à¦¥à§‡à¦•à§‡ à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¤à¦°à¦² à¦“ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦šà¦¾à¦¹à¦¿à¦¦à¦¾ à¦®à§‡à¦Ÿà¦¾à¦¯à¦¼à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 7. Offshore Tank Containers -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 card-lift h-full flex flex-col md:col-span-2 lg:col-span-1">
+            <div class="h-44 shrink-0 bg-slate-100 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=700&q=80" alt="à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0033A0/FFFFFF?text=+'"/>
+              <span class="absolute top-3 right-3 bg-ghm-navy/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">DNV 2.7-1</span>
+            </div>
+            <div class="p-6 flex-1">
+              <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center justify-between">
+                <span data-i18n="fleet7Title">à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°</span>
+                
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="fleet7Desc">à¦¸à¦¾à¦—à¦°à¦¬à§à¦•à§‡à¦° à¦ªà¦°à¦¿à¦¬à¦¹à¦¨ à¦“ à¦¸à¦‚à¦°à¦•à§à¦·à¦£à§‡à¦° à¦œà¦¨à§à¦¯ à¦­à¦¾à¦¡à¦¼à¦¾à¦¯à¦¼ à¦®à§‡à¦²à§‡ à¦‰à¦šà§à¦šà¦®à¦¾à¦¨à§‡à¦° à¦¡à¦¿à¦à¦¨à¦­à¦¿-à¦ªà§à¦°à¦¤à§à¦¯à¦¯à¦¼à¦¿à¦¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦¬à¦¹à¦°à¥¤</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION D: CLIENT TESTIMONIAL -->
+    <section class="bg-ghm-slate pb-16 lg:pb-24">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative pl-6 sm:pl-14">
+          <span class="text-6xl sm:text-7xl font-serif text-slate-300 leading-none select-none absolute -top-3 left-0">â€œ</span>
+          <blockquote class="text-xl sm:text-2xl lg:text-[26px] font-extrabold italic text-ghm-ink leading-snug mb-5" data-i18n="testimonialQuote">â€œà¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦†à¦° à¦¸à§à¦Ÿà¦²à§à¦Ÿà§‡à¦° à¦¸à¦®à§à¦ªà¦°à§à¦• à¦¦à§€à¦°à§à¦˜à¦¦à¦¿à¦¨à§‡à¦°, à¦¸à¦¾à¦«à¦²à§à¦¯à§‡ à¦­à¦°à¦¾à¥¤ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦‰à¦ªà¦¸à§à¦¥à¦¿à¦¤à¦¿, à¦¸à§à¦¦à§ƒà¦¢à¦¼ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾ à¦†à¦° à¦šà¦®à§Žà¦•à¦¾à¦° à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦šà¦²à¦®à¦¾à¦¨ à¦¬à¦¾à¦œà¦¾à¦°à§‡à¦° à¦šà¦¾à¦¹à¦¿à¦¦à¦¾ à¦®à§‡à¦Ÿà¦¾à¦¤à§‡ à¦…à¦ªà¦°à¦¿à¦¹à¦¾à¦°à§à¦¯à¥¤ à¦à¦‡ à¦¸à¦¹à¦¯à§‹à¦—à¦¿à¦¤à¦¾ à¦“ à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¿à¦¤à§à¦¬ à¦†à¦—à¦¾à¦®à§€ à¦¬à¦¹à§ à¦¬à¦›à¦° à¦…à¦Ÿà§à¦Ÿ à¦¥à¦¾à¦•à§à¦•, à¦à¦‡ à¦ªà§à¦°à¦¤à§à¦¯à¦¾à¦¶à¦¾à¦‡ à¦•à¦°à¦¿!â€</blockquote>
+          <p class="text-sm font-semibold text-slate-600" data-i18n="testimonialAuthor">à¦¡à¦¾à¦¸à§à¦Ÿà¦¿à¦¨ à¦•à§à¦¯à¦¾à¦²à¦¾à¦“à¦¯à¦¼à§‡, à¦Ÿà§‡à¦•à¦¨à¦¿à¦•à§à¦¯à¦¾à¦² à¦¸à¦¾à¦°à§à¦­à¦¿à¦¸à§‡à¦¸/à¦à¦® à¦…à§à¦¯à¦¾à¦¨à§à¦¡ à¦†à¦°, à¦¸à§à¦Ÿà¦²à§à¦Ÿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§à¦¸</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION E: SUSTAINABILITY & ECOVADIS SILVER BADGE -->
+    <section class="bg-ghm-slate pb-20 lg:pb-28 border-t border-slate-200/70 pt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="susEyebrow">à¦¸à§à¦¥à¦¾à¦¯à¦¼à¦¿à¦¤à§à¦¬</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="susHeading">à¦Ÿà§‡à¦•à¦¸à¦‡ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦ªà¦¥à§‡ à¦¹à§‡à¦à¦Ÿà§‡ à¦¸à§à¦°à¦•à§à¦·à¦¿à¦¤ à¦°à¦¾à¦–à§à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦•à§‡à¥¤</h2>
+            <p class="text-lg font-bold text-slate-800 mb-5" data-i18n="susSub">à¦†à¦ªà¦¨à¦¾à¦° à¦¬à§à¦¯à¦¬à¦¸à¦¾à¦° à¦œà¦¨à§à¦¯ à¦•à¦²à§à¦¯à¦¾à¦£à¦•à¦°, à¦§à¦°à¦¿à¦¤à§à¦°à§€à¦° à¦œà¦¨à§à¦¯à¦“à¥¤</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-4" data-i18n="susPara1">à¦†à¦®à¦¾à¦¦à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à§¯à§© à¦¶à¦¤à¦¾à¦‚à¦¶à¦‡ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯à¥¤ à¦¯à§‡ à¦¸à¦™à§à¦—à§€ à¦ªà§ƒà¦¥à¦¿à¦¬à§€à¦•à§‡ à¦¬à¦¾à¦à¦šà¦¿à¦¯à¦¼à§‡ à¦°à¦¾à¦–à¦¾à¦° à¦ªà§à¦°à¦¤à¦¿à¦œà§à¦žà¦¾à¦¯à¦¼ à¦…à¦Ÿà¦², à¦¤à¦¾à¦° à¦¹à¦¾à¦¤ à¦§à¦°à§‡ à¦¸à¦¾à¦œà¦¿à¦¯à¦¼à§‡ à¦¤à§à¦²à§à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦Ÿà§‡à¦•à¦¸à¦‡ à¦‰à¦¦à§à¦¯à§‹à¦—à¥¤</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="susPara2">à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦¨à¦¾à¦®à§€ à¦¸à¦¾à¦¸à¦Ÿà§‡à¦‡à¦¨à§‡à¦¬à¦¿à¦²à¦¿à¦Ÿà¦¿ à¦°à§‡à¦Ÿà¦¿à¦‚ à¦¸à¦‚à¦¸à§à¦¥à¦¾ à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à¦•à§‡ à¦¦à¦¿à¦¯à¦¼à§‡à¦›à§‡ à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦ªà¦¦à¦•à§‡à¦° à¦¸à§à¦¬à§€à¦•à§ƒà¦¤à¦¿à¥¤ à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¿à¦¤ à¦à¦• à¦²à¦•à§à¦·à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦®à¦§à§à¦¯à§‡ à¦†à¦®à¦°à¦¾ à¦¶à§€à¦°à§à¦· à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶à§‡à¦° à¦•à¦¾à¦¤à¦¾à¦°à§‡à¥¤ à¦ªà¦°à¦¿à¦¬à§‡à¦¶, à¦¶à§à¦°à¦® à¦“ à¦®à¦¾à¦¨à¦¬à¦¾à¦§à¦¿à¦•à¦¾à¦°, à¦¨à§ˆà¦¤à¦¿à¦•à¦¤à¦¾ à¦à¦¬à¦‚ à¦Ÿà§‡à¦•à¦¸à¦‡ à¦•à§à¦°à¦¯à¦¼, à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦•à§à¦·à§‡à¦¤à§à¦°à§‡à¦‡ à¦†à¦®à¦°à¦¾ à¦ªà§‡à¦¯à¦¼à§‡à¦›à¦¿ à¦‰à¦šà§à¦š à¦¨à¦®à§à¦¬à¦°à¥¤</p>
+          </div>
+
+          <div class="lg:col-span-6 flex justify-center">
+            <div class="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-br from-slate-200 via-white to-slate-300 p-5 shadow-2xl flex items-center justify-center border-8 border-white hover:scale-[1.02] transition-transform">
+              <div class="w-full h-full rounded-full bg-white shadow-inner flex flex-col items-center justify-center text-center p-6 border border-slate-200">
+                <div class="bg-gradient-to-r from-slate-400 via-slate-500 to-slate-400 text-white text-xs sm:text-sm font-extrabold px-6 py-1.5 rounded-full shadow mb-4">
+                  à¦¸à¦¿à¦²à¦­à¦¾à¦° | à¦¶à§€à¦°à§à¦· à§§à§«%
+                </div>
+                <div class="text-3xl sm:text-5xl font-extrabold text-slate-800 mb-1">
+                  à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸
+                </div>
+                <div class="text-sm sm:text-base font-medium text-slate-500 mb-4">
+                  à¦¸à§à¦¥à¦¾à¦¯à¦¼à¦¿à¦¤à§à¦¬ à¦°à§‡à¦Ÿà¦¿à¦‚
+                </div>
+                <div class="w-24 h-0.5 bg-slate-200 mb-3"></div>
+                <div class="text-sm sm:text-lg font-extrabold text-slate-800">
+                  à¦¡à¦¿à¦¸à§‡à¦®à§à¦¬à¦° à§¨à§¦à§¨à§«
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION F: 6 LOGISTICS SERVICE CARDS + 24/7 TRUST STATEMENT -->
+    <section class="bg-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="logHeading">à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚, à¦¬à§à¦¯à¦¬à¦¸à¦¾à¦¯à¦¼à¦¿à¦• à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸à§‡à¦° à¦ªà¦¥à¦•à§‡ à¦•à¦°à§‡ à¦¸à¦¹à¦œ à¦“ à¦¸à¦°à¦²</h2>
+          <p class="text-base text-slate-600 leading-relaxed" data-i18n="logSub">à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦®à§à¦¹à§‚à¦°à§à¦¤à§‡, à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦ à¦¿à¦•à¦¾à¦¨à¦¾à¦¯à¦¼ à¦ªà§‡à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦¾à¦¯à¦¼à¦¿à¦¤ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œ à¦¨à¦¿à¦¯à¦¼à§‡ à¦¬à§à¦¯à¦¬à¦¸à¦¾ à¦šà¦¾à¦²à¦¿à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨ à¦¨à¦¿à¦°à§à¦­à¦¾à¦° à¦®à¦¨à§‡à¥¤</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-16 items-stretch">
+          <!-- 1 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc1Title">à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc1Desc">à¦†à¦®à¦¾à¦¦à§‡à¦° à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¦à¦² à¦†à¦ªà¦¨à¦¾à¦•à§‡ à¦¦à§‡à¦¬à§‡ à¦®à¦¾à¦¨à¦¸à¦®à§à¦ªà¦¨à§à¦¨, à¦¨à¦¿à¦°à§à¦­à¦°à¦¯à§‹à¦—à§à¦¯ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à§‡à¦¬à¦¾à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc2Title">à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦° à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc2Desc">à¦ªà§ƒà¦¥à¦¿à¦¬à§€à¦œà§‹à¦¡à¦¼à¦¾ à¦¸à¦®à§à¦ªà¦°à§à¦•à§‡à¦° à¦¬à¦¨à§à¦§à¦¨à§‡ à¦¬à¦¾à¦à¦§à¦¾ à¦à¦• à¦¸à¦™à§à¦—à§€à¦° à¦¸à¦™à§à¦—à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦¬à¦¿à¦˜à§à¦¨ à¦•à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§à¦¨à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc3Title">à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿ à¦¸à§‡à¦¬à¦¾</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc3Desc">à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¨à¦œà¦°à¦¦à¦¾à¦°à¦¿ à¦†à¦° à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨-à¦…à¦¨à§à¦¸à¦°à¦£à§‡à¦° à¦®à¦§à§à¦¯ à¦¦à¦¿à¦¯à¦¼à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦œà§à¦¡à¦¼à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à§à¦¨ à¦†à¦°à¦“ à¦¨à¦¿à¦¬à¦¿à¦¡à¦¼à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc4Title">à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦®à¦¾à¦§à¦¾à¦¨</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc4Desc">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦ªà¦¥à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦®à§‚à¦²à¦§à¦¨à§€ à¦¬à§à¦¯à¦¯à¦¼ à¦“ à¦à§à¦à¦•à¦¿à¦° à¦¬à§‹à¦à¦¾ à¦¹à¦¾à¦²à¦•à¦¾ à¦•à¦°à§à¦¨à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc5Title">à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc5Desc">à¦ªà§à¦°à¦¾à¦¯à¦¼ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡ à¦›à¦¡à¦¼à¦¾à¦¨à§‹ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦œà¦¾à¦²à§‡ à¦­à¦°à¦¸à¦¾ à¦°à¦¾à¦–à§à¦¨, à¦¯à¦¾ à¦¸à¦®à¦¯à¦¼à¦®à¦¤à§‹ à¦†à¦ªà¦¨à¦¾à¦° à¦¹à¦¾à¦¤à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦¬à§‡ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦§à¦¨à¥¤</p>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm card-lift flex items-start gap-5 h-full">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-ghm-ink mb-2" data-i18n="svc6Title">à¦—à§à¦°à¦¾à¦¹à¦• à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾</h3>
+              <p class="text-sm text-slate-600 leading-relaxed" data-i18n="svc6Desc">à¦œà¦°à§à¦°à¦¿ à¦ªà§à¦°à¦¾à¦ªà§à¦¯à¦¤à¦¾, à¦°à¦•à§à¦·à¦£à¦¾à¦¬à§‡à¦•à§à¦·à¦£à§‡à¦° à¦¸à¦®à¦¯à¦¼à¦¸à§‚à¦šà¦¿à¦¸à¦¹ à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦¯à§‡à¦•à§‹à¦¨à§‹ à¦œà¦Ÿà¦¿à¦²à¦¤à¦¾à¦¯à¦¼ à¦ªà¦¾à¦¶à§‡ à¦¦à¦¾à¦à¦¡à¦¼à¦¾à¦¤à§‡ à¦ªà§à¦°à¦¸à§à¦¤à§à¦¤ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤à¦ªà§à¦°à¦¾à¦£ à¦—à§à¦°à¦¾à¦¹à¦• à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾ à¦¦à¦²à¥¤</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center max-w-2xl mx-auto">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-ghm-ink leading-snug" data-i18n="trust247">à¦¦à¦¿à¦¨à¦°à¦¾à¦¤ à¦šà¦¬à§à¦¬à¦¿à¦¶ à¦˜à¦£à§à¦Ÿà¦¾, à¦¸à¦¾à¦¤ à¦¦à¦¿à¦¨à¥¤ à¦œà¦¾à¦¨à¦¬à§‡à¦¨, à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦¾à¦¶à§‡ à¦†à¦›à§‡ à¦à¦• à¦¬à¦¿à¦¶à§à¦¬à¦¸à§à¦¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¥¤</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION G: GLOBAL FOOTPRINT WORLD MAP SECTION -->
+    <section class="bg-ghm-slate py-20 lg:py-24 border-t border-slate-200/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-7">
+            <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200/80">
+              <svg viewBox="0 0 800 400" class="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#008f74">
+                  <path d="M85 85 L165 70 L215 95 L205 145 L175 180 L145 195 L125 165 L100 135 Z" opacity="0.92"/>
+                  <path d="M185 215 L230 220 L265 265 L245 335 L215 365 L195 310 L185 255 Z" opacity="0.92"/>
+                  <path d="M365 75 L430 65 L455 95 L435 125 L385 130 L360 105 Z" opacity="0.92"/>
+                  <path d="M375 145 L440 145 L475 195 L455 285 L415 305 L385 240 L365 185 Z" opacity="0.92"/>
+                  <path d="M460 75 L635 70 L685 120 L655 195 L575 210 L515 190 L470 140 Z" opacity="0.92"/>
+                  <path d="M615 245 L695 245 L710 300 L655 315 L615 285 Z" opacity="0.92"/>
+                </g>
+
+                <g>
+                  <circle cx="168" cy="152" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="168" cy="152" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="168" y="138" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨</text>
+
+                  <circle cx="242" cy="296" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="242" cy="296" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="242" y="282" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦¸à¦¾à¦“ à¦ªà¦¾à¦‰à¦²à§‹</text>
+
+                  <circle cx="402" cy="96" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="402" cy="96" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="402" y="83" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦°à¦Ÿà¦¾à¦°à¦¡à¦¾à¦®</text>
+
+                  <circle cx="496" cy="158" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="496" cy="158" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="496" y="145" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦¦à§à¦¬à¦¾à¦‡</text>
+
+                  <circle cx="578" cy="162" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="578" cy="162" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="582" y="148" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦šà¦Ÿà§à¦Ÿà¦—à§à¦°à¦¾à¦®</text>
+
+                  <circle cx="614" cy="204" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="614" cy="204" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="614" y="232" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦°</text>
+
+                  <circle cx="645" cy="138" r="10" fill="#00a6ef" class="map-pulse"/>
+                  <circle cx="645" cy="138" r="4.5" fill="#05295f" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <text x="645" y="124" text-anchor="middle" fill="#05295f" font-size="11" font-weight="700">à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="locEyebrow">à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-4" data-i18n="locHeading">à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨ à¦¥à§‡à¦•à§‡ à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡, à¦¸à¦°à§à¦¬à¦¤à§à¦°à¦‡ à¦†à¦®à¦°à¦¾ à¦†à¦ªà¦¨à¦¾à¦° à¦›à¦¾à¦¯à¦¼à¦¾à¦¸à¦™à§à¦—à§€à¥¤</h2>
+            <p class="text-lg font-bold text-slate-800 mb-3" data-i18n="locSub">à¦†à¦ªà¦¨à¦¿ à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦¥à¦¾à¦•à§à¦¨, à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦¸à§‡à¦¬à¦¾à¥¤</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="locDesc">à¦¬à¦¿à¦¶à§à¦¬à¦¸à§à¦¤ à¦à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¦° à¦¯à¦–à¦¨à¦‡ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¹à¦¬à§‡, à¦†à¦®à¦¾à¦¦à§‡à¦° à¦“à¦ªà¦° à¦­à¦°à¦¸à¦¾ à¦°à¦¾à¦–à§à¦¨à¥¤ à¦¯à§‡à¦–à¦¾à¦¨à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¦à¦°à¦•à¦¾à¦°, à¦†à¦®à¦°à¦¾ à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦†à¦›à¦¿à¥¤</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION H: FULL-WIDTH PROMO BANNER -->
+    <section class="bg-ghm-slate pb-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden shadow-xl h-64 sm:h-80 flex items-center justify-center text-center p-6 group">
+          <img
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80"
+            alt="à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¬à¦¹à¦°"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onerror="this.src='https://placehold.co/1400x400/081B33/FFFFFF?text=+'"
+          />
+          <div class="absolute inset-0 bg-ghm-navy/75"></div>
+          <div class="relative z-10 max-w-2xl">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-snug" data-i18n="bannerMidHeading">à¦¨à¦®à¦¨à§€à¦¯à¦¼ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦—à¦¡à¦¼à§‡ à¦¤à§à¦²à§à¦¨ à¦†à¦—à¦¾à¦®à§€à¦° à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦­à¦¿à¦¤à¥¤</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION I: HERITAGE & STRATEGIC PARTNER SPLIT -->
+    <section class="bg-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-6 flex justify-center">
+            <div class="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 max-w-md w-full bg-ghm-slate">
+              <img
+                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=85"
+                alt="à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°"
+                class="w-full h-80 object-cover"
+                onerror="this.src='https://placehold.co/800x600/0033A0/FFFFFF?text=+'"
+              />
+              <div class="p-4 bg-ghm-navy text-white flex items-center justify-between text-xs font-bold">
+                <span>GHMU 817114 1 â€¢ IMO 1 / T11</span>
+                <span class="text-ghm-sky">à§¨à§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <p class="text-xs font-bold text-ghm-navy mb-3" data-i18n="partnerEyebrow">à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¹à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦…à¦—à§à¦°à¦—à¦£à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à¥¤</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-ghm-ink leading-tight mb-6" data-i18n="partnerHeading">à§¨à§¦à§¦à§¦ à¦¸à¦¾à¦² à¦¥à§‡à¦•à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦°à§‚à¦ª à¦¬à¦¦à¦²à§‡ à¦¦à¦¿à¦šà§à¦›à¦¿à¥¤</h2>
+            <p class="text-base text-slate-600 leading-relaxed mb-4" data-i18n="partnerPara1">à¦†à¦ªà¦¨à¦¾à¦° à¦“ à¦†à¦ªà¦¨à¦¾à¦° à¦¦à¦²à§‡à¦° à¦ªà¦¾à¦¶à§‡ à¦¦à¦¾à¦à¦¡à¦¼à¦¾à¦¨à§‹à¦° à¦®à¦¤à§‹ à¦…à¦­à¦¿à¦œà§à¦žà¦¤à¦¾ à¦†à¦° à¦¶à¦¿à¦²à§à¦ªà¦œà§à¦žà¦¾à¦¨ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦†à¦›à§‡à¥¤ à¦¬à¦¿à¦¶ à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦®à¦¯à¦¼ à¦§à¦°à§‡ à¦¨à¦®à¦¨à§€à¦¯à¦¼ à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦ªà¦¥ à¦¦à§‡à¦–à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à¦—à§à¦²à§‹à¦•à§‡ à¦¬à§à¦¯à¦¯à¦¼ à¦•à¦®à¦¾à¦¤à§‡ à¦“ à¦•à¦¾à¦°à§à¦¯à¦•à§à¦°à¦® à¦—à§à¦›à¦¿à¦¯à¦¼à§‡ à¦¨à¦¿à¦¤à§‡ à¦¸à¦¾à¦¹à¦¾à¦¯à§à¦¯ à¦•à¦°à§‡ à¦†à¦¸à¦›à¦¿à¥¤</p>
+            <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="partnerPara2">à¦…à¦¤à§à¦²à¦¨à§€à¦¯à¦¼ à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾ à¦†à¦° à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¿à¦¤à§à¦¬à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦§à¦¾à¦ªà§‡ à¦¸à§‡à¦°à¦¾à¦Ÿà§à¦•à§ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦…à¦™à§à¦—à§€à¦•à¦¾à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦†à¦¤à§à¦®à¦¬à¦¿à¦¶à§à¦¬à¦¾à¦¸à§€, à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦¾à¦«à¦²à§à¦¯à§‡à¦° à¦ªà¦¥à§‡ à¦†à¦®à¦°à¦¾ à¦¸à¦ à¦¿à¦• à¦¸à¦¹à¦¯à¦¾à¦¤à§à¦°à§€à¥¤</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION J: ROYAL BLUE RESOURCES SECTION -->
+    <section class="bg-ghm-royal text-white py-20 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <p class="text-xs font-bold text-blue-200 mb-3" data-i18n="resEyebrow">à¦œà§à¦žà¦¾à¦¨à¦­à¦¾à¦¨à§à¦¡à¦¾à¦°</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold leading-tight mb-4" data-i18n="resHeading">à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦…à¦¨à§à¦¦à¦°à¦®à¦¹à¦²à§‡à¦° à¦†à¦²à§‹à¦•à¦¿à¦¤ à¦¤à¦¥à§à¦¯ à¦˜à§à¦°à§‡ à¦¦à§‡à¦–à§à¦¨à¥¤</h2>
+          <p class="text-base text-blue-100 leading-relaxed" data-i18n="resSub">à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦œà§à¦žà¦°à¦¾ à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦¨à¦¾à¦¨à¦¾ à¦…à¦¨à§à¦¤à¦°à§à¦¦à§ƒà¦·à§à¦Ÿà¦¿ à¦­à¦¾à¦— à¦•à¦°à§‡ à¦¨à§‡à¦¨, à¦¯à§‡à¦¨ à¦•à§à¦°à¦¯à¦¼ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à¦¹à¦¯à§‹à¦—à§€à¦°à¦¾ à¦¸à¦®à¦¯à¦¼à§‡à¦° à¦šà§‡à¦¯à¦¼à§‡ à¦à¦• à¦§à¦¾à¦ª à¦à¦—à¦¿à¦¯à¦¼à§‡ à¦¥à¦¾à¦•à¦¤à§‡ à¦ªà¦¾à¦°à§‡à¦¨à¥¤</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res1Title">à¦Ÿà¦¿-à¦•à§‹à¦¡ à¦šà¦¾à¦°à§à¦Ÿ</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res1Desc">à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª, à¦–à§‹à¦²à§‡à¦° à¦ªà§à¦°à§à¦¤à§à¦¬, à¦šà¦¾à¦ª-à¦¨à¦¿à¦·à§à¦•à¦¾à¦¶à¦¨ à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾ à¦†à¦° à¦¤à¦²à¦¦à§‡à¦¶à§‡à¦° à¦¨à¦¿à¦°à§à¦—à¦® à¦¬à¦¿à¦¨à§à¦¯à¦¾à¦¸à§‡à¦° à¦¨à¦¿à¦°à¦¿à¦–à§‡ à¦Ÿà¦¿-à¦•à§‹à¦¡ à¦¬à¦¾ â€œà¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¨à¦¿à¦°à§à¦¦à§‡à¦¶à¦¿à¦•à¦¾â€à¦° à¦¬à§à¦¯à¦¾à¦–à§à¦¯à¦¾à¥¤</p>
+          </div>
+
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res2Title">à¦¶à¦¬à§à¦¦à¦•à§‹à¦·</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res2Desc">à¦¬à¦¿à¦¶à§à¦¬à¦¬à§à¦¯à¦¾à¦ªà§€ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚ à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§€à¦¯à¦¼ à¦ªà¦°à¦¿à¦­à¦¾à¦·à¦¾à¦° à¦¸à¦‚à¦•à¦²à¦¨à¥¤</p>
+          </div>
+
+          <div class="bg-white text-ghm-ink rounded-2xl p-8 shadow-xl card-lift h-full flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ghm-green flex items-center justify-center mb-5 shrink-0">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-ghm-royal mb-2.5 flex items-center gap-2">
+              <span data-i18n="res3Title">à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¨à¦•à¦¶à¦¾ à¦“ à¦¸à§à¦ªà§‡à¦¸à¦¿à¦«à¦¿à¦•à§‡à¦¶à¦¨</span>
+              
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed" data-i18n="res3Desc">à¦†à¦®à¦¾à¦¦à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¦à¦²à¦¿à¦²à¦ªà¦¤à§à¦° à¦“ à¦–à§à¦à¦Ÿà¦¿à¦¨à¦¾à¦Ÿà¦¿ à¦¬à¦¿à¦¬à¦°à¦£à§‡à¦° à¦à¦• à¦¸à§à¦¬à¦¿à¦¶à¦¾à¦² à¦—à§à¦°à¦¨à§à¦¥à¦¾à¦—à¦¾à¦°à¥¤</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION K: BOTTOM TERMINAL CTA BANNER -->
+    <section class="bg-ghm-slate py-14 sm:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden shadow-xl min-h-[300px] sm:min-h-[340px] flex items-center justify-center text-center p-6 sm:p-12">
+          <img
+            src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1600&q=80"
+            alt="à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¬à¦¨à§à¦¦à¦°à§‡à¦° à¦•à¦°à§à¦®à¦¯à¦œà§à¦ž"
+            class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.src='https://placehold.co/1400x450/081B33/FFFFFF?text=+'"
+          />
+          <div class="absolute inset-0 bg-ghm-navy/78"></div>
+          <div class="relative z-10 max-w-2xl mx-auto bg-ghm-navy/70 backdrop-blur-md border border-white/15 rounded-2xl p-6 sm:p-8">
+            <p class="text-base sm:text-lg font-medium text-white leading-relaxed " data-i18n="bottomCtaText">à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾, à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾ à¦†à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à§‡à¦° à¦¶à¦•à§à¦¤à¦¿à¦¤à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¬à¦¹à¦° à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¾à¦²à§à¦• à¦¤à¦°à¦² à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦ªà¦¥à¦•à§‡ à¦•à¦°à§‡ à¦¤à§‹à¦²à§‡ à¦¸à¦¹à¦œ, à¦†à¦° à¦•à¦°à§à¦®à¦¯à¦œà§à¦žà¦•à§‡ à¦¦à§‡à¦¯à¦¼ à¦¶à§à¦°à§‡à¦·à§à¦ à¦¤à§à¦¬à§‡à¦° à¦›à§‹à¦à¦¯à¦¼à¦¾à¥¤</p>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- DETAILED INFORMATION SECTIONS (rendered from PAGES_DATA) -->
+  <section class="bg-ghm-navy text-white py-14 text-center">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class="text-xs font-bold text-ghm-sky mb-3" data-i18n="infoEyebrow">à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à¦¿à¦¤ à¦¤à¦¥à§à¦¯</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold " data-i18n="infoHeading">à¦¬à¦¹à¦°, à¦¸à§‡à¦¬à¦¾ à¦“ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦•à¦¥à¦¾</h2>
+    </div>
+  </section>
+  <div id="infoSections"></div>
+
+  <script>
+const i18n = {
+  heroPill: `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ â€” à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡`,
+  heroTitle: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦à¦• à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾à¦° à¦¨à¦¾à¦®`,
+  heroSub: `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ â€” à¦¸à¦¾à¦—à¦°-à¦®à¦¹à¦¾à¦¸à¦¾à¦—à¦° à¦ªà§‡à¦°à§‹à¦¨à§‹ à¦à¦• à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸-à¦¯à¦¾à¦¤à§à¦°à¦¾`,
+  heroDesc: `à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦…à¦¨à§à¦¯à¦¤à¦® à¦¬à§ƒà¦¹à§Ž à¦“ à¦†à¦¸à§à¦¥à¦¾à¦­à¦¾à¦œà¦¨ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦¹à¦¾à¦¤ à¦§à¦°à§‡ à¦ªà¦¥ à¦šà¦²à§à¦¨à¥¤ à¦¨à¦¿à¦°à§à¦­à¦°à¦¯à§‹à¦—à§à¦¯, à¦Ÿà§‡à¦•à¦¸à¦‡ à¦¸à¦°à¦žà§à¦œà¦¾à¦® à¦†à¦° à¦…à¦¨à¦¨à§à¦¯ à¦¸à§‡à¦¬à¦¾à¦° à¦®à§‡à¦²à¦¬à¦¨à§à¦§à¦¨à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦¸à§‡à¦‡à¦¸à¦¬ à¦ªà¦£à§à¦¯à¦•à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦¯à¦¼ à¦¦à§‡à¦¶ à¦¥à§‡à¦•à§‡ à¦¦à§‡à¦¶à¦¾à¦¨à§à¦¤à¦°à§‡, à¦¯à¦¾ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦¦à¦¿à¦¨à§‡à¦° à¦œà§€à¦¬à¦¨à§‡à¦° à¦…à¦ªà¦°à¦¿à¦¹à¦¾à¦°à§à¦¯ à¦…à¦‚à¦¶à¥¤ à¦¦à§à¦‡ à¦¦à¦¶à¦•à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦…à¦­à¦¿à¦œà§à¦žà¦¤à¦¾ à¦†à¦° à¦¦à¦•à§à¦·à¦¤à¦¾ à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦†à¦›à¦¿ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦¾à¦¶à§‡à¦‡à¥¤`,
+  feat1Title: `à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¸à¦®à§à¦­à¦¾à¦°`,
+  feat1Desc: `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦à§à¦²à¦¿à¦¤à§‡ à¦†à¦›à§‡ à¦ªà§‚à¦°à§à¦£à¦¾à¦™à§à¦— <strong class="text-ghm-green font-bold">à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦°</strong> à¦¸à¦®à¦¾à¦¹à¦¾à¦°à¥¤ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦£à§à¦¯à¦•à§‡ à¦ªà¦°à¦¬à¦°à§à¦¤à§€ à¦—à¦¨à§à¦¤à¦¬à§à¦¯à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦¸à¦•à¦² à¦¸à¦°à¦žà§à¦œà¦¾à¦® à¦à¦–à¦¾à¦¨à§‡à¦‡ à¦®à§‡à¦²à§‡à¥¤`,
+  feat2Title: `à¦¦à¦¿à¦—à¦¨à§à¦¤à¦œà§‹à¦¡à¦¼à¦¾ à¦•à¦°à§à¦®à¦¯à¦œà§à¦ž`,
+  feat2Desc: `à¦†à¦®à¦¾à¦¦à§‡à¦° <strong class="text-ghm-green font-bold">à¦¬à¦¿à¦¶à§à¦¬à¦¬à§à¦¯à¦¾à¦ªà§€ à¦‰à¦ªà¦¸à§à¦¥à¦¿à¦¤à¦¿à¦°</strong> à¦›à¦¾à¦¯à¦¼à¦¾à¦¯à¦¼ à¦†à¦¸à§à¦¨à¥¤ à¦ªà§à¦°à¦¾à¦¯à¦¼ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡ à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦œà¦¾à¦² à¦¬à¦¿à¦›à¦¿à¦¯à¦¼à§‡ à¦†à¦›à¦¿, à¦¯à§‡à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦œà¦¨à§à¦® à¦¨à¦¿à¦•, à¦†à¦®à¦°à¦¾ à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦¹à¦¾à¦œà¦¿à¦°à¥¤`,
+  feat3Title: `à¦¹à§ƒà¦¦à§à¦¯à¦¤à¦¾à¦ªà§‚à¦°à§à¦£ à¦¦à§à¦°à§à¦¤ à¦¸à§‡à¦¬à¦¾`,
+  feat3Desc: `à¦…à¦¨à§à¦­à¦¬ à¦•à¦°à§à¦¨ à¦…à¦¤à§à¦²à¦¨à§€à¦¯à¦¼ <strong class="text-ghm-green font-bold">à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾à¦°</strong> à¦‰à¦·à§à¦£à¦¤à¦¾à¥¤ à¦œà¦¾à¦¹à¦¾à¦œà§‡à¦° à¦¸à¦®à¦¯à¦¼à¦¸à§€à¦®à¦¾ à¦†à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦¦à§à¦¶à§à¦šà¦¿à¦¨à§à¦¤à¦¾ à¦›à§‡à¦¡à¦¼à§‡ à¦¦à¦¿à¦¨ à¦à¦®à¦¨ à¦à¦• à¦ªà§‚à¦°à§à¦£à¦¾à¦™à§à¦— à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¦° à¦¹à¦¾à¦¤à§‡, à¦¯à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦­à¦¾à¦° à¦¨à¦¿à¦œà§‡à¦° à¦•à¦¾à¦à¦§à§‡ à¦¤à§à¦²à§‡ à¦¨à§‡à¦¯à¦¼à¥¤`,
+  feat4Title: `à¦ªà§à¦°à¦¯à§à¦•à§à¦¤à¦¿ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦²à§‡à¦° à¦¨à¦¿à¦ªà§à¦£ à¦¹à¦¾à¦¤`,
+  feat4Desc: `à¦†à¦¸à§à¦¥à¦¾ à¦°à¦¾à¦–à§à¦¨ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦œà§à¦ž à¦¦à¦²à§‡à¦° à¦“à¦ªà¦°à¥¤ à¦¬à¦¿à¦¶ à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦®à¦¯à¦¼ à¦§à¦°à§‡ à¦†à¦®à¦°à¦¾ à¦—à§à¦°à¦¾à¦¹à¦•à¦¦à§‡à¦° à¦‰à¦ªà¦¹à¦¾à¦° à¦¦à¦¿à¦¯à¦¼à§‡ à¦šà¦²à§‡à¦›à¦¿ à¦…à¦¸à¦¾à¦®à¦¾à¦¨à§à¦¯ <strong class="text-ghm-green font-bold">à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¦à¦•à§à¦·à¦¤à¦¾</strong>à¥¤`,
+  statsHeading: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦•à§‡ à¦¨à¦¿à¦–à§à¦à¦¤ à¦•à¦°à§‡ à¦¤à§‹à¦²à¦¾à¦° à¦šà¦¿à¦°à¦¸à¦™à§à¦—à§€ à¦†à¦®à¦°à¦¾à¥¤`,
+  stat1Label: `à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  stat2Label: `à¦¬à¦›à¦°à§‡à¦° à¦ªà¦¥à¦šà¦²à¦¾`,
+  stat3Label: `à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦…à¦«à¦¿à¦¸`,
+  stat4Label: `à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€`,
+  fleetEyebrow: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚`,
+  fleetHeading: `à¦¬à§ˆà¦šà¦¿à¦¤à§à¦°à§à¦¯à¦®à¦¯à¦¼ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¹à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦ªà¦£à§à¦¯ à¦ªà§Œà¦à¦›à§‡ à¦¦à¦¿à¦‡ à¦ à¦¿à¦• à¦¸à¦®à¦¯à¦¼à§‡à¦° à¦˜à¦¾à¦Ÿà§‡à¥¤`,
+  fleetSub: `à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾à¦° à¦®à¦¾à¦¨à¦¦à¦£à§à¦¡à§‡ à¦—à¦¡à¦¼à¦¾ à¦“ à¦ªà¦°à¦¿à¦•à¦²à§à¦ªà¦¿à¦¤ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  fleet1Title: `à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  fleet1Desc: `à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¸à¦®à§à¦­à¦¾à¦°à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¤à¦°à¦² à¦ªà¦£à§à¦¯ à¦­à§à¦°à¦®à¦£ à¦•à¦°à§à¦• à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¨à§à¦¤à§‡, à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡à¥¤`,
+  fleet2Title: `à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  fleet2Desc: `à¦¨à¦¾à¦¨à¦¾ à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦‰à¦ªà¦¯à§‹à¦—à§€ à¦†à¦®à¦¾à¦¦à§‡à¦° T50 à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦­à¦¾à¦¨à§à¦¡à¦¾à¦° à¦˜à§à¦°à§‡ à¦¦à§‡à¦–à§à¦¨à¥¤`,
+  fleet3Title: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸`,
+  fleet3Desc: `à¦¯à§à¦•à§à¦¤à¦°à¦¾à¦·à§à¦Ÿà§à¦°à¦¸à¦¹ à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦¨à¦¾à¦¨à¦¾ à¦¨à¦•à¦¶à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦®à§‡à¦²à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦¸à¦™à§à¦—à§€ à¦¹à¦¯à¦¼à§‡à¥¤ à¦¹à¦¾à¦²à¦•à¦¾ à¦“à¦œà¦¨à§‡à¦°, à¦ªà¦°à§€à¦•à§à¦·à¦¿à¦¤ à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦­à¦°à¦¾ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦­à¦¾à¦°à¦•à§‡à¦¨à§à¦¦à§à¦°à¦•à§‡ à¦¨à¦¾à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§‡ à¦®à¦¾à¦Ÿà¦¿à¦° à¦•à¦¾à¦›à¦¾à¦•à¦¾à¦›à¦¿, à¦ªà¦¥à¦šà¦²à¦¾à¦•à§‡ à¦•à¦°à§‡ à¦¸à§à¦¥à¦¿à¦° à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à¥¤`,
+  fleet4Title: `à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  fleet4Desc: `à¦šà¦°à¦® à¦¹à¦¿à¦®à¦¶à§€à¦¤à¦² à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾à¦¯à¦¼ à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦—à§à¦¯à¦¾à¦¸ à¦¬à¦¹à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à¦¬à¦¿à¦¶à§‡à¦·à¦­à¦¾à¦¬à§‡ à¦—à¦¡à¦¼à¦¾ T75 à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¥¤`,
+  fleet5Title: `à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  fleet5Desc: `à¦¸à¦¡à¦¼à¦• à¦“ à¦°à§‡à¦²à¦ªà¦¥à§‡ à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦ªà¦£à§à¦¯à¦­à¦¾à¦° à¦¬à¦¹à¦¨à§‡à¦° à¦¦à¦•à§à¦·à¦¤à¦¾à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦®à¦¿à¦¤, à¦¬à¦¿à¦ªà§à¦² à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¥¤`,
+  fleet6Title: `à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  fleet6Desc: `à¦¨à¦¾à¦¨à¦¾ à¦¨à¦•à¦¶à¦¾ à¦“ à¦¬à§ˆà¦¶à¦¿à¦·à§à¦Ÿà§à¦¯à§‡à¦° à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œ à¦¨à¦¿à¦¨, à¦¯à¦¾ à§ªà§«à§¦ à¦¥à§‡à¦•à§‡ à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¤à¦°à¦² à¦“ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦šà¦¾à¦¹à¦¿à¦¦à¦¾ à¦®à§‡à¦Ÿà¦¾à¦¯à¦¼à¥¤`,
+  fleet7Title: `à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  fleet7Desc: `à¦¸à¦¾à¦—à¦°à¦¬à§à¦•à§‡à¦° à¦ªà¦°à¦¿à¦¬à¦¹à¦¨ à¦“ à¦¸à¦‚à¦°à¦•à§à¦·à¦£à§‡à¦° à¦œà¦¨à§à¦¯ à¦­à¦¾à¦¡à¦¼à¦¾à¦¯à¦¼ à¦®à§‡à¦²à§‡ à¦‰à¦šà§à¦šà¦®à¦¾à¦¨à§‡à¦° à¦¡à¦¿à¦à¦¨à¦­à¦¿-à¦ªà§à¦°à¦¤à§à¦¯à¦¯à¦¼à¦¿à¦¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦¬à¦¹à¦°à¥¤`,
+  testimonialQuote: `â€œà¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦†à¦° à¦¸à§à¦Ÿà¦²à§à¦Ÿà§‡à¦° à¦¸à¦®à§à¦ªà¦°à§à¦• à¦¦à§€à¦°à§à¦˜à¦¦à¦¿à¦¨à§‡à¦°, à¦¸à¦¾à¦«à¦²à§à¦¯à§‡ à¦­à¦°à¦¾à¥¤ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦‰à¦ªà¦¸à§à¦¥à¦¿à¦¤à¦¿, à¦¸à§à¦¦à§ƒà¦¢à¦¼ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾ à¦†à¦° à¦šà¦®à§Žà¦•à¦¾à¦° à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦šà¦²à¦®à¦¾à¦¨ à¦¬à¦¾à¦œà¦¾à¦°à§‡à¦° à¦šà¦¾à¦¹à¦¿à¦¦à¦¾ à¦®à§‡à¦Ÿà¦¾à¦¤à§‡ à¦…à¦ªà¦°à¦¿à¦¹à¦¾à¦°à§à¦¯à¥¤ à¦à¦‡ à¦¸à¦¹à¦¯à§‹à¦—à¦¿à¦¤à¦¾ à¦“ à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¿à¦¤à§à¦¬ à¦†à¦—à¦¾à¦®à§€ à¦¬à¦¹à§ à¦¬à¦›à¦° à¦…à¦Ÿà§à¦Ÿ à¦¥à¦¾à¦•à§à¦•, à¦à¦‡ à¦ªà§à¦°à¦¤à§à¦¯à¦¾à¦¶à¦¾à¦‡ à¦•à¦°à¦¿!â€`,
+  testimonialAuthor: `à¦¡à¦¾à¦¸à§à¦Ÿà¦¿à¦¨ à¦•à§à¦¯à¦¾à¦²à¦¾à¦“à¦¯à¦¼à§‡, à¦Ÿà§‡à¦•à¦¨à¦¿à¦•à§à¦¯à¦¾à¦² à¦¸à¦¾à¦°à§à¦­à¦¿à¦¸à§‡à¦¸/à¦à¦® à¦…à§à¦¯à¦¾à¦¨à§à¦¡ à¦†à¦°, à¦¸à§à¦Ÿà¦²à§à¦Ÿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§à¦¸`,
+  susEyebrow: `à¦¸à§à¦¥à¦¾à¦¯à¦¼à¦¿à¦¤à§à¦¬`,
+  susHeading: `à¦Ÿà§‡à¦•à¦¸à¦‡ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦ªà¦¥à§‡ à¦¹à§‡à¦à¦Ÿà§‡ à¦¸à§à¦°à¦•à§à¦·à¦¿à¦¤ à¦°à¦¾à¦–à§à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦•à§‡à¥¤`,
+  susSub: `à¦†à¦ªà¦¨à¦¾à¦° à¦¬à§à¦¯à¦¬à¦¸à¦¾à¦° à¦œà¦¨à§à¦¯ à¦•à¦²à§à¦¯à¦¾à¦£à¦•à¦°, à¦§à¦°à¦¿à¦¤à§à¦°à§€à¦° à¦œà¦¨à§à¦¯à¦“à¥¤`,
+  susPara1: `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à§¯à§© à¦¶à¦¤à¦¾à¦‚à¦¶à¦‡ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯à¥¤ à¦¯à§‡ à¦¸à¦™à§à¦—à§€ à¦ªà§ƒà¦¥à¦¿à¦¬à§€à¦•à§‡ à¦¬à¦¾à¦à¦šà¦¿à¦¯à¦¼à§‡ à¦°à¦¾à¦–à¦¾à¦° à¦ªà§à¦°à¦¤à¦¿à¦œà§à¦žà¦¾à¦¯à¦¼ à¦…à¦Ÿà¦², à¦¤à¦¾à¦° à¦¹à¦¾à¦¤ à¦§à¦°à§‡ à¦¸à¦¾à¦œà¦¿à¦¯à¦¼à§‡ à¦¤à§à¦²à§à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦Ÿà§‡à¦•à¦¸à¦‡ à¦‰à¦¦à§à¦¯à§‹à¦—à¥¤`,
+  susPara2: `à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦¨à¦¾à¦®à§€ à¦¸à¦¾à¦¸à¦Ÿà§‡à¦‡à¦¨à§‡à¦¬à¦¿à¦²à¦¿à¦Ÿà¦¿ à¦°à§‡à¦Ÿà¦¿à¦‚ à¦¸à¦‚à¦¸à§à¦¥à¦¾ à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à¦•à§‡ à¦¦à¦¿à¦¯à¦¼à§‡à¦›à§‡ à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦ªà¦¦à¦•à§‡à¦° à¦¸à§à¦¬à§€à¦•à§ƒà¦¤à¦¿à¥¤ à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¿à¦¤ à¦à¦• à¦²à¦•à§à¦·à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦®à¦§à§à¦¯à§‡ à¦†à¦®à¦°à¦¾ à¦¶à§€à¦°à§à¦· à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶à§‡à¦° à¦•à¦¾à¦¤à¦¾à¦°à§‡à¥¤ à¦ªà¦°à¦¿à¦¬à§‡à¦¶, à¦¶à§à¦°à¦® à¦“ à¦®à¦¾à¦¨à¦¬à¦¾à¦§à¦¿à¦•à¦¾à¦°, à¦¨à§ˆà¦¤à¦¿à¦•à¦¤à¦¾ à¦à¦¬à¦‚ à¦Ÿà§‡à¦•à¦¸à¦‡ à¦•à§à¦°à¦¯à¦¼, à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦•à§à¦·à§‡à¦¤à§à¦°à§‡à¦‡ à¦†à¦®à¦°à¦¾ à¦ªà§‡à¦¯à¦¼à§‡à¦›à¦¿ à¦‰à¦šà§à¦š à¦¨à¦®à§à¦¬à¦°à¥¤`,
+  logHeading: `à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚, à¦¬à§à¦¯à¦¬à¦¸à¦¾à¦¯à¦¼à¦¿à¦• à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸à§‡à¦° à¦ªà¦¥à¦•à§‡ à¦•à¦°à§‡ à¦¸à¦¹à¦œ à¦“ à¦¸à¦°à¦²`,
+  logSub: `à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦®à§à¦¹à§‚à¦°à§à¦¤à§‡, à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦ à¦¿à¦•à¦¾à¦¨à¦¾à¦¯à¦¼ à¦ªà§‡à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦¾à¦¯à¦¼à¦¿à¦¤ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œ à¦¨à¦¿à¦¯à¦¼à§‡ à¦¬à§à¦¯à¦¬à¦¸à¦¾ à¦šà¦¾à¦²à¦¿à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨ à¦¨à¦¿à¦°à§à¦­à¦¾à¦° à¦®à¦¨à§‡à¥¤`,
+  svc1Title: `à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾`,
+  svc1Desc: `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¦à¦² à¦†à¦ªà¦¨à¦¾à¦•à§‡ à¦¦à§‡à¦¬à§‡ à¦®à¦¾à¦¨à¦¸à¦®à§à¦ªà¦¨à§à¦¨, à¦¨à¦¿à¦°à§à¦­à¦°à¦¯à§‹à¦—à§à¦¯ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à§‡à¦¬à¦¾à¥¤`,
+  svc2Title: `à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦° à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•`,
+  svc2Desc: `à¦ªà§ƒà¦¥à¦¿à¦¬à§€à¦œà§‹à¦¡à¦¼à¦¾ à¦¸à¦®à§à¦ªà¦°à§à¦•à§‡à¦° à¦¬à¦¨à§à¦§à¦¨à§‡ à¦¬à¦¾à¦à¦§à¦¾ à¦à¦• à¦¸à¦™à§à¦—à§€à¦° à¦¸à¦™à§à¦—à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦¬à¦¿à¦˜à§à¦¨ à¦•à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§à¦¨à¥¤`,
+  svc3Title: `à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿ à¦¸à§‡à¦¬à¦¾`,
+  svc3Desc: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¨à¦œà¦°à¦¦à¦¾à¦°à¦¿ à¦†à¦° à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨-à¦…à¦¨à§à¦¸à¦°à¦£à§‡à¦° à¦®à¦§à§à¦¯ à¦¦à¦¿à¦¯à¦¼à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦œà§à¦¡à¦¼à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à§à¦¨ à¦†à¦°à¦“ à¦¨à¦¿à¦¬à¦¿à¦¡à¦¼à¥¤`,
+  svc4Title: `à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦®à¦¾à¦§à¦¾à¦¨`,
+  svc4Desc: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦ªà¦¥à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦®à§‚à¦²à¦§à¦¨à§€ à¦¬à§à¦¯à¦¯à¦¼ à¦“ à¦à§à¦à¦•à¦¿à¦° à¦¬à§‹à¦à¦¾ à¦¹à¦¾à¦²à¦•à¦¾ à¦•à¦°à§à¦¨à¥¤`,
+  svc5Title: `à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•`,
+  svc5Desc: `à¦ªà§à¦°à¦¾à¦¯à¦¼ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡ à¦›à¦¡à¦¼à¦¾à¦¨à§‹ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦…à¦«à¦¿à¦¸ à¦“ à¦¡à¦¿à¦ªà§‹à¦° à¦œà¦¾à¦²à§‡ à¦­à¦°à¦¸à¦¾ à¦°à¦¾à¦–à§à¦¨, à¦¯à¦¾ à¦¸à¦®à¦¯à¦¼à¦®à¦¤à§‹ à¦†à¦ªà¦¨à¦¾à¦° à¦¹à¦¾à¦¤à§‡ à¦ªà§Œà¦à¦›à§‡ à¦¦à§‡à¦¬à§‡ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§‡à¦° à¦§à¦¨à¥¤`,
+  svc6Title: `à¦—à§à¦°à¦¾à¦¹à¦• à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾`,
+  svc6Desc: `à¦œà¦°à§à¦°à¦¿ à¦ªà§à¦°à¦¾à¦ªà§à¦¯à¦¤à¦¾, à¦°à¦•à§à¦·à¦£à¦¾à¦¬à§‡à¦•à§à¦·à¦£à§‡à¦° à¦¸à¦®à¦¯à¦¼à¦¸à§‚à¦šà¦¿à¦¸à¦¹ à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦¯à§‡à¦•à§‹à¦¨à§‹ à¦œà¦Ÿà¦¿à¦²à¦¤à¦¾à¦¯à¦¼ à¦ªà¦¾à¦¶à§‡ à¦¦à¦¾à¦à¦¡à¦¼à¦¾à¦¤à§‡ à¦ªà§à¦°à¦¸à§à¦¤à§à¦¤ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤à¦ªà§à¦°à¦¾à¦£ à¦—à§à¦°à¦¾à¦¹à¦• à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾ à¦¦à¦²à¥¤`,
+  trust247: `à¦¦à¦¿à¦¨à¦°à¦¾à¦¤ à¦šà¦¬à§à¦¬à¦¿à¦¶ à¦˜à¦£à§à¦Ÿà¦¾, à¦¸à¦¾à¦¤ à¦¦à¦¿à¦¨à¥¤ à¦œà¦¾à¦¨à¦¬à§‡à¦¨, à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦¾à¦¶à§‡ à¦†à¦›à§‡ à¦à¦• à¦¬à¦¿à¦¶à§à¦¬à¦¸à§à¦¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¥¤`,
+  locEyebrow: `à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨`,
+  locHeading: `à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨ à¦¥à§‡à¦•à§‡ à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡, à¦¸à¦°à§à¦¬à¦¤à§à¦°à¦‡ à¦†à¦®à¦°à¦¾ à¦†à¦ªà¦¨à¦¾à¦° à¦›à¦¾à¦¯à¦¼à¦¾à¦¸à¦™à§à¦—à§€à¥¤`,
+  locSub: `à¦†à¦ªà¦¨à¦¿ à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦¥à¦¾à¦•à§à¦¨, à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦¸à§‡à¦¬à¦¾à¥¤`,
+  locDesc: `à¦¬à¦¿à¦¶à§à¦¬à¦¸à§à¦¤ à¦à¦• à¦²à¦¿à¦œà¦¿à¦‚ à¦¸à¦™à§à¦—à§€à¦° à¦¯à¦–à¦¨à¦‡ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¹à¦¬à§‡, à¦†à¦®à¦¾à¦¦à§‡à¦° à¦“à¦ªà¦° à¦­à¦°à¦¸à¦¾ à¦°à¦¾à¦–à§à¦¨à¥¤ à¦¯à§‡à¦–à¦¾à¦¨à§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦¦à¦°à¦•à¦¾à¦°, à¦†à¦®à¦°à¦¾ à¦¸à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦†à¦›à¦¿à¥¤`,
+  bannerMidHeading: `à¦¨à¦®à¦¨à§€à¦¯à¦¼ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡ à¦—à¦¡à¦¼à§‡ à¦¤à§à¦²à§à¦¨ à¦†à¦—à¦¾à¦®à§€à¦° à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦­à¦¿à¦¤à¥¤`,
+  partnerEyebrow: `à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¹à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦…à¦—à§à¦°à¦—à¦£à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à¥¤`,
+  partnerHeading: `à§¨à§¦à§¦à§¦ à¦¸à¦¾à¦² à¦¥à§‡à¦•à§‡ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡à¦° à¦°à§‚à¦ª à¦¬à¦¦à¦²à§‡ à¦¦à¦¿à¦šà§à¦›à¦¿à¥¤`,
+  partnerPara1: `à¦†à¦ªà¦¨à¦¾à¦° à¦“ à¦†à¦ªà¦¨à¦¾à¦° à¦¦à¦²à§‡à¦° à¦ªà¦¾à¦¶à§‡ à¦¦à¦¾à¦à¦¡à¦¼à¦¾à¦¨à§‹à¦° à¦®à¦¤à§‹ à¦…à¦­à¦¿à¦œà§à¦žà¦¤à¦¾ à¦†à¦° à¦¶à¦¿à¦²à§à¦ªà¦œà§à¦žà¦¾à¦¨ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦†à¦›à§‡à¥¤ à¦¬à¦¿à¦¶ à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦®à¦¯à¦¼ à¦§à¦°à§‡ à¦¨à¦®à¦¨à§€à¦¯à¦¼ à¦²à¦¿à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦ªà¦¥ à¦¦à§‡à¦–à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à¦—à§à¦²à§‹à¦•à§‡ à¦¬à§à¦¯à¦¯à¦¼ à¦•à¦®à¦¾à¦¤à§‡ à¦“ à¦•à¦¾à¦°à§à¦¯à¦•à§à¦°à¦® à¦—à§à¦›à¦¿à¦¯à¦¼à§‡ à¦¨à¦¿à¦¤à§‡ à¦¸à¦¾à¦¹à¦¾à¦¯à§à¦¯ à¦•à¦°à§‡ à¦†à¦¸à¦›à¦¿à¥¤`,
+  partnerPara2: `à¦…à¦¤à§à¦²à¦¨à§€à¦¯à¦¼ à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾ à¦†à¦° à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¿à¦¤à§à¦¬à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦§à¦¾à¦ªà§‡ à¦¸à§‡à¦°à¦¾à¦Ÿà§à¦•à§ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦…à¦™à§à¦—à§€à¦•à¦¾à¦° à¦¨à¦¿à¦¯à¦¼à§‡ à¦†à¦®à¦°à¦¾ à¦†à¦¤à§à¦®à¦¬à¦¿à¦¶à§à¦¬à¦¾à¦¸à§€, à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦¾à¦«à¦²à§à¦¯à§‡à¦° à¦ªà¦¥à§‡ à¦†à¦®à¦°à¦¾ à¦¸à¦ à¦¿à¦• à¦¸à¦¹à¦¯à¦¾à¦¤à§à¦°à§€à¥¤`,
+  resEyebrow: `à¦œà§à¦žà¦¾à¦¨à¦­à¦¾à¦¨à§à¦¡à¦¾à¦°`,
+  resHeading: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦…à¦¨à§à¦¦à¦°à¦®à¦¹à¦²à§‡à¦° à¦†à¦²à§‹à¦•à¦¿à¦¤ à¦¤à¦¥à§à¦¯ à¦˜à§à¦°à§‡ à¦¦à§‡à¦–à§à¦¨à¥¤`,
+  resSub: `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦·à¦œà§à¦žà¦°à¦¾ à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦¨à¦¾à¦¨à¦¾ à¦…à¦¨à§à¦¤à¦°à§à¦¦à§ƒà¦·à§à¦Ÿà¦¿ à¦­à¦¾à¦— à¦•à¦°à§‡ à¦¨à§‡à¦¨, à¦¯à§‡à¦¨ à¦•à§à¦°à¦¯à¦¼ à¦“ à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à¦¹à¦¯à§‹à¦—à§€à¦°à¦¾ à¦¸à¦®à¦¯à¦¼à§‡à¦° à¦šà§‡à¦¯à¦¼à§‡ à¦à¦• à¦§à¦¾à¦ª à¦à¦—à¦¿à¦¯à¦¼à§‡ à¦¥à¦¾à¦•à¦¤à§‡ à¦ªà¦¾à¦°à§‡à¦¨à¥¤`,
+  res1Title: `à¦Ÿà¦¿-à¦•à§‹à¦¡ à¦šà¦¾à¦°à§à¦Ÿ`,
+  res1Desc: `à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª, à¦–à§‹à¦²à§‡à¦° à¦ªà§à¦°à§à¦¤à§à¦¬, à¦šà¦¾à¦ª-à¦¨à¦¿à¦·à§à¦•à¦¾à¦¶à¦¨ à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾ à¦†à¦° à¦¤à¦²à¦¦à§‡à¦¶à§‡à¦° à¦¨à¦¿à¦°à§à¦—à¦® à¦¬à¦¿à¦¨à§à¦¯à¦¾à¦¸à§‡à¦° à¦¨à¦¿à¦°à¦¿à¦–à§‡ à¦Ÿà¦¿-à¦•à§‹à¦¡ à¦¬à¦¾ â€œà¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¨à¦¿à¦°à§à¦¦à§‡à¦¶à¦¿à¦•à¦¾â€à¦° à¦¬à§à¦¯à¦¾à¦–à§à¦¯à¦¾à¥¤`,
+  res2Title: `à¦¶à¦¬à§à¦¦à¦•à§‹à¦·`,
+  res2Desc: `à¦¬à¦¿à¦¶à§à¦¬à¦¬à§à¦¯à¦¾à¦ªà§€ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦²à¦¿à¦œà¦¿à¦‚ à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨à§€à¦¯à¦¼ à¦ªà¦°à¦¿à¦­à¦¾à¦·à¦¾à¦° à¦¸à¦‚à¦•à¦²à¦¨à¥¤`,
+  res3Title: `à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¨à¦•à¦¶à¦¾ à¦“ à¦¸à§à¦ªà§‡à¦¸à¦¿à¦«à¦¿à¦•à§‡à¦¶à¦¨`,
+  res3Desc: `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¦à¦²à¦¿à¦²à¦ªà¦¤à§à¦° à¦“ à¦–à§à¦à¦Ÿà¦¿à¦¨à¦¾à¦Ÿà¦¿ à¦¬à¦¿à¦¬à¦°à¦£à§‡à¦° à¦à¦• à¦¸à§à¦¬à¦¿à¦¶à¦¾à¦² à¦—à§à¦°à¦¨à§à¦¥à¦¾à¦—à¦¾à¦°à¥¤`,
+  bottomCtaText: `à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾, à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾ à¦†à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à§‡à¦° à¦¶à¦•à§à¦¤à¦¿à¦¤à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¬à¦¹à¦° à¦†à¦ªà¦¨à¦¾à¦° à¦¬à¦¾à¦²à§à¦• à¦¤à¦°à¦² à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦ªà¦¥à¦•à§‡ à¦•à¦°à§‡ à¦¤à§‹à¦²à§‡ à¦¸à¦¹à¦œ, à¦†à¦° à¦•à¦°à§à¦®à¦¯à¦œà§à¦žà¦•à§‡ à¦¦à§‡à¦¯à¦¼ à¦¶à§à¦°à§‡à¦·à§à¦ à¦¤à§à¦¬à§‡à¦° à¦›à§‹à¦à¦¯à¦¼à¦¾à¥¤`,
+  infoEyebrow: `à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à¦¿à¦¤ à¦¤à¦¥à§à¦¯`,
+  infoHeading: `à¦¬à¦¹à¦°, à¦¸à§‡à¦¬à¦¾ à¦“ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦•à¦¥à¦¾`,
+  secOverview: `à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à¦¿à¦¤ à¦¬à¦¿à¦¬à¦°à¦£`,
+  secSpecs: `à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¬à¦¿à¦¬à¦°à¦£ à¦“ à¦®à¦¾à¦¨à¦¦à¦£à§à¦¡`,
+  secBenefits: `à¦®à§‚à¦² à¦¸à§à¦¬à¦¿à¦§à¦¾ à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾à¦° à¦¬à§ˆà¦¶à¦¿à¦·à§à¦Ÿà§à¦¯`
+};
+
+const PAGES = [
+{ id: 'tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  title: `à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¬à¦¹à¦°à§‡à¦° à¦ªà§‚à¦°à§à¦£à¦¾à¦™à§à¦— à¦šà¦¿à¦¤à§à¦°`,
+  subtitle: `à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾ à¦“ à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦®à¦¾à¦¨à¦¦à¦£à§à¦¡à§‡ à¦—à¦¡à¦¼à¦¾ à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à¦¿à¦¶à§‡à¦· à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à¥¤`,
+  overview: [
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨à¦¾ à¦•à¦°à§‡ à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦…à¦¨à§à¦¯à¦¤à¦® à¦¤à¦°à§à¦£ à¦“ à¦¬à¦¹à§à¦®à§à¦–à§€ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¬à¦¹à¦°, à¦¯à¦¾à¦° à¦¸à¦‚à¦–à§à¦¯à¦¾ à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿à¥¤ à¦¸à¦¾à¦—à¦°à§‡à¦° à¦œà¦¾à¦¹à¦¾à¦œ, à¦°à§‡à¦²à§‡à¦° à¦§à¦¾à¦¤à¦¬ à¦ªà¦¥ à¦†à¦° à¦®à¦¹à¦¾à¦¸à¦¡à¦¼à¦•à§‡à¦° à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸à§‡ à¦¨à¦¿à¦°à§à¦¬à¦¿à¦˜à§à¦¨ à¦¯à¦¾à¦¤à§à¦°à¦¾à¦° à¦‰à¦ªà¦¯à§‹à¦—à§€ à¦•à¦°à§‡ à¦—à¦¡à¦¼à¦¾ à¦à¦‡ à¦¬à¦¹à¦° à¦¬à¦¹à¦¨ à¦•à¦°à§‡ à¦¶à¦¿à¦²à§à¦ª-à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•, à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦¤à¦°à¦², à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸, à¦¹à¦¿à¦®à¦¶à§€à¦¤à¦² à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦¤à¦°à¦², à¦à¦®à¦¨à¦•à¦¿ à¦…à¦«à¦¶à§‹à¦° à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿à¦° à¦­à¦¾à¦°à¦“à¥¤`,
+    `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦…à¦¨à§à¦®à§‹à¦¦à¦¿à¦¤ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¡à¦¿à¦ªà§‹à¦¤à§‡ à¦¨à¦¿à¦¯à¦¼à¦®à¦¿à¦¤ à¦†à¦¡à¦¼à¦¾à¦‡ à¦¬à¦›à¦° à¦“ à¦ªà¦¾à¦à¦š à¦¬à¦›à¦°à§‡à¦° à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦ªà¦°à¦¿à¦¦à¦°à§à¦¶à¦¨à§‡à¦° à¦ªà¦°à§€à¦•à§à¦·à¦¾ à¦ªà§‡à¦°à¦¿à¦¯à¦¼à§‡ à¦†à¦¸à§‡, à¦¯à¦¾ à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¤ à¦•à¦°à§‡ à¦¶à¦¤à¦­à¦¾à¦— à¦¬à¦¿à¦§à¦¿à¦¸à¦®à§à¦®à¦¤ à¦“ à¦•à§à¦·à¦°à¦£à¦®à§à¦•à§à¦¤ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨à¦¾à¥¤`
+  ],
+  specs: [
+    [`à¦®à§‹à¦Ÿ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¬à¦¹à¦°`, `à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`],
+    [`à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦ªà¦°à¦¿à¦¸à¦°`, `à§ªà§«à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° (à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯) à¦¥à§‡à¦•à§‡ à§©à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° (à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿)`],
+    [`à¦‡à¦‰à¦à¦¨ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à§‹à¦¡`, `T1, T4, T7, T11, T14, T20, T22, T50, T75`],
+    [`à¦–à§‹à¦² à¦¨à¦¿à¦°à§à¦®à¦¾à¦£à§‡à¦° à¦‰à¦ªà¦¾à¦¦à¦¾à¦¨`, `316L à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦² / à¦¸à§‚à¦•à§à¦·à§à¦®à¦¦à¦¾à¦¨à¦¾ à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¸à§à¦Ÿà¦¿à¦²`],
+    [`à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦…à¦¨à§à¦®à§‹à¦¦à¦¨`, `IMO, IMDG, ADR/RID, ASME VIII Div.1, CSC, DNV 2.7-1`]
+  ],
+  benefits: [
+    `à¦¬à¦¾à¦•à§à¦¸ à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à§¨à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦¡à§à¦°à¦¾à¦®à§‡à¦° à¦¤à§à¦²à¦¨à¦¾à¦¯à¦¼ à¦ªà¦£à§à¦¯à¦¬à¦¹à¦¨à§‡ à§ªà§¦ à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¬à¦¾à¦¡à¦¼à¦¤à¦¿ à¦¦à¦•à§à¦·à¦¤à¦¾`,
+    `à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨ à¦“ à¦‰à¦šà§à¦šà¦¬à¦¿à¦¶à§à¦¦à§à¦§à¦¤à¦¾à¦° à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•à§‡à¦° à¦œà¦¨à§à¦¯ à¦ªà§ƒà¦¥à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦•-à¦­à¦¾à¦¨à§à¦¡à¦¾à¦°à§‡ à¦ªà¦£à§à¦¯à¦¦à§‚à¦·à¦£à§‡à¦° à¦•à§‹à¦¨à§‹ à¦†à¦¶à¦™à§à¦•à¦¾à¦‡ à¦¨à§‡à¦‡`,
+    `à§§à§­à¦Ÿà¦¿ à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦…à¦«à¦¿à¦¸ à¦“ à§«à§¦à¦Ÿà¦¿à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€à¦° à¦®à¦¾à¦§à§à¦¯à¦®à§‡ à¦¤à¦¾à§Žà¦•à§à¦·à¦£à¦¿à¦• à¦ªà§à¦°à¦¾à¦ªà§à¦¯à¦¤à¦¾`,
+    `à¦à¦šà§à¦›à¦¿à¦• à¦¸à§à¦Ÿà¦¿à¦® à¦¹à¦¿à¦Ÿà¦¿à¦‚ à¦•à¦¯à¦¼à§‡à¦², à¦¬à§ˆà¦¦à§à¦¯à§à¦¤à¦¿à¦• à¦¤à¦¾à¦ªà¦¨, à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨ à¦†à¦¬à¦°à¦£ à¦“ à¦œà¦¿à¦ªà¦¿à¦à¦¸ à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿à¦° à¦¸à§à¦¬à¦¿à¦§à¦¾`
+  ] },
+
+{ id: 'liquid-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° (à¦‡à¦‰à¦à¦¨ T1 â€“ T22)`,
+  subtitle: `à¦¬à¦¿à¦ªà¦œà§à¦œà¦¨à¦• à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦¤à¦°à¦²à§‡à¦° à¦œà¦¨à§à¦¯ à¦¸à¦¾à¦§à¦¾à¦°à¦£ IMO 1 / T11 à¦à¦¬à¦‚ à¦¬à¦¿à¦¶à§‡à¦· à¦²à¦¾à¦‡à¦¨à¦¿à¦‚à¦¯à§à¦•à§à¦¤, à¦¬à§à¦¯à¦¾à¦«à¦²à¦¯à§à¦•à§à¦¤ à¦¬à¦¾ à¦¬à§ˆà¦¦à§à¦¯à§à¦¤à¦¿à¦•à¦­à¦¾à¦¬à§‡ à¦‰à¦¤à§à¦¤à¦ªà§à¦¤ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  overview: [
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦¬à¦¾à¦²à§à¦• à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•, à¦“à¦·à§à¦§ à¦“ à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸à§‡à¦° à¦®à§‡à¦°à§à¦¦à¦£à§à¦¡à¥¤ à§§à§ª,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦˜à¦¨ à¦…à§à¦¯à¦¾à¦¸à¦¿à¦¡-à¦¬à¦¾à¦¹à§€ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¥à§‡à¦•à§‡ à§¨à§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦¸à¦¾à¦§à¦¾à¦°à¦£ T11 à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦“ à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦ªà¦°à§à¦¯à¦¨à§à¦¤, à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿à¦° à¦–à§‹à¦² à¦—à¦¡à¦¼à¦¾ à¦¹à¦¯à¦¼à§‡à¦›à§‡ à¦‰à¦šà§à¦šà¦®à¦¾à¦¨à§‡à¦° 316L à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¥¤`,
+    `à¦°à§‡à¦œà¦¿à¦¨, à¦²à§à¦¯à¦¾à¦Ÿà§‡à¦•à§à¦¸, à¦ªà¦¾à¦® à¦¤à§‡à¦²à¦œà¦¾à¦¤ à¦¦à§à¦°à¦¬à§à¦¯ à¦•à¦¿à¦‚à¦¬à¦¾ à¦¬à¦¿à¦¶à§‡à¦· à¦®à¦¨à§‹à¦®à¦¾à¦°à§‡à¦° à¦®à¦¤à§‹ à¦¤à¦¾à¦ª-à¦¸à¦‚à¦¬à§‡à¦¦à¦¨à¦¶à§€à¦² à¦ªà¦£à§à¦¯à§‡à¦° à¦œà¦¨à§à¦¯ à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¤à¦°à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡ à¦†à¦›à§‡ à¦†à¦Ÿà¦Ÿà¦¿ à¦§à¦¾à¦ªà§‡à¦° à¦¸à§à¦Ÿà¦¿à¦® à¦¹à¦¿à¦Ÿà¦¿à¦‚ à¦•à¦¯à¦¼à§‡à¦², à¦°à¦•à¦‰à¦² à¦¬à¦¾ à¦ªà¦²à¦¿à¦‡à¦‰à¦°à§‡à¦¥à§‡à¦¨ à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨, à¦†à¦° à¦à¦šà§à¦›à¦¿à¦• à¦—à§à¦²à¦¾à¦‡à¦•à¦² à¦¬à¦¾ à¦¬à§ˆà¦¦à§à¦¯à§à¦¤à¦¿à¦• à¦¤à¦¾à¦ªà¦¨ à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¥¤`
+  ],
+  specs: [
+    [`à¦ªà§à¦°à¦šà¦²à¦¿à¦¤ à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾`, `à§§à§ª,à§¦à§¦à§¦ / à§§à§­,à§«à§¦à§¦ / à§¨à§§,à§¦à§¦à§¦ / à§¨à§ª,à§¦à§¦à§¦ / à§¨à§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°`],
+    [`à¦‡à¦‰à¦à¦¨ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à§‹à¦¡`, `T11 (à§ª à¦¬à¦¾à¦°), T14 (à§¬ à¦¬à¦¾à¦°), T20 (à§§à§¦ à¦¬à¦¾à¦°), T22`],
+    [`à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦®à§‹à¦Ÿ à¦“à¦œà¦¨`, `à§©à§¬,à§¦à§¦à§¦ à¦•à§‡à¦œà¦¿ (à§­à§¯,à§©à§¬à§¬ à¦ªà¦¾à¦‰à¦¨à§à¦¡)`],
+    [`à¦¬à¦¾à¦¹à§à¦¯à¦¿à¦• à¦†à¦‡à¦à¦¸à¦“ à¦®à¦¾à¦ª`, `à§¬,à§¦à§«à§® à¦®à¦¿à¦®à¦¿ (à¦¦à§ˆà¦°à§à¦˜à§à¦¯) Ã— à§¨,à§ªà§©à§® à¦®à¦¿à¦®à¦¿ (à¦ªà§à¦°à¦¸à§à¦¥) Ã— à§¨,à§«à§¯à§§ à¦®à¦¿à¦®à¦¿ (à¦‰à¦šà§à¦šà¦¤à¦¾)`],
+    [`à¦¤à¦¾à¦ªà¦¨ à¦“ à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨`, `à§®-à¦§à¦¾à¦ª à¦¸à§à¦Ÿà¦¿à¦® à¦•à¦¯à¦¼à§‡à¦² (à§ª à¦¬à¦¾à¦°) + à§«à§¦ à¦®à¦¿à¦®à¦¿ à¦°à¦•à¦‰à¦² / à¦œà¦¿à¦†à¦°à¦ªà¦¿ à¦†à¦¬à¦°à¦£`]
+  ],
+  benefits: [
+    `à¦­à§‹à¦œà§à¦¯à¦¤à§‡à¦², à¦«à¦²à§‡à¦° à¦°à¦¸ à¦“ à¦“à¦¯à¦¼à¦¾à¦‡à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à¦•à§‹à¦¶à¦¾à¦° à¦“ à¦¹à¦¾à¦²à¦¾à¦² à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦ªà§ƒà¦¥à¦• à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¬à¦¹à¦°`,
+    `à¦…à¦¤à¦¿-à¦•à§à¦·à¦¯à¦¼à¦•à¦¾à¦°à§€ à¦–à¦¨à¦¿à¦œ à¦…à§à¦¯à¦¾à¦¸à¦¿à¦¡à§‡à¦° à¦œà¦¨à§à¦¯ PTFE, à¦•à§‡à¦®à¦²à¦¾à¦‡à¦¨ à¦¬à¦¾ à¦°à¦¾à¦¬à¦¾à¦° à¦²à¦¾à¦‡à¦¨à¦¿à¦‚à¦¯à§à¦•à§à¦¤ T14 à¦“ T20 à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+    `à¦†à¦‚à¦¶à¦¿à¦• à¦­à¦¾à¦°à§‡à¦“ à¦¤à¦°à¦²à§‡à¦° à¦¦à§‹à¦²à¦¾ à¦¸à¦¾à¦®à¦²à§‡ à¦¸à§à¦¥à¦¿à¦° à¦¥à¦¾à¦•à¦¤à§‡ à¦¬à§à¦¯à¦¾à¦«à¦² à¦•à¦•à§à¦·à§‡à¦° à¦¨à¦•à¦¶à¦¾`,
+    `à¦…à¦­à§à¦¯à¦¨à§à¦¤à¦°à§€à¦£ à¦«à§à¦Ÿ à¦­à¦¾à¦²à¦­ à¦“ à¦¬à¦¾à¦Ÿà¦¾à¦°à¦«à§à¦²à¦¾à¦‡ à¦­à¦¾à¦²à¦­à¦¸à¦¹ à§© à¦‡à¦žà§à¦šà¦¿ BSP / à¦•à§à¦¯à¦¾à¦®à¦²à¦• à¦¤à¦²à¦¦à§‡à¦¶à§€à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦—à¦®à¦ªà¦¥`
+  ] },
+
+{ id: 'gas-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦‡à¦‰à¦à¦¨ T50 à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  subtitle: `à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à¦—à¦¡à¦¼à¦¾ à¦‰à¦šà§à¦šà¦šà¦¾à¦ª-à¦¸à¦¹à¦¨à¦¶à§€à¦², ASME à¦“ PED à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ T50 à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  overview: [
+    `à¦šà¦¾à¦ªà§‡à¦° à¦¬à¦¾à¦à¦§à¦¨à§‡ à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤, à¦…à¦¥à¦š à¦¹à¦¿à¦®à¦¾à¦¯à¦¼à¦¿à¦¤ à¦¨à¦¯à¦¼ à¦à¦®à¦¨ à¦—à§à¦¯à¦¾à¦¸à§‡à¦° à¦œà¦¨à§à¦¯ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦°à§‡à¦–à§‡à¦›à§‡ à¦‡à¦‰à¦à¦¨ T50 à¦šà¦¾à¦ªà¦¯à§à¦•à§à¦¤ à¦—à§à¦¯à¦¾à¦¸ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦¬à¦¹à¦°à¥¤ à¦à¦²à¦ªà¦¿à¦œà¦¿, à¦ªà§à¦°à§‹à¦ªà§‡à¦¨, à¦¬à¦¿à¦‰à¦Ÿà§‡à¦¨, à¦¨à¦¿à¦°à§à¦œà¦² à¦…à§à¦¯à¦¾à¦®à§‹à¦¨à¦¿à¦¯à¦¼à¦¾, R-134a à¦“ R-32 à¦°à§‡à¦«à§à¦°à¦¿à¦œà¦¾à¦°à§‡à¦¨à§à¦Ÿ, à¦•à§à¦²à§‹à¦°à¦¿à¦¨ à¦•à¦¿à¦‚à¦¬à¦¾ à¦¶à¦¿à¦²à§à¦ª-à¦…à§à¦¯à¦¾à¦°à§‹à¦¸à¦²à§‡à¦° à¦ªà§à¦°à§‹à¦ªà§‡à¦²à§à¦¯à¦¾à¦¨à§à¦Ÿ, à¦¸à¦¬à¦‡ à¦à¦¤à§‡ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡ à¦­à§à¦°à¦®à¦£ à¦•à¦°à§‡à¥¤`,
+    `à¦‰à¦šà§à¦š-à¦¸à¦¹à¦¨à¦¶à§€à¦² à¦¸à§‚à¦•à§à¦·à§à¦®à¦¦à¦¾à¦¨à¦¾ à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¸à§à¦Ÿà¦¿à¦² à¦¬à¦¾ à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡ à¦—à¦¡à¦¼à¦¾, à¦°à§‹à¦¦-à¦†à¦¡à¦¼à¦¾à¦²à¦•à¦¾à¦°à§€ à¦¸à¦¾à¦¨à¦¶à¦¿à¦²à§à¦¡, à¦…à¦¤à¦¿à¦ªà§à¦°à¦¬à¦¾à¦¹-à¦°à§‹à¦§à§€ à¦­à¦¾à¦²à¦­ à¦“ à¦¦à§à¦¬à¦¿à¦®à§à¦–à§€ à¦šà¦¾à¦ª-à¦¨à¦¿à¦·à§à¦•à¦¾à¦¶à¦¨ à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¦¯à¦¼ à¦¸à¦œà§à¦œà¦¿à¦¤ à¦†à¦®à¦¾à¦¦à§‡à¦° T50 à¦‡à¦‰à¦¨à¦¿à¦Ÿ à¦¬à¦¿à¦ªà¦œà§à¦œà¦¨à¦• à¦ªà¦£à§à¦¯ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦•à¦ à§‹à¦° à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦¬à¦¿à¦§à¦¿à¦° à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦¶à¦°à§à¦¤ à¦ªà§‚à¦°à¦£ à¦•à¦°à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦‡à¦‰à¦à¦¨ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à§‹à¦¡`, `à¦‡à¦‰à¦à¦¨ T50 (à¦…à¦¹à¦¿à¦®à¦¾à¦¯à¦¼à¦¿à¦¤ à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸)`],
+    [`à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦šà¦¾à¦ª (MAWP)`, `à§§à§ª.à§¦ à¦¬à¦¾à¦° à¦¥à§‡à¦•à§‡ à§©à§ª.à§ª à¦¬à¦¾à¦° (à§¨à§¦à§© â€“ à§«à§¦à§¦ à¦ªà¦¿à¦à¦¸à¦†à¦‡)`],
+    [`à¦‰à¦ªà¦²à¦¬à§à¦§ à¦†à¦¯à¦¼à¦¤à¦¨`, `à§§à§­,à§«à§¦à§¦ / à§¨à§¦,à§¦à§¦à§¦ / à§¨à§ª,à§¦à§¦à§¦ / à§¨à§ª,à§«à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°`],
+    [`à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾ à¦«à¦¿à¦Ÿà¦¿à¦‚à¦¸`, `à¦…à¦¤à¦¿à¦ªà§à¦°à¦¬à¦¾à¦¹-à¦°à§‹à¦§à§€ à¦­à¦¾à¦²à¦­, à¦šà§Œà¦®à§à¦¬à¦• à¦²à§‡à¦­à§‡à¦² à¦—à§‡à¦œ, à¦¸à¦¾à¦¨à¦¶à¦¿à¦²à§à¦¡`],
+    [`à¦¨à¦•à¦¶à¦¾à¦° à¦¬à¦¿à¦§à¦¿`, `ASME Sec. VIII Div. 1, EN 14025, IMDG, ADR/RID`]
+  ],
+  benefits: [
+    `à¦¬à§à¦¯à¦¯à¦¼à¦¬à¦¹à§à¦² à¦¸à¦¿à¦²à¦¿à¦¨à§à¦¡à¦¾à¦° à¦­à¦°à¦¾, à¦¬à¦¹à¦¨ à¦†à¦° à¦–à¦¾à¦²à¦¿ à¦¸à¦¿à¦²à¦¿à¦¨à§à¦¡à¦¾à¦° à¦«à§‡à¦°à¦¤ à¦†à¦¨à¦¾à¦° à¦à¦•à§à¦•à¦¿ à¦¥à§‡à¦•à§‡ à¦®à§à¦•à§à¦¤à¦¿`,
+    `à¦…à§à¦¯à¦¾à¦²à§à¦®à¦¿à¦¨à¦¿à¦¯à¦¼à¦¾à¦® à¦¬à¦¾ à¦—à§à¦¯à¦¾à¦²à¦­à¦¾à¦¨à¦¾à¦‡à¦œà¦¡ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦¸à¦¾à¦¨à¦¶à¦¿à¦²à§à¦¡ à¦¸à§‚à¦°à§à¦¯à¦¤à¦¾à¦ªà§‡ à¦šà¦¾à¦ª à¦¬à§‡à¦¡à¦¼à§‡ à¦¯à¦¾à¦“à¦¯à¦¼à¦¾à¦° à¦†à¦¶à¦™à§à¦•à¦¾ à¦ à§‡à¦•à¦¾à¦¯à¦¼`,
+    `à¦Ÿà¦¾à¦°à§à¦®à¦¿à¦¨à¦¾à¦²à§‡ à¦¦à§à¦°à§à¦¤ à¦¸à§à¦¥à¦¾à¦¨à¦¾à¦¨à§à¦¤à¦°à§‡à¦° à¦œà¦¨à§à¦¯ à¦‰à¦ªà¦°à§‡ à¦¬à¦¾ à¦ªà§‡à¦›à¦¨à§‡ à¦¤à¦°à¦² à¦“ à¦¬à¦¾à¦·à§à¦ª à¦¦à¦¶à¦¾à¦° à¦¨à¦¿à¦°à§à¦—à¦® à¦®à§à¦¯à¦¾à¦¨à¦¿à¦«à§‹à¦²à§à¦¡`,
+    `à¦¬à¦¿à¦¶à§à¦¬à¦œà§à¦¡à¦¼à§‡ à¦¬à¦¿à¦¶à§‡à¦·à¦¾à¦¯à¦¼à¦¿à¦¤ T50 à¦—à§à¦¯à¦¾à¦¸ à¦¡à¦¿à¦ªà§‹à¦° à¦ªà¦°à§€à¦•à§à¦·à¦¾-à¦¸à§à¦¬à¦¿à¦§à¦¾à¦° à¦¸à¦¹à¦¯à§‹à¦—à¦¿à¦¤à¦¾`
+  ] },
+
+{ id: 'chassis-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸`,
+  title: `à¦¹à¦¾à¦²à¦•à¦¾ à¦“à¦œà¦¨à§‡à¦° à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸`,
+  subtitle: `à¦®à¦¹à¦¾à¦¸à¦¡à¦¼à¦•à§‡ à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦¸à§à¦¥à¦¿à¦¤à¦¿ à¦“ à¦ªà¦£à§à¦¯à¦­à¦¾à¦°à§‡à¦° à¦œà¦¨à§à¦¯ à¦¨à¦¿à¦šà§ à¦­à¦¾à¦°à¦•à§‡à¦¨à§à¦¦à§à¦°à§‡à¦° à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦“ à¦¤à§à¦°à¦¿-à¦…à§à¦¯à¦¾à¦•à§à¦¸à§‡à¦² à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸à¥¤`,
+  overview: [
+    `à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡ à¦¤à¦°à¦² à¦¬à¦¯à¦¼à§‡ à¦¨à¦¿à¦¤à§‡ à¦¹à¦²à§‡ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¬à¦¿à¦¶à§‡à¦· à¦œà§à¦¯à¦¾à¦®à¦¿à¦¤à¦¿à¦° à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸, à¦¯à§‡à¦¨ à¦¤à¦°à¦²à§‡à¦° à¦¢à§‡à¦‰à¦¯à¦¼à§‡ à¦—à¦¾à¦¡à¦¼à¦¿ à¦‰à¦²à§à¦Ÿà§‡ à¦¯à¦¾à¦“à¦¯à¦¼à¦¾à¦° à¦à§à¦à¦•à¦¿ à¦¦à§‚à¦°à§‡ à¦¥à¦¾à¦•à§‡à¥¤ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦¦à§‡à¦¯à¦¼ à¦ªà¦°à§€à¦•à§à¦·à¦¿à¦¤, à¦¹à¦¾à¦²à¦•à¦¾ à¦“à¦œà¦¨à§‡à¦° à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦® à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸, à¦¯à¦¾ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦«à§à¦²à§à¦¯à¦¾à¦Ÿà¦¬à§‡à¦¡à§‡à¦° à¦šà§‡à¦¯à¦¼à§‡ à¦­à¦°à¦¾ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦­à¦¾à¦°à¦•à§‡à¦¨à§à¦¦à§à¦°à¦•à§‡ à¦ªà§à¦°à¦¾à¦¯à¦¼ à§§à§ª à¦‡à¦žà§à¦šà¦¿ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¨à¦¾à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§‡à¥¤`,
+    `à¦†à¦®à¦¾à¦¦à§‡à¦° à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦ªà¦¾à¦¶à¦¾à¦ªà¦¾à¦¶à¦¿ à¦¸à§à¦¬à¦²à§à¦ª à¦“ à¦¦à§€à¦°à§à¦˜à¦®à§‡à¦¯à¦¼à¦¾à¦¦à¦¿ à¦²à¦¿à¦œà§‡ à¦®à§‡à¦²à§‡ à¦à¦‡ à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸, à¦¯à¦¾à¦¤à§‡ à¦†à¦›à§‡ à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦¸à§à¦ªà¦¿à¦² à¦Ÿà§à¦°à§‡, à¦ªà§‡à¦›à¦¨à§‡à¦° à¦¹à§‹à¦¸ à¦Ÿà¦¿à¦‰à¦¬, à¦à¦¬à¦¿à¦à¦¸ à¦¬à§à¦°à§‡à¦• à¦†à¦° à¦à¦²à¦‡à¦¡à¦¿ à¦†à¦²à§‹à¥¤`
+  ],
+  specs: [
+    [`à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸à§‡à¦° à¦¬à¦¿à¦¨à§à¦¯à¦¾à¦¸`, `à§ªà§¦ à¦«à§à¦Ÿ / à§ªà§© à¦«à§à¦Ÿ à¦Ÿà§à¦¯à¦¾à¦¨à§à¦¡à§‡à¦® à¦“ à¦¤à§à¦°à¦¿-à¦…à§à¦¯à¦¾à¦•à§à¦¸à§‡à¦² à¦¡à§à¦°à¦ª-à¦«à§à¦°à§‡à¦®`],
+    [`à¦–à¦¾à¦²à¦¿ à¦“à¦œà¦¨`, `à§¬,à§ªà§«à§¦ à¦ªà¦¾à¦‰à¦¨à§à¦¡ â€“ à§­,à§®à§¦à§¦ à¦ªà¦¾à¦‰à¦¨à§à¦¡ (à¦‰à¦šà§à¦š-à¦Ÿà¦¾à¦¨ à§®à§¦ KSI à¦¸à§à¦Ÿà¦¿à¦²)`],
+    [`à¦¸à¦¾à¦®à¦žà§à¦œà¦¸à§à¦¯`, `à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° (à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦“ à¦¬à§à¦¯à¦¾à¦«à¦²à¦¯à§à¦•à§à¦¤)`],
+    [`à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾ à¦¸à¦°à¦žà§à¦œà¦¾à¦®`, `2S/1M à¦à¦¬à¦¿à¦à¦¸, à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦ªà¦¿à¦² à¦ªà§à¦¯à¦¾à¦¨, à¦¦à§à¦‡ à¦¸à§‡à¦Ÿ à¦¹à§‹à¦¸ à¦•à§à¦¯à¦¾à¦°à¦¿à¦¯à¦¼à¦¾à¦°`],
+    [`à¦¬à¦¿à¦§à¦¿à¦¸à¦®à§à¦®à¦¤ à¦…à¦¨à§à¦®à§‹à¦¦à¦¨`, `US DOT, FMVSS, AAR, ISO 668 à¦Ÿà§à¦‡à¦¸à§à¦Ÿà¦²à¦•`]
+  ],
+  benefits: [
+    `à¦­à¦¾à¦°à¦•à§‡à¦¨à§à¦¦à§à¦° à¦‰à¦²à§à¦²à§‡à¦–à¦¯à§‹à¦—à§à¦¯à¦­à¦¾à¦¬à§‡ à¦¨à§‡à¦®à§‡ à¦†à¦¸à¦¾à¦¯à¦¼ à¦®à¦¹à¦¾à¦¸à¦¡à¦¼à¦•à§‡à¦° à¦¬à¦¾à¦à¦•à§‡ à¦…à¦¨à¦¨à§à¦¯ à¦¸à§à¦¥à¦¿à¦¤à¦¿à¦¶à§€à¦²à¦¤à¦¾`,
+    `à¦¹à¦¾à¦²à¦•à¦¾ à¦«à§à¦°à§‡à¦®à§‡à¦° à¦¨à¦•à¦¶à¦¾à¦¯à¦¼ à¦†à¦‡à¦¨à¦¸à¦®à§à¦®à¦¤ à¦¬à§à¦°à¦¿à¦œ-à¦¸à§‚à¦¤à§à¦° à¦®à§‡à¦¨à§‡ à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦ªà¦£à§à¦¯à¦­à¦¾à¦° à¦¬à¦¹à¦¨`,
+    `à¦ªà§‡à¦›à¦¨à§‡à¦° à¦“à¦¯à¦¼à¦¾à¦•à¦“à¦¯à¦¼à§‡ à¦“ à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¡à§à¦°à¦¿à¦ª à¦ªà§à¦¯à¦¾à¦¨ à¦°à¦•à§à¦·à¦¾ à¦•à¦°à§‡ à¦šà¦¾à¦²à¦• à¦“ à¦ªà¦°à¦¿à¦¬à§‡à¦¶à¦•à§‡`,
+    `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦“ à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦à¦•à¦¸à¦™à§à¦—à§‡ à¦²à¦¿à¦œ à¦¨à¦¿à¦²à§‡ à¦à¦• à¦šà¦¾à¦²à¦¾à¦¨à§‡à¦‡ à¦¸à¦¹à¦œ à¦¹à¦¯à¦¼ à¦¬à¦¹à¦° à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¦ªà¦¨à¦¾`
+  ] },
+
+{ id: 'cryo-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦‡à¦‰à¦à¦¨ T75 à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° (âˆ’à§§à§¯à§¬Â°à¦¸à§‡.)`,
+  subtitle: `à¦à¦²à¦à¦¨à¦œà¦¿, à¦¤à¦°à¦² à¦¨à¦¾à¦‡à¦Ÿà§à¦°à§‹à¦œà§‡à¦¨, à¦…à¦•à§à¦¸à¦¿à¦œà§‡à¦¨, à¦†à¦°à§à¦—à¦¨ à¦“ à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¡à¦¾à¦‡-à¦…à¦•à§à¦¸à¦¾à¦‡à¦¡à§‡à¦° à¦œà¦¨à§à¦¯ à¦¬à¦¹à§à¦¸à§à¦¤à¦°à§€à¦¯à¦¼ à¦­à§à¦¯à¦¾à¦•à§à¦¯à¦¼à¦¾à¦®-à¦¸à§à¦ªà¦¾à¦°-à¦‡à¦¨à¦¸à§à¦²à§‡à¦Ÿà§‡à¦¡ à¦¦à§à¦¬à¦¿à¦ªà§à¦°à¦¾à¦šà§€à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  overview: [
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° T75 à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° âˆ’à§§à§¯à§¬Â°à¦¸à§‡. (âˆ’à§©à§¨à§¦Â°à¦«à¦¾.) à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¹à¦¿à¦®à¦¶à§€à¦¤à¦² à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾à¦° à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸à¦•à§‡ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡ à¦¬à¦¯à¦¼à§‡ à¦¨à§‡à¦¯à¦¼ à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦ªà¦¥à§‡à¥¤ à¦¬à¦¾à¦‡à¦°à§‡à¦° à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¬à¦¾ à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦­à§à¦¯à¦¾à¦•à§à¦¯à¦¼à¦¾à¦® à¦†à¦¬à¦°à¦£à§‡à¦° à¦­à§‡à¦¤à¦° à¦à§à¦²à§‡ à¦¥à¦¾à¦•à¦¾ 304L à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦…à¦­à§à¦¯à¦¨à§à¦¤à¦°à§€à¦£ à¦šà¦¾à¦ªà¦ªà¦¾à¦¤à§à¦°, à¦†à¦° à¦¬à¦¹à§à¦¸à§à¦¤à¦°à§€à¦¯à¦¼ à¦¸à§à¦ªà¦¾à¦°-à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨à§‡à¦° à¦•à¦²à§à¦¯à¦¾à¦£à§‡ à¦¶à§€à¦¤à¦²à¦¤à¦¾ à¦§à¦°à§‡ à¦°à¦¾à¦–à¦¾à¦° à¦•à§à¦·à¦®à¦¤à¦¾à¦¯à¦¼ à¦à¦‡ à¦‡à¦‰à¦¨à¦¿à¦Ÿ à¦¶à¦¿à¦²à§à¦ªà§‡ à¦…à¦—à§à¦°à¦—à¦£à§à¦¯à¥¤`,
+    `à¦­à¦¾à¦°à§à¦šà§à¦¯à¦¼à¦¾à¦² à¦à¦²à¦à¦¨à¦œà¦¿ à¦ªà¦¾à¦‡à¦ªà¦²à¦¾à¦‡à¦¨, à¦¸à§‡à¦®à¦¿à¦•à¦¨à§à¦¡à¦¾à¦•à§à¦Ÿà¦° à¦¶à¦¿à¦²à§à¦ªà§‡ à¦…à¦¤à¦¿-à¦¬à¦¿à¦¶à§à¦¦à§à¦§ à¦¨à¦¾à¦‡à¦Ÿà§à¦°à§‹à¦œà§‡à¦¨ à¦¸à¦°à¦¬à¦°à¦¾à¦¹, à¦šà¦¿à¦•à¦¿à§Žà¦¸à¦¾à¦° à¦…à¦•à§à¦¸à¦¿à¦œà§‡à¦¨ à¦¬à¦¿à¦¤à¦°à¦£ à¦†à¦° à¦¶à¦¿à¦²à§à¦ª-à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¡à¦¾à¦‡-à¦…à¦•à§à¦¸à¦¾à¦‡à¦¡à§‡à¦° à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸à§‡à¦° à¦œà¦¨à§à¦¯ à¦à¦Ÿà¦¿ à¦†à¦¦à¦°à§à¦¶à¥¤`
+  ],
+  specs: [
+    [`à¦‡à¦‰à¦à¦¨ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à§‹à¦¡`, `à¦‡à¦‰à¦à¦¨ T75 (à¦¹à¦¿à¦®à¦¾à¦¯à¦¼à¦¿à¦¤ à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸)`],
+    [`à¦¸à¦°à§à¦¬à¦¨à¦¿à¦®à§à¦¨ à¦¨à¦•à¦¶à¦¾-à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾`, `âˆ’à§§à§¯à§¬Â°à¦¸à§‡. (âˆ’à§©à§¨à§¦Â°à¦«à¦¾.) | âˆ’à§¨à§«à§©Â°à¦¸à§‡. (à¦¤à¦°à¦² à¦¹à¦¾à¦‡à¦¡à§à¦°à§‹à¦œà§‡à¦¨à§‡à¦° à¦¬à¦¿à¦¶à§‡à¦· à¦®à¦¡à§‡à¦²)`],
+    [`à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦†à¦•à¦¾à¦° à¦“ à¦†à¦¯à¦¼à¦¤à¦¨`, `à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ (à§¨à§¦,à§¦à§¦à§¦ â€“ à§¨à§¨,à§«à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°) | à§ªà§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ (à§ªà§©,à§«à§¦à§¦ â€“ à§ªà§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°)`],
+    [`à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨ à¦ªà§à¦°à¦¯à§à¦•à§à¦¤à¦¿`, `à¦‰à¦šà§à¦š-à¦­à§à¦¯à¦¾à¦•à§à¦¯à¦¼à¦¾à¦® à¦¬à¦¹à§à¦¸à§à¦¤à¦°à§€à¦¯à¦¼ à¦¸à§à¦ªà¦¾à¦°-à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨ (MLI)`],
+    [`à¦§à¦¾à¦°à¦£à¦•à¦¾à¦² (à¦¹à§‹à¦²à§à¦¡à¦¿à¦‚ à¦Ÿà¦¾à¦‡à¦®)`, `à§¬à§¦ à¦¥à§‡à¦•à§‡ à§§à§¨à§¦ à¦¦à¦¿à¦¨à§‡à¦° à¦¬à§‡à¦¶à¦¿ (à¦¬à¦¾à¦·à§à¦ª-à¦¨à¦¿à¦°à§à¦—à¦®à¦¨ à¦›à¦¾à¦¡à¦¼à¦¾à¦‡)`]
+  ],
+  benefits: [
+    `à¦…à¦¨à§à¦¤à¦°à§à¦¨à¦¿à¦°à§à¦®à¦¿à¦¤ à¦ªà¦°à¦¿à¦¬à§‡à¦¶-à¦¬à¦¾à¦·à§à¦ªà¦¾à¦¯à¦¼à¦• à¦šà¦¾à¦ª-à¦¬à¦°à§à¦§à¦• à¦•à¦¯à¦¼à§‡à¦²à§‡à¦° à¦—à§à¦£à§‡ à¦ªà¦¾à¦®à§à¦ª à¦›à¦¾à¦¡à¦¼à¦¾à¦‡ à¦¨à¦¿à¦œà§‡à¦° à¦šà¦¾à¦ªà§‡ à¦–à¦¾à¦²à¦¾à¦¸ à¦¸à¦®à§à¦­à¦¬`,
+    `à¦…à¦¤à¦¿-à¦¸à§à¦¬à¦²à§à¦ª à¦¬à¦¯à¦¼à§‡à¦²-à¦…à¦« à¦¹à¦¾à¦° (à¦à¦²à¦à¦¨à¦œà¦¿à¦° à¦•à§à¦·à§‡à¦¤à§à¦°à§‡ à¦¦à§ˆà¦¨à¦¿à¦• à§¦.à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶à§‡à¦° à¦•à¦®) à¦°à¦•à§à¦·à¦¾ à¦•à¦°à§‡ à¦®à§‚à¦²à§à¦¯à¦¬à¦¾à¦¨ à¦ªà¦£à§à¦¯à¦•à§‡`,
+    `à¦­à¦¾à¦°à§à¦šà§à¦¯à¦¼à¦¾à¦² à¦à¦²à¦à¦¨à¦œà¦¿ à¦¬à¦¾à¦™à§à¦•à¦¾à¦°à¦¿à¦‚ à¦“ à¦¬à¦¿à¦¦à§à¦¯à§à§Ž à¦‰à§Žà¦ªà¦¾à¦¦à¦¨à§‡à¦° à¦®à¦§à§à¦¯ à¦¦à¦¿à¦¯à¦¼à§‡ à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿-à¦°à§‚à¦ªà¦¾à¦¨à§à¦¤à¦°à§‡à¦° à¦‰à¦¦à§à¦¯à§‹à¦—à§‡ à¦¸à¦¹à¦¾à¦¯à¦¼à¦•`,
+    `à¦¦à§à¦¬à§ˆà¦¤ à¦¸à§‡à¦«à¦Ÿà¦¿ à¦°à¦¿à¦²à¦¿à¦« à¦­à¦¾à¦²à¦­ à¦“ à¦°à¦¾à¦ªà¦šà¦¾à¦° à¦¡à¦¿à¦¸à§à¦• à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¤ à¦•à¦°à§‡ à¦…à¦¤à¦¿à¦šà¦¾à¦ªà§‡à¦° à¦¬à¦¿à¦°à§à¦¦à§à¦§à§‡ à¦…à¦Ÿà§à¦Ÿ à¦¸à§à¦°à¦•à§à¦·à¦¾`
+  ] },
+
+{ id: 'swap-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦¬à¦¿à¦ªà§à¦² à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  subtitle: `à¦‡à¦‰à¦°à§‹à¦ª à¦“ à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦¸à¦¡à¦¼à¦•-à¦°à§‡à¦² à¦•à¦°à¦¿à¦¡à§‹à¦°à§‡ à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦ªà¦£à§à¦¯à¦­à¦¾à¦° à¦¬à¦¹à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à§¨à§¬,à§¦à§¦à§¦ à¦¥à§‡à¦•à§‡ à§©à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  overview: [
+    `à¦•à¦® à¦˜à¦¨à¦¤à§à¦¬à§‡à¦° à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•, à¦ªà¦²à¦¿à¦®à¦¾à¦°, à¦¸à¦¾à¦°à¦«à§à¦¯à¦¾à¦•à§à¦Ÿà§à¦¯à¦¾à¦¨à§à¦Ÿ à¦•à¦¿à¦‚à¦¬à¦¾ à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦¤à¦°à¦² à¦¸à§à¦¥à¦²à¦ªà¦¥ à¦“ à¦°à§‡à¦²à¦ªà¦¥à§‡ à¦¬à¦‡à¦¤à§‡ à¦—à§‡à¦²à§‡ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦®à§‹à¦Ÿ à¦“à¦œà¦¨à§‡à¦° à¦¸à§€à¦®à¦¾à¦¯à¦¼ à¦ªà§Œà¦à¦›à¦¾à¦¨à§‹à¦° à¦†à¦—à§‡à¦‡ à¦†à¦¯à¦¼à¦¤à¦¨à§‡à¦° à¦¸à§€à¦®à¦¾à¦¯à¦¼ à¦ à§‡à¦•à§‡ à¦¯à¦¾à¦¯à¦¼à¥¤ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦à¦° à¦¸à¦®à¦¾à¦§à¦¾à¦¨: à§­.à§§à§« à¦¥à§‡à¦•à§‡ à§­.à§®à§¨ à¦®à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦ªà§à¦°à¦¶à¦¸à§à¦¤, à¦¦à§€à¦°à§à¦˜ à¦•à¦¾à¦ à¦¾à¦®à§‹à¦¯à¦¼ à§©à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¥¤`,
+    `à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦“ à¦°à§‡à¦² à¦“à¦¯à¦¼à¦¾à¦—à¦¨à§‡à¦° à¦Ÿà§à¦‡à¦¸à§à¦Ÿà¦²à¦•à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦–à¦¾à¦ª à¦–à¦¾à¦“à¦¯à¦¼à¦¾à¦¤à§‡ à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦¨à¦¿à¦®à§à¦¨ à¦•à¦°à§à¦¨à¦¾à¦° à¦•à¦¾à¦¸à§à¦Ÿà¦¿à¦‚ à¦¥à¦¾à¦•à¦¾à¦¯à¦¼ à¦à¦‡ à¦¸à§‹à¦¯à¦¼à¦¾à¦ª à¦¬à¦¡à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦ªà§à¦°à¦¤à¦¿ à¦Ÿà¦¨ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨ à¦¬à§à¦¯à¦¯à¦¼ à§¨à§¨ à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦•à¦®à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦ªà¦°à¦¿à¦¸à¦°`, `à§¨à§¬,à§¦à§¦à§¦ / à§©à§¦,à§¦à§¦à§¦ / à§©à§¨,à§¦à§¦à§¦ / à§©à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°`],
+    [`à¦•à¦¾à¦ à¦¾à¦®à§‹à¦° à¦¦à§ˆà¦°à§à¦˜à§à¦¯`, `à§­,à§§à§«à§¦ à¦®à¦¿à¦®à¦¿ / à§­,à§ªà§«à§¦ à¦®à¦¿à¦®à¦¿ / à§­,à§®à§¨à§¦ à¦®à¦¿à¦®à¦¿ (à¦ªà§à¦°à¦¸à§à¦¥ à§¨,à§«à§«à§¦ à¦®à¦¿à¦®à¦¿)`],
+    [`à¦‡à¦‰à¦à¦¨ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à§‹à¦¡`, `à¦‡à¦‰à¦à¦¨ T11 (à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦šà¦¾à¦ª à§ª à¦¬à¦¾à¦° / à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª à§¬ à¦¬à¦¾à¦°)`],
+    [`à¦Ÿà§à¦‡à¦¸à§à¦Ÿà¦²à¦•à§‡à¦° à¦¬à§à¦¯à¦¬à¦§à¦¾à¦¨`, `à¦¸à¦¾à¦§à¦¾à¦°à¦£ à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦¨à¦¿à¦®à§à¦¨ à¦•à¦°à§à¦¨à¦¾à¦° à¦•à¦¾à¦¸à§à¦Ÿà¦¿à¦‚`],
+    [`à¦¤à¦¾à¦ªà¦¨ à¦“ à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨`, `à¦ªà§‚à¦°à§à¦£ à¦¸à§à¦Ÿà¦¿à¦® à¦¹à¦¿à¦Ÿà¦¿à¦‚ + à¦‰à¦šà§à¦šà¦¦à¦•à§à¦·à¦¤à¦¾à¦° à¦‡à¦¨à¦¸à§à¦²à§‡à¦¶à¦¨`]
+  ],
+  benefits: [
+    `à¦•à¦® à¦†à¦ªà§‡à¦•à§à¦·à¦¿à¦• à¦˜à¦¨à¦¤à§à¦¬à§‡à¦° à¦ªà¦£à§à¦¯à§‡ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦šà§‡à¦¯à¦¼à§‡ à§©à§« à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¬à§‡à¦¶à¦¿ à¦†à¦¯à¦¼à¦¤à¦¨`,
+    `à¦¸à¦¾à¦§à¦¾à¦°à¦£ à§¨à§¦ à¦«à§à¦Ÿ à¦¸à¦¡à¦¼à¦• à¦šà§à¦¯à¦¾à¦¸à¦¿à¦¸ à¦à¦¬à¦‚ à¦‡à¦‰à¦°à§‹à¦ª-à¦à¦¶à¦¿à¦¯à¦¼à¦¾à¦° à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦°à§‡à¦² à¦“à¦¯à¦¼à¦¾à¦—à¦¨à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦ªà§à¦°à§‹à¦ªà§à¦°à¦¿ à¦¸à¦¾à¦®à¦žà§à¦œà¦¸à§à¦¯à¦ªà§‚à¦°à§à¦£`,
+    `à¦ªà§à¦°à¦¤à¦¿ à¦Ÿà¦¨ à¦ªà¦£à§à¦¯à§‡ à¦®à¦¹à¦¾à¦¸à¦¡à¦¼à¦•à§‡ à¦Ÿà§à¦°à¦¾à¦•à§‡à¦° à¦Ÿà§à¦°à¦¿à¦ª à¦“ à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¨à¦¿à¦ƒà¦¸à¦°à¦£ à¦•à¦®à§‡ à¦†à¦¸à§‡`,
+    `à¦à¦•à¦• à¦•à¦•à§à¦· à¦“ à¦¬à¦¹à§à¦•à¦•à§à¦·, à¦¦à§à¦‡ à¦¬à¦¿à¦¨à§à¦¯à¦¾à¦¸à§‡à¦‡ à¦‰à¦ªà¦²à¦¬à§à¦§`
+  ] },
+
+{ id: 'portable-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦“ à¦®à¦¿à¦¨à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• (à§ªà§«à§¦ â€“ à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°)`,
+  subtitle: `à¦¬à¦¿à¦¶à§‡à¦· à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•, à¦¤à§‡à¦²à¦•à§à¦·à§‡à¦¤à§à¦°à§‡à¦° à¦¸à¦‚à¦¯à§‹à¦œà¦• à¦“ à¦“à¦·à§à¦§à§‡à¦° à¦œà¦¨à§à¦¯ à¦®à¦œà¦¬à§à¦¤ à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦‡à¦‰à¦à¦¨ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦®à¦¿à¦¨à¦¿-à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦“ à¦†à¦‡à¦¬à¦¿à¦¸à¦¿à¥¤`,
+  overview: [
+    `à¦¬à¦¿à¦¶à§‡à¦· à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦®à¦¿à¦¶à§à¦°à¦£, à¦ªà¦¾à¦¨à¦¿ à¦ªà¦°à¦¿à¦¶à§‹à¦§à¦¨à§‡à¦° à¦¸à¦‚à¦¯à§‹à¦œà¦•, à¦…à¦¨à§à¦˜à¦Ÿà¦• à¦•à¦¿à¦‚à¦¬à¦¾ à¦“à¦·à§à¦§à§‡à¦° à¦®à¦§à§à¦¯à¦¬à¦°à§à¦¤à§€ à¦‰à¦ªà¦¾à¦¦à¦¾à¦¨, à¦¯à¦¾à¦¦à§‡à¦° à¦ªà§‚à¦°à§à¦£ à§¨à§¦ à¦«à§à¦Ÿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦šà§‡à¦¯à¦¼à§‡ à¦›à§‹à¦Ÿ à¦¬à§à¦¯à¦¾à¦šà§‡à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨, à¦¤à¦¾à¦¦à§‡à¦° à¦œà¦¨à§à¦¯ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦°à§‡à¦–à§‡à¦›à§‡ à§ªà§«à§¦ à¦¥à§‡à¦•à§‡ à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦›à§‹à¦Ÿ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¿à¦¶à¦¾à¦² à¦¬à¦¹à¦°à¥¤`,
+    `316L à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦²à§‡ à¦—à¦¡à¦¼à¦¾, à¦°à¦•à§à¦·à¦¾à¦•à¦¬à¦šà§‡à¦° à¦•à§à¦°à§à¦¯à¦¾à¦¶ à¦«à§à¦°à§‡à¦®, à¦¸à§à¦¤à§‚à¦ª à¦•à¦°à¦¾à¦° à¦‰à¦ªà¦¯à§‹à¦—à§€ à¦•à§‹à¦£à¦¾à¦° à¦–à§à¦à¦Ÿà¦¿ à¦†à¦° à¦šà¦¤à§à¦°à§à¦¦à¦¿à¦• à¦¥à§‡à¦•à§‡ à¦«à¦°à§à¦•à¦²à¦¿à¦«à¦Ÿà§‡à¦° à¦ªà¦•à§‡à¦Ÿà¦¯à§à¦•à§à¦¤ à¦à¦‡ à¦‡à¦‰à¦¨à¦¿à¦Ÿà¦—à§à¦²à§‹ à¦à¦•à¦¬à¦¾à¦°-à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡à¦° à¦ªà§à¦²à¦¾à¦¸à§à¦Ÿà¦¿à¦• à¦†à¦‡à¦¬à¦¿à¦¸à¦¿à¦° à¦œà¦¾à¦¯à¦¼à¦—à¦¾à¦¯à¦¼ à¦†à¦¸à§‡ à¦®à¦œà¦¬à§à¦¤, à¦‡à¦‰à¦à¦¨-à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤, à¦¬à¦¾à¦°à¦¬à¦¾à¦° à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯ à¦¸à¦®à§à¦ªà¦¦ à¦¹à¦¯à¦¼à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦§à¦¾à¦°à¦£à¦•à§à¦·à¦®à¦¤à¦¾à¦° à¦¬à¦¿à¦•à¦²à§à¦ª`, `à§ªà§«à§¦ / à§§,à§¦à§¦à§¦ / à§§,à§«à§¦à§¦ / à§¨,à§¦à§¦à§¦ / à§©,à§¦à§¦à§¦ / à§«,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°`],
+    [`à¦‡à¦‰à¦à¦¨ à¦¸à¦¨à¦¦`, `à¦‡à¦‰à¦à¦¨ 31A/Y (à¦†à¦‡à¦¬à¦¿à¦¸à¦¿) à¦“ à¦‡à¦‰à¦à¦¨ T11 / T14 à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`],
+    [`à¦¨à¦¾à¦¡à¦¼à¦¾à¦šà¦¾à¦¡à¦¼à¦¾à¦° à¦¸à§à¦¬à¦¿à¦§à¦¾`, `à¦šà¦¾à¦° à¦¦à¦¿à¦• à¦¥à§‡à¦•à§‡ à¦«à¦°à§à¦•à¦²à¦¿à¦«à¦Ÿ à¦šà§à¦¯à¦¾à¦¨à§‡à¦², à¦‰à¦ªà¦°à§‡à¦° à¦‰à¦¤à§à¦¤à§‹à¦²à¦¨-à¦•à¦¡à¦¼à¦¾, à¦¤à¦¿à¦¨ à¦¸à§à¦¤à¦° à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦¸à§à¦¤à§‚à¦ª à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼`],
+    [`à¦šà¦¾à¦ªà§‡à¦° à¦®à¦¾à¦¨`, `à¦¬à¦¾à¦¯à¦¼à§à¦®à¦£à§à¦¡à¦²à§€à¦¯à¦¼ à¦šà¦¾à¦ª à¦¥à§‡à¦•à§‡ à§ª.à§¦ à¦¬à¦¾à¦° MAWP à¦ªà¦°à§à¦¯à¦¨à§à¦¤`],
+    [`à¦¨à¦¿à¦°à§à¦®à¦¾à¦£ à¦‰à¦ªà¦¾à¦¦à¦¾à¦¨`, `316L à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦¸à§à¦Ÿà¦¿à¦² (2B / à¦‡à¦²à§‡à¦•à¦Ÿà§à¦°à§‹à¦ªà¦²à¦¿à¦¶à¦¡ à¦«à¦¿à¦¨à¦¿à¦¶)`]
+  ],
+  benefits: [
+    `à¦à¦•à¦¬à¦¾à¦°-à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡à¦° à¦ªà§à¦²à¦¾à¦¸à§à¦Ÿà¦¿à¦• à¦†à¦‡à¦¬à¦¿à¦¸à¦¿ à¦«à§‡à¦²à§‡ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦–à¦°à¦š à¦“ à¦•à§à¦·à¦°à¦£à§‡à¦° à¦à§à¦à¦•à¦¿ à¦¦à§‚à¦° à¦¹à¦¯à¦¼`,
+    `à¦›à§‹à¦Ÿ à¦†à¦•à¦¾à¦°à§‡à¦° à¦•à¦¾à¦°à¦£à§‡ à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦¡à§à¦°à¦¾à¦‡ à¦¬à¦•à§à¦¸ à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦•à¦¿à¦‚à¦¬à¦¾ à¦•à¦¾à¦°à¦–à¦¾à¦¨à¦¾à¦° à¦¸à¦‚à¦•à§€à¦°à§à¦£ à¦œà¦¾à¦¯à¦¼à¦—à¦¾à¦¤à§‡à¦“ à¦¸à¦¹à¦œà§‡à¦‡ à¦ à¦¾à¦à¦‡ à¦®à§‡à¦²à§‡`,
+    `à¦¡à¦¿à¦ª à¦Ÿà¦¿à¦‰à¦¬, à¦²à§‡à¦­à§‡à¦² à¦—à§‡à¦œ, à¦¨à¦¾à¦‡à¦Ÿà§à¦°à§‹à¦œà§‡à¦¨ à¦¬à§à¦²à§à¦¯à¦¾à¦™à§à¦•à§‡à¦Ÿà¦¿à¦‚ à¦“ à¦†à¦²à§‹à¦¡à¦¼à¦• à¦¯à§à¦•à§à¦¤ à¦•à¦°à¦¾à¦° à¦¸à§à¦¯à§‹à¦— à¦°à¦¯à¦¼à§‡à¦›à§‡`,
+    `à¦…à¦«à¦¶à§‹à¦° à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦¡à§‹à¦œà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦œà¦¨à§à¦¯ IMDG à¦“ DNV 2.7-1 à¦¦à§à¦¬à§ˆà¦¤-à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦®à¦¡à§‡à¦²à¦“ à¦®à§‡à¦²à§‡`
+  ] },
+
+{ id: 'offshore-tanks',
+  category: `à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° / à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+  title: `à¦¡à¦¿à¦à¦¨à¦­à¦¿ 2.7-1 à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°`,
+  subtitle: `à¦‰à¦¤à§à¦¤à¦¾à¦² à¦¸à¦¾à¦—à¦°à§‡à¦° à¦°à¦¿à¦— à¦“ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦œà¦¾à¦¹à¦¾à¦œà§‡à¦° à¦œà¦¨à§à¦¯ à¦—à¦¡à¦¼à¦¾, à¦®à¦œà¦¬à§à¦¤ à¦…à¦«à¦¶à§‹à¦° à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•, à¦¹à§‡à¦²à¦¿à¦«à§à¦¯à¦¼à§‡à¦² à¦“ à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à¥¤`,
+  overview: [
+    `à¦…à¦«à¦¶à§‹à¦° à¦¤à§‡à¦², à¦—à§à¦¯à¦¾à¦¸ à¦“ à¦¬à¦¾à¦¯à¦¼à§à¦¶à¦•à§à¦¤à¦¿à¦° à¦ªà§à¦²à§à¦¯à¦¾à¦Ÿà¦«à¦°à§à¦® à¦•à¦¾à¦œ à¦•à¦°à§‡ à¦ªà§ƒà¦¥à¦¿à¦¬à§€à¦° à¦¸à¦¬à¦šà§‡à¦¯à¦¼à§‡ à¦•à¦ à¦¿à¦¨ à¦¸à¦¾à¦®à§à¦¦à§à¦°à¦¿à¦• à¦ªà¦°à¦¿à¦¬à§‡à¦¶à§‡à¥¤ à¦‰à¦¤à§à¦¤à¦° à¦¸à¦¾à¦—à¦°, à¦®à§‡à¦•à§à¦¸à¦¿à¦•à§‹ à¦‰à¦ªà¦¸à¦¾à¦—à¦°, à¦ªà¦¶à§à¦šà¦¿à¦® à¦†à¦«à§à¦°à¦¿à¦•à¦¾ à¦†à¦° à¦à¦¶à¦¿à¦¯à¦¼à¦¾-à¦ªà§à¦°à¦¶à¦¾à¦¨à§à¦¤ à¦…à¦žà§à¦šà¦²à§‡à¦° à¦‰à¦¤à§à¦¤à¦¾à¦² à¦œà¦²à§‡ à¦•à§à¦°à§‡à¦¨à§‡ à¦“à¦ à¦¾à¦¨à¦¾à¦®à¦¾à¦° à¦§à¦•à¦² à¦¸à¦¾à¦®à¦²à¦¾à¦¤à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦°à§‡à¦–à§‡à¦›à§‡ DNV 2.7-1 / EN 12079 / ISO 10855 à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦…à¦«à¦¶à§‹à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤ à¦­à¦¾à¦¡à¦¼à¦¾-à¦¬à¦¹à¦°à¥¤`,
+    `à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦‡à¦‰à¦¨à¦¿à¦Ÿà§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦¥à¦¾à¦•à§‡ à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦¬à¦¹à§-à¦ªà¦¾à¦¯à¦¼à¦¾à¦° à¦¤à¦¾à¦°à§‡à¦° à¦¦à¦¡à¦¼à¦¿à¦° à¦¸à§à¦²à¦¿à¦‚ à¦¸à§‡à¦Ÿ, à¦¸à§à¦°à¦•à§à¦·à¦¿à¦¤ à¦­à¦¾à¦²à¦­ à¦•à§à¦¯à¦¾à¦¬à¦¿à¦¨à§‡à¦Ÿ à¦à¦¬à¦‚ à¦¸à¦®à§à¦ªà§‚à¦°à§à¦£ à¦¨à¦¨-à¦¡à§‡à¦¸à§à¦Ÿà§à¦°à¦¾à¦•à§à¦Ÿà¦¿à¦­ à¦Ÿà§‡à¦¸à§à¦Ÿà¦¿à¦‚ (NDT) à¦“à¦¯à¦¼à§‡à¦²à§à¦¡-à¦¨à¦¥à¦¿à¥¤`
+  ],
+  specs: [
+    [`à¦…à¦«à¦¶à§‹à¦° à¦®à¦¾à¦¨à¦¦à¦£à§à¦¡`, `DNV 2.7-1, EN 12079, ISO 10855, IMO MSC/Circ.860`],
+    [`à¦‰à¦ªà¦²à¦¬à§à¦§ à¦†à¦•à¦¾à¦°`, `à§§,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° / à§¨,à§«à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° / à§ª,à§«à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° / à§§à§¦ à¦«à§à¦Ÿ (à§§à§¦,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°) / à§¨à§¦ à¦«à§à¦Ÿ (à§¨à§ª,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°)`],
+    [`à¦‰à¦¤à§à¦¤à§‹à¦²à¦¨-à¦°à¦¿à¦—à¦¿à¦‚`, `à¦®à¦¾à¦¸à§à¦Ÿà¦¾à¦° à¦²à¦¿à¦‚à¦•à¦¸à¦¹ à¦¡à¦¿à¦à¦¨à¦­à¦¿-à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à§ª-à¦ªà¦¾à¦¯à¦¼à¦¾ à¦¤à¦¾à¦°à§‡à¦° à¦¦à¦¡à¦¼à¦¿à¦° à¦¸à§à¦²à¦¿à¦‚`],
+    [`à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡à¦° à¦•à§à¦·à§‡à¦¤à§à¦°`, `à¦®à¦¿à¦¥à¦¾à¦¨à¦², à¦—à§à¦²à¦¾à¦‡à¦•à¦², à¦¹à§‡à¦²à¦¿à¦«à§à¦¯à¦¼à§‡à¦² (Jet A-1), à¦¡à§à¦°à¦¿à¦²à¦¿à¦‚ à¦«à§à¦²à§à¦‡à¦¡, à¦…à§à¦¯à¦¾à¦¸à¦¿à¦¡`],
+    [`à¦•à¦¾à¦ à¦¾à¦®à§‹à¦° à¦¸à§à¦°à¦•à§à¦·à¦¾`, `à¦®à¦œà¦¬à§à¦¤ à¦§à¦¾à¦•à§à¦•à¦¾-à¦°à§‹à¦§à§€ à¦•à§à¦°à§à¦¯à¦¾à¦¶ à¦«à§à¦°à§‡à¦® + à¦ªà¦¿à¦›à¦²-à¦°à§‹à¦§à§€ à¦“à¦ªà¦°à§‡à¦° à¦¡à§‡à¦•`]
+  ],
+  benefits: [
+    `à¦¹à¦¾à¦²à¦¨à¦¾à¦—à¦¾à¦¦ à¦¡à¦¿à¦à¦¨à¦­à¦¿ à¦¸à§à¦²à¦¿à¦‚ à¦“ à¦à¦¨à¦¡à¦¿à¦Ÿà¦¿ à¦ªà¦°à¦¿à¦¦à¦°à§à¦¶à¦¨ à¦¸à¦¨à¦¦à¦¸à¦¹, à¦¤à§‹à¦²à¦¾à¦° à¦œà¦¨à§à¦¯ à¦ªà§à¦°à§‹à¦ªà§à¦°à¦¿ à¦ªà§à¦°à¦¸à§à¦¤à§à¦¤ à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¯à¦¼ à¦¸à¦°à¦¬à¦°à¦¾à¦¹`,
+    `à¦¤à¦¾à¦²à¦¾à¦¬à¦¦à§à¦§ à¦¬à¦¦à§à¦§ à¦­à¦¾à¦²à¦­-à¦¸à§à¦°à¦•à§à¦·à¦¾ à¦¬à¦¾à¦•à§à¦¸ à¦¸à¦¾à¦®à§à¦¦à§à¦°à¦¿à¦• à¦¢à§‡à¦‰ à¦“ à¦•à§à¦°à§‡à¦¨-à¦¹à§à¦•à§‡à¦° à¦†à¦˜à¦¾à¦¤ à¦¥à§‡à¦•à§‡ à¦­à¦¾à¦²à¦­à¦•à§‡ à¦†à¦—à¦²à§‡ à¦°à¦¾à¦–à§‡`,
+    `à¦‡à¦ªà§‹à¦•à§à¦¸à¦¿-à¦†à¦¸à§à¦¤à¦°à¦¯à§à¦•à§à¦¤ à¦­à§‡à¦¤à¦°à¦­à¦¾à¦— à¦“ à¦—à§à¦°à¦¾à¦‰à¦¨à§à¦¡à¦¿à¦‚ à¦°à¦¿à¦²à¦¸à¦¹ à¦¬à¦¿à¦®à¦¾à¦¨-à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿ Jet A-1 à¦¹à§‡à¦²à¦¿à¦«à§à¦¯à¦¼à§‡à¦²à§‡à¦° à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•`,
+    `à¦…à§à¦¯à¦¾à¦¬à¦¾à¦°à¦¡à¦¿à¦¨, à¦¸à§à¦Ÿà¦¾à¦­à¦¾à¦™à§à¦—à¦¾à¦°, à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨, à¦®à¦¾à¦•à¦¾à¦¯à¦¼à§‡ à¦“ à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦°à§‡ à¦•à§Œà¦¶à¦²à¦—à¦¤ à¦…à¦«à¦¶à§‹à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦˜à¦¾à¦à¦Ÿà¦¿`
+  ] },
+
+{ id: 'services',
+  category: `à¦¸à¦¾à¦ªà§à¦²à¦¾à¦‡ à¦šà§‡à¦‡à¦¨ à¦¸à§‡à¦¬à¦¾`,
+  title: `à¦†à¦¦à§à¦¯à§‹à¦ªà¦¾à¦¨à§à¦¤ à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦² à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à§‡à¦¬à¦¾`,
+  subtitle: `à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾, à¦¸à§à¦®à¦¾à¦°à§à¦Ÿ à¦†à¦‡à¦“à¦Ÿà¦¿ à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿, à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¡à¦¿à¦ªà§‹ à¦°à¦•à§à¦·à¦£à¦¾à¦¬à§‡à¦•à§à¦·à¦£ à¦†à¦° à¦šà¦¬à§à¦¬à¦¿à¦¶ à¦˜à¦£à§à¦Ÿà¦¾à¦° à¦—à§à¦°à¦¾à¦¹à¦• à¦…à¦ªà¦¾à¦°à§‡à¦¶à¦¨à¥¤`,
+  overview: [
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦¥à§‡à¦•à§‡ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦²à¦¿à¦œ à¦¨à§‡à¦“à¦¯à¦¼à¦¾ à¦®à¦¾à¦¨à§‡ à¦•à§‡à¦¬à¦² à¦‡à¦¸à§à¦ªà¦¾à¦¤à§‡à¦° à¦¸à¦°à¦žà§à¦œà¦¾à¦® à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¨à¦¯à¦¼à¥¤ à¦ à¦¯à§‡à¦¨ à¦†à¦ªà¦¨à¦¾à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à¦•à§‡ à¦œà§à¦¡à¦¼à§‡ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦ªà§à¦°à¦•à§Œà¦¶à¦²à§€, à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦°à¦•à§à¦·à¦£à¦¾à¦¬à§‡à¦•à§à¦·à¦£ à¦¡à¦¿à¦ªà§‹ à¦†à¦° à¦¡à¦¿à¦œà¦¿à¦Ÿà¦¾à¦² à¦¬à¦¹à¦°-à¦¦à§ƒà¦¶à§à¦¯à¦®à¦¾à¦¨à¦¤à¦¾à¦° à¦à¦• à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¬à¦¾à¦¸à§à¦¤à§à¦¤à¦¨à§à¦¤à§à¦°à§‡à¦° à¦¸à¦™à§à¦—à§‡à¥¤`,
+    `à¦•à§à¦·à¦¯à¦¼à¦•à¦¾à¦°à§€ à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦•à§‡à¦° à¦œà¦¨à§à¦¯ à¦­à¦¾à¦²à¦­ à¦“ à¦—à§à¦¯à¦¾à¦¸à¦•à§‡à¦Ÿà§‡à¦° à¦‰à¦ªà¦¯à§‹à¦—à¦¿à¦¤à¦¾à¦° à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦¥à§‡à¦•à§‡ à¦¶à§à¦°à§ à¦•à¦°à§‡ à¦œà¦¿à¦ªà¦¿à¦à¦¸à§‡à¦° à¦°à¦¿à¦¯à¦¼à§‡à¦²-à¦Ÿà¦¾à¦‡à¦® à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨, à¦ªà¦£à§à¦¯à§‡à¦° à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾ à¦“ à¦šà¦¾à¦ªà§‡à¦° à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿ à¦¸à¦¤à¦°à§à¦•à¦¬à¦¾à¦°à§à¦¤à¦¾, à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¸à§‡à¦¬à¦¾ à¦¦à¦² à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦ªà¦¦à¦•à§à¦·à§‡à¦ªà§‡ à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦£à§à¦¯à¦•à§‡ à¦¸à¦®à¦¯à¦¼à¦®à¦¤à§‹ à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡ à¦—à¦¨à§à¦¤à¦¬à§à¦¯à§‡ à¦à¦—à¦¿à¦¯à¦¼à§‡ à¦¨à¦¿à¦¯à¦¼à§‡ à¦¯à¦¾à¦¯à¦¼à¥¤`
+  ],
+  specs: [
+    [`à¦ªà§à¦°à¦•à§Œà¦¶à¦² à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿`, `à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦¸à¦¾à¦®à¦žà§à¦œà¦¸à§à¦¯, à¦­à¦¾à¦²à¦­/à¦—à§à¦¯à¦¾à¦¸à¦•à§‡à¦Ÿà§‡à¦° à¦¬à¦¿à¦¬à¦°à¦£, à¦•à¦¾à¦¸à§à¦Ÿà¦® à¦ªà¦°à¦¿à¦®à¦¾à¦°à§à¦œà¦¨`],
+    [`à¦†à¦‡à¦“à¦Ÿà¦¿ à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿ à¦¸à§à¦¬à¦¿à¦§à¦¾`, `à¦°à¦¿à¦¯à¦¼à§‡à¦²-à¦Ÿà¦¾à¦‡à¦® à¦œà¦¿à¦ªà¦¿à¦à¦¸, à¦…à¦­à§à¦¯à¦¨à§à¦¤à¦°à§€à¦£ à¦¤à¦¾à¦ªà¦®à¦¾à¦¤à§à¦°à¦¾, à¦šà¦¾à¦ª à¦“ à¦œà¦¿à¦“à¦«à§‡à¦¨à§à¦¸ à¦¸à¦¤à¦°à§à¦•à¦¬à¦¾à¦°à§à¦¤à¦¾`],
+    [`à¦¡à¦¿à¦ªà§‹ à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•à§‡à¦° à¦ªà¦°à¦¿à¦§à¦¿`, `à§«à§¦à¦Ÿà¦¿à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¨à¦¿à¦°à§€à¦•à§à¦·à¦¿à¦¤ à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€ (à¦ªà¦°à¦¿à¦·à§à¦•à¦¾à¦°, à¦®à§‡à¦°à¦¾à¦®à¦¤, à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦ªà¦°à§€à¦•à§à¦·à¦¾)`],
+    [`à¦¬à¦¹à¦° à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¦ªà¦¨à¦¾`, `à§¨à§ª/à§­ à¦…à¦¨à¦²à¦¾à¦‡à¦¨ à¦¸à¦¨à¦¦, à¦…à¦¨-à¦¹à¦¾à¦¯à¦¼à¦¾à¦°/à¦…à¦«-à¦¹à¦¾à¦¯à¦¼à¦¾à¦° à¦“ à¦¬à¦¿à¦²à¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦¤à¦¥à§à¦¯`],
+    [`à¦¸à¦¾à¦¡à¦¼à¦¾à¦¦à¦¾à¦¨à§‡à¦° à¦¸à¦®à¦¯à¦¼à¦¸à§€à¦®à¦¾`, `à§¨ à¦˜à¦£à§à¦Ÿà¦¾à¦° à¦•à¦® à¦¸à¦®à¦¯à¦¼à§‡ à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤ à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾`]
+  ],
+  benefits: [
+    `à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à§‹ à¦¬à¦¹à¦°à§‡à¦° à¦†à¦¡à¦¼à¦¾à¦‡ à¦¬à¦›à¦° à¦“ à¦ªà¦¾à¦à¦š à¦¬à¦›à¦°à§‡à¦° à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦¤à¦¾à¦°à¦¿à¦– à¦¸à§à¦¬à¦¯à¦¼à¦‚à¦•à§à¦°à¦¿à¦¯à¦¼à¦­à¦¾à¦¬à§‡ à¦…à¦¨à§à¦¸à¦°à¦£`,
+    `à¦Ÿà¦ª-à¦¡à¦¿à¦¸à¦šà¦¾à¦°à§à¦œà§‡ à¦°à§‚à¦ªà¦¾à¦¨à§à¦¤à¦°, à¦²à¦¾à¦‡à¦¨à¦¿à¦‚ à¦“ à¦Ÿà§‡à¦²à¦¿à¦®à§‡à¦Ÿà§à¦°à¦¿ à¦¸à§à¦¥à¦¾à¦ªà¦¨à¦¸à¦¹ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦•à¦¾à¦¸à§à¦Ÿà¦® à¦ªà¦°à¦¿à¦®à¦¾à¦°à§à¦œà¦¨`,
+    `à¦¸à¦®à¦¨à§à¦¬à¦¿à¦¤ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦®à§‡à¦°à¦¾à¦®à¦¤-à¦¨à¦¿à¦°à§€à¦•à§à¦·à¦¾ à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¤ à¦•à¦°à§‡ à¦¸à§à¦¬à¦šà§à¦› à¦“ à¦¨à§à¦¯à¦¾à¦¯à§à¦¯ à¦¡à¦¿à¦ªà§‹ à¦®à§‡à¦°à¦¾à¦®à¦¤-à¦®à§‚à¦²à§à¦¯`,
+    `à¦¸à¦¿à¦à¦¸à¦¸à¦¿ à¦ªà§à¦²à§‡à¦Ÿ, à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦¸à¦¨à¦¦ à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦¨à¦•à¦¶à¦¾à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦¬à¦¿à¦˜à§à¦¨ à¦¡à¦¿à¦œà¦¿à¦Ÿà¦¾à¦² à¦ªà§à¦°à¦¬à§‡à¦¶à¦¾à¦§à¦¿à¦•à¦¾à¦°`
+  ] },
+
+{ id: 'whylease',
+  category: `à¦•à§‡à¦¨ à¦²à¦¿à¦œ?`,
+  title: `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦•à§‡à¦¨ à¦²à¦¿à¦œ à¦¨à§‡à¦¬à§‡à¦¨?`,
+  subtitle: `à¦­à¦¾à¦°à§€ à¦®à§‚à¦²à¦§à¦¨à§€ à¦¬à§à¦¯à¦¯à¦¼à¦•à§‡ à¦°à§‚à¦ª à¦¦à¦¿à¦¨ à¦¨à¦¿à¦¯à¦¼à¦¨à§à¦¤à§à¦°à¦¿à¦¤ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨-à¦¬à§à¦¯à¦¯à¦¼à§‡, à¦†à¦° à¦…à¦°à§à¦œà¦¨ à¦•à¦°à§à¦¨ à¦…à¦¤à§à¦²à¦¨à§€à¦¯à¦¼ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¨à¦®à¦¨à§€à¦¯à¦¼à¦¤à¦¾à¥¤`,
+  overview: [
+    `à¦¨à¦¿à¦œà¦¸à§à¦¬ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦¬à¦¹à¦° à¦•à¦¿à¦¨à§‡ à¦°à¦•à§à¦·à¦£à¦¾à¦¬à§‡à¦•à§à¦·à¦£ à¦•à¦°à¦¾ à¦®à¦¾à¦¨à§‡ à¦•à§‹à¦Ÿà¦¿ à¦•à§‹à¦Ÿà¦¿ à¦Ÿà¦¾à¦•à¦¾à¦° à¦®à§‚à¦²à¦§à¦¨ à¦†à¦Ÿà¦•à§‡ à¦°à¦¾à¦–à¦¾, à¦¬à§à¦¯à¦¾à¦²à¦¾à¦¨à§à¦¸ à¦¶à¦¿à¦Ÿà§‡à¦° à¦“à¦ªà¦° à¦¸à¦®à§à¦ªà¦¦-à¦…à¦¬à¦¶à¦¿à¦·à§à¦Ÿ à¦®à§‚à¦²à§à¦¯à§‡à¦° à¦à§à¦à¦•à¦¿ à¦à§à¦²à¦¿à¦¯à¦¼à§‡ à¦°à¦¾à¦–à¦¾, à¦†à¦° à¦¬à¦¾à¦£à¦¿à¦œà§à¦¯à¦ªà¦¥ à¦¬à¦¦à¦²à§‡ à¦—à§‡à¦²à§‡ à¦–à¦¾à¦²à¦¿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦«à¦¿à¦°à¦¿à¦¯à¦¼à§‡ à¦†à¦¨à¦¾à¦° à¦¬à§à¦¯à¦¯à¦¼à¦¬à¦¹à§à¦² à¦œà¦Ÿà¦¿à¦²à¦¤à¦¾à¦¯à¦¼ à¦ªà¦¡à¦¼à¦¾à¥¤`,
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦²à¦¿à¦œ à¦¨à¦¿à¦²à§‡ à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦‰à§Žà¦ªà¦¾à¦¦à¦•, à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦…à¦ªà¦¾à¦°à§‡à¦Ÿà¦° à¦“ à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸ à¦ªà§à¦°à¦¦à¦¾à¦¨à¦•à¦¾à¦°à§€ à¦¤à§Žà¦•à§à¦·à¦£à¦¾à§Ž à¦ªà§‡à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨ à¦¬à¦¿à¦¶à§‡à¦·à¦¾à¦¯à¦¼à¦¿à¦¤ à¦¸à¦°à¦žà§à¦œà¦¾à¦®, à¦à¦• à¦¬à¦›à¦°à§‡à¦° à¦¨à¦®à¦¨à§€à¦¯à¦¼ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨-à¦²à¦¿à¦œ à¦¥à§‡à¦•à§‡ à¦ªà¦¾à¦à¦š à¦¬à¦›à¦°à§‡à¦° à¦®à¦¾à¦¸à§à¦Ÿà¦¾à¦° à¦²à¦¿à¦œ à¦šà§à¦•à§à¦¤à¦¿ à¦ªà¦°à§à¦¯à¦¨à§à¦¤, à¦¸à¦™à§à¦—à§‡ à¦¥à¦¾à¦•à§‡ à¦¬à¦¿à¦¶à§à¦¬à¦œà§‹à¦¡à¦¼à¦¾ à¦¡à§à¦°à¦ª-à¦…à¦«à§‡à¦° à¦¸à§à¦¬à¦¿à¦§à¦¾à¥¤`
+  ],
+  specs: [
+    [`à¦®à§‚à¦²à¦§à¦¨à§‡à¦° à¦¦à¦•à§à¦·à¦¤à¦¾`, `à¦¶à¦¤à¦­à¦¾à¦— à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨-à¦¬à§à¦¯à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦­à¦° à¦®à¦¡à§‡à¦², à¦¸à¦®à§à¦ªà¦¦ à¦•à§‡à¦¨à¦¾à¦° à¦œà¦¨à§à¦¯ à¦•à§‹à¦¨à§‹ à¦…à¦—à§à¦°à¦¿à¦® à¦®à§‚à¦²à¦§à¦¨ à¦¨à§‡à¦‡`],
+    [`à¦²à¦¿à¦œà§‡à¦° à¦®à§‡à¦¯à¦¼à¦¾à¦¦à§‡à¦° à¦¬à¦¿à¦•à¦²à§à¦ª`, `à¦¸à§à¦¬à¦²à§à¦ªà¦®à§‡à¦¯à¦¼à¦¾à¦¦à¦¿ à¦¸à§à¦ªà¦Ÿ, à§§â€“à§© à¦¬à¦›à¦°à§‡à¦° à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨-à¦²à¦¿à¦œ, à§«+ à¦¬à¦›à¦°à§‡à¦° à¦®à¦¾à¦¸à§à¦Ÿà¦¾à¦° à¦²à¦¿à¦œ`],
+    [`à¦¡à§à¦°à¦¾à¦®à§‡à¦° à¦¤à§à¦²à¦¨à¦¾à¦¯à¦¼ à¦ªà¦£à§à¦¯à¦­à¦¾à¦°à§‡à¦° à¦¸à§à¦¬à¦¿à¦§à¦¾`, `à§¨à§¦ à¦«à§à¦Ÿà§‡à¦° à¦à¦•à¦Ÿà¦¿ à¦¸à§à¦²à¦Ÿà§‡ à§ªà§¦ à¦¶à¦¤à¦¾à¦‚à¦¶ à¦¬à§‡à¦¶à¦¿ à¦¤à¦°à¦² (à§¨à§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦° à¦¬à¦¨à¦¾à¦® à§§à§¬,à§¦à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°)`],
+    [`à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦ªà¦°à§€à¦•à§à¦·à¦¾`, `à¦†à¦¡à¦¼à¦¾à¦‡ à¦¬à¦›à¦° à¦“ à¦ªà¦¾à¦à¦š à¦¬à¦›à¦°à§‡à¦° à¦¨à¦¿à¦°à§à¦§à¦¾à¦°à¦¿à¦¤ à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦¸à§à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¦ªà¦¿à¦¤ à¦¸à¦®à¦¯à¦¼à¦¸à§‚à¦šà¦¿`],
+    [`à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¡à§à¦°à¦ª-à¦…à¦« à¦¨à§‡à¦Ÿà¦“à¦¯à¦¼à¦¾à¦°à§à¦•`, `à¦›à¦¯à¦¼ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à¦œà§à¦¡à¦¼à§‡ à§«à§¦à¦Ÿà¦¿à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦•à§Œà¦¶à¦²à¦—à¦¤ à¦¬à¦¨à§à¦¦à¦°-à¦¡à¦¿à¦ªà§‹`]
+  ],
+  benefits: [
+    `à¦®à§‚à¦² à¦‰à§Žà¦ªà¦¾à¦¦à¦¨ à¦à¦¬à¦‚ à¦—à¦¬à§‡à¦·à¦£à¦¾ à¦“ à¦‰à¦¨à§à¦¨à¦¯à¦¼à¦¨à§‡à¦° à¦¬à¦¿à¦¨à¦¿à¦¯à¦¼à§‹à¦—à§‡à¦° à¦œà¦¨à§à¦¯ à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦®à§‚à¦²à¦§à¦¨ à¦¸à§à¦°à¦•à§à¦·à¦¿à¦¤ à¦°à¦¾à¦–à§à¦¨`,
+    `à¦¸à¦¾à¦§à¦¾à¦°à¦£ T11, à¦²à¦¾à¦‡à¦¨à¦¿à¦‚à¦¯à§à¦•à§à¦¤ T14, à¦—à§à¦¯à¦¾à¦¸ T50 à¦†à¦° à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• T75 à¦‡à¦‰à¦¨à¦¿à¦Ÿà§‡à¦° à¦®à¦§à§à¦¯à§‡ à¦…à¦¨à¦¾à¦¯à¦¼à¦¾à¦¸à§‡ à¦¬à¦¦à¦² à¦•à¦°à§à¦¨`,
+    `à¦ªà§à¦¯à¦¾à¦•à§‡à¦œà¦¿à¦‚-à¦¬à¦°à§à¦œà§à¦¯ à¦“ à¦¡à§à¦°à¦¾à¦® à¦«à§‡à¦²à¦¾à¦° à¦à¦¾à¦®à§‡à¦²à¦¾ à¦¦à§‚à¦° à¦•à¦°à§à¦¨, à¦à¦•à¦Ÿà¦¿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¸à¦®à¦¾à¦¨ à§§à§©à§¦à¦Ÿà¦¿ à¦¡à§à¦°à¦¾à¦®`,
+    `à¦à¦šà§à¦›à¦¿à¦• à¦•à§à¦·à¦¤à¦¿-à¦¸à§à¦°à¦•à§à¦·à¦¾ à¦ªà¦°à¦¿à¦•à¦²à§à¦ªà¦¨à¦¾à¦¸à¦¹ à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦“ à¦ªà§‚à¦°à§à¦¬à¦¾à¦¨à§à¦®à§‡à¦¯à¦¼ à¦®à¦¾à¦¸à¦¿à¦• à¦²à¦¿à¦œ à¦¹à¦¾à¦°`
+  ] },
+
+{ id: 'locations',
+  category: `à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨ à¦“ à¦¡à¦¿à¦ªà§‹`,
+  title: `à§§à§­à¦Ÿà¦¿ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦…à¦«à¦¿à¦¸ à¦“ à§«à§¦à¦Ÿà¦¿à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤ à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€`,
+  subtitle: `à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨ à¦“ à¦°à¦Ÿà¦¾à¦°à¦¡à¦¾à¦® à¦¥à§‡à¦•à§‡ à¦šà¦Ÿà§à¦Ÿà¦—à§à¦°à¦¾à¦®, à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦° à¦“ à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡, à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦£à§à¦¯ à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦­à§‡à¦¸à§‡ à¦¯à¦¾à¦•, à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦¬à¦¿à¦¶à§‡à¦·à¦œà§à¦žà¦°à¦¾ à¦ªà¦¾à¦¶à§‡ à¦†à¦›à§‡à¦¨à¥¤`,
+  overview: [
+    `à¦¬à¦¾à¦²à§à¦• à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦“ à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿à¦° à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦² à¦šà¦¾à¦¯à¦¼ à¦®à¦¾à¦Ÿà¦¿à¦° à¦•à¦¾à¦›à¦¾à¦•à¦¾à¦›à¦¿, à¦¦à§à¦°à§à¦¤ à¦•à¦°à§à¦®à¦¯à¦œà§à¦žà¥¤ à¦‰à¦¤à§à¦¤à¦° à¦†à¦®à§‡à¦°à¦¿à¦•à¦¾, à¦¦à¦•à§à¦·à¦¿à¦£ à¦†à¦®à§‡à¦°à¦¿à¦•à¦¾, à¦‡à¦‰à¦°à§‹à¦ª, à¦®à¦§à§à¦¯à¦ªà§à¦°à¦¾à¦šà§à¦¯, à¦¦à¦•à§à¦·à¦¿à¦£ à¦à¦¶à¦¿à¦¯à¦¼à¦¾ à¦“ à¦à¦¶à¦¿à¦¯à¦¼à¦¾-à¦ªà§à¦°à¦¶à¦¾à¦¨à§à¦¤ à¦…à¦žà§à¦šà¦² à¦œà§à¦¡à¦¼à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨à¦¾ à¦•à¦°à§‡ à§§à§­à¦Ÿà¦¿ à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦¬à¦¾à¦£à¦¿à¦œà§à¦¯à¦¿à¦• à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦…à¦«à¦¿à¦¸, à¦¯à¦¾à¦¦à§‡à¦° à¦¹à¦¾à¦¤ à¦§à¦°à§‡ à¦†à¦›à§‡ à§«à§¦à¦Ÿà¦¿à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¨à¦¿à¦°à§€à¦•à§à¦·à¦¿à¦¤ à¦¡à¦¿à¦ªà§‹ à¦¸à¦¹à¦¯à§‹à¦—à§€à¥¤`,
+    `à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨, à¦°à¦Ÿà¦¾à¦°à¦¡à¦¾à¦®, à¦œà§‡à¦¬à§‡à¦² à¦†à¦²à§€, à¦šà¦Ÿà§à¦Ÿà¦—à§à¦°à¦¾à¦® à¦¬à¦¨à§à¦¦à¦°, à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦° à¦•à¦¿à¦‚à¦¬à¦¾ à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡, à¦¯à§‡à¦–à¦¾à¦¨à§‡à¦‡ à¦œà¦°à§à¦°à¦¿ à¦­à¦¿à¦¤à§à¦¤à¦¿à¦¤à§‡ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦›à¦¾à¦¡à¦¼à§‡à¦° à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¹à§‹à¦•, à¦†à¦®à¦¾à¦¦à§‡à¦° à¦¸à§à¦¥à¦¾à¦¨à§€à¦¯à¦¼ à¦…à¦ªà¦¾à¦°à§‡à¦¶à¦¨ à¦¦à¦² à¦¦à§à¦°à§à¦¤ à¦—à§‡à¦Ÿ-à¦†à¦‰à¦Ÿ à¦“ à¦ªà¦°à¦¿à¦¦à¦°à§à¦¶à¦¨ à¦¸à¦®à¦¨à§à¦¬à¦¯à¦¼ à¦•à¦°à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¸à¦¦à¦° à¦¦à¦ªà§à¦¤à¦°`, `à§§à§®à§§ à¦“à¦¯à¦¼à§‡à¦¸à§à¦Ÿ à¦®à§à¦¯à¦¾à¦¡à¦¿à¦¸à¦¨ à¦¸à§à¦Ÿà§à¦°à¦¿à¦Ÿ, à¦¸à§à¦¯à§à¦Ÿ à§¨à§«à§¦à§¦, à¦¶à¦¿à¦•à¦¾à¦—à§‹, à¦‡à¦²à¦¿à¦¨à¦¯à¦¼ à§¬à§¦à§¬à§¦à§¨ | +à§§ (à§¯à§§à§ª) à§®à§ªà§®-à§ªà§¨à§¦à§¦`],
+    [`à¦†à¦®à§‡à¦°à¦¿à¦•à¦¾ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡à¦° à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦•à§‡à¦¨à§à¦¦à§à¦°`, `à¦¹à¦¿à¦‰à¦¸à§à¦Ÿà¦¨ (à¦Ÿà§‡à¦•à§à¦¸à¦¾à¦¸), à¦¨à¦¿à¦‰à¦†à¦°à§à¦• (à¦¨à¦¿à¦‰ à¦œà¦¾à¦°à§à¦¸à¦¿), à¦¸à¦¾à¦“ à¦ªà¦¾à¦‰à¦²à§‹ (à¦¬à§à¦°à¦¾à¦œà¦¿à¦²), à¦¬à§à¦¯à¦¼à§‡à¦¨à¦¸ à¦†à¦‡à¦°à§‡à¦¸`],
+    [`à¦‡à¦‰à¦°à§‹à¦ª à¦“ à¦®à¦§à§à¦¯à¦ªà§à¦°à¦¾à¦šà§à¦¯à§‡à¦° à¦•à§‡à¦¨à§à¦¦à§à¦°`, `à¦°à¦Ÿà¦¾à¦°à¦¡à¦¾à¦® (à¦¨à§‡à¦¦à¦¾à¦°à¦²à§à¦¯à¦¾à¦¨à§à¦¡à¦¸), à¦²à¦¨à§à¦¡à¦¨ (à¦¯à§à¦•à§à¦¤à¦°à¦¾à¦œà§à¦¯), à¦¹à¦¾à¦®à¦¬à§à¦°à§à¦— (à¦œà¦¾à¦°à§à¦®à¦¾à¦¨à¦¿), à¦¦à§à¦¬à¦¾à¦‡ (à¦œà§‡à¦¬à§‡à¦² à¦†à¦²à§€)`],
+    [`à¦¦à¦•à§à¦·à¦¿à¦£ à¦à¦¶à¦¿à¦¯à¦¼à¦¾ à¦“ à¦¬à¦¾à¦‚à¦²à¦¾à¦¦à§‡à¦¶à§‡à¦° à¦•à§‡à¦¨à§à¦¦à§à¦°`, `à¦šà¦Ÿà§à¦Ÿà¦—à§à¦°à¦¾à¦® à¦¬à¦¨à§à¦¦à¦° à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸ à¦œà§‹à¦¨ à¦“ à¦¢à¦¾à¦•à¦¾ à¦•à¦°à§à¦ªà§‹à¦°à§‡à¦Ÿ à¦¡à§‡à¦¸à§à¦•, à¦®à§à¦®à§à¦¬à¦¾à¦‡, à¦šà§‡à¦¨à§à¦¨à¦¾à¦‡`],
+    [`à¦à¦¶à¦¿à¦¯à¦¼à¦¾-à¦ªà§à¦°à¦¶à¦¾à¦¨à§à¦¤ à¦…à¦žà§à¦šà¦²à§‡à¦° à¦•à§‡à¦¨à§à¦¦à§à¦°`, `à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦°, à¦¸à¦¾à¦‚à¦¹à¦¾à¦‡, à¦¨à¦¿à¦‚à¦¬à§‹, à¦¬à§à¦¸à¦¾à¦¨, à¦Ÿà§‹à¦•à¦¿à¦“, à¦®à§‡à¦²à¦¬à§‹à¦°à§à¦¨`]
+  ],
+  benefits: [
+    `à¦†à¦ªà¦¨à¦¾à¦° à¦¨à¦¿à¦œà§‡à¦° à¦¸à¦®à¦¯à¦¼ à¦…à¦žà§à¦šà¦²à§‡ à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦¸à¦‚à¦¯à§à¦•à§à¦¤ à¦¬à¦¹à§à¦­à¦¾à¦·à§€ à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦®à§à¦¯à¦¾à¦¨à§‡à¦œà¦¾à¦°`,
+    `à¦ªà§à¦°à¦§à¦¾à¦¨ à¦ªà§‡à¦Ÿà§à¦°à§‹à¦•à§‡à¦®à¦¿à¦•à§à¦¯à¦¾à¦² à¦°à¦ªà§à¦¤à¦¾à¦¨à¦¿ à¦•à§‡à¦¨à§à¦¦à§à¦°à¦—à§à¦²à§‹à¦¤à§‡ (à¦®à¦¾à¦°à§à¦•à¦¿à¦¨ à¦‰à¦ªà¦¸à¦¾à¦—à¦°, à¦à¦†à¦°à¦, à¦®à¦§à§à¦¯à¦ªà§à¦°à¦¾à¦šà§à¦¯, à¦šà§€à¦¨) à¦•à§Œà¦¶à¦²à¦—à¦¤ à¦…à¦¬à¦¸à§à¦¥à¦¾à¦¨`,
+    `à¦šà¦Ÿà§à¦Ÿà¦—à§à¦°à¦¾à¦® à¦“ à¦¸à¦¿à¦™à§à¦—à¦¾à¦ªà§à¦° à¦¡à¦¿à¦ªà§‹à¦° à¦®à¦¾à¦§à§à¦¯à¦®à§‡ à¦¦à¦•à§à¦·à¦¿à¦£ à¦à¦¶à¦¿à¦¯à¦¼à¦¾ à¦“ à¦¬à¦™à§à¦—à§‹à¦ªà¦¸à¦¾à¦—à¦° à¦…à¦žà§à¦šà¦²à§‡ à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾`,
+    `à¦ªà§à¦°à¦®à¦¿à¦¤ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¡à¦¿à¦ªà§‹-à¦®à¦¾à¦¨ à¦¨à¦¿à¦°à§€à¦•à§à¦·à¦¾ à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¤ à¦•à¦°à§‡ à¦¸à¦°à§à¦¬à¦¤à§à¦° à¦…à¦­à¦¿à¦¨à§à¦¨ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•-à¦ªà§à¦°à¦¸à§à¦¤à§à¦¤à¦¿`
+  ] },
+
+{ id: 'sustainability',
+  category: `à¦¸à§à¦¥à¦¾à¦¯à¦¼à¦¿à¦¤à§à¦¬ à¦“ à¦‡à¦à¦¸à¦œà¦¿`,
+  title: `à¦Ÿà§‡à¦•à¦¸à¦‡ à¦¬à¦¾à¦²à§à¦• à¦ªà¦°à¦¿à¦¬à¦¹à¦¨ à¦“ à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸ à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦°à§‡à¦Ÿà¦¿à¦‚`,
+  subtitle: `à§¯à§© à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦†à¦° à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦¶à§€à¦°à§à¦· à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶à§‡à¦° à¦Ÿà§‡à¦•à¦¸à¦‡ à¦•à¦°à§à¦®à¦•à§à¦·à¦®à¦¤à¦¾, à¦¬à§à¦¯à¦¬à¦¸à¦¾ à¦“ à¦§à¦°à¦¿à¦¤à§à¦°à§€ à¦‰à¦­à¦¯à¦¼à§‡à¦° à¦•à¦²à§à¦¯à¦¾à¦£à§‡à¥¤`,
+  overview: [
+    `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦—à¦°à§à¦¬à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦§à¦¾à¦°à¦£ à¦•à¦°à§‡ à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸à§‡à¦° à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦ªà¦¦à¦•à§‡à¦° à¦¸à§à¦¬à§€à¦•à§ƒà¦¤à¦¿à¥¤ à¦ªà¦°à¦¿à¦¬à§‡à¦¶, à¦¶à§à¦°à¦® à¦“ à¦®à¦¾à¦¨à¦¬à¦¾à¦§à¦¿à¦•à¦¾à¦°, à¦¨à§ˆà¦¤à¦¿à¦•à¦¤à¦¾ à¦à¦¬à¦‚ à¦Ÿà§‡à¦•à¦¸à¦‡ à¦•à§à¦°à¦¯à¦¼, à¦à¦‡ à¦šà¦¾à¦° à¦•à§à¦·à§‡à¦¤à§à¦°à§‡ à¦¬à¦¿à¦¶à§à¦¬à¦¬à§à¦¯à¦¾à¦ªà§€ à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¿à¦¤ à¦à¦• à¦²à¦•à§à¦·à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨à§‡à¦° à¦®à¦§à§à¦¯à§‡ à¦†à¦®à¦°à¦¾ à¦¶à§€à¦°à§à¦· à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶à§‡à¥¤`,
+    `à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¸à§à¦¬à¦­à¦¾à¦¬à¦¤à¦‡ à¦Ÿà§‡à¦•à¦¸à¦‡: à¦à¦•à¦Ÿà¦¿ à§¨à§¦ à¦«à§à¦Ÿ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦†à¦¯à¦¼à§ à§¨à§« à¦¬à¦›à¦°à§‡à¦° à¦¬à§‡à¦¶à¦¿, à¦œà§€à¦¬à¦¨à¦¶à§‡à¦·à§‡ à¦à¦° à§¯à§© à¦¶à¦¤à¦¾à¦‚à¦¶à¦‡ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯, à¦†à¦° à¦à¦Ÿà¦¿ à¦…à¦¸à¦‚à¦–à§à¦¯ à¦à¦•à¦¬à¦¾à¦°-à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡à¦° à¦ªà§à¦²à¦¾à¦¸à§à¦Ÿà¦¿à¦• à¦“ à¦‡à¦¸à§à¦ªà¦¾à¦¤à§‡à¦° à¦¡à§à¦°à¦¾à¦®à¦•à§‡ à¦¬à¦¿à¦¦à¦¾à¦¯à¦¼ à¦œà¦¾à¦¨à¦¾à¦¯à¦¼, à¦¯à§‡à¦—à§à¦²à§‹ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡ à¦ªà§à¦°à¦šà§à¦° à¦¶à¦•à§à¦¤à¦¿ à¦–à¦°à¦š à¦•à¦°à¦¤ à¦•à¦¿à¦‚à¦¬à¦¾ à¦¶à§‡à¦· à¦ à¦¿à¦•à¦¾à¦¨à¦¾ à¦ªà§‡à¦¤ à¦†à¦¬à¦°à§à¦œà¦¨à¦¾à¦° à¦­à¦¾à¦—à¦¾à¦¡à¦¼à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸ à¦°à§‡à¦Ÿà¦¿à¦‚à¦¯à¦¼à§‡à¦° à¦…à¦¬à¦¸à§à¦¥à¦¾`, `à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦ªà¦¦à¦•, à¦¬à¦¿à¦¶à§à¦¬à§‡à¦° à¦¶à§€à¦°à§à¦· à§§à§« à¦¶à¦¤à¦¾à¦‚à¦¶ (à¦®à§‚à¦²à§à¦¯à¦¾à¦¯à¦¼à¦¨: à¦¡à¦¿à¦¸à§‡à¦®à§à¦¬à¦° à§¨à§¦à§¨à§«)`],
+    [`à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯à¦¤à¦¾`, `à¦¸à§à¦Ÿà§‡à¦‡à¦¨à¦²à§‡à¦¸ à¦“ à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¸à§à¦Ÿà¦¿à¦²à§‡à¦° à¦•à¦¾à¦ à¦¾à¦®à§‹à¦° à§¯à§© à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà§à¦¨à¦°à§à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯`],
+    [`à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à¦¯à§‹à¦—à§à¦¯ à¦†à¦¯à¦¼à§à¦·à§à¦•à¦¾à¦²`, `à¦¨à¦¿à¦¯à¦¼à¦®à¦¿à¦¤ à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦¸à¦‚à¦¸à§à¦•à¦¾à¦°à¦¸à¦¹ à§¨à§« à¦¥à§‡à¦•à§‡ à§©à§¦ à¦¬à¦›à¦°à§‡à¦° à¦¬à§‡à¦¶à¦¿`],
+    [`à¦¡à§à¦°à¦¾à¦®-à¦¬à¦°à§à¦œà§à¦¯ à¦¹à§à¦°à¦¾à¦¸`, `à¦ªà§à¦°à¦¤à¦¿ à¦Ÿà§à¦°à¦¿à¦ªà§‡ à¦à¦•à¦Ÿà¦¿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦ªà§à¦°à¦¾à¦¯à¦¼ à§§à§©à§¦à¦Ÿà¦¿ à¦à¦•à¦¬à¦¾à¦°-à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡à¦° à§¨à§¦à§¦ à¦²à¦¿à¦Ÿà¦¾à¦°à§‡à¦° à¦¡à§à¦°à¦¾à¦®à§‡à¦° à¦¬à¦¿à¦•à¦²à§à¦ª`],
+    [`à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦•à¦¾à¦°à§à¦¬à¦¨ à¦¡à¦¾à¦‡-à¦…à¦•à§à¦¸à¦¾à¦‡à¦¡ à¦¸à¦¾à¦¶à§à¦°à¦¯à¦¼`, `à¦°à§‡à¦² à¦“ à¦¸à§à¦¬à¦²à§à¦ªà¦¦à§‚à¦°à¦¤à§à¦¬à§‡à¦° à¦¸à¦¾à¦—à¦°à¦ªà¦¥à§‡ à¦¸à§à¦¥à¦¾à¦¨à¦¾à¦¨à§à¦¤à¦°à§‡ à¦ªà§à¦°à¦¤à¦¿ à¦Ÿà¦¨-à¦•à¦¿à¦®à¦¿à¦¤à§‡ à§ªà§« à¦¶à¦¤à¦¾à¦‚à¦¶ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦•à¦® à¦¨à¦¿à¦ƒà¦¸à¦°à¦£`]
+  ],
+  benefits: [
+    `à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦“ à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸ à¦¶à¦¿à¦ªà¦¾à¦°à¦¦à§‡à¦° à¦¸à§à¦•à§‹à¦ª-à§© à¦¸à¦°à¦¬à¦°à¦¾à¦¹ à¦¶à§ƒà¦™à§à¦–à¦²à§‡ à¦•à¦¾à¦°à§à¦¬à¦¨-à¦¨à¦¿à¦ƒà¦¸à¦°à¦£ à¦¹à§à¦°à¦¾à¦¸à§‡à¦° à¦²à¦•à§à¦·à§à¦¯ à¦›à§à¦à¦¤à§‡ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾ à¦•à¦°à§‡`,
+    `à¦¶à§‚à¦¨à§à¦¯-à¦•à§à¦·à¦°à¦£à§‡à¦° à¦¬à¦¦à§à¦§-à¦šà¦•à§à¦° à¦²à§‹à¦¡à¦¿à¦‚ à¦“ à¦†à¦¨à¦²à§‹à¦¡à¦¿à¦‚ à¦°à¦•à§à¦·à¦¾ à¦•à¦°à§‡ à¦®à¦¾à¦Ÿà¦¿ à¦“ à¦¸à¦¾à¦®à§à¦¦à§à¦°à¦¿à¦• à¦¬à¦¾à¦¸à§à¦¤à§à¦¤à¦¨à§à¦¤à§à¦°à¦•à§‡`,
+    `à¦¬à¦¦à§à¦§-à¦šà¦•à§à¦° à¦§à§‹à¦¯à¦¼à¦¾-à¦ªà¦¾à¦¨à¦¿ à¦ªà¦°à¦¿à¦¶à§‹à¦§à¦¨ à¦“ à¦¬à¦¾à¦·à§à¦ª à¦ªà§à¦¨à¦°à§à¦¦à§à¦§à¦¾à¦°à§‡à¦° à¦¨à¦¿à¦°à¦¿à¦–à§‡ à¦¨à¦¿à¦°à§€à¦•à§à¦·à¦¿à¦¤ à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦° à¦¡à¦¿à¦ªà§‹`,
+    `T75 à¦à¦²à¦à¦¨à¦œà¦¿, à¦¬à¦¾à¦¯à¦¼à§‹-à¦à¦²à¦à¦¨à¦œà¦¿ à¦“ à¦¸à¦¬à§à¦œ à¦…à§à¦¯à¦¾à¦®à§‹à¦¨à¦¿à¦¯à¦¼à¦¾-à¦‰à¦ªà¦¯à§‹à¦—à§€ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡ à¦ªà¦°à¦¿à¦šà§à¦›à¦¨à§à¦¨ à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿à¦° à¦ªà¦¥à§‡ à¦°à§‚à¦ªà¦¾à¦¨à§à¦¤à¦°à§‡ à¦¸à¦¹à¦¾à¦¯à¦¼à¦¤à¦¾`
+  ] },
+
+{ id: 'resources',
+  category: `à¦œà§à¦žà¦¾à¦¨à¦­à¦¾à¦¨à§à¦¡à¦¾à¦° à¦“ à¦•à¦¾à¦°à¦¿à¦—à¦°à¦¿ à¦—à§à¦°à¦¨à§à¦¥à¦¾à¦—à¦¾à¦°`,
+  title: `à¦‡à¦‰à¦à¦¨ à¦Ÿà¦¿-à¦•à§‹à¦¡ à¦šà¦¾à¦°à§à¦Ÿ, à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦¶à¦¬à§à¦¦à¦•à§‹à¦· à¦“ à¦¸à§à¦ªà§‡à¦¸à¦¿à¦«à¦¿à¦•à§‡à¦¶à¦¨`,
+  subtitle: `à¦•à§à¦°à¦¯à¦¼ à¦¬à§à¦¯à¦¬à¦¸à§à¦¥à¦¾à¦ªà¦•, à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾ à¦•à¦°à§à¦®à¦•à¦°à§à¦¤à¦¾ à¦“ à¦¬à¦¾à¦²à§à¦• à¦²à¦œà¦¿à¦¸à§à¦Ÿà¦¿à¦•à¦¸ à¦ªà¦°à¦¿à¦•à¦²à§à¦ªà¦¨à¦¾à¦•à¦¾à¦°à§€à¦¦à§‡à¦° à¦œà¦¨à§à¦¯ à¦…à¦ªà¦°à¦¿à¦¹à¦¾à¦°à§à¦¯ à¦ªà§à¦°à¦•à§Œà¦¶à¦²-à¦¤à¦¥à§à¦¯à§‡à¦° à¦¸à¦‚à¦•à¦²à¦¨à¥¤`,
+  overview: [
+    `à¦¬à¦¿à¦ªà¦œà§à¦œà¦¨à¦• à¦¤à¦°à¦² à¦¬à¦¾ à¦—à§à¦¯à¦¾à¦¸ à¦ªà¦¾à¦ à¦¾à¦¨à§‹à¦° à¦†à¦—à§‡ IMDG, ADR/RID à¦“ à¦®à¦¾à¦°à§à¦•à¦¿à¦¨ DOT à¦¬à¦¿à¦§à¦¿ à¦…à¦¨à§à¦¯à¦¾à¦¯à¦¼à§€ à¦¯à¦¥à¦¾à¦¯à¦¥ à¦‡à¦‰à¦à¦¨ à¦¬à¦¹à¦¨à¦¯à§‹à¦—à§à¦¯ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¨à¦¿à¦°à§à¦¦à§‡à¦¶à¦¿à¦•à¦¾ (â€œà¦Ÿà¦¿-à¦•à§‹à¦¡â€) à¦¬à§‡à¦›à§‡ à¦¨à§‡à¦“à¦¯à¦¼à¦¾ à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦•à¥¤ à¦Ÿà§à¦¯à¦¾à¦™à§à¦•à§‡à¦° à¦Ÿà¦¿-à¦•à§‹à¦¡à¦‡ à¦ à¦¿à¦• à¦•à¦°à§‡ à¦¦à§‡à¦¯à¦¼ à¦à¦° à¦¨à§à¦¯à§‚à¦¨à¦¤à¦® à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª, à¦ªà§à¦°à¦®à¦¿à¦¤ à¦‡à¦¸à§à¦ªà¦¾à¦¤à§‡ à¦¨à§à¦¯à§‚à¦¨à¦¤à¦® à¦–à§‹à¦²à§‡à¦° à¦ªà§à¦°à§à¦¤à§à¦¬, à¦šà¦¾à¦ª-à¦¨à¦¿à¦·à§à¦•à¦¾à¦¶à¦¨ à¦¯à¦¨à§à¦¤à§à¦°à§‡à¦° à¦¶à¦°à§à¦¤ à¦†à¦° à¦¤à¦²à¦¦à§‡à¦¶à§‡ à¦›à¦¿à¦¦à§à¦°à§‡à¦° à¦…à¦¨à§à¦®à¦¤à¦¿à¥¤`,
+    `à¦¨à¦¿à¦šà§‡ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦¹à¦²à§‹ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸à§‡à¦° à¦Ÿà¦¿-à¦•à§‹à¦¡à§‡à¦° à¦¦à§à¦°à§à¦¤-à¦¸à§‚à¦¤à§à¦° à¦¤à¦¾à¦²à¦¿à¦•à¦¾, à¦¸à¦™à§à¦—à§‡ à¦¶à¦¿à¦²à§à¦ªà§‡à¦° à¦—à§à¦°à§à¦¤à§à¦¬à¦ªà§‚à¦°à§à¦£ à¦ªà¦°à¦¿à¦­à¦¾à¦·à¦¾ à¦“ à¦ªà§à¦°à¦®à¦¿à¦¤ à¦†à¦‡à¦à¦¸à¦“ à¦®à¦¾à¦ªà§‡à¦° à¦¬à¦¿à¦¬à¦°à¦£à¥¤`
+  ],
+  specs: [
+    [`à¦‡à¦‰à¦à¦¨ T4 / T7 (à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦“ à¦•à¦® à¦à§à¦à¦•à¦¿à¦ªà§‚à¦°à§à¦£)`, `à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª: à§¨.à§¬à§« â€“ à§ª.à§¦ à¦¬à¦¾à¦° | à¦¤à¦²à¦¦à§‡à¦¶à§€à¦¯à¦¼ à¦¨à¦¿à¦°à§à¦—à¦®: à¦…à¦¨à§à¦®à§‹à¦¦à¦¿à¦¤ (à¦¦à§à¦Ÿà¦¿ à¦¬à¦¨à§à¦§à¦•à¦¾à¦°à§€)`],
+    [`à¦‡à¦‰à¦à¦¨ T11 (à¦¸à¦¾à¦§à¦¾à¦°à¦£ à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦“ à¦–à¦¾à¦¦à§à¦¯)`, `à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª: à§¬.à§¦ à¦¬à¦¾à¦° (à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦šà¦¾à¦ª à§ª.à§¦ à¦¬à¦¾à¦°) | à§¬ à¦®à¦¿à¦®à¦¿ à¦ªà§à¦°à¦®à¦¿à¦¤ à¦‡à¦¸à§à¦ªà¦¾à¦¤ | à¦¤à¦¿à¦¨à¦Ÿà¦¿ à¦¬à¦¨à§à¦§à¦•à¦¾à¦°à§€`],
+    [`à¦‡à¦‰à¦à¦¨ T14 (à¦‰à¦šà§à¦š à¦à§à¦à¦•à¦¿ / à¦•à§à¦·à¦¯à¦¼à¦•à¦¾à¦°à§€)`, `à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª: à§¬.à§¦ à¦¬à¦¾à¦° (à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦šà¦¾à¦ª à§ª.à§¦ à¦¬à¦¾à¦°) | à¦¤à¦²à¦¦à§‡à¦¶à§‡ à¦›à¦¿à¦¦à§à¦° à¦¨à¦¿à¦·à¦¿à¦¦à§à¦§`],
+    [`à¦‡à¦‰à¦à¦¨ T20 / T22 (à¦¬à¦¿à¦·à¦¾à¦•à§à¦¤ / à¦…à¦¤à¦¿-à¦¸à¦‚à¦¬à§‡à¦¦à¦¨à¦¶à§€à¦²)`, `à¦ªà¦°à§€à¦•à§à¦·à¦¾à¦° à¦šà¦¾à¦ª: à§§à§¦.à§¦ à¦¬à¦¾à¦° | à§® à¦®à¦¿à¦®à¦¿ â€“ à§§à§¦ à¦®à¦¿à¦®à¦¿ à¦ªà§à¦°à¦®à¦¿à¦¤ à¦‡à¦¸à§à¦ªà¦¾à¦¤ | à¦•à§‡à¦¬à¦² à¦‰à¦ªà¦° à¦¥à§‡à¦•à§‡ à¦–à¦¾à¦²à¦¾à¦¸`],
+    [`à¦‡à¦‰à¦à¦¨ T50 à¦“ T75 (à¦—à§à¦¯à¦¾à¦¸ à¦“ à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦•)`, `T50: à¦¤à¦°à¦²à§€à¦•à§ƒà¦¤ à¦—à§à¦¯à¦¾à¦¸ (à§§à§ª â€“ à§©à§ª.à§ª à¦¬à¦¾à¦°) | T75: à¦¹à¦¿à¦®à¦¾à¦¯à¦¼à¦¿à¦¤ à¦•à§à¦°à¦¾à¦¯à¦¼à§‹à¦œà§‡à¦¨à¦¿à¦• (âˆ’à§§à§¯à§¬Â°à¦¸à§‡.)`]
+  ],
+  benefits: [
+    `MAWP (à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦…à¦¨à§à¦®à§‹à¦¦à¦¿à¦¤ à¦•à¦¾à¦°à§à¦¯à¦•à¦°à§€ à¦šà¦¾à¦ª): à¦¸à§à¦¬à¦¾à¦­à¦¾à¦¬à¦¿à¦• à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨à¦¾à¦° à¦¸à¦®à¦¯à¦¼ à¦­à§‡à¦¤à¦°à§‡à¦° à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š à¦…à¦¨à§à¦®à§‹à¦¦à¦¿à¦¤ à¦—à§‡à¦œ à¦šà¦¾à¦ª`,
+    `à¦¸à¦¿à¦à¦¸à¦¸à¦¿ à¦ªà§à¦²à§‡à¦Ÿ (à¦¨à¦¿à¦°à¦¾à¦ªà¦¦ à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¸à¦¨à¦¦): à¦ªà§‡à¦›à¦¨à§‡à¦° à¦•à§‹à¦£à¦¾à¦° à¦–à§à¦à¦Ÿà¦¿à¦¤à§‡ à¦¸à¦¾à¦à¦Ÿà¦¾ à¦¬à¦¾à¦§à§à¦¯à¦¤à¦¾à¦®à§‚à¦²à¦• à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾-à¦…à¦¨à§à¦®à§‹à¦¦à¦¨ à¦ªà§à¦²à§‡à¦Ÿ`,
+    `IMDG / ADR / RID: à¦¸à¦¾à¦—à¦°, à¦¸à¦¡à¦¼à¦• à¦“ à¦°à§‡à¦²à¦ªà¦¥à§‡ à¦¬à¦¿à¦ªà¦œà§à¦œà¦¨à¦• à¦ªà¦£à§à¦¯ à¦ªà¦°à¦¿à¦¬à¦¹à¦¨à§‡à¦° à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦¬à¦¿à¦§à¦¿à¦®à¦¾à¦²à¦¾`,
+    `à¦ªà§à¦°à¦•à§Œà¦¶à¦²-à¦…à¦¨à§à¦°à§‹à¦§à§‡ à¦¸à¦®à§à¦ªà§‚à¦°à§à¦£ à¦•à§à¦¯à¦¾à¦¡ à¦œà§‡à¦¨à¦¾à¦°à§‡à¦² à¦…à§à¦¯à¦¾à¦°à§‡à¦žà§à¦œà¦®à§‡à¦¨à§à¦Ÿ (GA) à¦¨à¦•à¦¶à¦¾ à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼`
+  ] },
+
+{ id: 'about',
+  category: `à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦¸à¦®à§à¦ªà¦°à§à¦•à§‡`,
+  title: `à§¨à§¦à§¦à§¦ à¦¸à¦¾à¦² à¦¥à§‡à¦•à§‡ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦° à¦¨à§‡à¦¤à§ƒà¦¤à§à¦¬à§‡à¦° à¦ªà¦¥à§‡`,
+  subtitle: `à¦ªà¦à¦šà¦¿à¦¶ à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦ªà¦°à¦¿à¦šà¦¾à¦²à¦¨à¦¾-à¦¶à§à¦°à§‡à¦·à§à¦ à¦¤à§à¦¬, à§­à§«,à§¦à§¦à§¦-à¦à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦¸à¦®à§à¦ªà¦¦ à¦†à¦° à¦¨à¦¿à¦¬à§‡à¦¦à¦¿à¦¤ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦—à§à¦°à¦¾à¦¹à¦•-à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¿à¦¤à§à¦¬à§‡à¦° à¦®à§‡à¦²à¦¬à¦¨à§à¦§à¦¨à¥¤`,
+  overview: [
+    `à§¨à§¦à§¦à§¦ à¦¸à¦¾à¦²à§‡ à¦¯à¦¾à¦¤à§à¦°à¦¾ à¦¶à§à¦°à§ à¦•à¦°à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦†à¦œ à¦†à¦‡à¦à¦¸à¦“ à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦•à¦¨à§à¦Ÿà§‡à¦‡à¦¨à¦¾à¦°à§‡à¦° à¦…à¦—à§à¦°à¦—à¦£à§à¦¯ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦²à¦¿à¦œà¦¦à¦¾à¦¤à¦¾, à¦¯à§‡ à¦¸à§‡à¦¬à¦¾ à¦¦à¦¿à¦¯à¦¼à§‡ à¦šà¦²à§‡à¦›à§‡ à¦¬à¦¹à§à¦œà¦¾à¦¤à¦¿à¦• à¦°à¦¾à¦¸à¦¾à¦¯à¦¼à¦¨à¦¿à¦• à¦‰à§Žà¦ªà¦¾à¦¦à¦•, à¦–à¦¾à¦¦à§à¦¯à¦®à¦¾à¦¨à§‡à¦° à¦¶à¦¿à¦ªà¦¾à¦°, à¦œà§à¦¬à¦¾à¦²à¦¾à¦¨à¦¿ à¦•à§‹à¦®à§à¦ªà¦¾à¦¨à¦¿ à¦“ à¦‡à¦¨à§à¦Ÿà¦¾à¦°à¦®à¦¡à¦¾à¦² à¦Ÿà§à¦¯à¦¾à¦™à§à¦• à¦…à¦ªà¦¾à¦°à§‡à¦Ÿà¦°à¦¦à§‡à¦°à¥¤`,
+    `à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾, à¦ªà§à¦°à¦•à§Œà¦¶à¦²à§‡à¦° à¦¨à¦¿à¦°à§à¦­à¦°à¦¤à¦¾ à¦†à¦° à¦¸à¦¾à¦¡à¦¼à¦¾à¦¦à¦¾à¦¨à¦•à¦¾à¦°à§€ à¦—à§à¦°à¦¾à¦¹à¦•à¦¸à§‡à¦¬à¦¾à¦° à¦ªà§à¦°à¦¤à¦¿ à¦…à¦¬à¦¿à¦šà¦² à¦…à¦™à§à¦—à§€à¦•à¦¾à¦°à§‡ à¦­à¦° à¦•à¦°à§‡ à¦œà¦¿à¦à¦‡à¦šà¦à¦® à¦—à§à¦°à§à¦ªà¦¸ à¦…à¦‚à¦¶à§€à¦¦à¦¾à¦°à¦¦à§‡à¦° à¦¸à¦¾à¦¹à¦¸ à¦œà§‹à¦—à¦¾à¦¯à¦¼, à¦¯à§‡à¦¨ à¦¤à¦¾à¦°à¦¾ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦®à¦¹à¦¾à¦¦à§‡à¦¶à§‡ à¦†à¦¤à§à¦®à¦¬à¦¿à¦¶à§à¦¬à¦¾à¦¸à§‡à¦° à¦¸à¦™à§à¦—à§‡ à¦œà§€à¦¬à¦¨à§‡à¦° à¦…à¦¤à§à¦¯à¦¾à¦¬à¦¶à§à¦¯à¦• à¦¤à¦°à¦² à¦“ à¦—à§à¦¯à¦¾à¦¸ à¦ªà§Œà¦à¦›à§‡ à¦¦à¦¿à¦¤à§‡ à¦ªà¦¾à¦°à§‡à¥¤`
+  ],
+  specs: [
+    [`à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾à¦¨ à¦“ à¦à¦¤à¦¿à¦¹à§à¦¯`, `à¦ªà§à¦°à¦¤à¦¿à¦·à§à¦ à¦¾ à§¨à§¦à§¦à§¦ à¦¸à¦¾à¦², à¦¶à¦¿à¦²à§à¦ªà§‡ à§¨à§« à¦¬à¦›à¦°à§‡à¦°à¦“ à¦¬à§‡à¦¶à¦¿ à¦¨à¦¿à¦°à¦¬à¦šà§à¦›à¦¿à¦¨à§à¦¨ à¦¨à§‡à¦¤à§ƒà¦¤à§à¦¬`],
+    [`à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦¸à¦¦à¦° à¦¦à¦ªà§à¦¤à¦°`, `à§§à§®à§§ à¦“à¦¯à¦¼à§‡à¦¸à§à¦Ÿ à¦®à§à¦¯à¦¾à¦¡à¦¿à¦¸à¦¨ à¦¸à§à¦Ÿà§à¦°à¦¿à¦Ÿ, à¦¸à§à¦¯à§à¦Ÿ à§¨à§«à§¦à§¦, à¦¶à¦¿à¦•à¦¾à¦—à§‹, à¦‡à¦²à¦¿à¦¨à¦¯à¦¼ à§¬à§¦à§¬à§¦à§¨, à¦¯à§à¦•à§à¦¤à¦°à¦¾à¦·à§à¦Ÿà§à¦°`],
+    [`à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦¬à§ˆà¦¶à§à¦¬à¦¿à¦• à¦«à§‹à¦¨`, `+à§§ (à§¯à§§à§ª) à§®à§ªà§®-à§ªà§¨à§¦à§¦`],
+    [`à¦®à¦¾à¦¨ à¦“ à¦¶à¦¿à¦²à§à¦ª-à¦¸à¦¦à¦¸à§à¦¯à¦ªà¦¦`, `ISO 9001:2015 à¦¸à¦¨à¦¦à¦ªà§à¦°à¦¾à¦ªà§à¦¤, ITCO à¦¸à¦¦à¦¸à§à¦¯, à¦‡à¦•à§‹à¦­à¦¾à¦¡à¦¿à¦¸ à¦¸à¦¿à¦²à¦­à¦¾à¦° à¦°à§‡à¦Ÿà¦¿à¦‚à¦ªà§à¦°à¦¾à¦ªà§à¦¤`]
+  ],
+  benefits: [
+    `à¦¬à¦¾à¦œà¦¾à¦°à§‡à¦° à¦‰à¦¤à§à¦¥à¦¾à¦¨-à¦ªà¦¤à¦¨à§‡ à¦†à¦°à§à¦¥à¦¿à¦• à¦¸à§à¦¥à¦¿à¦¤à¦¿à¦¶à§€à¦²à¦¤à¦¾ à¦“ à¦¦à§€à¦°à§à¦˜à¦®à§‡à¦¯à¦¼à¦¾à¦¦à¦¿ à¦¬à¦¹à¦°-à¦¬à¦¿à¦¨à¦¿à¦¯à¦¼à§‹à¦—à§‡à¦° à¦¸à¦•à§à¦·à¦®à¦¤à¦¾`,
+    `ITCO, IMO à¦“ ASME à¦†à¦¨à§à¦¤à¦°à§à¦œà¦¾à¦¤à¦¿à¦• à¦¬à¦¿à¦§à¦¿ à¦®à§‡à¦¨à§‡ à¦šà¦²à¦¾ à¦†à¦ªà¦¸à¦¹à§€à¦¨ à¦¨à¦¿à¦°à¦¾à¦ªà¦¤à§à¦¤à¦¾-à¦¸à¦‚à¦¸à§à¦•à§ƒà¦¤à¦¿`,
+    `à¦¦à§à¦°à§à¦¤ à¦²à¦¿à¦œ à¦¸à¦®à§à¦ªà¦¾à¦¦à¦¨à§‡à¦° à¦œà¦¨à§à¦¯ à§§à§­à¦Ÿà¦¿ à¦†à¦žà§à¦šà¦²à¦¿à¦• à¦…à¦«à¦¿à¦¸à§‡ à¦¸à§à¦¥à¦¾à¦¨à§€à¦¯à¦¼à¦­à¦¾à¦¬à§‡ à¦¸à¦¿à¦¦à§à¦§à¦¾à¦¨à§à¦¤ à¦¨à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦•à§à¦·à¦®à¦¤à¦¾`
+  ] }
+];
+
+const SECTION_LABELS = { overview: i18n.secOverview, specs: i18n.secSpecs, benefits: i18n.secBenefits };
+
+function renderInfoSections() {
+  const html = PAGES.map((p, i) => {
+    const bg = i % 2 === 0 ? 'bg-ghm-slate' : 'bg-white';
+    const card = i % 2 === 0 ? 'bg-white' : 'bg-ghm-slate';
+    const specs = p.specs.map(r => `
+      <div class="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 px-5 py-3.5">
+        <div class="sm:col-span-4 text-sm font-bold text-ghm-navy">${r[0]}</div>
+        <div class="sm:col-span-8 text-sm font-semibold text-slate-700">${r[1]}</div>
+      </div>`).join('');
+    const benefits = p.benefits.map(b => `
+      <div class="flex items-start gap-3 ${card} p-4 rounded-2xl border border-slate-200/80">
+        <span class="w-6 h-6 rounded-full bg-emerald-50 text-ghm-green font-extrabold flex items-center justify-center shrink-0 mt-0.5">âœ“</span>
+        <p class="text-sm text-slate-700 leading-relaxed font-medium">${b}</p>
+      </div>`).join('');
+    return `
+      <section id="${p.id}" class="${bg} py-14 sm:py-16 border-t border-slate-200/70">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-xs font-bold tracking-widest text-ghm-green mb-2">${p.category}</p>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-ghm-ink leading-snug mb-3">${p.title}</h2>
+          <p class="text-base text-slate-600 max-w-3xl mb-8">${p.subtitle}</p>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-8">
+            <div class="lg:col-span-6 ${card} rounded-2xl p-6 border border-slate-200/80 space-y-3">
+              <h3 class="text-lg font-extrabold text-ghm-royal">${SECTION_LABELS.overview}</h3>
+              ${p.overview.map(t => `<p class="text-base text-slate-600 leading-relaxed">${t}</p>`).join('')}
+            </div>
+            <div class="lg:col-span-6 ${card} rounded-2xl overflow-hidden border border-slate-200/80">
+              <div class="bg-ghm-royal text-white px-5 py-3"><h3 class="text-base font-extrabold">${SECTION_LABELS.specs}</h3></div>
+              <div class="divide-y divide-slate-100">${specs}</div>
+            </div>
+          </div>
+          <h3 class="text-lg font-extrabold text-ghm-royal mb-4">${SECTION_LABELS.benefits}</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${benefits}</div>
+        </div>
+      </section>`;
+  }).join('');
+  document.getElementById('infoSections').innerHTML = html;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[key]) el.innerHTML = i18n[key];
+  });
+  renderInfoSections();
+});
+
+  </script>
+</body>
+</html>

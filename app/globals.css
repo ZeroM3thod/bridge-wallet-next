@@ -288,6 +288,13 @@ button:active {
   padding: 10px 14px 18px;
 }
 
+.fleet-page-frame {
+  display: block;
+  width: 100%;
+  height: calc(100dvh - 165px);
+  border: 0;
+}
+
 .balance-card {
   position: relative;
   display: flex;

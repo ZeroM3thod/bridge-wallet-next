@@ -53,7 +53,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       const gatewayResponse = await fetch(`${(env.PAYMENT_API_URL || PAYMENT_API_URL).replace(/\/$/, '')}/api/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: Math.round(body.amount! / 100), orderId: outTradeNo, payType: body.method, attach: depositId, returnUrl: `${new URL('/deposit', request.url).toString()}?order=${encodeURIComponent(outTradeNo)}` }),
+        body: JSON.stringify({ amount: Math.round(body.amount! / 100), orderId: outTradeNo, payType: body.method, attach: depositId }),
       })
       const raw = await gatewayResponse.text()
       try {

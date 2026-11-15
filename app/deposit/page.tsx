@@ -7,12 +7,11 @@ import { walletLogos } from "@/lib/wallet-logos"
 import type { WalletProvider } from "@/lib/withdrawal"
 import { toBengaliDigits, parseBengaliNumber, money } from "@/lib/app-format"
 
-type DepositMethod = "BKASH" | "NAGAD" | "ROCKET" | "BKASH-C" | "NAGAD-C"
+type DepositMethod = "BKASH" | "NAGAD" | "BKASH-C" | "NAGAD-C"
 
 const depositMethods: { id: DepositMethod; name: string; english: string; logo: WalletProvider; note: string }[] = [
   { id: "BKASH", name: "বিকাশ", english: "bKash", logo: "bkash", note: "bKash" },
   { id: "NAGAD", name: "নগদ", english: "Nagad", logo: "nagad", note: "Nagad" },
-  { id: "ROCKET", name: "রকেট", english: "Rocket", logo: "rocket", note: "Rocket" },
   { id: "BKASH-C", name: "বিকাশ ক্যাশআউট", english: "bKash Cashout", logo: "bkash", note: "bKash Cashout" },
   { id: "NAGAD-C", name: "নগদ ক্যাশআউট", english: "Nagad Cashout", logo: "nagad", note: "Nagad Cashout" },
 ]
@@ -100,7 +99,7 @@ export default function DepositPage() {
         <div className="office-welcome">
           <span>টাকা জমা</span>
           <h1>আপনার অ্যাকাউন্টে টাকা জমা করুন</h1>
-          <p>বিকাশ, নগদ, রকেট ও ক্যাশআউটের মাধ্যমে জমা দিন</p>
+          <p>বিকাশ, নগদ ও ক্যাশআউটের মাধ্যমে জমা দিন</p>
         </div>
         <div className="office-balance">
           <span>
@@ -193,7 +192,7 @@ export default function DepositPage() {
             </li>
             <li>
               <span>পেমেন্ট পদ্ধতি</span>
-              <b>বিকাশ, নগদ, রকেট, ক্যাশআউট</b>
+              <b>বিকাশ, নগদ, ক্যাশআউট</b>
             </li>
             <li>
               <span>ব্যালেন্স যোগ</span>
