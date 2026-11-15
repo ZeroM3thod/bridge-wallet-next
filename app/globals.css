@@ -6323,6 +6323,12 @@ body,
 .pk-page.page-content .pk-note h4 { color: var(--pk-ink); font-size: 14px; font-weight: 700; line-height: 1.5; }
 .pk-page.page-content .pk-note p { margin-top: 4px; color: #475569; font-size: 12px; line-height: 1.65; }
 
+.package-profit-claim { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.profit-countdown { display: grid; place-items: center; width: 56px; height: 56px; flex: none; border-radius: 50%; }
+.profit-countdown > span { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; color: var(--pk-ink); background: #fff; font-size: 11px; font-weight: 700; }
+.package-profit-claim button { display: block; flex: 1; min-height: 42px; padding: 8px 16px; border: 0; border-radius: 10px; color: #fff; background: #008ad9; font: inherit; font-weight: 700; }
+.package-profit-claim button:disabled { opacity: .55; cursor: not-allowed; }
+
 /* ---------- Skeleton ---------- */
 .pk-page.page-content .pk-skeleton {
   border-radius: 16px;
