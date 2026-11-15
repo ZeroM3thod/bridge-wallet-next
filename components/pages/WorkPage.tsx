@@ -1,39 +1,630 @@
-import { useEffect, useState } from "react"
+"use client"
+
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Icon from "@/components/app/Icon"
 import { AppLink } from "@/components/app/AppLink"
 import { bengaliNumber, money } from "@/lib/app-format"
 
-type Package = { id: string; packageId: string; name: string; amount: number; dailyProfit: number; durationDays: number; startedAt: number; expiresAt: number; nextProfitAt: number; status: string }
-type Profit = { id: string; packageId: string; day: number; amount: number; createdAt: number }
+type Package = {
+  id: string
+  packageId: string
+  name: string
+  amount: number
+  dailyProfit: number
+  durationDays: number
+  startedAt: number
+  expiresAt: number
+  nextProfitAt: number
+  status: string
+}
+
+type Profit = {
+  id: string
+  packageId: string
+  day: number
+  amount: number
+  createdAt: number
+}
+
+const DAY_MS = 86_400_000
+const HOUR_MS = 3_600_000
+const MIN_MS = 60_000
+
+const LOAD_ERROR = "ডেটা লোড করা যায়নি"
+const CLAIM_ERROR = "লাভ জমা করা যায়নি"
+
+function countdownParts(ms: number): [string, string] {
+  const h = Math.floor(ms / HOUR_MS)
+  const m = Math.floor((ms % HOUR_MS) / MIN_MS)
+  const s = Math.floor((ms % MIN_MS) / 1000)
+  if (h > 0) return [`${bengaliNumber(h)}ঘ`, `${bengaliNumber(m)}মি`]
+  return [`${bengaliNumber(m)}মি`, `${bengaliNumber(s)}সে`]
+}
+
+const clamp = (n: number) => Math.min(100, Math.max(0, n))
+const formatDate = (ts: number) => new Date(ts).toLocaleDateString("bn-BD")
+const formatDateTime = (ts: number) => new Date(ts).toLocaleString("bn-BD")
+
+const WORK_CSS = `
+/* Work page — scoped styles (wk-*). Colours reuse the existing palette. */
+.wk-page.page-content {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 12px 12px 28px;
+  color: #102a43;
+  background: #f4faff;
+}
+.wk-page.page-content :is(h1, h2, h3, p, small, dl, dd, ul) { margin: 0; }
+.wk-page.page-content ul { padding: 0; list-style: none; }
+.wk-page.page-content :is(dt, dd, small, strong, b, h1, h2, h3, p) { overflow-wrap: anywhere; }
+
+/* ---------- Hero ---------- */
+.wk-page.page-content .wk-hero {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #0758c9, #079add);
+  box-shadow: 0 10px 24px rgba(0, 104, 196, .18);
+}
+.wk-page.page-content .wk-hero::after {
+  position: absolute;
+  top: -52px;
+  right: -45px;
+  width: 150px;
+  height: 150px;
+  border: 22px solid rgba(255, 255, 255, .09);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+.wk-page.page-content .wk-hero-top { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+.wk-page.page-content .wk-hero-icon {
+  display: grid;
+  flex: 0 0 52px;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .15);
+}
+.wk-page.page-content .wk-hero-text { min-width: 0; }
+.wk-page.page-content .wk-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: #dff6ff;
+  background: rgba(255, 255, 255, .14);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.wk-page.page-content .wk-hero h1 { margin-top: 4px; color: #fff; font-size: clamp(21px, 5.5vw, 26px); font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-hero p { margin-top: 2px; color: #e5f5ff; font-size: 13.5px; line-height: 1.5; }
+.wk-page.page-content .wk-stats {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .22);
+  text-align: center;
+}
+.wk-page.page-content .wk-stats > div { min-width: 0; padding: 0 10px; border-right: 1px solid rgba(255, 255, 255, .2); }
+.wk-page.page-content .wk-stats > div:last-child { border-right: 0; }
+.wk-page.page-content .wk-stats dt { color: #d9efff; font-size: 12.5px; line-height: 1.4; }
+.wk-page.page-content .wk-stats dd { margin-top: 2px; color: #fff; font-size: 17px; font-weight: 700; line-height: 1.35; }
+
+/* ---------- Alert ---------- */
+.wk-page.page-content .wk-alert {
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #b42318;
+  background: #fff1f2;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ---------- Section shell ---------- */
+.wk-page.page-content .wk-section {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e2eef8;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 7px 20px rgba(12, 91, 145, .07);
+}
+.wk-page.page-content .wk-section-head { display: flex; align-items: center; gap: 10px; }
+.wk-page.page-content .wk-section-icon {
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #0879db;
+  background: #eaf5ff;
+}
+.wk-page.page-content .wk-section-head > div { min-width: 0; flex: 1; }
+.wk-page.page-content .wk-section-head h2 { color: #102a43; font-size: 17px; font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-section-head p { margin-top: 1px; color: #61758a; font-size: 12.5px; line-height: 1.4; }
+.wk-page.page-content .wk-count {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #0870c8;
+  background: #eef8ff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.wk-page.page-content .wk-muted { padding: 14px; border-radius: 12px; color: #61758a; background: #f5fbff; font-size: 13px; text-align: center; }
+
+/* ---------- Package card ---------- */
+.wk-page.page-content .wk-list { display: grid; gap: 12px; }
+.wk-page.page-content .wk-card {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #d9eaf6;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff, #f5faff);
+  box-shadow: 0 6px 16px rgba(12, 91, 145, .07);
+}
+.wk-page.page-content .wk-card.is-ready { border-color: #80d3b2; box-shadow: 0 0 0 2px rgba(13, 166, 109, .08), 0 6px 16px rgba(12, 91, 145, .07); }
+.wk-page.page-content .wk-card.is-ended { opacity: .8; }
+
+.wk-page.page-content .wk-card-head { display: flex; align-items: center; gap: 10px; }
+.wk-page.page-content .wk-card-icon {
+  display: grid;
+  flex: 0 0 40px;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, #12ad75, #078f61);
+  box-shadow: 0 5px 12px rgba(0, 112, 201, .18);
+}
+.wk-page.page-content .is-ended .wk-card-icon { background: linear-gradient(145deg, #94a3b8, #64748b); }
+.wk-page.page-content .wk-card-title { min-width: 0; flex: 1; }
+.wk-page.page-content .wk-card-title h3 { color: #0b4f8a; font-size: 17px; font-weight: 700; line-height: 1.25; }
+.wk-page.page-content .wk-card-title small { display: block; margin-top: 2px; color: #080808; font-size: 13px; }
+.wk-page.page-content .wk-badge { flex: none; padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; }
+.wk-page.page-content .wk-badge.is-active { color: #08704c; background: #dff6eb; }
+.wk-page.page-content .wk-badge.is-ended { color: #475569; background: #f1f5f9; }
+
+/* ring + figures */
+.wk-page.page-content .wk-body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; }
+.wk-page.page-content .wk-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  box-shadow: 0 8px 18px rgba(0, 112, 201, .16);
+}
+.wk-page.page-content .wk-ring::before {
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 2px 6px rgba(12, 91, 145, .1);
+  content: '';
+}
+.wk-page.page-content .wk-ring-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1px;
+  justify-items: center;
+  text-align: center;
+}
+.wk-page.page-content .wk-ring-inner small { color: #61758a; font-size: 11.5px; line-height: 1.2; }
+.wk-page.page-content .wk-ring-inner strong { color: #075fb4; font-size: 15px; font-weight: 700; line-height: 1.2; }
+.wk-page.page-content .wk-ring-inner .wk-ring-now { color: #07915f; font-size: 18px; }
+.wk-page.page-content .wk-ring-inner i {
+  display: block;
+  width: 22px;
+  height: 22px;
+  color: #078357;
+}
+
+.wk-page.page-content .wk-figures { display: grid; gap: 8px; min-width: 0; }
+.wk-page.page-content .wk-profit {
+  padding: 10px 12px;
+  border: 1px solid #bfe4d4;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #effbf6, #f8fdff);
+}
+.wk-page.page-content .wk-profit small { display: block; color: #4d7666; font-size: 12.5px; }
+.wk-page.page-content .wk-profit strong { display: block; margin-top: 1px; color: #08704c; font-size: 19px; font-weight: 700; line-height: 1.25; }
+.wk-page.page-content .wk-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.wk-page.page-content .wk-pair > div { min-width: 0; padding: 8px 10px; border: 1px solid #deedf7; border-radius: 11px; background: #f8fcff; }
+.wk-page.page-content .wk-pair dt { color: #080808; font-size: 12px; line-height: 1.35; }
+.wk-page.page-content .wk-pair dd { margin-top: 2px; color: #075fb4; font-size: 14.5px; font-weight: 700; line-height: 1.3; }
+
+/* lifetime */
+.wk-page.page-content .wk-life { display: grid; gap: 6px; }
+.wk-page.page-content .wk-life-bar { height: 8px; overflow: hidden; border-radius: 999px; background: #dbeafe; }
+.wk-page.page-content .wk-life-bar i { display: block; height: 100%; border-radius: inherit; background: #008ad9; }
+.wk-page.page-content .wk-life-dates { display: flex; justify-content: space-between; gap: 10px; }
+.wk-page.page-content .wk-life-dates small { color: #080808; font-size: 12.5px; }
+.wk-page.page-content .wk-life-dates b { color: #075fb4; font-weight: 700; }
+
+/* claim */
+.wk-page.page-content .wk-claim-btn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #008ad9;
+  box-shadow: 0 5px 13px rgba(0, 112, 201, .18);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+}
+.wk-page.page-content .wk-claim-btn.is-ready { background: linear-gradient(135deg, #12ad75, #078f61); box-shadow: 0 5px 13px rgba(4, 135, 89, .22); }
+.wk-page.page-content .wk-claim-btn:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
+.wk-page.page-content .wk-claim-btn:focus-visible { outline: 3px solid rgba(0, 138, 217, .4); outline-offset: 2px; }
+
+/* ---------- Empty ---------- */
+.wk-page.page-content .wk-empty {
+  display: flex;
+  min-height: 240px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #9ed7ed;
+  border-radius: 14px;
+  background: #f5fbff;
+  text-align: center;
+}
+.wk-page.page-content .wk-empty > span {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 11px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, #0871d2, #08a9df);
+  box-shadow: 0 8px 18px rgba(0, 112, 201, .18);
+}
+.wk-page.page-content .wk-empty h2 { color: #075da8; font-size: 18px; font-weight: 700; }
+.wk-page.page-content .wk-empty p { margin-top: 4px; color: #61758a; font-size: 14px; line-height: 1.55; }
+.wk-page.page-content .wk-empty a {
+  margin-top: 14px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #0871d2, #079edf);
+  box-shadow: 0 5px 13px rgba(0, 112, 201, .18);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ---------- Ledger ---------- */
+.wk-page.page-content .wk-ledger { display: grid; gap: 8px; }
+.wk-page.page-content .wk-ledger li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #deedf7;
+  border-radius: 999px 14px 14px 999px;
+  background: linear-gradient(100deg, #f8fcff, #fff);
+}
+.wk-page.page-content .wk-ledger-no {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, #0871d2, #08a9df);
+  font-size: 13px;
+  font-weight: 700;
+}
+.wk-page.page-content .wk-ledger strong { display: block; color: #173b59; font-size: 14px; font-weight: 700; }
+.wk-page.page-content .wk-ledger small { display: block; margin-top: 1px; color: #718599; font-size: 12.5px; line-height: 1.35; }
+.wk-page.page-content .wk-ledger li > b { color: #07915f; font-size: 14px; font-weight: 700; white-space: nowrap; }
+
+/* ---------- Skeleton ---------- */
+.wk-page.page-content .wk-skeleton {
+  height: 260px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #e3f1fc 25%, #f2f9ff 50%, #e3f1fc 75%);
+  background-size: 200% 100%;
+  animation: wk-shimmer 1.3s linear infinite;
+}
+@keyframes wk-shimmer { to { background-position: -200% 0; } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 420px) {
+  .wk-page.page-content { padding: 10px 10px 24px; }
+  .wk-page.page-content .wk-body { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 14px; }
+  .wk-page.page-content .wk-figures { width: 100%; }
+  .wk-page.page-content .wk-ring { width: 120px; height: 120px; }
+  .wk-page.page-content .wk-ledger li { grid-template-columns: 34px minmax(0, 1fr); border-radius: 22px; }
+  .wk-page.page-content .wk-ledger li > b { grid-column: 2; justify-self: start; }
+}
+@media (max-width: 350px) {
+  .wk-page.page-content .wk-pair { grid-template-columns: minmax(0, 1fr); }
+  .wk-page.page-content .wk-life-dates { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wk-page.page-content .wk-skeleton { animation: none; }
+}
+`
 
 export default function WorkPage() {
   const [packages, setPackages] = useState<Package[]>([])
   const [profits, setProfits] = useState<Profit[]>([])
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(true)
   const [now, setNow] = useState(Date.now())
   const [claiming, setClaiming] = useState("")
-  useEffect(() => { const timer = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(timer) }, [])
-  const load = async () => { const r = await fetch('/api/work', { credentials: 'include', cache: 'no-store' }); const d = await r.json(); if (!r.ok) throw new Error(d.error); setPackages(d.packages); setProfits(d.profits) }
-  useEffect(() => { load().catch(e => setError(e.message || 'ডেটা লোড করা যায়নি')) }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const load = useCallback(async () => {
+    const res = await fetch("/api/work", { credentials: "include", cache: "no-store" })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error)
+    setPackages(data.packages)
+    setProfits(data.profits)
+  }, [])
+
+  useEffect(() => {
+    load()
+      .catch((e) => setError(e.message || LOAD_ERROR))
+      .finally(() => setLoading(false))
+  }, [load])
+
   const claim = async (pkg: Package) => {
-    setClaiming(pkg.id); setError("")
+    setClaiming(pkg.id)
+    setError("")
     try {
-      const r = await fetch('/api/work/claim', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ packageId: pkg.id }) })
-      const d = await r.json()
-      if (!r.ok) throw new Error(d.error || 'লাভ জমা করা যায়নি')
+      const res = await fetch("/api/work/claim", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ packageId: pkg.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || CLAIM_ERROR)
       await load()
-    } catch (e) { setError(e instanceof Error ? e.message : 'লাভ জমা করা যায়নি') }
-    finally { setClaiming("") }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : CLAIM_ERROR)
+    } finally {
+      setClaiming("")
+    }
   }
-  const active = packages.filter(p => p.status === 'active' && p.expiresAt > Date.now())
-  const earned = profits.reduce((sum, p) => sum + p.amount, 0)
-  const nextCredits = active
-  return <main className="earn-page work-investment-page page-content">
-    <section className="earn-hero"><div className="earn-hero-icon"><Icon name="work" size={38} /></div><div><span className="earn-kicker">দৈনিক আয়</span><h1>আপনার কর্মক্ষেত্র</h1><p>ডাটাবেসে জমা প্যাকেজ ও লাভ</p></div><div className="earn-overview"><div><small>সক্রিয় প্যাকেজ</small><strong>{bengaliNumber(active.length)}টি</strong></div><div><small>এ পর্যন্ত ক্রেডিট হয়েছে</small><strong>{money(earned)}</strong></div></div></section>
-    {error && <p role="alert">{error}</p>}
-    <section className="package-section"><div className="package-heading"><div><span><Icon name="wallet" size={21} /></span><div><h2>আপনার প্যাকেজ</h2><p>মূলধন এবং বাস্তব স্ট্যাটাস</p></div></div></div>
-       {packages.length ? packages.map(p => { const remaining = Math.max(0, p.nextProfitAt - now); const ready = remaining === 0 && p.status === 'active' && p.expiresAt > now; const progress = Math.min(100, Math.max(0, (1 - remaining / 86400000) * 100)); return <article className="active-package-card" key={p.id}><div className="active-package-head"><span><Icon name="check" size={21} /></span><div><h3>{p.name}</h3><small>{bengaliNumber(p.durationDays)} দিনের মেয়াদ</small></div><b>{p.status === 'active' && p.expiresAt > now ? 'সক্রিয়' : 'শেষ'}</b></div><div className="active-package-metrics">{[["প্যাকেজ মূল্য",money(p.amount)],["দৈনিক নির্ধারিত লাভ",money(p.dailyProfit)],["জমা লাভ",money(profits.filter(x=>x.packageId===p.id).reduce((s,x)=>s+x.amount,0))]].map(([label,value])=><div key={label}><small>{label}</small><strong>{value}</strong></div>)}</div><div className="active-package-dates"><div><small>শুরুর তারিখ</small><strong>{new Date(p.startedAt).toLocaleDateString('bn-BD')}</strong></div><div><small>শেষ তারিখ</small><strong>{new Date(p.expiresAt).toLocaleDateString('bn-BD')}</strong></div></div>{p.status === 'active' && p.expiresAt > now && <div className="package-profit-claim"><span className="profit-countdown" style={{ background: `conic-gradient(#008ad9 ${progress}%, #dbeafe ${progress}%)` }}><span>{ready ? 'এখন' : `${bengaliNumber(Math.floor(remaining / 3600000))}ঘ ${bengaliNumber(Math.floor(remaining % 3600000 / 60000))}মি`}</span></span><button type="button" onClick={() => claim(p)} disabled={!ready || claiming === p.id}>{claiming === p.id ? 'জমা হচ্ছে…' : 'লাভ সংগ্রহ করুন'}</button></div>}</article> }) : !error && <div className="investment-empty"><span><Icon name="work" size={42} /></span><h2>প্যাকেজ সক্রিয় নয়</h2><p>প্যাকেজ বেছে নিন</p><AppLink page="earn">প্যাকেজ বেছে নিন</AppLink></div>}
-    </section>
-      <section className="daily-ledger"><div className="package-heading"><div><span><Icon name="calendar" size={21} /></span><div><h2>দৈনিক লাভের হিসাব</h2><p>প্রতিটি সক্রিয় প্যাকেজের পরবর্তী লাভ জমার বিবরণ</p></div></div></div><div className="daily-profit-list">{nextCredits.length ? nextCredits.map((pkg, index)=><article key={pkg.id}><span>{bengaliNumber(index + 1)}</span><div><strong>{pkg.name}</strong><small>পরবর্তী লাভ জমা: {new Date(pkg.nextProfitAt).toLocaleString('bn-BD')}</small></div><b>+ {money(pkg.dailyProfit)}</b></article>) : <p>এখন কোনো সক্রিয় প্যাকেজ নেই।</p>}</div></section>
-  </main>
+
+  const isActive = useCallback((p: Package) => p.status === "active" && p.expiresAt > now, [now])
+  const active = useMemo(() => packages.filter(isActive), [packages, isActive])
+
+  const earnedByPackage = useMemo(() => {
+    const map = new Map<string, number>()
+    for (const p of profits) map.set(p.packageId, (map.get(p.packageId) ?? 0) + p.amount)
+    return map
+  }, [profits])
+
+  const totalEarned = useMemo(() => profits.reduce((sum, p) => sum + p.amount, 0), [profits])
+
+  return (
+    <main className="wk-page page-content">
+      <style>{WORK_CSS}</style>
+
+      {/* Hero */}
+      <section className="wk-hero">
+        <div className="wk-hero-top">
+          <div className="wk-hero-icon">
+            <Icon name="work" size={30} />
+          </div>
+          <div className="wk-hero-text">
+            <span className="wk-chip">দৈনিক আয়</span>
+            <h1>আপনার কর্মক্ষেত্র</h1>
+            <p>ডাটাবেসে জমা প্যাকেজ ও লাভ</p>
+          </div>
+        </div>
+        <dl className="wk-stats">
+          <div>
+            <dt>সক্রিয় প্যাকেজ</dt>
+            <dd>{bengaliNumber(active.length)}টি</dd>
+          </div>
+          <div>
+            <dt>এ পর্যন্ত ক্রেডিট হয়েছে</dt>
+            <dd>{money(totalEarned)}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {error && (
+        <p className="wk-alert" role="alert">
+          {error}
+        </p>
+      )}
+
+      {/* Packages */}
+      <section className="wk-section">
+        <header className="wk-section-head">
+          <span className="wk-section-icon">
+            <Icon name="wallet" size={20} />
+          </span>
+          <div>
+            <h2>আপনার প্যাকেজ</h2>
+            <p>মূলধন এবং বাস্তব স্ট্যাটাস</p>
+          </div>
+          {packages.length > 0 && <b className="wk-count">{bengaliNumber(packages.length)}টি</b>}
+        </header>
+
+        {loading ? (
+          <div className="wk-list" aria-busy="true">
+            <div className="wk-skeleton" />
+          </div>
+        ) : packages.length ? (
+          <div className="wk-list">
+            {packages.map((p) => {
+              const live = isActive(p)
+              const remaining = Math.max(0, p.nextProfitAt - now)
+              const ready = live && remaining === 0
+              const cycle = clamp((1 - remaining / DAY_MS) * 100)
+              const life = clamp(((now - p.startedAt) / Math.max(1, p.expiresAt - p.startedAt)) * 100)
+              const busy = claiming === p.id
+              const [top, bottom] = countdownParts(remaining)
+              const ringFill = ready ? "#12ad75" : "#008ad9"
+
+              return (
+                <article className={`wk-card ${ready ? "is-ready" : ""} ${live ? "" : "is-ended"}`} key={p.id}>
+                  <div className="wk-card-head">
+                    <span className="wk-card-icon">
+                      <Icon name="check" size={20} />
+                    </span>
+                    <div className="wk-card-title">
+                      <h3>{p.name}</h3>
+                      <small>{bengaliNumber(p.durationDays)} দিনের মেয়াদ</small>
+                    </div>
+                    <b className={`wk-badge ${live ? "is-active" : "is-ended"}`}>{live ? "সক্রিয়" : "শেষ"}</b>
+                  </div>
+
+                  <div className="wk-body">
+                    {live && (
+                      <div
+                        className="wk-ring"
+                        role="progressbar"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={Math.round(cycle)}
+                        style={{ background: `conic-gradient(${ringFill} ${cycle}%, #dbeafe ${cycle}%)` }}
+                      >
+                        <div className="wk-ring-inner">
+                          {ready ? (
+                            <strong className="wk-ring-now">এখন</strong>
+                          ) : (
+                            <>
+                              <small>পরবর্তী লাভ</small>
+                              <strong>{top}</strong>
+                              <strong>{bottom}</strong>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="wk-figures" style={live ? undefined : { gridColumn: "1 / -1" }}>
+                      <div className="wk-profit">
+                        <small>দৈনিক নির্ধারিত লাভ</small>
+                        <strong>{money(p.dailyProfit)}</strong>
+                      </div>
+                      <dl className="wk-pair">
+                        <div>
+                          <dt>প্যাকেজ মূল্য</dt>
+                          <dd>{money(p.amount)}</dd>
+                        </div>
+                        <div>
+                          <dt>জমা লাভ</dt>
+                          <dd>{money(earnedByPackage.get(p.id) ?? 0)}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+
+                  <div className="wk-life">
+                    <div
+                      className="wk-life-bar"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(life)}
+                    >
+                      <i style={{ width: `${life}%` }} />
+                    </div>
+                    <div className="wk-life-dates">
+                      <small>
+                        শুরু: <b>{formatDate(p.startedAt)}</b>
+                      </small>
+                      <small>
+                        শেষ: <b>{formatDate(p.expiresAt)}</b>
+                      </small>
+                    </div>
+                  </div>
+
+                  {live && (
+                    <button
+                      type="button"
+                      className={`wk-claim-btn ${ready ? "is-ready" : ""}`}
+                      onClick={() => claim(p)}
+                      disabled={!ready || busy}
+                    >
+                      {busy ? "জমা হচ্ছে…" : "লাভ সংগ্রহ করুন"}
+                    </button>
+                  )}
+                </article>
+              )
+            })}
+          </div>
+        ) : (
+          !error && (
+            <div className="wk-empty">
+              <span>
+                <Icon name="work" size={34} />
+              </span>
+              <h2>প্যাকেজ সক্রিয় নয়</h2>
+              <p>প্যাকেজ বেছে নিন</p>
+              <AppLink page="earn">প্যাকেজ বেছে নিন</AppLink>
+            </div>
+          )
+        )}
+      </section>
+
+      {/* Daily ledger */}
+      <section className="wk-section">
+        <header className="wk-section-head">
+          <span className="wk-section-icon">
+            <Icon name="calendar" size={20} />
+          </span>
+          <div>
+            <h2>দৈনিক লাভের হিসাব</h2>
+            <p>প্রতিটি সক্রিয় প্যাকেজের পরবর্তী লাভ জমার বিবরণ</p>
+          </div>
+        </header>
+
+        {active.length ? (
+          <ul className="wk-ledger">
+            {active.map((pkg, index) => (
+              <li key={pkg.id}>
+                <span className="wk-ledger-no">{bengaliNumber(index + 1)}</span>
+                <div>
+                  <strong>{pkg.name}</strong>
+                  <small>পরবর্তী লাভ জমা: {formatDateTime(pkg.nextProfitAt)}</small>
+                </div>
+                <b>+ {money(pkg.dailyProfit)}</b>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="wk-muted">এখন কোনো সক্রিয় প্যাকেজ নেই।</p>
+        )}
+      </section>
+    </main>
+  )
 }
