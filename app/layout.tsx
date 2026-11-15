@@ -1,6 +1,6 @@
 'use client'
 
-import type { Metadata } from "next";
+import { useEffect } from "react";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/superadmin');
+  useEffect(() => { document.title = "GHM GROUPS" }, []);
 
   if (isAdmin) {
     return (
