@@ -6410,6 +6410,7 @@ body,
 /* scrolling body: same centred 768px column as the HTML (max-w-3xl) */
 .pk-sheet-body {
   display: grid;
+  grid-auto-rows: max-content;
   flex: 1;
   align-content: start;
   gap: 16px;

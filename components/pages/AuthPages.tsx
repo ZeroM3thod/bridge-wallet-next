@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
 
 /* ------------------------------------------------------------------ */
 /* Company                                                             */
@@ -33,7 +32,7 @@ const css = `
 .ap-sub{margin:2px 0 14px;text-align:center;font-size:16px;font-weight:500;line-height:1.5;color:var(--muted)}
 
 /* logo: the emblem of ghm-logo.png on the logo's own navy tile (same spot as the old hexagon) */
-.ap-logo{display:block;width:min(100%,240px);height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(0,138,217,.16))}
+.ap-logo{display:block;width:min(100%,340px);height:auto;margin:0 auto 22px;filter:drop-shadow(0 8px 14px rgba(0,138,217,.16))}
 .ap-brand{margin:-12px 0 22px;text-align:center;font-size:24px;font-weight:700;letter-spacing:.3px;line-height:1.4;color:#001e51}
 
 /* phone / email switch (login) */
@@ -156,15 +155,7 @@ function Shell({ title, sub, children }: { title: string; sub: string; children:
 /* Signup follows index.html; second password field confirms password. */
 /* ------------------------------------------------------------------ */
 function AuthSwitch({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
-  const router = useRouter()
-  return <a href={href} className={className} onClick={(event) => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-    event.preventDefault()
-    const navigate = () => router.push(href)
-    const doc = document as Document & { startViewTransition?: (callback: () => void) => unknown }
-    if (doc.startViewTransition) doc.startViewTransition(navigate)
-    else navigate()
-  }}>{children}</a>
+  return <a href={href} className={className}>{children}</a>
 }
 
 export function SignupPage() {
