@@ -352,9 +352,16 @@ export const WORK_CSS = `
 @media (max-width: 380px) {
   .wk-page.page-content { padding: 8px 8px 20px; }
   .wk-page.page-content .wk-body { gap: 9px; }
-  .wk-page.page-content .wk-ring { width: 68px; height: 68px; }
+  .wk-page.page-content .wk-ring { width: 78px; height: 78px; }
   .wk-page.page-content .wk-ring::before { inset: 6px; }
-  .wk-page.page-content .wk-ring-inner strong { font-size: 11.5px; }
+  .wk-page.page-content .wk-ring-inner strong { font-size: 10px; }
+  .wk-page.page-content .wk-ring-inner small { font-size: 9px; }
+  .wk-page.page-content .wk-body { grid-template-columns: 78px minmax(0, 1fr); gap: 8px; }
+  .wk-page.page-content .wk-pair { gap: 5px; }
+  .wk-page.page-content .wk-pair > div { padding: 7px 6px; }
+  .wk-page.page-content .wk-pair dd { font-size: 12px; }
+  .wk-page.page-content .wk-profit { padding: 8px; }
+  .wk-page.page-content .wk-profit strong { font-size: 16px; }
   .wk-page.page-content .wk-grab { font-size: 11px; }
   .wk-page.page-content .wk-profit { flex-direction: column; align-items: flex-start; gap: 0; }
   .wk-page.page-content .wk-ledger li { grid-template-columns: 28px minmax(0, 1fr); border-radius: 18px; }
