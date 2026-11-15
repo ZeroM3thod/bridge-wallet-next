@@ -1,11 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppState } from "@/components/app/AppState"
 export default function ProfileSettingsPage() {
   const { showToast: action, changePage: onNavigate } = useAppState()
 
-  const [name, setName] = useState("রাকিবুল হাসান")
-  const [gender, setGender] = useState("পুরুষ")
+  const [name, setName] = useState("")
+  const [gender, setGender] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
   const [photo, setPhoto] = useState<string | null>(null)
+  useEffect(() => {
+    fetch("/api/profile", { credentials: "include", cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (!data?.success) return
+        setName(data.user.name ?? "")
+        setGender(data.user.gender ?? "")
+        setEmail(data.user.email ?? "")
+        setPhone(data.user.phone ?? "")
+      })
+      .catch(() => {})
+  }, [])
   const onPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) setPhoto(URL.createObjectURL(file))
@@ -35,11 +49,11 @@ export default function ProfileSettingsPage() {
         </div>
         <label className="ps-field">
           <span>জিমেইল</span>
-          <input value="rakibul.demo@gmail.com" readOnly disabled />
+          <input value={email} readOnly disabled />
         </label>
         <label className="ps-field">
           <span>মোবাইল নম্বর</span>
-          <input value="০১৭১২-৩৪৫৬৭৮" readOnly disabled />
+          <input value={phone} readOnly disabled />
         </label>
         <p className="ps-note">জিমেইল ও মোবাইল নম্বর পরিবর্তন করা যাবে না।</p>
       </section>

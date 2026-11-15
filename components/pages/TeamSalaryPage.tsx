@@ -47,20 +47,20 @@ export default function TeamSalaryPage() {
             return (
               <article key={tier.rank} className={`salary-card-custom space-y-3 p-4 ${completed ? "unlocked" : ""}`}>
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#2e1c3a]"><span>{tier.icon}</span><span>{rank}</span></div>
-                  <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">{bengaliNumber(tier.amount)}৳ / {cycleLabel}</span>
+                  <div className="flex items-center gap-1.5 text-base font-bold text-[#2e1c3a]"><span>{tier.icon}</span><span>{rank}</span></div>
+                  <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-base font-bold text-emerald-700">{bengaliNumber(tier.amount)}৳ / {cycleLabel}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="mt-0.5 text-lg leading-none text-emerald-600">•</span>
-                  <p className="text-xs font-bold leading-relaxed text-slate-800">{requirements} সদস্য যুক্ত করলে প্রতি {cycleLabel} বেতন {bengaliNumber(tier.amount)}৳</p>
+                  <span className="mt-0.5 text-xl leading-none text-emerald-600">•</span>
+                  <p className="text-base font-bold leading-relaxed text-slate-800">{requirements} সদস্য যুক্ত করলে প্রতি {cycleLabel} বেতন {bengaliNumber(tier.amount)}৳</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-2">
-                  <div className="space-x-1 text-[10px] font-bold text-slate-400">
+                  <div className="space-x-1 text-sm font-bold text-slate-500">
                     <span>L1: {bengaliNumber(counts[0])}/{bengaliNumber(tier.reqL1)}</span>
                     {tier.reqL2 > 0 && <span>| L2: {bengaliNumber(counts[1])}/{bengaliNumber(tier.reqL2)}</span>}
                     {tier.reqL3 > 0 && <span>| L3: {bengaliNumber(counts[2])}/{bengaliNumber(tier.reqL3)}</span>}
                   </div>
-                  <button type="button" onClick={() => claim(tier.id)} disabled={!completed || claimed} className={`${completed ? 'btn-claim-glow' : 'btn-locked-custom'} rounded-xl px-4 py-2 text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-70`}>{claimed ? 'এই মাসে নেওয়া হয়েছে' : completed ? 'দাবি করুন' : 'শর্ত পূরণ হয়নি'}</button>
+                  <button type="button" onClick={() => claim(tier.id)} disabled={!completed || claimed} className={`${completed ? 'btn-claim-glow' : 'btn-locked-custom'} rounded-xl px-4 py-2.5 text-base font-bold transition-all disabled:cursor-not-allowed disabled:opacity-70`}>{claimed ? 'এই মাসে নেওয়া হয়েছে' : completed ? 'দাবি করুন' : 'শর্ত পূরণ হয়নি'}</button>
                 </div>
               </article>
             )
@@ -74,11 +74,11 @@ export default function TeamSalaryPage() {
             <div className="absolute left-0 right-0 top-0 h-2 bg-gradient-to-r from-emerald-400 to-teal-500" />
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl font-bold text-emerald-600">✓</div>
             <div className="space-y-1">
-              <span className="block text-[11px] font-bold uppercase tracking-widest text-emerald-600">আবেদন সফল হয়েছে</span>
-              <h3 id="salary-claim-title" className="text-xl font-extrabold text-[#2e1c3a]">{bengaliNumber(claimAmount)}৳ বেতনের দাবি</h3>
-              <p className="text-xs leading-relaxed text-slate-500">আপনার দাবীকৃত বেতন সফলভাবে জমা হয়েছে। অ্যাডমিন ভেরিফিকেশন শেষে আপনার ওয়ালেটে জমা হবে।</p>
+              <span className="block text-base font-bold uppercase tracking-widest text-emerald-600">আবেদন সফল হয়েছে</span>
+              <h3 id="salary-claim-title" className="text-3xl font-extrabold text-[#2e1c3a]">{bengaliNumber(claimAmount)}৳ বেতনের দাবি</h3>
+              <p className="text-base leading-relaxed text-slate-500">আপনার দাবীকৃত বেতন সফলভাবে জমা হয়েছে। অ্যাডমিন ভেরিফিকেশন শেষে আপনার ওয়ালেটে জমা হবে।</p>
             </div>
-            <button type="button" onClick={() => { setClaimAmount(null); showToast("বেতনের আবেদন জমা হয়েছে") }} className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-500/30 transition hover:opacity-95">ঠিক আছে</button>
+            <button type="button" onClick={() => { setClaimAmount(null); showToast("বেতনের আবেদন জমা হয়েছে") }} className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 py-3 text-base font-bold text-white shadow-lg shadow-emerald-500/30 transition hover:opacity-95">ঠিক আছে</button>
           </section>
         </div>
       )}

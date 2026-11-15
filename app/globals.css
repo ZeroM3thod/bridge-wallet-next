@@ -91,6 +91,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
+  unicode-range: U+0000-003F, U+0041-10FFFF;
   src: url('/fonts/Mashbik-Athena-Unicode.ttf') format('truetype');
 }
 
@@ -5212,8 +5213,14 @@ body,
 }
 
 @media (max-width: 420px) {
+  .header-profile .identity > span {
+    flex-wrap: wrap;
+  }
+
   .header-profile .identity em {
-    display: none;
+    display: inline-flex;
+    font-size: 10px;
+    padding: 2px 5px;
   }
 
   .earn-hero {
@@ -5753,7 +5760,7 @@ body,
 .ps-field { display: grid; gap: 6px; margin-bottom: 12px; }
 .ps-field > span { font-size: 13px; color: #4a5d7a; }
 .ps-field input { border: 1px solid #d6e2f5; border-radius: 10px; padding: 10px 12px; font: inherit; font-size: 14px; background: #f7faff; color: #0b2b5c; }
-.ps-field input:disabled { background: #eef1f6; color: #7a879c; cursor: not-allowed; }
+.ps-field input:disabled { background: #eef1f6; color: #000; -webkit-text-fill-color: #000; cursor: not-allowed; }
 .ps-gender { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .ps-gender button { border: 1px solid #d6e2f5; background: #f7faff; border-radius: 10px; padding: 9px 0; color: #0b2b5c; font: inherit; }
 .ps-gender button.active { background: #0755bf; color: #fff; border-color: #0755bf; }
