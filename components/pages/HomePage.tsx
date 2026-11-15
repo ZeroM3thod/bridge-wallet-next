@@ -85,6 +85,12 @@ export default function HomePage() {
           <AppLink page="work"><span><Icon name="work" size={26} strokeWidth={2.8} /></span><b>কর্মক্ষেত্র</b></AppLink>
         </section>
 
+        <section className="menu-list" aria-label="অফিসের অন্যান্য কার্যক্রম">
+          <AppLink page="team"><span>সাফল্যের সঙ্গী</span><b aria-hidden="true">›</b></AppLink>
+          <AppLink page="notifications"><span>বার্তা ও ঘোষণা</span><b aria-hidden="true">›</b></AppLink>
+          <AppLink page="settings"><span>নিরাপত্তা ও বিন্যাস</span><b aria-hidden="true">›</b></AppLink>
+        </section>
+
         {(() => {
           const pkg = investment
             ? investment
@@ -103,10 +109,6 @@ export default function HomePage() {
           )
         })()}
 
-        <section className="menu-list" aria-label="অফিসের অন্যান্য কার্যক্রম">
-          <AppLink page="team"><span>সাফল্যের সঙ্গী</span><b aria-hidden="true">›</b></AppLink>
-          {["বার্তা ও ঘোষণা", "নিরাপত্তা ও বিন্যাস"].map(title => <Button variant="ghost" key={title} onClick={() => action(`${title} শীঘ্রই আসছে`)}><span>{title}</span><b aria-hidden="true">›</b></Button>)}
-        </section>
       </main>
 
       {moneyAction && (
@@ -194,7 +196,7 @@ function HomeActivePackage({ investment, remaining, now, timerParts, formatCount
   const [hours, minutes, seconds] = timerParts
   return <article className={`home-active-card wk-card ${remaining <= 0 ? "is-ready" : ""} ${live ? "" : "is-ended"}`}>
     <div className="wk-card-head"><span className="wk-card-icon"><Icon name="check" size={20} /></span><div className="wk-card-title"><h3>{investment.name}</h3><small>{bengaliNumber(investment.durationDays)} দিনের মেয়াদ</small></div><b className={`wk-badge ${live ? "is-active" : "is-ended"}`}>{live ? "সক্রিয়" : "শেষ"}</b></div>
-    <div className="wk-body">{live && <div className="wk-ring" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(cycle)} style={{ background: `conic-gradient(${remaining <= 0 ? "#12ad75" : "#008ad9"} ${cycle}%, #dbeafe ${cycle}%)` }}><div className="wk-ring-inner">{remaining <= 0 ? <strong className="wk-ring-now">এখন</strong> : <><small>পরবর্তী লাভ</small><strong>{formatCountdown(hours)}ঘ</strong><strong>{formatCountdown(minutes)}মি {formatCountdown(seconds)}সে</strong></>}</div></div>}
+    <div className="wk-body">{live && <div className="wk-ring" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(cycle)} style={{ background: `conic-gradient(${remaining <= 0 ? "#12ad75" : "#008ad9"} ${cycle}%, #dbeafe ${cycle}%)` }}><div className="wk-ring-inner">{remaining <= 0 ? <strong className="wk-ring-now">এখন</strong> : <><strong>{formatCountdown(hours)}ঘ</strong><strong>{formatCountdown(minutes)}মি {formatCountdown(seconds)}সে</strong></>}</div></div>}
       <div className="wk-figures" style={live ? undefined : { gridColumn: "1 / -1" }}><div className="wk-profit"><small>দৈনিক নির্ধারিত লাভ</small><strong>{money(investment.dailyProfit)}</strong></div><dl className="wk-pair"><div><dt>প্যাকেজ মূল্য</dt><dd>{money(investment.amount)}</dd></div><div><dt>মেয়াদ ফুরোবে</dt><dd>{new Date(investment.expiresAt).toLocaleDateString("bn-BD")}</dd></div></dl></div>
     </div><div className="wk-life"><div className="wk-life-bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(life)}><i style={{ width: `${life}%` }} /></div><div className="wk-life-dates"><small>শুরু: <b>{new Date(investment.startedAt).toLocaleDateString("bn-BD")}</b></small><small>শেষ: <b>{new Date(investment.expiresAt).toLocaleDateString("bn-BD")}</b></small></div></div>
     {live && <AppLink page="work" className={`wk-claim-btn ${remaining <= 0 ? "is-ready" : ""}`}>লাভ সংগ্রহ করুন</AppLink>}
