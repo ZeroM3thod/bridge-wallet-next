@@ -45,7 +45,7 @@ const clamp = (n: number) => Math.min(100, Math.max(0, n))
 const formatDate = (ts: number) => new Date(ts).toLocaleDateString("bn-BD")
 const formatDateTime = (ts: number) => new Date(ts).toLocaleString("bn-BD")
 
-const WORK_CSS = `
+export const WORK_CSS = `
 /* Work page — scoped styles (wk-*). Platform blue palette only. */
 .wk-page.page-content {
   display: grid;
