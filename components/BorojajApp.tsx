@@ -24,7 +24,7 @@ function AppHeader({
   profile: HeaderProfile | null
   eliteStep: string
 }) {
-  const pageLabel = navItems.find((item) => item.id === page)?.label ?? ({ members: "সদস্য ও কমিশন", salary: "মাসিক বেতন", deposit: "জমা করুন", withdraw: "অর্থ উত্তোলন", settings: "প্রোফাইল সেটিংস", ledger: "লেনদেন", password: "পাসওয়ার্ড", wpassword: "উত্তোলন পাসওয়ার্ড", profits: "লাভের বিবরণ", download: "তথ্য ডাউনলোড" } as Partial<Record<Page, string>>)[page]
+  const pageLabel = navItems.find((item) => item.id === page)?.label ?? ({ members: "সদস্য ও কমিশন", salary: "মাসিক বেতন", deposit: "জমা করুন", withdraw: "অর্থ উত্তোলন", settings: "ব্যক্তিগত তথ্য ও ফ্লিট পরিচয়", ledger: "লেনদেনের সোনালী খাতা", password: "অ্যাকাউন্টে প্রবেশের চাবিকাঠি বদল", wpassword: "অর্থ উত্তোলনের গোপনীয় পিন পরিবর্তন", profits: "অর্জনের খাতা ও লভ্যাংশ ইতিহাস", fleet: "আমাদের ফ্লিট ও কর্পোরেট পরিচয়", terms: "শর্তাবলি ও লিজ", download: "তথ্য ডাউনলোড" } as Partial<Record<Page, string>>)[page]
 
   if (page !== "profile") {
     return (
@@ -125,7 +125,7 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
  if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
  const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"
  const activePage = pathname.startsWith("/profile") ? "profile" : pathname.startsWith("/team") ? "team" : page
-  const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits"].includes(page)
+  const isSubPage = ["members", "salary", "deposit", "withdraw", "settings", "ledger", "password", "wpassword", "profits", "fleet", "terms"].includes(page)
    return <div className="app blue-header">
       {!isPublic && <AppHeader page={page} isSubPage={isSubPage} onBack={() => router.back()} onNotice={() => showToast("নতুন নোটিফিকেশন নেই")} onProfile={() => changePage("profile")} profile={profile} eliteStep={eliteStep} />}
   {children}

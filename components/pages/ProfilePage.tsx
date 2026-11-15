@@ -76,22 +76,27 @@ export default function ProfilePage() {
   ]
 
   const menu = [
-    "সাধারণ হিসাবপত্র",
-    "প্রোফাইল সেটিংস",
-    "পাসওয়ার্ড পরিবর্তন",
-    "উত্তোলন পাসওয়ার্ড",
-    "টেলিগ্রাম অফিসিয়াল চ্যানেল",
-    "লাভের রেকর্ড",
+    "ব্যক্তিগত তথ্য ও ফ্লিট পরিচয়",
+    "আমাদের ফ্লিট ও কর্পোরেট পরিচয়",
+    "অর্জনের খাতা ও লভ্যাংশ ইতিহাস",
+    "লেনদেনের সোনালী খাতা",
+    "অ্যাকাউন্টে প্রবেশের চাবিকাঠি বদল",
+    "অর্থ উত্তোলনের গোপনীয় পিন পরিবর্তন",
+    "গ্রাহক সেবা ও সহায়তা কেন্দ্র",
+    "শর্তাবলি ও লিজ",
+    "নিরাপদে প্রস্থান",
     ...(siteSettings.apkDownloadUrl ? ["অ্যাপ ডাউনলোড"] : []),
-    "লগ আউট",
   ]
 
   const subPages: Record<string, Page> = {
-    "সাধারণ হিসাবপত্র": "ledger",
-    "প্রোফাইল সেটিংস": "settings",
-    "পাসওয়ার্ড পরিবর্তন": "password",
-    "উত্তোলন পাসওয়ার্ড": "wpassword",
-    "লাভের রেকর্ড": "profits",
+    "ব্যক্তিগত তথ্য ও ফ্লিট পরিচয়": "settings",
+    "অর্জনের খাতা ও লভ্যাংশ ইতিহাস": "profits",
+    "লেনদেনের সোনালী খাতা": "ledger",
+    "অ্যাকাউন্টে প্রবেশের চাবিকাঠি বদল": "password",
+    "অর্থ উত্তোলনের গোপনীয় পিন পরিবর্তন": "wpassword",
+    "আমাদের ফ্লিট ও কর্পোরেট পরিচয়": "fleet",
+    "গ্রাহক সেবা ও সহায়তা কেন্দ্র": "support",
+    "শর্তাবলি ও লিজ": "terms",
   }
 
   return (
@@ -129,19 +134,14 @@ export default function ProfilePage() {
 
       <section className="menu-list">
         {menu.map((item) =>
-          item === "টেলিগ্রাম অফিসিয়াল চ্যানেল" ? (
-            siteSettings.telegramChannelUrl ? <a key={item} className="telegram-channel-link" href={siteSettings.telegramChannelUrl} target="_blank" rel="noreferrer">
-              <span>{item}</span>
-              <b>›</b>
-            </a> : null
-          ) : item === "অ্যাপ ডাউনলোড" ? (
+          item === "অ্যাপ ডাউনলোড" ? (
             <a key={item} className="telegram-channel-link" href="/api/apk-download"><span>{item}</span><b>↓</b></a>
           ) : subPages[item] ? (
             <AppLink key={item} page={subPages[item]}><span>{item}</span><b>›</b></AppLink>
           ) : (
-            <Button variant="ghost" key={item} className={item === "লগ আউট" ? "logout-row" : undefined}
+            <Button variant="ghost" key={item} className={item === "নিরাপদে প্রস্থান" ? "logout-row" : undefined}
               onClick={() => {
-                if (item === "লগ আউট") {
+                if (item === "নিরাপদে প্রস্থান") {
                   fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
                     .then(() => window.location.href = '/signin')
                     .catch(() => action('নেটওয়ার্ক সমস্যা'))
