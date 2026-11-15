@@ -132,7 +132,7 @@ export default function ProfilePage() {
         <AppLink page="work"><span><Icon name="work" size={34} strokeWidth={2.8} /></span><b>কর্মক্ষেত্র</b></AppLink>
       </section>
 
-      <section className="menu-list">
+      <section className="menu-list profile-menu-list">
         {menu.map((item) =>
           item === "অ্যাপ ডাউনলোড" ? (
             <a key={item} className="telegram-channel-link" href="/api/apk-download"><span>{item}</span><b>↓</b></a>

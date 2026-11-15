@@ -24,7 +24,7 @@ export default function TeamSalaryPage() {
   return (
     <div className="salary-redesign min-h-screen pb-16" lang="bn">
       <style>{`
-        .salary-redesign{font-family:'SolaimanLipi','Nikosh','Hind Siliguri',sans-serif;background:#f8fafc;color:#2e1c3a;-webkit-tap-highlight-color:transparent}
+        .salary-redesign{font-family:'Mashbik Athena',serif;background:#f8fafc;color:#2e1c3a;-webkit-tap-highlight-color:transparent}
         .salary-redesign .app-header{background:linear-gradient(135deg,#0284c7 0%,#0369a1 100%)}
         .salary-redesign .salary-card-custom{background:#fff;border-radius:20px;border:1px solid #e9e3ed;box-shadow:0 4px 18px rgba(46,28,58,.03);transition:all .2s ease}
         .salary-redesign .salary-card-custom.unlocked{border:1.5px solid #10b981;background:#f0fdf4;box-shadow:0 4px 20px rgba(16,185,129,.08)}

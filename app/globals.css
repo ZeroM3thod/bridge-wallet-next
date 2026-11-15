@@ -87,6 +87,25 @@
 /* ---- Imported app styles ---- */
 
 @font-face {
+  font-family: 'Mashbik Athena';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Mashbik-Athena-Unicode.ttf') format('truetype');
+}
+
+html, body, body * {
+  font-family: 'Mashbik Athena', serif !important;
+}
+
+/* Mobile text inflation; preserve the fixed bottom navigation size. */
+body { font-weight: 500; }
+body * { letter-spacing: .01em !important; }
+@media (max-width: 600px) {
+  body { -webkit-text-size-adjust: 120%; text-size-adjust: 120%; }
+}
+
+@font-face {
   font-family: 'FN Mahin Rafid';
   font-style: normal;
   font-weight: 400;
@@ -96,13 +115,17 @@
 }
 
 :root {
-  font-family: 'Noto Serif Bengali', serif;
+  font-family: 'Mashbik Athena', serif;
   color: #05295f;
   background: #eefaff;
   font-synthesis: none;
   line-height: 1.45;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+body, button, input, select, textarea {
+  font-family: 'Mashbik Athena', serif;
 }
 
 * {
@@ -421,6 +444,8 @@ button:active {
   gap: 5px;
   margin-top: 11px;
 }
+
+.profile-menu-list { margin-top: 28px; }
 
 .menu-list button,
 .menu-list a {
@@ -5838,7 +5863,7 @@ body,
   --pk-green: #047857;
   --pk-red: #c2392b;
   --pk-card-shadow: 0 4px 18px -4px rgba(11, 99, 206, .08), 0 1px 4px rgba(15, 23, 42, .04);
-  font-family: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+  font-family: 'Mashbik Athena', 'Noto Serif Bengali', serif;
 }
 
 .pk-screen {
@@ -6645,7 +6670,7 @@ body,
   background: rgba(15, 23, 42, .95);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
   backdrop-filter: blur(12px);
-  font-family: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+  font-family: 'Mashbik Athena', 'Noto Serif Bengali', serif;
   transform: translateX(-50%);
   animation: pk-toast-drop .25s ease-out;
 }

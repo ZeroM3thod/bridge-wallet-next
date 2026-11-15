@@ -17,7 +17,7 @@ function Logo() {
 const css = `
 .ap-wrap{--bg:#eff3f7;--card:#ffffff;--text:#000000;--muted:#374151;--border:#b8bfc9;--accent:#008ad9;--accent-dark:#0077bd;--dark:#008ad9;--error:#d64545;--ok:#1f9d6b;
   display:flex;justify-content:center;width:100%;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);
-  font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
+  font-family:'Mashbik Athena',serif}
 .ap-wrap *,.ap-wrap *::before,.ap-wrap *::after{box-sizing:border-box}
 .ap-wrap input,.ap-wrap button{font-family:inherit}
 .ap-wrap [hidden]{display:none!important}
