@@ -45,15 +45,15 @@ const clamp = (n: number) => Math.min(100, Math.max(0, n))
 const formatDate = (ts: number) => new Date(ts).toLocaleDateString("bn-BD")
 const formatDateTime = (ts: number) => new Date(ts).toLocaleString("bn-BD")
 
-export const WORK_CSS = `
-/* Work page — scoped styles (wk-*). Colours reuse the existing palette. */
+const WORK_CSS = `
+/* Work page — scoped styles (wk-*). Platform blue palette only. */
 .wk-page.page-content {
   display: grid;
-  gap: 14px;
+  gap: 10px;
   width: 100%;
-  max-width: 760px;
+  max-width: 720px;
   margin-inline: auto;
-  padding: 12px 12px 28px;
+  padding: 10px 10px 22px;
   color: #102a43;
   background: #f4faff;
 }
@@ -65,32 +65,32 @@ export const WORK_CSS = `
 .wk-page.page-content .wk-hero {
   position: relative;
   display: grid;
-  gap: 14px;
-  padding: 18px;
+  gap: 10px;
+  padding: 14px;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 14px;
   color: #fff;
   background: linear-gradient(135deg, #0758c9, #079add);
-  box-shadow: 0 10px 24px rgba(0, 104, 196, .18);
+  box-shadow: 0 8px 20px rgba(0, 104, 196, .16);
 }
 .wk-page.page-content .wk-hero::after {
   position: absolute;
-  top: -52px;
-  right: -45px;
-  width: 150px;
-  height: 150px;
-  border: 22px solid rgba(255, 255, 255, .09);
+  top: -44px;
+  right: -38px;
+  width: 120px;
+  height: 120px;
+  border: 18px solid rgba(255, 255, 255, .09);
   border-radius: 50%;
   content: '';
   pointer-events: none;
 }
-.wk-page.page-content .wk-hero-top { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+.wk-page.page-content .wk-hero-top { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
 .wk-page.page-content .wk-hero-icon {
   display: grid;
-  flex: 0 0 52px;
+  flex: 0 0 42px;
   place-items: center;
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   border: 1px solid rgba(255, 255, 255, .35);
   border-radius: 50%;
   background: rgba(255, 255, 255, .15);
@@ -98,256 +98,247 @@ export const WORK_CSS = `
 .wk-page.page-content .wk-hero-text { min-width: 0; }
 .wk-page.page-content .wk-chip {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 1px 9px;
   border-radius: 999px;
   color: #dff6ff;
   background: rgba(255, 255, 255, .14);
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 600;
   line-height: 1.5;
 }
-.wk-page.page-content .wk-hero h1 { margin-top: 4px; color: #fff; font-size: clamp(21px, 5.5vw, 26px); font-weight: 700; line-height: 1.3; }
-.wk-page.page-content .wk-hero p { margin-top: 2px; color: #e5f5ff; font-size: 13.5px; line-height: 1.5; }
+.wk-page.page-content .wk-hero h1 { margin-top: 2px; color: #fff; font-size: clamp(18px, 5vw, 21px); font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-hero p { margin-top: 1px; color: #e5f5ff; font-size: 12px; line-height: 1.4; }
 .wk-page.page-content .wk-stats {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding-top: 12px;
+  padding-top: 9px;
   border-top: 1px solid rgba(255, 255, 255, .22);
   text-align: center;
 }
-.wk-page.page-content .wk-stats > div { min-width: 0; padding: 0 10px; border-right: 1px solid rgba(255, 255, 255, .2); }
+.wk-page.page-content .wk-stats > div { min-width: 0; padding: 0 8px; border-right: 1px solid rgba(255, 255, 255, .2); }
 .wk-page.page-content .wk-stats > div:last-child { border-right: 0; }
-.wk-page.page-content .wk-stats dt { color: #d9efff; font-size: 12.5px; line-height: 1.4; }
-.wk-page.page-content .wk-stats dd { margin-top: 2px; color: #fff; font-size: 17px; font-weight: 700; line-height: 1.35; }
+.wk-page.page-content .wk-stats dt { color: #d9efff; font-size: 11.5px; line-height: 1.35; }
+.wk-page.page-content .wk-stats dd { margin-top: 1px; color: #fff; font-size: 15px; font-weight: 700; line-height: 1.3; }
 
 /* ---------- Alert ---------- */
 .wk-page.page-content .wk-alert {
-  padding: 10px 12px;
+  padding: 8px 11px;
   border: 1px solid #fecaca;
-  border-radius: 12px;
+  border-radius: 10px;
   color: #b42318;
   background: #fff1f2;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* ---------- Section shell ---------- */
 .wk-page.page-content .wk-section {
   display: grid;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid #e2eef8;
-  border-radius: 16px;
+  border-radius: 14px;
   background: #fff;
-  box-shadow: 0 7px 20px rgba(12, 91, 145, .07);
+  box-shadow: 0 5px 14px rgba(12, 91, 145, .06);
 }
-.wk-page.page-content .wk-section-head { display: flex; align-items: center; gap: 10px; }
+.wk-page.page-content .wk-section-head { display: flex; align-items: center; gap: 9px; }
 .wk-page.page-content .wk-section-icon {
   display: grid;
-  flex: 0 0 38px;
+  flex: 0 0 32px;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   color: #0879db;
   background: #eaf5ff;
 }
 .wk-page.page-content .wk-section-head > div { min-width: 0; flex: 1; }
-.wk-page.page-content .wk-section-head h2 { color: #102a43; font-size: 17px; font-weight: 700; line-height: 1.3; }
-.wk-page.page-content .wk-section-head p { margin-top: 1px; color: #61758a; font-size: 12.5px; line-height: 1.4; }
+.wk-page.page-content .wk-section-head h2 { color: #102a43; font-size: 15px; font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-section-head p { margin-top: 0; color: #61758a; font-size: 11.5px; line-height: 1.35; }
 .wk-page.page-content .wk-count {
   flex: none;
-  padding: 3px 10px;
+  padding: 2px 9px;
   border-radius: 999px;
   color: #0870c8;
   background: #eef8ff;
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 700;
 }
-.wk-page.page-content .wk-muted { padding: 14px; border-radius: 12px; color: #61758a; background: #f5fbff; font-size: 13px; text-align: center; }
+.wk-page.page-content .wk-muted { padding: 12px; border-radius: 10px; color: #61758a; background: #f5fbff; font-size: 12.5px; text-align: center; }
 
 /* ---------- Package card ---------- */
-.wk-page.page-content .wk-list { display: grid; gap: 12px; }
+.wk-page.page-content .wk-list { display: grid; gap: 10px; }
 .wk-page.page-content .wk-card {
   display: grid;
-  gap: 14px;
-  padding: 14px;
+  gap: 10px;
+  padding: 11px;
   border: 1px solid #d9eaf6;
-  border-radius: 16px;
+  border-radius: 14px;
   background: linear-gradient(145deg, #fff, #f5faff);
-  box-shadow: 0 6px 16px rgba(12, 91, 145, .07);
 }
-.wk-page.page-content .wk-card.is-ready { border-color: #80d3b2; box-shadow: 0 0 0 2px rgba(13, 166, 109, .08), 0 6px 16px rgba(12, 91, 145, .07); }
+.wk-page.page-content .wk-card.is-ready { border-color: #008ad9; box-shadow: 0 0 0 2px rgba(0, 138, 217, .1); }
 .wk-page.page-content .wk-card.is-ended { opacity: .8; }
 
-.wk-page.page-content .wk-card-head { display: flex; align-items: center; gap: 10px; }
+.wk-page.page-content .wk-card-head { display: flex; align-items: center; gap: 9px; }
 .wk-page.page-content .wk-card-icon {
   display: grid;
-  flex: 0 0 40px;
+  flex: 0 0 34px;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(145deg, #12ad75, #078f61);
-  box-shadow: 0 5px 12px rgba(0, 112, 201, .18);
+  background: linear-gradient(145deg, #0869cf, #08a8df);
+  box-shadow: 0 4px 10px rgba(0, 112, 201, .18);
 }
-.wk-page.page-content .is-ended .wk-card-icon { background: linear-gradient(145deg, #94a3b8, #64748b); }
+.wk-page.page-content .is-ended .wk-card-icon { background: linear-gradient(145deg, #94a3b8, #64748b); box-shadow: none; }
 .wk-page.page-content .wk-card-title { min-width: 0; flex: 1; }
-.wk-page.page-content .wk-card-title h3 { color: #0b4f8a; font-size: 17px; font-weight: 700; line-height: 1.25; }
-.wk-page.page-content .wk-card-title small { display: block; margin-top: 2px; color: #080808; font-size: 13px; }
-.wk-page.page-content .wk-badge { flex: none; padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; }
-.wk-page.page-content .wk-badge.is-active { color: #08704c; background: #dff6eb; }
+.wk-page.page-content .wk-card-title h3 { color: #0b4f8a; font-size: 14.5px; font-weight: 700; line-height: 1.25; }
+.wk-page.page-content .wk-card-title small { display: block; margin-top: 1px; color: #61758a; font-size: 11.5px; }
+.wk-page.page-content .wk-badge { flex: none; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; }
+.wk-page.page-content .wk-badge.is-active { color: #075fb4; background: #dbeafe; }
 .wk-page.page-content .wk-badge.is-ended { color: #475569; background: #f1f5f9; }
 
 /* ring + figures */
-.wk-page.page-content .wk-body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; }
+.wk-page.page-content .wk-body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
 .wk-page.page-content .wk-ring {
   position: relative;
   display: grid;
   place-items: center;
-  width: 108px;
-  height: 108px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
-  box-shadow: 0 8px 18px rgba(0, 112, 201, .16);
 }
 .wk-page.page-content .wk-ring::before {
   position: absolute;
-  inset: 9px;
+  inset: 7px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: inset 0 2px 6px rgba(12, 91, 145, .1);
   content: '';
 }
-.wk-page.page-content .wk-ring-inner {
+.wk-page.page-content .wk-ring-inner { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; }
+.wk-page.page-content .wk-ring-inner strong { color: #075fb4; font-size: 12.5px; font-weight: 700; line-height: 1.25; }
+.wk-page.page-content .wk-grab {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 1px;
-  justify-items: center;
-  text-align: center;
+  place-items: center;
+  align-content: center;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg, #0869cf, #08a8df);
+  box-shadow: 0 3px 8px rgba(0, 102, 190, .28);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
 }
-.wk-page.page-content .wk-ring-inner small { color: #61758a; font-size: 11.5px; line-height: 1.2; }
-.wk-page.page-content .wk-ring-inner strong { color: #075fb4; font-size: 15px; font-weight: 700; line-height: 1.2; }
-.wk-page.page-content .wk-ring-inner .wk-ring-now { color: #07915f; font-size: 18px; }
-.wk-page.page-content .wk-ring-inner i {
-  display: block;
-  width: 22px;
-  height: 22px;
-  color: #078357;
-}
+.wk-page.page-content .wk-grab span { display: block; }
+.wk-page.page-content .wk-grab:disabled { opacity: .6; cursor: not-allowed; }
+.wk-page.page-content .wk-grab:focus-visible { outline: 3px solid rgba(0, 138, 217, .4); outline-offset: 2px; }
 
-.wk-page.page-content .wk-figures { display: grid; gap: 8px; min-width: 0; }
+.wk-page.page-content .wk-figures { display: grid; gap: 6px; min-width: 0; }
 .wk-page.page-content .wk-profit {
-  padding: 10px 12px;
-  border: 1px solid #bfe4d4;
-  border-radius: 12px;
-  background: linear-gradient(120deg, #effbf6, #f8fdff);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid #dcebf7;
+  border-radius: 10px;
+  background: #eef8ff;
 }
-.wk-page.page-content .wk-profit small { display: block; color: #4d7666; font-size: 12.5px; }
-.wk-page.page-content .wk-profit strong { display: block; margin-top: 1px; color: #08704c; font-size: 19px; font-weight: 700; line-height: 1.25; }
-.wk-page.page-content .wk-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.wk-page.page-content .wk-pair > div { min-width: 0; padding: 8px 10px; border: 1px solid #deedf7; border-radius: 11px; background: #f8fcff; }
-.wk-page.page-content .wk-pair dt { color: #080808; font-size: 12px; line-height: 1.35; }
-.wk-page.page-content .wk-pair dd { margin-top: 2px; color: #075fb4; font-size: 14.5px; font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-profit small { color: #61758a; font-size: 11.5px; }
+.wk-page.page-content .wk-profit strong { color: #075fb4; font-size: 15px; font-weight: 700; line-height: 1.25; white-space: nowrap; }
+.wk-page.page-content .wk-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.wk-page.page-content .wk-pair > div { min-width: 0; padding: 6px 9px; border: 1px solid #deedf7; border-radius: 10px; background: #f8fcff; }
+.wk-page.page-content .wk-pair dt { color: #61758a; font-size: 11px; line-height: 1.3; }
+.wk-page.page-content .wk-pair dd { margin-top: 1px; color: #075fb4; font-size: 13px; font-weight: 700; line-height: 1.3; }
 
 /* lifetime */
-.wk-page.page-content .wk-life { display: grid; gap: 6px; }
-.wk-page.page-content .wk-life-bar { height: 8px; overflow: hidden; border-radius: 999px; background: #dbeafe; }
+.wk-page.page-content .wk-life { display: grid; gap: 4px; }
+.wk-page.page-content .wk-life-bar { height: 6px; overflow: hidden; border-radius: 999px; background: #dbeafe; }
 .wk-page.page-content .wk-life-bar i { display: block; height: 100%; border-radius: inherit; background: #008ad9; }
-.wk-page.page-content .wk-life-dates { display: flex; justify-content: space-between; gap: 10px; }
-.wk-page.page-content .wk-life-dates small { color: #080808; font-size: 12.5px; }
+.wk-page.page-content .wk-life-dates { display: flex; justify-content: space-between; gap: 8px; }
+.wk-page.page-content .wk-life-dates small { color: #61758a; font-size: 11px; }
 .wk-page.page-content .wk-life-dates b { color: #075fb4; font-weight: 700; }
-
-/* claim */
-.wk-page.page-content .wk-claim-btn {
-  width: 100%;
-  min-height: 46px;
-  border: 0;
-  border-radius: 999px;
-  color: #fff;
-  background: #008ad9;
-  box-shadow: 0 5px 13px rgba(0, 112, 201, .18);
-  font: inherit;
-  font-size: 15px;
-  font-weight: 700;
-}
-.wk-page.page-content .wk-claim-btn.is-ready { background: linear-gradient(135deg, #12ad75, #078f61); box-shadow: 0 5px 13px rgba(4, 135, 89, .22); }
-.wk-page.page-content .wk-claim-btn:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
-.wk-page.page-content .wk-claim-btn:focus-visible { outline: 3px solid rgba(0, 138, 217, .4); outline-offset: 2px; }
 
 /* ---------- Empty ---------- */
 .wk-page.page-content .wk-empty {
   display: flex;
-  min-height: 240px;
-  padding: 24px;
+  min-height: 190px;
+  padding: 18px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px dashed #9ed7ed;
-  border-radius: 14px;
+  border-radius: 12px;
   background: #f5fbff;
   text-align: center;
 }
 .wk-page.page-content .wk-empty > span {
   display: grid;
   place-items: center;
-  width: 76px;
-  height: 76px;
-  margin-bottom: 11px;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 8px;
   border-radius: 50%;
   color: #fff;
   background: linear-gradient(145deg, #0871d2, #08a9df);
-  box-shadow: 0 8px 18px rgba(0, 112, 201, .18);
+  box-shadow: 0 6px 14px rgba(0, 112, 201, .18);
 }
-.wk-page.page-content .wk-empty h2 { color: #075da8; font-size: 18px; font-weight: 700; }
-.wk-page.page-content .wk-empty p { margin-top: 4px; color: #61758a; font-size: 14px; line-height: 1.55; }
+.wk-page.page-content .wk-empty h2 { color: #075da8; font-size: 16px; font-weight: 700; }
+.wk-page.page-content .wk-empty p { margin-top: 2px; color: #61758a; font-size: 12.5px; line-height: 1.5; }
 .wk-page.page-content .wk-empty a {
-  margin-top: 14px;
-  padding: 10px 22px;
+  margin-top: 11px;
+  padding: 8px 20px;
   border-radius: 999px;
   color: #fff;
   background: linear-gradient(135deg, #0871d2, #079edf);
-  box-shadow: 0 5px 13px rgba(0, 112, 201, .18);
-  font-size: 14px;
+  box-shadow: 0 4px 11px rgba(0, 112, 201, .18);
+  font-size: 13px;
   font-weight: 700;
   text-decoration: none;
 }
 
 /* ---------- Ledger ---------- */
-.wk-page.page-content .wk-ledger { display: grid; gap: 8px; }
+.wk-page.page-content .wk-ledger { display: grid; gap: 6px; }
 .wk-page.page-content .wk-ledger li {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 9px;
+  padding: 7px 10px 7px 7px;
   border: 1px solid #deedf7;
-  border-radius: 999px 14px 14px 999px;
+  border-radius: 999px;
   background: linear-gradient(100deg, #f8fcff, #fff);
 }
 .wk-page.page-content .wk-ledger-no {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   color: #fff;
   background: linear-gradient(145deg, #0871d2, #08a9df);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
 }
-.wk-page.page-content .wk-ledger strong { display: block; color: #173b59; font-size: 14px; font-weight: 700; }
-.wk-page.page-content .wk-ledger small { display: block; margin-top: 1px; color: #718599; font-size: 12.5px; line-height: 1.35; }
-.wk-page.page-content .wk-ledger li > b { color: #07915f; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.wk-page.page-content .wk-ledger strong { display: block; color: #173b59; font-size: 13px; font-weight: 700; line-height: 1.3; }
+.wk-page.page-content .wk-ledger small { display: block; color: #61758a; font-size: 11px; line-height: 1.3; }
+.wk-page.page-content .wk-ledger li > b { color: #075fb4; font-size: 13px; font-weight: 700; white-space: nowrap; }
 
 /* ---------- Skeleton ---------- */
 .wk-page.page-content .wk-skeleton {
-  height: 260px;
-  border-radius: 16px;
+  height: 200px;
+  border-radius: 14px;
   background: linear-gradient(90deg, #e3f1fc 25%, #f2f9ff 50%, #e3f1fc 75%);
   background-size: 200% 100%;
   animation: wk-shimmer 1.3s linear infinite;
@@ -355,17 +346,23 @@ export const WORK_CSS = `
 @keyframes wk-shimmer { to { background-position: -200% 0; } }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 420px) {
-  .wk-page.page-content { padding: 10px 10px 24px; }
-  .wk-page.page-content .wk-body { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 14px; }
-  .wk-page.page-content .wk-figures { width: 100%; }
-  .wk-page.page-content .wk-ring { width: 120px; height: 120px; }
-  .wk-page.page-content .wk-ledger li { grid-template-columns: 34px minmax(0, 1fr); border-radius: 22px; }
+@media (min-width: 600px) {
+  .wk-page.page-content .wk-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 380px) {
+  .wk-page.page-content { padding: 8px 8px 20px; }
+  .wk-page.page-content .wk-body { gap: 9px; }
+  .wk-page.page-content .wk-ring { width: 68px; height: 68px; }
+  .wk-page.page-content .wk-ring::before { inset: 6px; }
+  .wk-page.page-content .wk-ring-inner strong { font-size: 11.5px; }
+  .wk-page.page-content .wk-grab { font-size: 11px; }
+  .wk-page.page-content .wk-profit { flex-direction: column; align-items: flex-start; gap: 0; }
+  .wk-page.page-content .wk-ledger li { grid-template-columns: 28px minmax(0, 1fr); border-radius: 18px; }
   .wk-page.page-content .wk-ledger li > b { grid-column: 2; justify-self: start; }
 }
-@media (max-width: 350px) {
+@media (max-width: 340px) {
   .wk-page.page-content .wk-pair { grid-template-columns: minmax(0, 1fr); }
-  .wk-page.page-content .wk-life-dates { flex-direction: column; }
+  .wk-page.page-content .wk-life-dates { flex-direction: column; gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wk-page.page-content .wk-skeleton { animation: none; }
@@ -438,7 +435,7 @@ export default function WorkPage() {
       <section className="wk-hero">
         <div className="wk-hero-top">
           <div className="wk-hero-icon">
-            <Icon name="work" size={30} />
+            <Icon name="work" size={24} />
           </div>
           <div className="wk-hero-text">
             <span className="wk-chip">দৈনিক আয়</span>
@@ -468,7 +465,7 @@ export default function WorkPage() {
       <section className="wk-section">
         <header className="wk-section-head">
           <span className="wk-section-icon">
-            <Icon name="wallet" size={20} />
+            <Icon name="wallet" size={17} />
           </span>
           <div>
             <h2>আপনার প্যাকেজ</h2>
@@ -491,13 +488,13 @@ export default function WorkPage() {
               const life = clamp(((now - p.startedAt) / Math.max(1, p.expiresAt - p.startedAt)) * 100)
               const busy = claiming === p.id
               const [top, bottom] = countdownParts(remaining)
-              const ringFill = ready ? "#12ad75" : "#008ad9"
+              const ringFill = "#008ad9"
 
               return (
                 <article className={`wk-card ${ready ? "is-ready" : ""} ${live ? "" : "is-ended"}`} key={p.id}>
                   <div className="wk-card-head">
                     <span className="wk-card-icon">
-                      <Icon name="check" size={20} />
+                      <Icon name="check" size={17} />
                     </span>
                     <div className="wk-card-title">
                       <h3>{p.name}</h3>
@@ -516,23 +513,35 @@ export default function WorkPage() {
                         aria-valuenow={Math.round(cycle)}
                         style={{ background: `conic-gradient(${ringFill} ${cycle}%, #dbeafe ${cycle}%)` }}
                       >
-                        <div className="wk-ring-inner">
-                          {ready ? (
-                            <strong className="wk-ring-now">এখন</strong>
-                          ) : (
-                            <>
-                              <small>পরবর্তী লাভ</small>
-                              <strong>{top}</strong>
-                              <strong>{bottom}</strong>
-                            </>
-                          )}
-                        </div>
+                        {ready ? (
+                          <button
+                            type="button"
+                            className="wk-grab"
+                            aria-label="লাভ সংগ্রহ করুন"
+                            onClick={() => claim(p)}
+                            disabled={busy}
+                          >
+                            {busy ? (
+                              "জমা…"
+                            ) : (
+                              <>
+                                <span>সংগ্রহ</span>
+                                <span>করুন</span>
+                              </>
+                            )}
+                          </button>
+                        ) : (
+                          <div className="wk-ring-inner">
+                            <strong>{top}</strong>
+                            <strong>{bottom}</strong>
+                          </div>
+                        )}
                       </div>
                     )}
 
                     <div className="wk-figures" style={live ? undefined : { gridColumn: "1 / -1" }}>
                       <div className="wk-profit">
-                        <small>দৈনিক নির্ধারিত লাভ</small>
+                        <small>দৈনিক লাভ</small>
                         <strong>{money(p.dailyProfit)}</strong>
                       </div>
                       <dl className="wk-pair">
@@ -568,16 +577,6 @@ export default function WorkPage() {
                     </div>
                   </div>
 
-                  {live && (
-                    <button
-                      type="button"
-                      className={`wk-claim-btn ${ready ? "is-ready" : ""}`}
-                      onClick={() => claim(p)}
-                      disabled={!ready || busy}
-                    >
-                      {busy ? "জমা হচ্ছে…" : "লাভ সংগ্রহ করুন"}
-                    </button>
-                  )}
                 </article>
               )
             })}
@@ -586,7 +585,7 @@ export default function WorkPage() {
           !error && (
             <div className="wk-empty">
               <span>
-                <Icon name="work" size={34} />
+                <Icon name="work" size={28} />
               </span>
               <h2>প্যাকেজ সক্রিয় নয়</h2>
               <p>প্যাকেজ বেছে নিন</p>
@@ -600,7 +599,7 @@ export default function WorkPage() {
       <section className="wk-section">
         <header className="wk-section-head">
           <span className="wk-section-icon">
-            <Icon name="calendar" size={20} />
+            <Icon name="calendar" size={17} />
           </span>
           <div>
             <h2>দৈনিক লাভের হিসাব</h2>
