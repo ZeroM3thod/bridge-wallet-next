@@ -13,7 +13,7 @@ export default function WithdrawPage() {
   const [balance, setBalance] = useState(0)
   const [wallets, setWallets] = useState<any[]>([])
   const [withdrawals, setWithdrawals] = useState<any[]>([])
-  const [settings, setSettings] = useState({minimum_amount:1000,fee_percent:2})
+   const [settings, setSettings] = useState({minimum_amount:1000,fee_percent:2,opening_hour:10,closing_hour:17,allowed_days:'0,1,2,3,4',daily_limit:1})
   const [hasPassword, setHasPassword] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -194,7 +194,7 @@ export default function WithdrawPage() {
           <ul>
             <li>
               <span>উত্তোলন সময়</span>
-              <b>সকাল ১০টা – দুপুর ৩টা</b>
+              <b>{toBengaliDigits(settings.opening_hour)}:০০ – {toBengaliDigits(settings.closing_hour)}:০০ · রবি–বৃহস্পতিবার</b>
             </li>
             <li>
               <span>প্রসেসিং সময়</span>
@@ -210,7 +210,7 @@ export default function WithdrawPage() {
             </li>
             <li>
               <span>দৈনিক সীমা</span>
-              <b>৩ টি আবেদন</b>
+              <b>{toBengaliDigits(settings.daily_limit)} টি আবেদন</b>
             </li>
           </ul>
         </div>

@@ -15,7 +15,7 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
         env.DB.prepare('SELECT id,provider,account FROM withdrawal_wallets WHERE user_id=? ORDER BY created_at').bind(uid).all(),
         env.DB.prepare('SELECT x.id,x.amount,x.fee,x.net,x.status,x.created_at AS date,w.provider,w.account FROM withdrawals x JOIN withdrawal_wallets w ON w.id=x.wallet_id WHERE x.user_id=? ORDER BY x.created_at DESC LIMIT 50').bind(uid).all(),
         env.DB.prepare('SELECT balance,withdrawal_password_hash FROM users WHERE id=?').bind(uid).first<{balance:number;withdrawal_password_hash:string|null}>(),
-        env.DB.prepare('SELECT minimum_amount,fee_percent FROM withdrawal_settings WHERE id=1').first(),
+        env.DB.prepare('SELECT minimum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first(),
       ])
       return json({wallets:wallets.results,withdrawals:withdrawals.results,balance:user?.balance??0,hasPassword:!!user?.withdrawal_password_hash,settings})
     }
@@ -33,20 +33,27 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
       return json({success:true})
     }
     if (body.action==='withdraw') {
-      const settings=await env.DB.prepare('SELECT minimum_amount,fee_percent FROM withdrawal_settings WHERE id=1').first<{minimum_amount:number;fee_percent:number}>()
+       const settings=await env.DB.prepare('SELECT minimum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first<{minimum_amount:number;fee_percent:number;opening_hour:number;closing_hour:number;allowed_days:string;daily_limit:number}>()
+       const now=Date.now(), bdNow=new Date(now+6*60*60*1000), day=bdNow.getUTCDay(), hour=bdNow.getUTCHours()
+       const allowedDays=(settings?.allowed_days??'0,1,2,3,4').split(',').map(Number)
+       if (!allowedDays.includes(day)||hour<(settings?.opening_hour??10)||hour>=(settings?.closing_hour??17)) return json({error:`উত্তোলনের সময় ${settings?.opening_hour??10}:00–${settings?.closing_hour??17}:00 (বাংলাদেশ সময়), অনুমোদিত দিন: রবি–বৃহস্পতিবার`},400)
       const amount=Number(body.amount), min=settings?.minimum_amount??1000, percent=settings?.fee_percent??2
       if (!Number.isSafeInteger(amount)||amount<min) return json({error:`সর্বনিম্ন উত্তোলন ৳${min}`},400)
       if (amount>user.balance-user.welcome_bonus_locked) return json({error:'প্যাকেজ কিনলে স্বাগত বোনাস উত্তোলন করতে পারবেন'},400)
       const wallet=await env.DB.prepare('SELECT id FROM withdrawal_wallets WHERE id=? AND user_id=?').bind(body.walletId,uid).first()
       if (!wallet) return json({error:'ওয়ালেট পাওয়া যায়নি'},400)
-      const fee=Math.round(amount*percent/100), now=Date.now(), id=crypto.randomUUID()
-      await env.DB.batch([
-        env.DB.prepare('UPDATE users SET balance=balance-? WHERE id=? AND balance>=?').bind(amount,uid,amount),
+       const fee=Math.round(amount*percent/100), id=crypto.randomUUID()
+       const dayStart=Date.UTC(bdNow.getUTCFullYear(),bdNow.getUTCMonth(),bdNow.getUTCDate())-6*60*60*1000
+       const dayEnd=dayStart+24*60*60*1000, dailyLimit=settings?.daily_limit??1
+       await env.DB.batch([
+         env.DB.prepare("UPDATE users SET balance=balance-? WHERE id=? AND balance>=? AND (SELECT COUNT(*) FROM withdrawals WHERE user_id=? AND created_at>=? AND created_at<? AND status!='rejected')< ?").bind(amount,uid,amount,uid,dayStart,dayEnd,dailyLimit),
         env.DB.prepare("INSERT INTO withdrawals(id,user_id,wallet_id,amount,fee,net,status,created_at) SELECT ?,?,?,?, ?,?, 'pending',? WHERE changes()>0").bind(id,uid,body.walletId,amount,fee,amount-fee,now),
         env.DB.prepare("INSERT INTO transactions(id,user_id,type,amount,label,created_at) SELECT ?,?,'debit',?,'অর্থ উত্তোলন',? WHERE changes()>0").bind(crypto.randomUUID(),uid,amount,now),
       ])
       const row=await env.DB.prepare('SELECT id FROM withdrawals WHERE id=?').bind(id).first()
-      return row ? json({success:true,id,amount,fee,net:amount-fee}) : json({error:'অনুরোধ জমা হয়নি'},409)
+       if (row) return json({success:true,id,amount,fee,net:amount-fee})
+       const count=await env.DB.prepare("SELECT COUNT(*) AS n FROM withdrawals WHERE user_id=? AND created_at>=? AND created_at<? AND status!='rejected'").bind(uid,dayStart,dayEnd).first<{n:number}>()
+       return (count?.n??0)>=dailyLimit?json({error:`দৈনিক সর্বোচ্চ ${dailyLimit} বার উত্তোলন করা যাবে`},429):json({error:'পর্যাপ্ত সঞ্চয় নেই'},409)
     }
     return json({error:'Invalid action'},400)
   } catch(error) { console.error('Withdrawals API:',error); return json({error:'সার্ভার সমস্যা হয়েছে'},500) }
