@@ -704,15 +704,6 @@ export default function EarnPage() {
                         <LockIcon size={16} />
                         <span>{lockLabel ? `তালাবদ্ধ • ${lockLabel}` : "তালাবদ্ধ"}</span>
                       </button>
-                    ) : short ? (
-                      <button
-                        className="pk-buy pk-buy-short"
-                        type="button"
-                        aria-disabled="true"
-                        onClick={() => notify("পর্যাপ্ত ব্যালেন্স নেই", `এই প্যাকেজের জন্য আরও ${money(item.price - balance)} প্রয়োজন।`)}
-                      >
-                        পর্যাপ্ত ব্যালেন্স নেই
-                      </button>
                     ) : (
                       <button className="pk-buy" type="button" onClick={() => openPackage(item)}>
                         প্যাকেজ কিনুন
@@ -885,7 +876,7 @@ export default function EarnPage() {
                   type="button"
                   className="pk-confirm"
                   onClick={confirmPurchase}
-                  disabled={purchasing || Boolean(amountError)}
+                  disabled={purchasing}
                 >
                   {purchasing ? "ক্রয় হচ্ছে…" : "নিশ্চিত করুন"}
                 </button>

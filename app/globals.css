@@ -5532,7 +5532,7 @@ body,
 .referral-details { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0 14px 12px; gap: 10px; }
 .referral-details > div { min-width: 0; }
 .referral-details dt { color: var(--referral-muted); font-size: 11px; margin-bottom: 3px; }
-.referral-details dd { margin: 0; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+.referral-details dd { margin: 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
 .referral-earned dd { color: var(--referral-positive); }
 .referral-member-footer { display: flex; flex-wrap: wrap; gap: 5px 16px; padding: 8px 14px; border-top: 1px solid var(--referral-line); background: var(--muted); color: var(--referral-muted); font-size: 10.5px; }
 .referral-member-footer b { color: var(--referral-ink); font-weight: 600; margin-left: 3px; }

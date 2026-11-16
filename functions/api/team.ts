@@ -27,7 +27,7 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
         env.DB.prepare(`WITH RECURSIVE tree(id,depth) AS (
           SELECT id,1 FROM users WHERE referred_by=?
           UNION ALL SELECT u.id,t.depth+1 FROM users u JOIN tree t ON u.referred_by=t.id WHERE t.depth<3
-        ) SELECT t.depth AS level,u.id,u.name,u.phone,u.created_at AS joinedAt,u.balance,u.vip_level AS vipLevel,
+        ) SELECT t.depth AS level,u.referral_code AS id,u.name,u.phone,u.created_at AS joinedAt,u.balance,u.vip_level AS vipLevel,
           CASE WHEN ${isActive} THEN 1 ELSE 0 END AS active,
           COALESCE((SELECT SUM(price_paid) FROM user_packages p WHERE p.user_id=u.id),0) AS deposit,
           COALESCE((SELECT SUM(amount) FROM daily_profits p WHERE p.user_id=u.id),0) AS profit

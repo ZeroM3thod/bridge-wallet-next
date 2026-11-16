@@ -18,20 +18,21 @@ export function useAppState() { const state = useContext(AppContext); if (!state
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   const [toast, setToast] = useState("")
-  const [balance, setBalance] = useState(2500)
+ const [balance, setBalance] = useState(0)
   const [investment, setInvestment] = useState<ActiveInvestment | null>(null)
   const [fixedDeposit, setFixedDeposit] = useState<FixedDeposit | null>(null)
   const [wallets, setWallets] = useState<SavedWallet[]>([])
   const [withdrawals, setWithdrawals] = useState<WithdrawalRecord[]>([])
-  const [transactions, setTransactions] = useState<DashboardTransaction[]>([
-    {
-      id: 1,
-      label: "প্রারম্ভিক সঞ্চয়",
-      amount: 2500,
-      type: "credit",
-      date: "আজ",
-    },
-  ])
+ const [transactions, setTransactions] = useState<DashboardTransaction[]>([])
+
+ useEffect(() => {
+   fetch("/api/profile", { credentials: "include", cache: "no-store" })
+     .then(async response => {
+       const data = await response.json()
+       if (response.ok && data.success) setBalance(data.user.balance)
+     })
+     .catch(() => {})
+ }, [])
 
   useEffect(() => {
     if (!fixedDeposit) return
