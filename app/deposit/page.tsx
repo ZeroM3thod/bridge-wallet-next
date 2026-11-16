@@ -15,11 +15,12 @@ const depositMethods: { id: DepositMethod; name: string; english: string; logo: 
 ]
 
 export default function DepositPage() {
-  const { showToast, changePage, balance, setBalance } = useAppState()
+  const { showToast, balance, setBalance } = useAppState()
   const [method, setMethod] = useState<DepositMethod>("BKASH")
   const [amount, setAmount] = useState(300)
   const [minimumAmount, setMinimumAmount] = useState(300)
   const [busy, setBusy] = useState(false)
+  const [deposits, setDeposits] = useState<any[]>([])
 
   const toastRef = useRef(showToast)
   toastRef.current = showToast
@@ -36,6 +37,10 @@ export default function DepositPage() {
       })
       .then((result) => { if (active && result.success && Number.isFinite(result.user?.balance)) setBalance(result.user.balance) })
       .catch(() => { if (active) toastRef.current("ব্যালেন্স লোড করা যায়নি; আবার চেষ্টা করুন") })
+    fetch("/api/ledger", { credentials: "include", cache: "no-store" })
+      .then(async (response) => { if (!response.ok) throw new Error(); return response.json() })
+      .then((result) => { if (active) setDeposits(result.deposits ?? []) })
+      .catch(() => { if (active) toastRef.current("জমার ইতিহাস লোড হয়নি") })
     return () => { active = false }
   }, [setBalance])
 
@@ -200,7 +205,22 @@ export default function DepositPage() {
         </div>
       </section>
 
-      <button className="withdraw-note" onClick={() => changePage("home")}>ফিরে যান</button>
+      {deposits.length > 0 && (
+        <section className="withdraw-history">
+          <h2>জমার রেকর্ড</h2>
+          {deposits.map((record) => {
+            const meta = depositMethods.find((item) => item.id === record.method)
+            if (!meta) return null
+            return (
+              <article key={record.id}>
+                <span className={`wallet-provider ${meta.logo}`}><img src={walletLogos[meta.logo]} alt={`${meta.english} লোগো`} /></span>
+                <div><strong>{meta.name}</strong><small>{new Date(record.createdAt).toLocaleDateString("bn-BD")}</small></div>
+                <div className="withdraw-record-amount"><b>{money(record.amount)}</b><small>{record.status}</small></div>
+              </article>
+            )
+          })}
+        </section>
+      )}
     </main>
   )
 }
