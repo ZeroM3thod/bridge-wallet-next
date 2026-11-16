@@ -90,6 +90,8 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
     }
 
     const emailLower = normalizeEmail(email)
+    const bonusSettings = await env.DB.prepare('SELECT welcome_bonus_enabled,welcome_bonus_amount FROM site_settings WHERE id=1').first<{welcome_bonus_enabled:number;welcome_bonus_amount:number}>()
+    const welcomeBonus = bonusSettings?.welcome_bonus_enabled ? bonusSettings.welcome_bonus_amount : 0
 
     // Verify OTP
     const secret = env.RESEND_API_KEY.slice(0, 16)
@@ -153,11 +155,14 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
     for (let attempt = 0; attempt < 32; attempt++) {
       userReferralCode = String(10_000_000 + crypto.getRandomValues(new Uint32Array(1))[0] % 90_000_000)
       const result = await env.DB.prepare(`
-        INSERT INTO users (id, email, name, phone, phone_normalized, password_hash, referral_code, referred_by, balance, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO users (id, email, name, phone, phone_normalized, password_hash, referral_code, referred_by, balance, welcome_bonus_locked, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT DO NOTHING
-      `).bind(userId, emailLower, name, normalizedPhone, normalizedPhone, passwordHash, userReferralCode, referrerId, 0, Date.now()).run()
-      if (result.meta.changes) break
+      `).bind(userId, emailLower, name, normalizedPhone, normalizedPhone, passwordHash, userReferralCode, referrerId, welcomeBonus, welcomeBonus, Date.now()).run()
+      if (result.meta.changes) {
+        if (welcomeBonus > 0) await env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) VALUES (?,?,'credit',?,'Welcome bonus',?)").bind(crypto.randomUUID(),userId,welcomeBonus,Date.now()).run()
+        break
+      }
       if (await env.DB.prepare('SELECT 1 FROM users WHERE phone_normalized = ?').bind(normalizedPhone).first()) {
         return new Response(JSON.stringify({ error: 'এই ফোন নম্বর ইতিমধ্যে নিবন্ধিত' }), { status: 400, headers: { 'Content-Type': 'application/json' } })
       }
@@ -177,7 +182,7 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
         email: emailLower,
         name,
         referralCode: userReferralCode
-      }
+      }, welcomeBonus
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { AdminSidebar } from "@/components/admin/AdminSidebar"
 
-type Settings = { telegramChannelUrl: string; telegramSupportUrl: string; whatsappSupportUrl: string; apkDownloadUrl: string }
-const empty: Settings = { telegramChannelUrl: "", telegramSupportUrl: "", whatsappSupportUrl: "", apkDownloadUrl: "" }
+type Settings = { telegramChannelUrl: string; telegramSupportUrl: string; whatsappSupportUrl: string; apkDownloadUrl: string; welcomeBonusEnabled: number; welcomeBonusAmount: number }
+const empty: Settings = { telegramChannelUrl: "", telegramSupportUrl: "", whatsappSupportUrl: "", apkDownloadUrl: "", welcomeBonusEnabled: 1, welcomeBonusAmount: 100 }
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState(empty)
@@ -28,6 +28,8 @@ export default function AdminSettingsPage() {
       {field("telegramSupportUrl", "Telegram support URL")}
       {field("whatsappSupportUrl", "WhatsApp support URL")}
       {field("apkDownloadUrl", "APK file URL")}
+      <label className="site-setting-field">Welcome bonus<input type="checkbox" checked={!!settings.welcomeBonusEnabled} onChange={e => setSettings(value => ({ ...value, welcomeBonusEnabled: Number(e.target.checked) }))} />Enable welcome bonus</label>
+      <label className="site-setting-field">Welcome bonus amount (৳)<input type="number" min="0" max="1000000" step="1" value={settings.welcomeBonusAmount} onChange={e => setSettings(value => ({ ...value, welcomeBonusAmount: Number(e.target.value) }))} /></label>
       {error && <p role="alert" className="site-settings-error">{error}</p>}
       <button className="site-settings-save" disabled={busy}>{busy ? "Saving…" : "Save settings"}</button>
     </form></main></div>

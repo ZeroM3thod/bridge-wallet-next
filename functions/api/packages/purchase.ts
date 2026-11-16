@@ -24,6 +24,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       env.DB.prepare('UPDATE users SET balance=balance-? WHERE id=? AND balance>=?').bind(pkg.price,session.user_id,pkg.price),
       env.DB.prepare("INSERT INTO user_packages (id,user_id,package_id,price_paid,daily_rate,duration_days,started_at,expires_at,status,created_at,daily_profit,next_profit_at) SELECT ?,?,?,?,?,?,?,?,'active',?,?,? WHERE EXISTS (SELECT 1 FROM users WHERE id=? AND balance=?)").bind(purchaseId,session.user_id,pkg.id,pkg.price,pkg.daily_rate,pkg.duration_days,now,now+pkg.duration_days*86400000,now,pkg.daily_profit,now+86400000,session.user_id,user.balance-pkg.price),
       env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'debit',?,'প্যাকেজ ক্রয়',? WHERE EXISTS (SELECT 1 FROM user_packages WHERE id=?)").bind(crypto.randomUUID(),session.user_id,pkg.price,now,purchaseId),
+      env.DB.prepare('UPDATE users SET welcome_bonus_locked=0 WHERE id=? AND EXISTS (SELECT 1 FROM user_packages WHERE id=?)').bind(session.user_id,purchaseId),
     ])
     if (!result[0].meta.changes || !result[1].meta.changes) return json({ error: 'ব্যালেন্স পরিবর্তিত হয়েছে; আবার চেষ্টা করুন' }, 409)
     return json({ success: true, balance: user.balance - pkg.price })

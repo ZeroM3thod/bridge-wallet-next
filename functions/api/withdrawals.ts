@@ -21,7 +21,7 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
     }
     if (request.method !== 'POST') return json({error:'Method not allowed'},405)
     const body = await request.json() as {action?:string;provider?:string;account?:string;password?:string;walletId?:string;amount?:number}
-    const user = await env.DB.prepare('SELECT balance,withdrawal_password_hash FROM users WHERE id=?').bind(uid).first<{balance:number;withdrawal_password_hash:string|null}>()
+    const user = await env.DB.prepare('SELECT balance,withdrawal_password_hash,COALESCE(welcome_bonus_locked,0) AS welcome_bonus_locked FROM users WHERE id=?').bind(uid).first<{balance:number;withdrawal_password_hash:string|null;welcome_bonus_locked:number}>()
     if (!user) return json({error:'ব্যবহারকারী পাওয়া যায়নি'},404)
     if (!user.withdrawal_password_hash) return json({error:'আগে উত্তোলন পাসওয়ার্ড সেট করুন',code:'PASSWORD_REQUIRED'},400)
     if (typeof body.password!=='string' || await hash(body.password)!==user.withdrawal_password_hash) return json({error:'উত্তোলন পাসওয়ার্ড সঠিক নয়'},400)
@@ -36,7 +36,7 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
       const settings=await env.DB.prepare('SELECT minimum_amount,fee_percent FROM withdrawal_settings WHERE id=1').first<{minimum_amount:number;fee_percent:number}>()
       const amount=Number(body.amount), min=settings?.minimum_amount??1000, percent=settings?.fee_percent??2
       if (!Number.isSafeInteger(amount)||amount<min) return json({error:`সর্বনিম্ন উত্তোলন ৳${min}`},400)
-      if (amount>user.balance) return json({error:'পর্যাপ্ত ব্যালেন্স নেই'},400)
+      if (amount>user.balance-user.welcome_bonus_locked) return json({error:'প্যাকেজ কিনলে স্বাগত বোনাস উত্তোলন করতে পারবেন'},400)
       const wallet=await env.DB.prepare('SELECT id FROM withdrawal_wallets WHERE id=? AND user_id=?').bind(body.walletId,uid).first()
       if (!wallet) return json({error:'ওয়ালেট পাওয়া যায়নি'},400)
       const fee=Math.round(amount*percent/100), now=Date.now(), id=crypto.randomUUID()

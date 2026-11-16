@@ -168,6 +168,7 @@ export function SignupPage() {
   const [sentTo, setSentTo] = useState("")
   const [loading, setLoading] = useState(false)
   const [sendingCode, setSendingCode] = useState(false)
+  const [welcomeBonus, setWelcomeBonus] = useState<number | null>(null)
 
   useEffect(() => {
     const referralCode = new URLSearchParams(window.location.search).get("ref")
@@ -244,8 +245,10 @@ export function SignupPage() {
       })
       const data = await res.json().catch(() => ({}))
       if (res.ok) {
+        if (Number(data.welcomeBonus) > 0) setWelcomeBonus(Number(data.welcomeBonus))
+        if (Number(data.welcomeBonus) > 0) { setTimeout(() => { window.location.href = "/" }, 5000) }
+        else setTimeout(() => { window.location.href = "/" }, 1500)
         setMsg({ text: "নিবন্ধন সফল হয়েছে", ok: true })
-        setTimeout(() => { window.location.href = "/" }, 1500)
       } else {
         fail(data.field || "", data.error || "নিবন্ধন ব্যর্থ")
       }
@@ -258,6 +261,7 @@ export function SignupPage() {
 
   return (
     <Shell title="সদস্যপদ গ্রহণ" sub="নতুন যাত্রা শুরু করুন">
+      {welcomeBonus !== null && <div role="dialog" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 100, display: "grid", placeItems: "center", background: "#0008", padding: 24 }}><section style={{ background: "white", padding: 28, borderRadius: 20, textAlign: "center", maxWidth: 360 }}><h2>স্বাগতম বোনাস!</h2><p>আপনার ব্যালেন্সে ৳{welcomeBonus} যোগ হয়েছে। প্যাকেজ কিনলে এই বোনাস উত্তোলন করতে পারবেন।</p><button type="button" onClick={() => { window.location.href = "/" }}>ঠিক আছে</button></section></div>}
       <form onSubmit={submit} noValidate>
         <Field icon="user" invalid={bad === "name"}>
           <input value={f.name} onChange={(e) => set("name")(e.target.value)} placeholder="পূর্ণ নাম (বাংলায়)" maxLength={100} autoComplete="name" aria-describedby={nameHasEnglish ? "name-language-warning" : undefined} />
