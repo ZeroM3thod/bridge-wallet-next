@@ -6,7 +6,7 @@ import { useAppState } from "@/components/app/AppState"
 import { pagePaths, type Page } from "@/lib/app-navigation"
 import { getFirstWord, toBanglaDigit } from "@/lib/bangla-utils"
 
-type HeaderProfile = { name: string; uid: string; vip_level: number }
+type HeaderProfile = { name: string; uid: string; vip_level: number; photo_url?: string | null }
 function AppHeader({
   page,
   isSubPage,
@@ -40,7 +40,7 @@ function AppHeader({
 
       <AppLink page="profile" label="আমার পরিসর খুলুন" className="header-profile">
         <span className="avatar">
-          <Icon name="user" size={41} strokeWidth={1.7} />
+          {profile?.photo_url ? <img src={profile.photo_url} alt="প্রোফাইল ছবি" /> : <Icon name="user" size={41} strokeWidth={1.7} />}
           <i />
         </span>
         <span className="identity">
@@ -115,8 +115,10 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
       })
       .catch(() => {})
     const onFocus = () => { void load() }
+    const onPhotoUpdated = () => { void load() }
     window.addEventListener('focus', onFocus)
-    return () => { active = false; window.removeEventListener('focus', onFocus) }
+    window.addEventListener('profile-photo-updated', onPhotoUpdated)
+    return () => { active = false; window.removeEventListener('focus', onFocus); window.removeEventListener('profile-photo-updated', onPhotoUpdated) }
   }, [authorized, isPublic])
  if (!isPublic && !authorized) return <main aria-live="polite">অ্যাকাউন্ট যাচাই হচ্ছে...</main>
   const page: Page = (Object.entries(pagePaths).find(([, path]) => path === pathname)?.[0] as Page | undefined) ?? "home"

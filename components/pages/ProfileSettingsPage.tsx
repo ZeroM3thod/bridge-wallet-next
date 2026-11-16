@@ -8,6 +8,7 @@ export default function ProfileSettingsPage() {
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const [photo, setPhoto] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
   useEffect(() => {
     fetch("/api/profile", { credentials: "include", cache: "no-store" })
       .then((response) => response.ok ? response.json() : null)
@@ -17,12 +18,30 @@ export default function ProfileSettingsPage() {
         setGender(data.user.gender ?? "")
         setEmail(data.user.email ?? "")
         setPhone(data.user.phone ?? "")
+        if (data.user.photo_url) setPhoto(data.user.photo_url)
       })
       .catch(() => {})
   }, [])
-  const onPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) setPhoto(URL.createObjectURL(file))
+    e.target.value = ""
+    if (!file) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) return action("৫ MB-এর মধ্যে JPG, PNG বা WebP ছবি দিন")
+    setUploading(true)
+    try {
+      const form = new FormData()
+      form.set("photo", file)
+      const response = await fetch("/api/profile/photo", { method: "POST", credentials: "include", body: form })
+      const result = await response.json()
+      if (!response.ok) return action(result.error || "ছবি আপলোড ব্যর্থ হয়েছে")
+      setPhoto(`${result.photoUrl}&t=${Date.now()}`)
+      window.dispatchEvent(new Event("profile-photo-updated"))
+      action("প্রোফাইল ছবি পরিবর্তন হয়েছে")
+    } catch {
+      action("নেটওয়ার্ক সমস্যা")
+    } finally {
+      setUploading(false)
+    }
   }
   return (
     <main className="home-page page-content profile-settings">
@@ -31,7 +50,7 @@ export default function ProfileSettingsPage() {
         <label className="ps-avatar">
           {photo ? <img src={photo} alt="প্রোফাইল ছবি" /> : <span>{name.trim().charAt(0) || "?"}</span>}
           <input type="file" accept="image/*" onChange={onPhoto} hidden />
-          <b>ছবি পরিবর্তন</b>
+          <b>{uploading ? "আপলোড হচ্ছে..." : "ছবি পরিবর্তন"}</b>
         </label>
       </section>
       <section className="ps-card">

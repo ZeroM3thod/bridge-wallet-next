@@ -6,6 +6,10 @@ pages_build_output_dir = "out"
 binding = "PACKAGE_IMAGES"
 bucket_name = "bridge-wallet-package-images"
 
+[[r2_buckets]]
+binding = "PROFILE_PHOTOS"
+bucket_name = "bridge-wallet-profile-photos"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "bridge-wallet-db"
