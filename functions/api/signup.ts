@@ -14,7 +14,11 @@ function normalizeEmail(email: string): string {
 }
 
 function validatePhone(phone: string): boolean {
-  return /^0?1\d{9}$/.test(phone.replace(/\s/g, ''))
+  return /^1\d{9}$/.test(normalizePhone(phone))
+}
+
+function normalizePhone(phone: string): string {
+  return phone.replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit))).replace(/[\s()-]/g, '').replace(/^0/, '')
 }
 
 async function hashPassword(password: string): Promise<string> {
@@ -62,6 +66,7 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
         headers: { 'Content-Type': 'application/json' }
       })
     }
+    const normalizedPhone = normalizePhone(phone)
 
     if (!validateEmail(email)) {
       return new Response(JSON.stringify({ error: 'সঠিক ইমেইল ঠিকানা দিন' }), {
@@ -120,12 +125,16 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       })
     }
 
+    if (await env.DB.prepare('SELECT 1 FROM users WHERE phone_normalized = ?').bind(normalizedPhone).first()) {
+      return new Response(JSON.stringify({ error: 'এই ফোন নম্বর ইতিমধ্যে নিবন্ধিত' }), { status: 400, headers: { 'Content-Type': 'application/json' } })
+    }
+
     // Verify referral code if provided
     let referrerId = null
     if (referralCode && referralCode.trim()) {
       const referrer = await env.DB.prepare(
-        'SELECT id FROM users WHERE referral_code = ?'
-      ).bind(referralCode.trim()).first<{ id: string }>()
+        'SELECT id FROM users WHERE referral_code = ? OR old_referral_code = ?'
+      ).bind(referralCode.trim(), referralCode.trim()).first<{ id: string }>()
       
       if (!referrer) {
         return new Response(JSON.stringify({ error: 'রেফারেল কোড পাওয়া যায়নি' }), {
@@ -136,26 +145,24 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       referrerId = referrer.id
     }
 
-    // Generate user ID and referral code
+    // Referral code is the public 8-digit user ID.
     const userId = crypto.randomUUID()
-    const userReferralCode = Math.random().toString(36).substring(2, 10).toUpperCase()
     const passwordHash = await hashPassword(password)
 
-    // Create user
-    await env.DB.prepare(`
-      INSERT INTO users (id, email, name, phone, password_hash, referral_code, referred_by, balance, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(
-      userId,
-      emailLower,
-      name,
-      phone,
-      passwordHash,
-      userReferralCode,
-      referrerId,
-      0,
-      Date.now()
-    ).run()
+    let userReferralCode = ''
+    for (let attempt = 0; attempt < 32; attempt++) {
+      userReferralCode = String(10_000_000 + crypto.getRandomValues(new Uint32Array(1))[0] % 90_000_000)
+      const result = await env.DB.prepare(`
+        INSERT INTO users (id, email, name, phone, phone_normalized, password_hash, referral_code, referred_by, balance, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT DO NOTHING
+      `).bind(userId, emailLower, name, normalizedPhone, normalizedPhone, passwordHash, userReferralCode, referrerId, 0, Date.now()).run()
+      if (result.meta.changes) break
+      if (await env.DB.prepare('SELECT 1 FROM users WHERE phone_normalized = ?').bind(normalizedPhone).first()) {
+        return new Response(JSON.stringify({ error: 'এই ফোন নম্বর ইতিমধ্যে নিবন্ধিত' }), { status: 400, headers: { 'Content-Type': 'application/json' } })
+      }
+      if (attempt === 31) throw new Error('Could not allocate unique user ID')
+    }
 
     // Delete used OTP
     await env.DB.prepare(
@@ -165,7 +172,8 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
     return new Response(JSON.stringify({ 
       success: true,
       user: {
-        id: userId,
+        id: userReferralCode,
+        internalId: userId,
         email: emailLower,
         name,
         referralCode: userReferralCode

@@ -82,7 +82,7 @@ export default function BorojajApp({ children }: { children: React.ReactNode }) 
   const { showToast, changePage } = useAppState()
   const [profile, setProfile] = useState<HeaderProfile | null>(null)
   const [eliteStep, setEliteStep] = useState("০")
- const isPublic = pathname === "/signin" || pathname === "/signup"
+  const isPublic = pathname === "/signin" || pathname === "/signup" || pathname === "/forgot-password"
  const [authorized, setAuthorized] = useState(false)
   useEffect(() => {
   setAuthorized(false)

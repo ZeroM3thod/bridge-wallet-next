@@ -7,5 +7,9 @@ export function normalizeEmail(email: string): string {
 }
 
 export function validatePhone(phone: string): boolean {
-  return /^0?1\d{9}$/.test(phone.replace(/\s/g, ''))
+  return /^1\d{9}$/.test(normalizePhone(phone))
+}
+
+export function normalizePhone(phone: string): string {
+  return phone.replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit))).replace(/[\s()-]/g, '').replace(/^0/, '')
 }

@@ -291,8 +291,16 @@ button:active {
 .fleet-page-frame {
   display: block;
   width: 100%;
-  height: calc(100dvh - 165px);
+  height: calc(100dvh - 150px);
+  min-height: 420px;
   border: 0;
+}
+
+@media (max-width: 600px) {
+  .fleet-page-frame {
+    height: calc(100svh - 145px);
+    min-height: 380px;
+  }
 }
 
 .balance-card {
@@ -530,6 +538,21 @@ button:active {
   padding-bottom: 28px;
   color: #102a43;
   background: #f4faff;
+}
+
+.office-page > .home-package-screen {
+  min-height: 0;
+}
+
+.home-suggest-wrap {
+  align-content: start;
+  gap: 12px;
+  padding: 0;
+}
+
+.home-suggest-wrap .pk-card {
+  justify-content: flex-start;
+  gap: 12px;
 }
 
 .office-hero {

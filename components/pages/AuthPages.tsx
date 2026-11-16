@@ -392,7 +392,6 @@ export function SigninPage() {
 
         <div className="ap-row">
           <label className="ap-remember"><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> মনে রাখুন</label>
-          {/* change href to your real "forgot password" route */}
           <a className="ap-forgot" href="/forgot-password">পাসওয়ার্ড ভুলে গেছেন?</a>
         </div>
 
@@ -402,4 +401,58 @@ export function SigninPage() {
       </form>
     </Shell>
   )
+}
+
+export function ForgotPasswordPage() {
+  const [email, setEmail] = useState("")
+  const [code, setCode] = useState("")
+  const [pw, setPw] = useState("")
+  const [confirmPw, setConfirmPw] = useState("")
+  const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [msg, setMsg] = useState({ text: "", ok: false })
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (loading) return
+    if (!emailRe.test(email.trim())) return setMsg({ text: "সঠিক বৈদ্যুতিন ডাক ঠিকানা দিন", ok: false })
+    if (!sent) {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/auth/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "send", email }) })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || "কোড পাঠানো যায়নি")
+        setSent(true)
+        setMsg({ text: "ইমেইল নিবন্ধিত থাকলে যাচাইকরণ কোড পাঠানো হয়েছে", ok: true })
+      } catch (error) { setMsg({ text: error instanceof Error ? error.message : "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন", ok: false }) }
+      finally { setLoading(false) }
+      return
+    }
+    if (!/^\d{6}$/.test(onlyDigits(code))) return setMsg({ text: "সঠিক ৬ সংখ্যার কোড দিন", ok: false })
+    if (pw.length < 6) return setMsg({ text: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে", ok: false })
+    if (pw !== confirmPw) return setMsg({ text: "পাসওয়ার্ড মিলছে না", ok: false })
+    setLoading(true)
+    try {
+      const res = await fetch("/api/auth/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "reset", email, code: onlyDigits(code), password: pw }) })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "পাসওয়ার্ড বদলানো যায়নি")
+      setMsg({ text: "পাসওয়ার্ড পরিবর্তন হয়েছে", ok: true })
+      setTimeout(() => { window.location.href = "/signin" }, 1200)
+    } catch (error) { setMsg({ text: error instanceof Error ? error.message : "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন", ok: false }) }
+    finally { setLoading(false) }
+  }
+
+  return <Shell title="পাসওয়ার্ড পুনরুদ্ধার" sub="আপনার অ্যাকাউন্টে আবার প্রবেশ করুন">
+    <form onSubmit={submit} noValidate>
+      <Field icon="mail"><input type="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="বৈদ্যুতিন ডাক ঠিকানা" autoComplete="email" disabled={sent} /></Field>
+      {sent && <>
+        <Field icon="shield"><input inputMode="numeric" value={toBanglaDigits(code)} onChange={e => setCode(onlyDigits(e.target.value))} placeholder="৬ সংখ্যার যাচাইকরণ কোড" maxLength={6} autoComplete="one-time-code" /></Field>
+        <Field icon="lock"><PwInput value={pw} onChange={setPw} placeholder="নতুন গোপন চাবিকাঠি" autoComplete="new-password" /></Field>
+        <Field icon="lock"><PwInput value={confirmPw} onChange={setConfirmPw} placeholder="নতুন গোপন চাবিকাঠি নিশ্চিত করুন" autoComplete="new-password" /></Field>
+      </>}
+      <button type="submit" className="ap-submit" disabled={loading}>{loading ? "অপেক্ষা করুন..." : sent ? "পাসওয়ার্ড বদলান" : "যাচাইকরণ কোড পাঠান"}</button>
+      <a className="ap-login" href="/signin">প্রবেশ পাতায় ফিরুন</a>
+      <p className={`ap-msg${msg.ok ? " ok" : ""}`} role="alert">{msg.text}</p>
+    </form>
+  </Shell>
 }

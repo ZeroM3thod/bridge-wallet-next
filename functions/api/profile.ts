@@ -13,7 +13,7 @@ export async function onRequestGet({ request, env }: EventContext<Env, any, any>
     if (!session) return Response.json({ error: 'সেশনের মেয়াদ শেষ' }, { status: 401 })
 
     const user = await env.DB.prepare(
-      'SELECT name, email, phone, balance, vip_level, gender, uid FROM users WHERE id = ?'
+      "SELECT name, email, phone, balance, vip_level, gender, referral_code AS uid FROM users WHERE id = ?"
     ).bind(session.user_id).first<{
       name: string; email: string; phone: string; balance: number;
       vip_level: number; gender: string | null; uid: string | null
