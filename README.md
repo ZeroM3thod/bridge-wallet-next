@@ -1,10 +1,6 @@
-১. ব্যক্তিগত তথ্য ও ফ্লিট পরিচয়-(profile setting page )
-২. আমাদের ফ্লিট ও কর্পোরেট পরিচয় (নতুন যুক্ত করুন)
-কেন যুক্ত করবেন: যেহেতু এটি একটি আইএসও ট্যাংক (ISO Tank) লিজ প্ল্যাটফর্ম, তাই কোম্পানির লাইসেন্স, ট্যাংক সার্টিফিকেট ও আন্তর্জাতিক লিজের বিবরণ এখানে থাকবে। ব্যবহারকারীর আস্থা বহুগুণ বাড়িয়ে দেবে।-(add as only new page )
-৩. অর্জনের খাতা ও লভ্যাংশ ইতিহাস(লাভের রেকর্ড - here show the profit history and also the pakage buying history and after pakage end the deposit back to balance this history)
-৪. লেনদেনের সোনালী খাতা(সাধারণ হিসাবপত্র- here show only the deposit and withdrawal history)
-৫. অ্যাকাউন্টে প্রবেশের চাবিকাঠি বদল(password change page)
-৬.অর্থ উত্তোলনের গোপনীয় পিন পরিবর্তন(withdrawl pin change page)
-৭. গ্রাহক সেবা ও সহায়তা কেন্দ্র(new agent page)
-৮. শর্তাবলি ও লিজ (this is also a new page)
-৯. নিরাপদে প্রস্থান (আগের 'লগ আউট' এর পরিবর্তে)
+1. on the /profile/ledger make sure here show all real data from database not the fake and hardcodes data and here on the deposites and withdrawl history show details like amount methid and (successfull or failed ) and the trx and time everythings .
+
+on the /team/members page increse the text size more .
+
+on the /earn page here if the user have no money on his account then it show all pakage locked please make sure if the user account is no money then also he can see the pakage buy button are enable when he confirm this buy the show not enough money . 
+otherwise for ovijat level it show locked.
