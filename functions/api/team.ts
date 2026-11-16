@@ -14,42 +14,43 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const configRow = await env.DB.prepare('SELECT config_json FROM referral_settings WHERE id=1').first<{ config_json: string }>()
     const config = configRow ? JSON.parse(configRow.config_json) : null
-    const activeWhen = config?.general?.activeWhen ?? 'min_vip'
-    const activeVip = Number(config?.general?.activeMinVip ?? 1)
-    const activeDeposit = Number(config?.general?.activeMinDeposit ?? 500)
-    const isActive = activeWhen === 'any_package'
-      ? "EXISTS(SELECT 1 FROM user_packages p WHERE p.user_id=u.id)"
-      : activeWhen === 'min_deposit'
-        ? "COALESCE((SELECT SUM(price_paid) FROM user_packages p WHERE p.user_id=u.id),0)>=?"
-        : 'COALESCE(u.vip_level,0)>=?'
+    const requestDay = Math.min(28, Math.max(1, Number(config?.salary?.requestDay ?? 1)))
+    const isActive = "EXISTS(SELECT 1 FROM user_packages p WHERE p.user_id=u.id AND p.package_id<>'vip0')"
     if (request.method === 'GET') {
       const [members, earnings, user, requests] = await Promise.all([
         env.DB.prepare(`WITH RECURSIVE tree(id,depth) AS (
           SELECT id,1 FROM users WHERE referred_by=?
           UNION ALL SELECT u.id,t.depth+1 FROM users u JOIN tree t ON u.referred_by=t.id WHERE t.depth<3
         ) SELECT t.depth AS level,u.referral_code AS id,u.name,u.phone,u.created_at AS joinedAt,u.balance,u.vip_level AS vipLevel,
-          CASE WHEN (${isActive}) OR EXISTS(SELECT 1 FROM deposits d WHERE d.user_id=u.id AND d.status='paid') THEN 1 ELSE 0 END AS active,
+          CASE WHEN ${isActive} THEN 1 ELSE 0 END AS active,
           COALESCE((SELECT SUM(d.amount) FROM deposits d WHERE d.user_id=u.id AND d.status='paid'),0) AS deposit,
-          COALESCE((SELECT SUM(amount) FROM daily_profits p WHERE p.user_id=u.id),0) AS profit
-          FROM tree t JOIN users u ON u.id=t.id ORDER BY t.depth,u.created_at DESC`).bind(...(activeWhen==='min_deposit'?[session.user_id,activeDeposit]:activeWhen==='min_vip'?[session.user_id,activeVip]:[session.user_id])).all(),
+          COALESCE((SELECT SUM(amount) FROM daily_profits p WHERE p.user_id=u.id),0) AS profit,
+          CASE WHEN ${isActive} THEN 1 ELSE 0 END AS salaryActive
+          FROM tree t JOIN users u ON u.id=t.id ORDER BY t.depth,u.created_at DESC`).bind(session.user_id).all(),
         env.DB.prepare('SELECT team_received,team_dividend FROM user_stats WHERE user_id=?').bind(session.user_id).first(),
         env.DB.prepare('SELECT referral_code FROM users WHERE id=?').bind(session.user_id).first(),
         env.DB.prepare('SELECT tier_id AS tierId,amount,status,cycle_key AS cycleKey,created_at AS createdAt FROM salary_requests WHERE user_id=? ORDER BY created_at DESC').bind(session.user_id).all(),
       ])
       const list = members.results ?? []
-      return json({ config, referralCode: (user as any)?.referral_code, members: list, counts: [1,2,3].map(level => list.filter((m: any) => m.level===level).length), earnings, requests: requests.results })
+      const localDate = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())
+      const [year,month,day] = localDate.split('-').map(Number)
+      const salaryCycle = config?.salary?.cycle === 'weekly' ? `w${Math.floor(Date.now()/604800000)}` : `${year}-${String(month).padStart(2,'0')}`
+      return json({ config, referralCode: (user as any)?.referral_code, members: list, counts: [1,2,3].map(level => list.filter((m: any) => m.level===level && m.salaryActive).length), earnings, requests: requests.results, salaryCycle, salaryRequestOpen: config?.salary?.cycle === 'weekly' || day >= requestDay })
     }
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405)
     if (!config?.general?.enabled || !config?.salary?.enabled) return json({ error: 'Salary unavailable' }, 400)
     const body = await request.json() as { tierId?: string }
     const tier = config.salary.tiers.find((t: any) => t.id === body.tierId && t.enabled)
     if (!tier) return json({ error: 'Invalid salary tier' }, 400)
+    const localDate = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())
+    const [year,month,day] = localDate.split('-').map(Number)
+    if (config.salary.cycle !== 'weekly' && day < requestDay) return json({ error: `Salary requests open on day ${requestDay} of each month` }, 400)
     const counts = await env.DB.prepare(`WITH RECURSIVE tree(id,depth) AS (
       SELECT id,1 FROM users WHERE referred_by=? UNION ALL SELECT u.id,t.depth+1 FROM users u JOIN tree t ON u.referred_by=t.id WHERE t.depth<3
-    ) SELECT t.depth AS level,COUNT(*) AS n FROM tree t JOIN users u ON u.id=t.id GROUP BY t.depth`).bind(session.user_id).all<{level:number;n:number}>()
+    ) SELECT t.depth AS level,COUNT(*) AS n FROM tree t JOIN users u ON u.id=t.id WHERE ${isActive} GROUP BY t.depth`).bind(session.user_id).all<{level:number;n:number}>()
     const team = [1,2,3].map(level => counts.results?.find(x=>x.level===level)?.n ?? 0)
     if (team[0]<tier.reqL1 || team[1]<tier.reqL2 || team[2]<tier.reqL3) return json({ error: 'Salary requirements not met' }, 400)
-    const now=Date.now(), cycle=config.salary.cycle==='weekly' ? `w${Math.floor(now/604800000)}` : new Date(now).toISOString().slice(0,7)
+    const now=Date.now(), cycle=config.salary.cycle==='weekly' ? `w${Math.floor(now/604800000)}` : `${year}-${String(month).padStart(2,'0')}`
     const existing=await env.DB.prepare("SELECT id FROM salary_requests WHERE user_id=? AND cycle_key=? AND status IN ('pending','approved')").bind(session.user_id,cycle).first()
     if(existing) return json({error:'One salary tier per cycle'},409)
     const id=crypto.randomUUID()

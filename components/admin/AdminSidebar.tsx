@@ -7,7 +7,6 @@ const items = [
   ["dashboard", "Dashboard", "M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"],
   ["users", "Users", "M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM4 21a8 8 0 0 1 16 0"],
   ["deposits", "Deposits", "M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"],
-  ["withdraws", "Withdraws", "M12 15V3m0 0L8 7m4-4l4 4M4 21h16"],
   ["withdrawal", "Withdrawal requests", "M4 6h16M4 12h16M4 18h16"],
   ["packages", "Packages", "M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"],
   ["referrals", "Referral Manage", "M17 8a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM7 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM19 21a5 5 0 0 0-8-4"],

@@ -11,12 +11,14 @@ export default function TeamSalaryPage() {
   const [counts, setCounts] = useState([0,0,0])
   const [claimed, setClaimed] = useState(false)
   const [cycleLabel, setCycleLabel] = useState('মাস')
-  useEffect(() => { fetch('/api/team',{credentials:'include',cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error);return d}).then(d=>{const c=d.counts ?? [0,0,0]; setCounts(c); setTiers(d.config?.salary?.enabled ? (d.config.salary.tiers ?? []).filter((t:Tier)=>t.enabled) : []); const weekly=d.config?.salary?.cycle==='weekly';setCycleLabel(weekly?'সপ্তাহ':'মাস');const cycle=weekly?`w${Math.floor(Date.now()/604800000)}`:new Date().toISOString().slice(0,7); setClaimed((d.requests ?? []).some((r:{status:string;cycleKey:string})=>r.cycleKey===cycle&&(r.status==='pending'||r.status==='approved')))}).catch(()=>showToast('তথ্য লোড হয়নি')) }, [])
+  const [requestOpen, setRequestOpen] = useState(true)
+  const [requestDay, setRequestDay] = useState(1)
+  useEffect(() => { fetch('/api/team',{credentials:'include',cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error);return d}).then(d=>{const c=d.counts ?? [0,0,0]; setCounts(c); setTiers(d.config?.salary?.enabled ? (d.config.salary.tiers ?? []).filter((t:Tier)=>t.enabled) : []); const weekly=d.config?.salary?.cycle==='weekly';setCycleLabel(weekly?'সপ্তাহ':'মাস');setRequestDay(d.config?.salary?.requestDay ?? 1);setRequestOpen(d.salaryRequestOpen ?? true);const cycle=d.salaryCycle; setClaimed((d.requests ?? []).some((r:{status:string;cycleKey:string})=>r.cycleKey===cycle&&(r.status==='pending'||r.status==='approved')))}).catch(()=>showToast('তথ্য লোড হয়নি')) }, [])
   const [claimAmount, setClaimAmount] = useState<number | null>(null)
   const claim = async (tierId: string) => {
     const response=await fetch('/api/team',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({tierId})})
     const data=await response.json()
-    if(!response.ok){showToast(data.error ?? 'Դիմումը ձախողվեց');return}
+    if(!response.ok){showToast(data.error ?? 'আবেদন ব্যর্থ হয়েছে');return}
     setClaimed(true)
     setClaimAmount(tiers.find(t=>t.id===tierId)?.amount ?? null)
   }
@@ -40,9 +42,9 @@ export default function TeamSalaryPage() {
             const rank = `অভিজাত ধাপ-${bengaliNumber(index + 1)}`
             const completed = counts[0] >= tier.reqL1 && counts[1] >= tier.reqL2 && counts[2] >= tier.reqL3
             const requirements = [
-              tier.reqL1 > 0 ? `প্রথম জনগোষ্ঠী ${bengaliNumber(tier.reqL1)} জন` : "",
-              tier.reqL2 > 0 ? `দ্বিতীয় লেভেল ${bengaliNumber(tier.reqL2)} জন` : "",
-              tier.reqL3 > 0 ? `তৃতীয় জনগোষ্ঠী ${bengaliNumber(tier.reqL3)} জন` : "",
+              tier.reqL1 > 0 ? `প্রথম স্তরে ${bengaliNumber(tier.reqL1)} জন সক্রিয় সদস্য` : "",
+              tier.reqL2 > 0 ? `দ্বিতীয় স্তরে ${bengaliNumber(tier.reqL2)} জন সক্রিয় সদস্য` : "",
+              tier.reqL3 > 0 ? `তৃতীয় স্তরে ${bengaliNumber(tier.reqL3)} জন সক্রিয় সদস্য` : "",
             ].filter(Boolean).join(", ")
             return (
               <article key={tier.rank} className={`salary-card-custom space-y-3 p-4 ${completed ? "unlocked" : ""}`}>
@@ -56,11 +58,11 @@ export default function TeamSalaryPage() {
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-2">
                   <div className="space-x-1 text-sm font-bold text-slate-500">
-                    <span>L1: {bengaliNumber(counts[0])}/{bengaliNumber(tier.reqL1)}</span>
-                    {tier.reqL2 > 0 && <span>| L2: {bengaliNumber(counts[1])}/{bengaliNumber(tier.reqL2)}</span>}
-                    {tier.reqL3 > 0 && <span>| L3: {bengaliNumber(counts[2])}/{bengaliNumber(tier.reqL3)}</span>}
+                    <span>প্রথম স্তর: {bengaliNumber(counts[0])}/{bengaliNumber(tier.reqL1)}</span>
+                    {tier.reqL2 > 0 && <span>| দ্বিতীয় স্তর: {bengaliNumber(counts[1])}/{bengaliNumber(tier.reqL2)}</span>}
+                    {tier.reqL3 > 0 && <span>| তৃতীয় স্তর: {bengaliNumber(counts[2])}/{bengaliNumber(tier.reqL3)}</span>}
                   </div>
-                  <button type="button" onClick={() => claim(tier.id)} disabled={!completed || claimed} className={`${completed ? 'btn-claim-glow' : 'btn-locked-custom'} rounded-xl px-4 py-2.5 text-base font-bold transition-all disabled:cursor-not-allowed disabled:opacity-70`}>{claimed ? 'এই মাসে নেওয়া হয়েছে' : completed ? 'দাবি করুন' : 'শর্ত পূরণ হয়নি'}</button>
+                  <button type="button" onClick={() => claim(tier.id)} disabled={!completed || claimed || !requestOpen} className={`${completed && requestOpen ? 'btn-claim-glow' : 'btn-locked-custom'} rounded-xl px-4 py-2.5 text-base font-bold transition-all disabled:cursor-not-allowed disabled:opacity-70`}>{claimed ? 'এই মাসে নেওয়া হয়েছে' : !requestOpen ? `প্রতি মাসের ${bengaliNumber(requestDay)} তারিখে আবেদন` : completed ? 'দাবি করুন' : 'শর্ত পূরণ হয়নি'}</button>
                 </div>
               </article>
             )

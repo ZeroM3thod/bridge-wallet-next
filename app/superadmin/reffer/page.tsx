@@ -52,6 +52,7 @@ export type SalarySettings = {
   cycle: "monthly" | "weekly";
   onePerCycle: boolean;
   needsApproval: boolean;
+  requestDay?: number;
   tiers: SalaryTier[];
 };
 
@@ -637,6 +638,7 @@ export default function ReferralManagement() {
                     <option value="weekly">Weekly</option>
                   </select>
                 </Field>
+                {sl.cycle === "monthly" && <Field label="Monthly request opens on day" hint="Bangladesh time; day 1–28."><NumInput int min={1} max={28} value={sl.requestDay ?? 1} onChange={(n) => upd("salary", { requestDay: n })} /></Field>}
               </div>
               <Switch checked={sl.onePerCycle} onChange={(v) => upd("salary", { onePerCycle: v })} label="One tier per user per cycle" hint="On: once a user claims any tier this month, every other tier stays locked until the next month." />
               <Switch checked={sl.needsApproval} onChange={(v) => upd("salary", { needsApproval: v })} label="Admin approval before payment" hint="On: claims wait for the admin, then go to the wallet." />

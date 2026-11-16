@@ -1,16 +1,1 @@
-﻿জিএইচএম গ্রুপস
-
-আন্তর্জাতিক লজিস্টিকস ও সমুদ্রগামী বাণিজ্যের বিশ্বস্ত ঠিকানা
-
-বিশ্ব বাণিজ্যের অবিরাম ধারায় এবং সমুদ্রের বুক চিরে চলা আমাদের বিশাল ফ্লিটের যাত্রায় আপনাকে স্বাগতম। আপনার এই নতুন পথচলাকে সুগম ও সুরক্ষিত করতে আমাদের পোর্টালে আপনার উপস্থিতি অত্যন্ত মূল্যবান।
-
-আপনার রেজিস্ট্রেশন বা প্রবেশদ্বার নিশ্চিতকরণের  গোপনীয় কোডটি নিচে অর্পণ করা হলো:
-849201
-
-⏳ সময়ের স্রোতে এই কোডটির স্থায়িত্ব মাত্র ১০ মিনিট। নিরাপত্তার চাদরে মুড়ে এটি একান্তই নিজের কাছে সুরক্ষিত রাখুন।
-
-যদি এই আহ্বান আপনার পক্ষ থেকে না হয়ে থাকে, তবে স্নিগ্ধ চিত্তে এই বার্তাটি উপেক্ষা করুন। আপনার ডিজিটাল সোপান সম্পূর্ণ সুরক্ষিত রয়েছে।
-
-GHM GROUPS GLOBAL HOLDINGS
-
-© ২০২৬ জিএইচএম গ্রুপস — সর্বস্বত্ব সংরক্ষিত।
+﻿hey on the reffer system make some change . accroding to the new system if anyone use reffer link and make deposit then he get the deposit bonus instantly but it not count as the active reffer for salary page অভিজাত ধাপ active reffer , it count as active reffer when the user buy the 2nd pakage and more(id=vip1,vip2,vip3,vip4,vip5...) not the vip0 it count as active reffer and then he count on the salary page. 
