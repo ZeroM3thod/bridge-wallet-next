@@ -1,4 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types'
+import { referralCommissionStatements } from '../../lib/referral-commission'
 
 type Env = { DB: D1Database }
 const json = (data: unknown, status = 200) => Response.json(data, { status, headers: { 'Cache-Control': 'no-store' } })
@@ -30,28 +31,32 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
       return json({ success: true })
     }
     if (typeof body.id !== 'string' || !['approve', 'reject'].includes(String(body.action))) return json({ error: 'Invalid request' }, 400)
-    const row = await env.DB.prepare('SELECT user_id,amount FROM deposits WHERE id=?').bind(body.id).first<{ user_id: string; amount: number }>()
+    const row = await env.DB.prepare('SELECT user_id,amount,status FROM deposits WHERE id=?').bind(body.id).first<{ user_id: string; amount: number; status: string }>()
     if (!row) return json({ error: 'Deposit not found' }, 404)
     if (!Number.isSafeInteger(row.amount) || row.amount <= 0) return json({ error: 'Invalid deposit amount' }, 409)
     const walletAmount = row.amount
     const now = Date.now()
+    const commissionStatements = body.action === 'approve' ? await referralCommissionStatements(env.DB, row.user_id, walletAmount, now) : []
     const statements = body.action === 'approve'
       ? [
-          env.DB.prepare("UPDATE deposits SET status='paid',paid_at=? WHERE id=? AND status='failed'").bind(now, body.id),
+          env.DB.prepare("UPDATE deposits SET status='paid',paid_at=? WHERE id=? AND status IN ('pending','failed','cancelled')").bind(now, body.id),
           env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes()>0').bind(walletAmount, row.user_id),
           env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'credit',?,'ওয়ালেটে টাকা জমা',? WHERE changes()>0").bind(crypto.randomUUID(), row.user_id, walletAmount, now),
-          env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?,'approved','failed','paid','Admin approved deposit',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, now),
+          env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?, 'approved',?,'paid','Admin manually approved deposit',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, row.status, now),
         ]
-      : [
+      : row.status === 'paid' ? [
           env.DB.prepare("UPDATE deposits SET status='rejected' WHERE id=? AND status='paid' AND EXISTS (SELECT 1 FROM users WHERE id=deposits.user_id AND balance>=deposits.amount)").bind(body.id),
           env.DB.prepare('UPDATE users SET balance=balance-? WHERE id=? AND changes()>0').bind(walletAmount, row.user_id),
           env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'debit',?,'ডিপোজিট রিভার্সাল',? WHERE changes()>0").bind(crypto.randomUUID(), row.user_id, walletAmount, now),
           env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?,'rejected','paid','rejected','Admin rejected deposit and reversed wallet credit',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, now),
+        ] : [
+          env.DB.prepare("UPDATE deposits SET status='rejected' WHERE id=? AND status IN ('pending','failed','cancelled')").bind(body.id),
+          env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?,'rejected',?,'rejected','Admin rejected deposit request',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, row.status, now),
         ]
-    await env.DB.batch(statements)
+    await env.DB.batch([...statements, ...commissionStatements])
     const updated = await env.DB.prepare('SELECT status FROM deposits WHERE id=?').bind(body.id).first<{ status: string }>()
     const expected = body.action === 'approve' ? 'paid' : 'rejected'
-    if (updated?.status !== expected) return json({ error: body.action === 'reject' ? 'Deposit is not approved or user balance is insufficient' : 'Only failed deposits can be approved' }, 409)
+    if (updated?.status !== expected) return json({ error: body.action === 'reject' && row.status === 'paid' ? 'User balance is insufficient to reverse this deposit' : 'Deposit status changed or this request was already reviewed' }, 409)
     return json({ success: true, status: expected })
   } catch (error) {
     console.error('Admin deposit review failed:', error)

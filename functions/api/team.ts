@@ -28,8 +28,8 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
           SELECT id,1 FROM users WHERE referred_by=?
           UNION ALL SELECT u.id,t.depth+1 FROM users u JOIN tree t ON u.referred_by=t.id WHERE t.depth<3
         ) SELECT t.depth AS level,u.referral_code AS id,u.name,u.phone,u.created_at AS joinedAt,u.balance,u.vip_level AS vipLevel,
-          CASE WHEN ${isActive} THEN 1 ELSE 0 END AS active,
-          COALESCE((SELECT SUM(price_paid) FROM user_packages p WHERE p.user_id=u.id),0) AS deposit,
+          CASE WHEN (${isActive}) OR EXISTS(SELECT 1 FROM deposits d WHERE d.user_id=u.id AND d.status='paid') THEN 1 ELSE 0 END AS active,
+          COALESCE((SELECT SUM(d.amount) FROM deposits d WHERE d.user_id=u.id AND d.status='paid'),0) AS deposit,
           COALESCE((SELECT SUM(amount) FROM daily_profits p WHERE p.user_id=u.id),0) AS profit
           FROM tree t JOIN users u ON u.id=t.id ORDER BY t.depth,u.created_at DESC`).bind(...(activeWhen==='min_deposit'?[session.user_id,activeDeposit]:activeWhen==='min_vip'?[session.user_id,activeVip]:[session.user_id])).all(),
         env.DB.prepare('SELECT team_received,team_dividend FROM user_stats WHERE user_id=?').bind(session.user_id).first(),
