@@ -62,7 +62,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       return new Response('success')
     }
     if (!PAID_STATUSES.includes(status)) return new Response('fail', { status: 400 })
-    if (!Number.isFinite(amount) || Math.round(amount * 100) !== deposit.amount) {
+    if (!Number.isFinite(amount) || amount !== deposit.amount) {
       console.error('Deposit amount mismatch', { order, got: data.money, expected: deposit.amount })
       return new Response('fail', { status: 400 })
     }
@@ -70,9 +70,9 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
     const now = Date.now()
     await env.DB.batch([
       env.DB.prepare("UPDATE deposits SET status='paid', paid_at=? WHERE out_trade_no=? AND status='pending'").bind(now, order),
-      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount / 100, deposit.user_id),
+      env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=? AND changes() > 0').bind(deposit.amount, deposit.user_id),
       env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'credit',?,'ওয়ালেটে টাকা জমা',? WHERE changes() > 0")
-        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount / 100, now),
+        .bind(crypto.randomUUID(), deposit.user_id, deposit.amount, now),
       env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,event,previous_status,new_status,note,created_at) SELECT ?,id,'paid','pending','paid','Payment confirmed by gateway',? FROM deposits WHERE out_trade_no=? AND changes()>0").bind(crypto.randomUUID(), now, order),
     ])
     return new Response('success')

@@ -24,11 +24,10 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
 
     const body = await request.json() as { amount?: number; method?: string }
     const settings = await env.DB.prepare('SELECT minimum_amount FROM deposit_settings WHERE id=1').first<{ minimum_amount: number }>()
-    const minimumAmount = (settings?.minimum_amount ?? 300) * 100
+    const minimumAmount = settings?.minimum_amount ?? 300
     if (
       !Number.isSafeInteger(body.amount) ||
       (body.amount ?? 0) < minimumAmount ||
-      (body.amount as number) % 100 !== 0 ||
       !['BKASH', 'NAGAD', 'ROCKET', 'BKASH-C', 'NAGAD-C'].includes(body.method ?? '')
     ) return json({ error: `সঠিক পেমেন্ট পদ্ধতি ও ন্যূনতম ৳${settings?.minimum_amount ?? 300} পরিমাণ দিন` }, 400)
 
@@ -53,7 +52,7 @@ export async function onRequestPost({ request, env }: EventContext<Env, any, any
       const gatewayResponse = await fetch(`${(env.PAYMENT_API_URL || PAYMENT_API_URL).replace(/\/$/, '')}/api/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: Math.round(body.amount! / 100), orderId: outTradeNo, payType: body.method, attach: depositId }),
+      body: JSON.stringify({ amount: body.amount, orderId: outTradeNo, payType: body.method, attach: depositId }),
       })
       const raw = await gatewayResponse.text()
       try {

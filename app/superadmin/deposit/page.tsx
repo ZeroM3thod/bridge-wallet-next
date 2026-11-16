@@ -5,7 +5,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar"
 
 type Deposit = { id: string; out_trade_no: string; gateway_transaction_id: string | null; method: string; amount: number; status: string; created_at: number; paid_at: number | null; user_id: string; name: string; phone: string; email: string; balance: number }
 type DepositEvent = { id: string; deposit_id: string; actor_id: string | null; event: string; previous_status: string | null; new_status: string; note: string | null; created_at: number; actor_name: string | null }
-const money = (amount: number) => `৳${(amount / 100).toLocaleString("en-BD", { minimumFractionDigits: 2 })}`
+const money = (amount: number) => `৳${amount.toLocaleString("en-BD")}`
 
 export default function AdminDepositsPage() {
   const [rows, setRows] = useState<Deposit[]>([])

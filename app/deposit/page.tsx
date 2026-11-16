@@ -80,7 +80,7 @@ export default function DepositPage() {
     try {
       const response = await fetch("/api/deposits/create", {
         method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include",
-        body: JSON.stringify({ amount: amount * 100, method }),
+        body: JSON.stringify({ amount, method }),
       })
       const result = await response.json()
       if (!response.ok || !result.success || !result.paymentUrl) throw new Error(result.error || `HTTP ${response.status}: পেমেন্ট শুরু ব্যর্থ`)

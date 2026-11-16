@@ -32,8 +32,8 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
     if (typeof body.id !== 'string' || !['approve', 'reject'].includes(String(body.action))) return json({ error: 'Invalid request' }, 400)
     const row = await env.DB.prepare('SELECT user_id,amount FROM deposits WHERE id=?').bind(body.id).first<{ user_id: string; amount: number }>()
     if (!row) return json({ error: 'Deposit not found' }, 404)
-    if (!Number.isSafeInteger(row.amount) || row.amount <= 0 || row.amount % 100 !== 0) return json({ error: 'Invalid deposit amount' }, 409)
-    const walletAmount = row.amount / 100 // deposits.amount is paisa; users.balance is taka
+    if (!Number.isSafeInteger(row.amount) || row.amount <= 0) return json({ error: 'Invalid deposit amount' }, 409)
+    const walletAmount = row.amount
     const now = Date.now()
     const statements = body.action === 'approve'
       ? [
@@ -43,7 +43,7 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
           env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?,'approved','failed','paid','Admin approved deposit',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, now),
         ]
       : [
-          env.DB.prepare("UPDATE deposits SET status='rejected' WHERE id=? AND status='paid' AND EXISTS (SELECT 1 FROM users WHERE id=deposits.user_id AND balance>=deposits.amount/100)").bind(body.id),
+          env.DB.prepare("UPDATE deposits SET status='rejected' WHERE id=? AND status='paid' AND EXISTS (SELECT 1 FROM users WHERE id=deposits.user_id AND balance>=deposits.amount)").bind(body.id),
           env.DB.prepare('UPDATE users SET balance=balance-? WHERE id=? AND changes()>0').bind(walletAmount, row.user_id),
           env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'debit',?,'ডিপোজিট রিভার্সাল',? WHERE changes()>0").bind(crypto.randomUUID(), row.user_id, walletAmount, now),
           env.DB.prepare("INSERT INTO deposit_events (id,deposit_id,actor_id,event,previous_status,new_status,note,created_at) SELECT ?,?,?,'rejected','paid','rejected','Admin rejected deposit and reversed wallet credit',? WHERE changes()>0").bind(crypto.randomUUID(), body.id, actorId, now),

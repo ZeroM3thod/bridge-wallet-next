@@ -14,7 +14,7 @@ export default function QuickDepositPage() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const taka = Number(amount)
-    if (!Number.isSafeInteger(taka) || taka < 300 || taka % 100 !== 0) {
+    if (!Number.isSafeInteger(taka) || taka < 300) {
       showToast("Enter a whole amount of at least ৳300")
       return
     }
@@ -24,7 +24,7 @@ export default function QuickDepositPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ amount: taka * 100, method }),
+        body: JSON.stringify({ amount: taka, method }),
       })
       const result = await response.json()
       if (!response.ok || !result.success || !result.paymentUrl) throw new Error(result.error || `Payment failed (${response.status})`)
