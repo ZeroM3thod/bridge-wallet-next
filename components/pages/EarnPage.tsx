@@ -36,9 +36,7 @@ const lockLabelOf = (p: VipPackage) =>
   p.minVipLevel > 0 ? `অভিজাত ধাপ-${bengaliNumber(p.minVipLevel)} প্রয়োজন` : ""
 const lockTextOf = (p: VipPackage) =>
   p.minVipLevel > 0
-    ? `তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-${bengaliNumber(p.minVipLevel)} অর্জন করিতে হইবে${
-        p.minVipLevel === 1 ? " (৩ জন সক্রিয় সঙ্গী যুক্ত করিলেই এই স্তরটি উন্মুক্ত হইবে)" : ""
-      }`
+    ? `তালাবদ্ধ স্তর • শর্ত: অভিজাত ধাপ-${bengaliNumber(p.minVipLevel)} অর্জন করিতে হইবে`
     : p.eligibilityMessage || "এই প্যাকেজ এখন কেনা যাবে না"
 
 /* ------------------------------------------------------------------ */
