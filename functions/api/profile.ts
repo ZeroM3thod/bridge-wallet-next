@@ -2,6 +2,27 @@ import type { EventContext } from '@cloudflare/workers-types'
 
 type Env = { DB: D1Database }
 
+export async function onRequestPost({ request, env }: EventContext<Env, any, any>) {
+  const sessionId = request.headers.get('Cookie')?.match(/(?:^|;\s*)session=([^;]+)/)?.[1]
+  if (!sessionId) return Response.json({ error: 'অনুমোদিত নয়' }, { status: 401 })
+
+  try {
+    const session = await env.DB.prepare(
+      'SELECT user_id FROM sessions WHERE id = ? AND expires_at > ?'
+    ).bind(sessionId, Date.now()).first<{ user_id: string }>()
+    if (!session) return Response.json({ error: 'সেশনের মেয়াদ শেষ' }, { status: 401 })
+
+    const body = await request.json() as { gender?: unknown }
+    if (typeof body.gender !== 'string' || !['পুরুষ', 'মহিলা', 'অন্যান্য'].includes(body.gender)) {
+      return Response.json({ error: 'সঠিক লিঙ্গ নির্বাচন করুন' }, { status: 400 })
+    }
+    await env.DB.prepare('UPDATE users SET gender = ? WHERE id = ?').bind(body.gender, session.user_id).run()
+    return Response.json({ success: true })
+  } catch {
+    return Response.json({ error: 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে' }, { status: 500 })
+  }
+}
+
 export async function onRequestGet({ request, env }: EventContext<Env, any, any>) {
   const sessionId = request.headers.get('Cookie')?.match(/(?:^|;\s*)session=([^;]+)/)?.[1]
   if (!sessionId) return Response.json({ error: 'অনুমোদিত নয়' }, { status: 401 })

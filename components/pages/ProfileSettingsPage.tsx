@@ -9,6 +9,7 @@ export default function ProfileSettingsPage() {
   const [phone, setPhone] = useState("")
   const [photo, setPhoto] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [saving, setSaving] = useState(false)
   useEffect(() => {
     fetch("/api/profile", { credentials: "include", cache: "no-store" })
       .then((response) => response.ok ? response.json() : null)
@@ -41,6 +42,24 @@ export default function ProfileSettingsPage() {
       action("নেটওয়ার্ক সমস্যা")
     } finally {
       setUploading(false)
+    }
+  }
+  const save = async () => {
+    if (saving) return
+    setSaving(true)
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gender }),
+      })
+      const result = await response.json()
+      action(response.ok ? 'লিঙ্গ সংরক্ষিত হয়েছে' : result.error || 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে')
+    } catch {
+      action('নেটওয়ার্ক সমস্যা')
+    } finally {
+      setSaving(false)
     }
   }
   return (
@@ -78,8 +97,9 @@ export default function ProfileSettingsPage() {
       </section>
       <button
         className="ps-save"
-        onClick={() => (name.trim() ? action("প্রোফাইল সংরক্ষিত হয়েছে") : action("নাম লিখুন"))}
-      >সংরক্ষণ করুন</button>
+        onClick={save}
+        disabled={saving || !gender}
+      >{saving ? 'সংরক্ষণ হচ্ছে…' : 'সংরক্ষণ করুন'}</button>
     </main>
   )
 }
