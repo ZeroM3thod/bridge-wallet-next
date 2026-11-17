@@ -54,7 +54,7 @@ export default function TeamSalaryPage() {
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="mt-0.5 text-xl leading-none text-emerald-600">•</span>
-                  <p className="text-base font-bold leading-relaxed text-slate-800">{requirements} সদস্য যুক্ত করলে প্রতি {cycleLabel} বেতন {bengaliNumber(tier.amount)}৳</p>
+                  <p className="text-base font-bold leading-relaxed text-slate-800">{requirements} যুক্ত করলে প্রতি {cycleLabel} বেতন {bengaliNumber(tier.amount)}৳</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 pt-2">
                   <div className="space-x-1 text-sm font-bold text-slate-500">

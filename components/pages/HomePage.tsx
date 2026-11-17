@@ -10,12 +10,15 @@ export default function HomePage() {
   const [dashboard, setDashboard] = useState<any>(null)
   const [packages, setPackages] = useState<any[]>([])
   const [loadError, setLoadError] = useState("")
+  const [welcomeBonus, setWelcomeBonus] = useState<number | null>(null)
   const [now, setNow] = useState(Date.now())
   const balance = dashboard?.user?.balance ?? 0
   const investment = dashboard?.investment ?? null
   const transactions = dashboard?.transactions ?? []
   const onNavigate = (page: string) => { window.location.href = `/${page}` }
   useEffect(() => {
+    const bonus = sessionStorage.getItem("welcomeBonusPending")
+    if (bonus && Number(bonus) > 0) setWelcomeBonus(Number(bonus))
     Promise.all([fetch('/api/dashboard', { credentials: 'include', cache: 'no-store' }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error); return d }), fetch('/api/packages', { cache: 'no-store' }).then(r => r.json())])
       .then(([d, p]) => { setDashboard(d); setPackages(p.packages ?? []) }).catch(e => setLoadError(e.message || 'ডেটা লোড করা যায়নি'))
   }, [])
@@ -55,6 +58,7 @@ export default function HomePage() {
 
   return (
     <>
+      {welcomeBonus !== null && <div role="dialog" aria-modal="true" aria-labelledby="welcome-bonus-title" style={{ position: "fixed", inset: 0, zIndex: 1000, display: "grid", placeItems: "center", background: "#0008", padding: 24 }}><section style={{ background: "white", padding: 28, borderRadius: 20, textAlign: "center", maxWidth: 360 }}><h2 id="welcome-bonus-title">স্বাগতম বোনাস!</h2><p>আপনার ব্যালেন্সে ৳{welcomeBonus} যোগ হয়েছে। প্যাকেজ কিনলে এই বোনাস উত্তোলন করতে পারবেন।</p><button type="button" onClick={() => { sessionStorage.removeItem("welcomeBonusPending"); setWelcomeBonus(null) }}>ঠিক আছে</button></section></div>}
       <main className="home-page office-page page-content">
         {loadError && <p role="alert">{loadError}</p>}
         <section className="office-hero">
