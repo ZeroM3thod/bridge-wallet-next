@@ -13,7 +13,7 @@ export default function WithdrawPage() {
   const [balance, setBalance] = useState(0)
   const [wallets, setWallets] = useState<any[]>([])
   const [withdrawals, setWithdrawals] = useState<any[]>([])
-   const [settings, setSettings] = useState({minimum_amount:1000,fee_percent:2,opening_hour:10,closing_hour:17,allowed_days:'0,1,2,3,4',daily_limit:1})
+   const [settings, setSettings] = useState({minimum_amount:1000,maximum_amount:50000,fee_percent:2,opening_hour:10,closing_hour:17,allowed_days:'0,1,2,3,4',daily_limit:1})
   const [hasPassword, setHasPassword] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -33,6 +33,8 @@ export default function WithdrawPage() {
 
   const selected =
     wallets.find((wallet) => wallet.id === selectedWallet) ?? wallets[0]
+  const allowedDayNames = ['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার']
+  const allowedDaysLabel = (settings.allowed_days || '0,1,2,3,4').split(',').map(Number).filter(day => day >= 0 && day <= 6).map(day => allowedDayNames[day]).join('، ')
   const totals = {fee:Math.round(amount*(settings.fee_percent??2))/100,net:amount-Math.round(amount*(settings.fee_percent??2))/100}
 
   const submitWallet = () => {
@@ -53,11 +55,11 @@ export default function WithdrawPage() {
       action("আগে একটি ওয়ালেট যোগ করুন")
       return
     }
-    if (!Number.isFinite(amount) || amount < settings.minimum_amount || amount > balance || Math.round(amount * 100) !== amount * 100) {
+    if (!Number.isFinite(amount) || amount < settings.minimum_amount || amount > settings.maximum_amount || amount > balance || Math.round(amount * 100) !== amount * 100) {
       action(
         amount > balance
           ? "পর্যাপ্ত সঞ্চয় নেই"
-          : `সর্বনিম্ন ৳${settings.minimum_amount} উত্তোলন করতে হবে`,
+          : amount > settings.maximum_amount ? `সর্বোচ্চ ৳${settings.maximum_amount} উত্তোলন করা যাবে` : `সর্বনিম্ন ৳${settings.minimum_amount} উত্তোলন করতে হবে`,
       )
       return
     }
@@ -184,7 +186,7 @@ export default function WithdrawPage() {
           {busy ? 'অপেক্ষা করুন…' : 'উত্তোলন নিশ্চিত করুন'}
         </button>
         <small className="withdraw-note">
-          সর্বনিম্ন উত্তোলন ৳{toBengaliDigits(settings.minimum_amount)} • {toBengaliDigits(settings.fee_percent)}% সার্ভিস চার্জ প্রযোজ্য
+          উত্তোলন সীমা ৳{toBengaliDigits(settings.minimum_amount)}–৳{toBengaliDigits(settings.maximum_amount)} • {toBengaliDigits(settings.fee_percent)}% সার্ভিস চার্জ প্রযোজ্য
         </small>
         <div className="withdraw-rules">
           <h3>
@@ -194,15 +196,15 @@ export default function WithdrawPage() {
           <ul>
             <li>
               <span>উত্তোলন সময়</span>
-              <b>{toBengaliDigits(settings.opening_hour)}:০০ – {toBengaliDigits(settings.closing_hour)}:০০ · রবি–বৃহস্পতিবার</b>
+              <b>{toBengaliDigits(settings.opening_hour)}:০০ – {toBengaliDigits(settings.closing_hour)}:০০ · {allowedDaysLabel}</b>
             </li>
             <li>
               <span>প্রসেসিং সময়</span>
               <b>১ ঘণ্টা – ২৪ ঘণ্টা</b>
             </li>
             <li>
-              <span>সর্বনিম্ন উত্তোলন</span>
-              <b>{money(settings.minimum_amount)}</b>
+              <span>উত্তোলন সীমা</span>
+              <b>{money(settings.minimum_amount)} – {money(settings.maximum_amount)}</b>
             </li>
             <li>
               <span>সার্ভিস চার্জ</span>

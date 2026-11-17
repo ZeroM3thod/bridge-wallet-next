@@ -15,7 +15,7 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
         env.DB.prepare('SELECT id,provider,account FROM withdrawal_wallets WHERE user_id=? ORDER BY created_at').bind(uid).all(),
         env.DB.prepare('SELECT x.id,x.amount,x.fee,x.net,x.status,x.created_at AS date,w.provider,w.account FROM withdrawals x JOIN withdrawal_wallets w ON w.id=x.wallet_id WHERE x.user_id=? ORDER BY x.created_at DESC LIMIT 50').bind(uid).all(),
         env.DB.prepare('SELECT balance,withdrawal_password_hash FROM users WHERE id=?').bind(uid).first<{balance:number;withdrawal_password_hash:string|null}>(),
-        env.DB.prepare('SELECT minimum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first(),
+        env.DB.prepare('SELECT minimum_amount,maximum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first(),
       ])
       return json({wallets:wallets.results,withdrawals:withdrawals.results,balance:user?.balance??0,hasPassword:!!user?.withdrawal_password_hash,settings})
     }
@@ -33,12 +33,12 @@ export const onRequest: PagesFunction<Env> = async ({request,env}) => {
       return json({success:true})
     }
     if (body.action==='withdraw') {
-       const settings=await env.DB.prepare('SELECT minimum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first<{minimum_amount:number;fee_percent:number;opening_hour:number;closing_hour:number;allowed_days:string;daily_limit:number}>()
+        const settings=await env.DB.prepare('SELECT minimum_amount,maximum_amount,fee_percent,opening_hour,closing_hour,allowed_days,daily_limit FROM withdrawal_settings WHERE id=1').first<{minimum_amount:number;maximum_amount:number;fee_percent:number;opening_hour:number;closing_hour:number;allowed_days:string;daily_limit:number}>()
        const now=Date.now(), bdNow=new Date(now+6*60*60*1000), day=bdNow.getUTCDay(), hour=bdNow.getUTCHours()
        const allowedDays=(settings?.allowed_days??'0,1,2,3,4').split(',').map(Number)
        if (!allowedDays.includes(day)||hour<(settings?.opening_hour??10)||hour>=(settings?.closing_hour??17)) return json({error:`উত্তোলনের সময় ${settings?.opening_hour??10}:00–${settings?.closing_hour??17}:00 (বাংলাদেশ সময়), অনুমোদিত দিন: রবি–বৃহস্পতিবার`},400)
-      const amount=Number(body.amount), min=settings?.minimum_amount??1000, percent=settings?.fee_percent??2
-      if (!Number.isSafeInteger(amount)||amount<min) return json({error:`সর্বনিম্ন উত্তোলন ৳${min}`},400)
+       const amount=Number(body.amount), min=settings?.minimum_amount??1000, max=settings?.maximum_amount??50000, percent=settings?.fee_percent??2
+       if (!Number.isSafeInteger(amount)||amount<min||amount>max) return json({error:amount>max?`সর্বোচ্চ উত্তোলন ৳${max}`:`সর্বনিম্ন উত্তোলন ৳${min}`},400)
       if (amount>user.balance-user.welcome_bonus_locked) return json({error:'প্যাকেজ কিনলে স্বাগত বোনাস উত্তোলন করতে পারবেন'},400)
       const wallet=await env.DB.prepare('SELECT id FROM withdrawal_wallets WHERE id=? AND user_id=?').bind(body.walletId,uid).first()
       if (!wallet) return json({error:'ওয়ালেট পাওয়া যায়নি'},400)

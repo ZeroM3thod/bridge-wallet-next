@@ -6820,3 +6820,88 @@ body,
   .pk-page.page-content .pk-skeleton { animation: none; }
   .pk-page.page-content .pk-card { transition: none; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Team members page redesign — paste at the END of globals.css ===== */
+.tm-page { background: #f2f8ff; }
+.tm-section { display: grid; gap: 14px; }
+
+.tm-title { display: flex; align-items: center; gap: 10px; padding: 0 2px; }
+.tm-title-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; color: #fff; background: linear-gradient(135deg, #0875ec, #08b7df); box-shadow: 0 6px 14px -6px rgba(8,117,236,.6); }
+.app .page-content .tm-title h2 { margin: 0; color: #0b2b5c; font-size: clamp(17px, 4.6vw, 20px); font-weight: 800; }
+
+/* Segmented level tabs */
+.tm-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; border-radius: 18px; background: #dfeaf7; }
+.tm-tab { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 9px 4px; border: 0; border-radius: 14px; color: #3d5a80; background: transparent; transition: all .2s ease; }
+.tm-tab b { font-weight: 700; font-size: 14px; }
+.tm-tab span { font-size: 12px; opacity: .75; }
+.tm-tab.active { color: #fff; background: linear-gradient(135deg, #0875ec, #08a9df); box-shadow: 0 6px 14px -5px rgba(8,117,236,.65); }
+.tm-tab.active span { opacity: .9; }
+
+.tm-loading, .tm-empty { padding: 16px; border: 1px dashed #9ed7ed; border-radius: 16px; color: #3d5a80; background: #f5fbff; text-align: center; line-height: 1.6; }
+
+/* Hero summary */
+.tm-hero { position: relative; overflow: hidden; display: grid; gap: 14px; padding: 16px; border-radius: 20px; color: #fff; background: linear-gradient(135deg, #0755bf 0%, #078ed8 62%, #08b7df 100%); box-shadow: 0 14px 28px -14px rgba(7,85,191,.6); }
+.tm-hero-glow { position: absolute; top: -60px; right: -50px; width: 170px; height: 170px; border: 24px solid rgba(255,255,255,.09); border-radius: 50%; pointer-events: none; }
+.tm-hero-top { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.tm-hero-top > div { min-width: 0; }
+.tm-hero small, .tm-hero strong { display: block; color: #fff; }
+.tm-hero small { color: #d9efff; font-size: 12.5px; line-height: 1.4; }
+.tm-hero-members { margin-top: 4px; font-size: 15px; font-weight: 700; }
+.tm-hero-members em { font-style: normal; font-weight: 500; opacity: .85; font-size: 13px; }
+.tm-hero-total { text-align: right; flex: 0 0 auto; }
+.tm-hero-total strong { margin-top: 4px; font-size: clamp(20px, 6vw, 26px); font-weight: 800; white-space: nowrap; }
+.tm-hero-split { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.22); }
+.tm-hero-split > div { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 9px; border: 1px solid rgba(255,255,255,.18); border-radius: 13px; background: rgba(255,255,255,.13); }
+.tm-hero-split > div > div { min-width: 0; }
+.tm-hero-split small { font-size: 11.5px; }
+.tm-hero-split strong { margin-top: 1px; font-size: 14px; font-weight: 800; overflow-wrap: anywhere; }
+.tm-split-icon { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border-radius: 10px; color: #0875ec; background: #fff; }
+
+/* Member cards */
+.tm-list { display: grid; gap: 12px; }
+.tm-member { overflow: hidden; border: 1px solid #dcebf6; border-radius: 18px; background: #fff; box-shadow: 0 8px 20px -10px rgba(12,91,145,.18); }
+.tm-member-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 14px; background: linear-gradient(120deg, #f4faff, #fff); border-bottom: 1px solid #e8f1f8; }
+.tm-member-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tm-avatar { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 13px; color: #64748b; background: #eef2f6; }
+.tm-avatar.is-active { color: #fff; background: linear-gradient(135deg, #12ad75, #078f61); }
+.tm-label { display: block; color: #64748b; font-size: 11.5px; }
+.tm-member-id strong { display: block; color: #0b2b5c; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+.tm-status { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 4px 10px; border-radius: 999px; color: #64748b; background: #eef2f6; font-size: 12px; font-weight: 700; }
+.tm-status i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.tm-status.is-active { color: #08704c; background: #dff6eb; }
+
+.tm-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 12px 14px 0; }
+.tm-info > div { min-width: 0; padding: 9px 11px; border-radius: 12px; background: #f7fbff; border: 1px solid #e3eef6; }
+.tm-info > div.wide { grid-column: 1 / -1; }
+.tm-info dt { color: #64748b; font-size: 12px; }
+.tm-info dd { margin: 2px 0 0; color: #0b2b5c; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+.tm-info .wide dd { color: #075fb4; font-size: 17px; }
+
+.tm-earn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 10px 14px 12px; }
+.tm-earn > div { min-width: 0; padding: 10px 11px; border-radius: 12px; background: #eaf8f2; border: 1px solid #c8ecda; }
+.tm-earn > div:last-child { background: #eaf3ff; border-color: #cfe1f8; }
+.tm-earn small { display: block; color: #4d6b60; font-size: 12px; }
+.tm-earn > div:last-child small { color: #4a6485; }
+.tm-earn strong { display: block; margin-top: 2px; color: #08704c; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+.tm-earn > div:last-child strong { color: #075fb4; }
+
+.tm-member-foot { display: flex; align-items: center; gap: 6px; padding: 9px 14px; border-top: 1px solid #e8f1f8; color: #64748b; background: #f8fbfe; font-size: 12px; }
+
+@media (max-width: 420px) {
+  .tm-hero-top { flex-direction: column; }
+  .tm-hero-total { text-align: left; }
+  .tm-hero-split { grid-template-columns: 1fr; }
+  .tm-earn { grid-template-columns: 1fr; }
+}
