@@ -107,6 +107,10 @@ const emptyDraft = (): Draft => ({
 const fromDraft = (d: Draft): Pkg => ({
   id: d.id,
   name: d.name.trim(),
+  shortDescription: d.shortDescription,
+  modelNo: d.modelNo,
+  tankOverview: d.tankOverview,
+  profitMechanism: d.profitMechanism,
   price: Number(d.price),
   dailyProfit: Number(d.dailyProfit),
   durationDays: Number(d.durationDays),
@@ -128,10 +132,10 @@ function validate(d: Draft, others: Pkg[]): Errors {
   if (!d.name.trim()) e.name = "Enter a package name.";
   else if (others.some((p) => p.name.toLowerCase() === d.name.trim().toLowerCase()))
     e.name = "Another package already uses this name.";
-  if (!(n(d.price) > 0)) e.price = "Price must be more than 0.";
+  if (!(Number.isSafeInteger(n(d.price)) && n(d.price) > 0)) e.price = "Price must be a whole BDT amount greater than 0.";
   if (!(Number.isSafeInteger(n(d.dailyProfit)) && n(d.dailyProfit) > 0)) e.dailyProfit = "Enter daily profit in BDT, greater than 0.";
   if (!(Number.isInteger(n(d.durationDays)) && n(d.durationDays) >= 1)) e.durationDays = "Enter a whole number of days, 1 or more.";
-  (["maxPerUser", "minVipLevel"] as const).forEach((k) => {
+  (["maxPerUser", "minVipLevel", "stockLimit", "minActiveReferrals"] as const).forEach((k) => {
     if (!(Number.isInteger(n(d[k])) && n(d[k]) >= 0)) e[k] = "Enter a whole number, 0 or more.";
   });
   return e;
