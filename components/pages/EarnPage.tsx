@@ -412,7 +412,6 @@ export default function EarnPage() {
     : "—"
 
   const shortage = selectedPackage ? Math.max(0, selectedPackage.price - balance) : 0
-  const amountError = selectedPackage && shortage > 0 ? "পর্যাপ্ত সঞ্চয় নেই" : ""
   const selectedTier = selectedPackage ? vipPackages.findIndex((p) => p.id === selectedPackage.id) + 1 : 0
   const selectedLimit = selectedPackage ? limitOf(selectedPackage, selectedTier) : 0
   const selectedRemaining = selectedPackage ? Math.max(0, selectedLimit - usedOf(selectedPackage)) : 0
@@ -446,6 +445,10 @@ export default function EarnPage() {
 
   const confirmPurchase = async () => {
     if (!selectedPackage || purchasing) return
+    if (shortage > 0) {
+      setPurchaseError("পর্যাপ্ত ব্যালেন্স নেই")
+      return
+    }
     if (!consent) {
       notify("সম্মতি আবশ্যক", "চুক্তি চূড়ান্ত করিবার পূর্বে অনুগ্রহ করিয়া অঙ্গীকারনামার ঘরটিতে টিক চিহ্ন প্রদান করুন।")
       return
@@ -653,7 +656,6 @@ export default function EarnPage() {
                     )}
                     {short && (
                       <div className="pk-notice pk-notice-short" role="status">
-                        <LockIcon size={16} />
                         <span>পর্যাপ্ত ব্যালেন্স নেই — আরও {money(item.price - balance)} প্রয়োজন</span>
                       </div>
                     )}
@@ -864,9 +866,9 @@ export default function EarnPage() {
                 </div>
               </section>
 
-              {(purchaseError || amountError) && (
+              {purchaseError && (
                 <p className="pk-warning" role="alert">
-                  {purchaseError || amountError}
+                  {purchaseError}
                 </p>
               )}
 

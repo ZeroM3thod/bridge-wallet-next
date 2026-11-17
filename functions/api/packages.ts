@@ -16,15 +16,11 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       const sessionId = request.headers.get('Cookie')?.match(/(?:^|;\s*)session=([^;]+)/)?.[1]
       const session = sessionId ? await env.DB.prepare('SELECT user_id FROM sessions WHERE id=? AND expires_at>?').bind(sessionId, now).first<{user_id:string}>() : null
        if (!session) return json({ packages: result.results.map(({ maxPerUser, ...p }) => ({ ...p, purchaseLimit: maxPerUser, purchasedCount: 0, eligible: false, eligibilityMessage: 'প্যাকেজ কিনতে লগইন করুন' })) })
-      const [balance, userVip] = await Promise.all([
-        env.DB.prepare('SELECT balance FROM users WHERE id=?').bind(session.user_id).first<{balance:number}>(),
-        env.DB.prepare('SELECT COALESCE(vip_level,0) AS level FROM users WHERE id=?').bind(session.user_id).first<{level:number}>(),
-      ])
+       const userVip = await env.DB.prepare('SELECT COALESCE(vip_level,0) AS level FROM users WHERE id=?').bind(session.user_id).first<{level:number}>()
       const packages = await Promise.all(result.results.map(async p => {
         const bought = await env.DB.prepare('SELECT COUNT(*) AS n FROM user_packages WHERE user_id=? AND package_id=?').bind(session.user_id,p.id).first<{n:number}>()
         let eligibilityMessage = ''
-        if (balance && balance.balance < p.price) eligibilityMessage = 'পর্যাপ্ত ব্যালেন্স নেই'
-        else if (p.maxPerUser && (bought?.n ?? 0) >= p.maxPerUser) eligibilityMessage = 'ক্রয়ের সীমা পূর্ণ'
+         if (p.maxPerUser && (bought?.n ?? 0) >= p.maxPerUser) eligibilityMessage = 'ক্রয়ের সীমা পূর্ণ'
         else if ((userVip?.level ?? 0) < p.minVipLevel) eligibilityMessage = `অভিজাত ধাপ ${p.minVipLevel} প্রয়োজন`
         const { maxPerUser, ...publicPackage } = p
         return { ...publicPackage, purchaseLimit: maxPerUser, purchasedCount: bought?.n ?? 0, eligible: !eligibilityMessage, eligibilityMessage }
