@@ -19,7 +19,7 @@ export async function sendOTPEmail(env: Env, email: string, code: string): Promi
         <div style="margin:0;background:#eef4fb;padding:32px 14px;font-family:Arial,'Noto Sans Bengali',sans-serif;color:#102a43">
           <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #dbe7f3;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(8,27,51,.08)">
             <div style="padding:26px 24px;text-align:center;background:#008ad9">
-              <img src="https://ghmgroups.com/ghm-logo.png" width="180" alt="GHM Groups logo" style="display:block;width:180px;height:auto;max-width:100%;margin:0 auto" />
+              <img src="https://ghmgroups.com/ghm-logo.png" width="180" alt="GHM Groups logo" style="display:block;width:180px;height:auto;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;padding:8px;box-sizing:content-box" />
             </div>
             <div style="padding:30px 28px">
               <p style="margin:0 0 8px;color:#008ad9;font-size:12px;font-weight:700;letter-spacing:1px">ইমেইল যাচাইকরণ</p>
