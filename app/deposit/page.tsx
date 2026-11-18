@@ -180,9 +180,6 @@ export default function DepositPage() {
         <button className="withdraw-submit" disabled={busy} onClick={startPayment}>
           {busy ? "পেমেন্ট শুরু হচ্ছে…" : "পেমেন্ট করুন"}
         </button>
-        <small className="withdraw-note" role="note">
-          পেমেন্ট সফল হলে যাচাইকৃত callback-এর পর ব্যালেন্স যোগ হবে।
-        </small>
         <div className="withdraw-rules">
           <h3>
             <Icon name="clock" size={13} />

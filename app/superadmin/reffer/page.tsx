@@ -461,13 +461,16 @@ export default function ReferralManagement() {
     }
     setRBusy(true);
     try {
+      const approvedIds: string[] = [];
       for (const id of okIds) {
         const response = await fetch("/api/admin/referrals", { method: "PATCH", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, status: "approved" }) });
-        if (!response.ok) skipped++;
+        if (response.ok) approvedIds.push(id);
+        else skipped++;
       }
-      setRequests(working);
-      setRSel([]);
-      say(skipped ? `Approved ${okIds.length}. Skipped ${skipped} (one tier per user per month).` : `Approved ${okIds.length} request${okIds.length > 1 ? "s" : ""}`);
+      const approved = new Set(approvedIds);
+      setRequests((list) => list.map((r) => approved.has(r.id) ? { ...r, status: "approved", reviewedAt: new Date().toISOString() } : r));
+      setRSel((selection) => selection.filter((id) => !approved.has(id)));
+      say(skipped ? `Approved ${approvedIds.length}. Skipped ${skipped} (one tier per user per month).` : `Approved ${approvedIds.length} request${approvedIds.length > 1 ? "s" : ""}`);
     } catch {
       say("Could not approve. Try again.", true);
     } finally {

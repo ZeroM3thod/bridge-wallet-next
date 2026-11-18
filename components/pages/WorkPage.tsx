@@ -33,12 +33,11 @@ const MIN_MS = 60_000
 const LOAD_ERROR = "ডেটা লোড করা যায়নি"
 const CLAIM_ERROR = "লাভ জমা করা যায়নি"
 
-function countdownParts(ms: number): [string, string] {
+function countdownParts(ms: number): string[] {
   const h = Math.floor(ms / HOUR_MS)
   const m = Math.floor((ms % HOUR_MS) / MIN_MS)
   const s = Math.floor((ms % MIN_MS) / 1000)
-  if (h > 0) return [`${bengaliNumber(h)}ঘ`, `${bengaliNumber(m)}মি`]
-  return [`${bengaliNumber(m)}মি`, `${bengaliNumber(s)}সে`]
+  return [...(h > 0 ? [`${bengaliNumber(h)}ঘ`] : []), `${bengaliNumber(m)}মি`, `${bengaliNumber(s)}সে`]
 }
 
 const clamp = (n: number) => Math.min(100, Math.max(0, n))
@@ -512,7 +511,7 @@ export default function WorkPage() {
               const cycle = clamp((1 - remaining / DAY_MS) * 100)
               const life = clamp(((now - p.startedAt) / Math.max(1, p.expiresAt - p.startedAt)) * 100)
               const busy = claiming === p.id
-              const [top, bottom] = countdownParts(remaining)
+              const countdown = countdownParts(remaining)
               const ringFill = "#008ad9"
 
               return (
@@ -557,8 +556,7 @@ export default function WorkPage() {
                           </button>
                         ) : (
                           <div className="wk-ring-inner">
-                            <strong>{top}</strong>
-                            <strong>{bottom}</strong>
+                            {countdown.map((part) => <strong key={part}>{part}</strong>)}
                           </div>
                         )}
                       </div>

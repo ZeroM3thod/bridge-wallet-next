@@ -42,12 +42,12 @@ export const onRequest: PagesFunction<Env> = async ({ request, env }) => {
         const duplicate=await env.DB.prepare("SELECT id FROM salary_requests WHERE user_id=? AND cycle_key=? AND status='approved'").bind(row.user_id,row.cycle_key).first()
         if(duplicate) return json({error:'Salary already paid this cycle'},409)
         const reviewedAt=Date.now()
-        const result=await env.DB.prepare("UPDATE salary_requests SET status='approved',reviewed_at=? WHERE id=? AND status='pending'").bind(reviewedAt,row.id).run()
-        if(!result.meta.changes) return json({error:'Request already reviewed'},409)
-        await env.DB.batch([
-          env.DB.prepare('UPDATE users SET balance=balance+? WHERE id=?').bind(row.amount,row.user_id),
-          env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) VALUES (?,?,'credit',?,'Team salary',?)").bind(crypto.randomUUID(),row.user_id,row.amount,reviewedAt),
+        const result=await env.DB.batch([
+          env.DB.prepare("UPDATE salary_requests SET status='approved',reviewed_at=? WHERE id=? AND status='pending'").bind(reviewedAt,row.id),
+          env.DB.prepare("UPDATE users SET balance=balance+? WHERE id=? AND changes()=1").bind(row.amount,row.user_id),
+          env.DB.prepare("INSERT INTO transactions (id,user_id,type,amount,label,created_at) SELECT ?,?,'credit',?,'Team salary',? WHERE changes()=1").bind(crypto.randomUUID(),row.user_id,row.amount,reviewedAt),
         ])
+        if(!result[0].meta.changes) return json({error:'Request already reviewed'},409)
       } else await env.DB.prepare("UPDATE salary_requests SET status='rejected',review_note=?,reviewed_at=? WHERE id=? AND status='pending'").bind((body.note ?? '').slice(0,500),Date.now(),row.id).run()
       return json({success:true})
     }
